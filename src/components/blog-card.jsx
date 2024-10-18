@@ -4,6 +4,7 @@ import { Clock, Eye } from "lucide-react"
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
 
 export function Blog_card({
+    image,
     title,
     date,
     view
@@ -11,7 +12,7 @@ export function Blog_card({
     return (
         (<Card className="overflow-hidden">
             <div className="relative w-full aspect-video mb-2 overflow-hidden ">
-                <img src="" alt="" />
+                <img src={image} alt="" />
             </div>
             <CardContent className="p-4">
                 <div className="flex gap-4">

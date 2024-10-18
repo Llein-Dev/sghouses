@@ -14,9 +14,12 @@ import { Label } from "@/components/ui/label"
 
 export function SearchBarComponent() {
   const [keyword, setKeyword] = useState("")
+  const [area, setArea] = useState("Tất cả khu vực")
+  const [building, setBuilding] = useState("Tất cả tòa nhà")
+  const [price, setPrice] = useState("Tất cả mức giá")
+  const [size, setSize] = useState("Tất cả diện tích")
   const handleSearch = () => {
     console.log("Searching with:", { keyword, area, building, price, size })
-    // Implement your search logic here
   }
 
   return (
@@ -39,7 +42,7 @@ export function SearchBarComponent() {
         <DropdownMenu >
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="w-full md:w-auto">
-              <MapIcon />khu vực <ChevronDown className="ml-2 h-4 w-4" />
+              <MapIcon /> {area} <ChevronDown className="ml-2 h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
@@ -53,7 +56,7 @@ export function SearchBarComponent() {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="w-full md:w-auto">
-              <Building />tòa nhà <ChevronDown className="ml-2 h-4 w-4" />
+              <Building />   {building}<ChevronDown className="ml-2 h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
@@ -67,7 +70,7 @@ export function SearchBarComponent() {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="w-full md:w-auto">
-              <Filter />mức giá<ChevronDown className="ml-2 h-4 w-4" />
+              <Filter />  {price}<ChevronDown className="ml-2 h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
@@ -81,7 +84,7 @@ export function SearchBarComponent() {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="w-full md:w-auto">
-              <Box/>diện tích <ChevronDown className="ml-2 h-4 w-4" />
+              <Box /> {size} <ChevronDown className="ml-2 h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>

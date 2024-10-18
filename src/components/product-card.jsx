@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
 
 export function ProductCardColComponent({
+  image,
   title,
   address,
   price,
@@ -14,7 +15,7 @@ export function ProductCardColComponent({
   return (
     (<Card className="overflow-hidden">
       <div className="relative w-full aspect-video mb-2 overflow-hidden ">
-        <img src="" alt="" />
+        <img src={image} alt="" />
       </div>
       <CardContent className="p-4">
         <p className="text-sm text-muted-foreground mb-2 flex items-center">

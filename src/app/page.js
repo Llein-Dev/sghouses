@@ -10,21 +10,22 @@ import { ArrowRight } from "lucide-react";
 
 export default function Home() {
   const images = [
-    "/placeholder.svg?height=400&width=800&text=Slide+1",
-    "/placeholder.svg?height=400&width=800&text=Slide+2",
-    "/placeholder.svg?height=400&width=800&text=Slide+3",
-    "/placeholder.svg?height=400&width=800&text=Slide+4",
+    "/pexels-photo-106399.jpeg?height=400&width=800&text=Slide+1",
+    "/pexels-photo-106399.jpeg?height=400&width=800&text=Slide+2",
+    "/pexels-photo-106399.jpeg?height=400&width=800&text=Slide+3",
+    "/pexels-photo-106399.jpeg?height=400&width=800&text=Slide+4",
   ]
   const categories = [
-    { imageUrl: "/placeholder.svg?height=100&width=100&text=Nhà+phố", title: "Nhà phố", href: "/nha-pho" },
-    { imageUrl: "/placeholder.svg?height=100&width=100&text=Chung+cư", title: "Chung cư", href: "/chung-cu" },
-    { imageUrl: "/placeholder.svg?height=100&width=100&text=Biệt+thự", title: "Biệt thự", href: "/biet-thu" },
-    { imageUrl: "/placeholder.svg?height=100&width=100&text=Đất+nền", title: "Đất nền", href: "/dat-nen" },
-    { imageUrl: "/placeholder.svg?height=100&width=100&text=Biệt+thự", title: "Biệt thự", href: "/biet-thu" },
-    { imageUrl: "/placeholder.svg?height=100&width=100&text=Đất+nền", title: "Đất nền", href: "/dat-nen" },
+    { imageUrl: "/dark-blue-house-exterior-2.png?height=100&width=100&text=Nhà+phố", title: "Nhà phố", href: "/nha-pho" },
+    { imageUrl: "/dark-blue-house-exterior-2.png?height=100&width=100&text=Chung+cư", title: "Chung cư", href: "/chung-cu" },
+    { imageUrl: "/dark-blue-house-exterior-2.png?height=100&width=100&text=Biệt+thự", title: "Biệt thự", href: "/biet-thu" },
+    { imageUrl: "/dark-blue-house-exterior-2.png?height=100&width=100&text=Đất+nền", title: "Đất nền", href: "/dat-nen" },
+    { imageUrl: "/dark-blue-house-exterior-2.png?height=100&width=100&text=Biệt+thự", title: "Biệt thự", href: "/biet-thu" },
+    { imageUrl: "/dark-blue-house-exterior-2.png?height=100&width=100&text=Đất+nền", title: "Đất nền", href: "/dat-nen" },
   ]
   const products = [
     {
+      image: "/dark-blue-house-exterior-2.png?height=100&width=100&text=Nhà+phố",
       title: "Căn hộ cao cấp tại trung tâm",
       address: "Quận 1, TP.HCM",
       price: "5 tỷ",
@@ -32,6 +33,7 @@ export default function Home() {
       mapLink: "/map/1",
     },
     {
+      image: "/dark-blue-house-exterior-2.png?height=100&width=100&text=Nhà+phố",
       title: "Nhà phố hiện đại",
       address: "Quận 2, TP.HCM",
       price: "8 tỷ",
@@ -39,6 +41,7 @@ export default function Home() {
       mapLink: "/map/2",
     },
     {
+      image: "/dark-blue-house-exterior-2.png?height=100&width=100&text=Nhà+phố",
       title: "Biệt thự ven sông",
       address: "Quận 7, TP.HCM",
       price: "15 tỷ",
@@ -46,6 +49,7 @@ export default function Home() {
       mapLink: "/map/3",
     },
     {
+      image: "/dark-blue-house-exterior-2.png?height=100&width=100&text=Nhà+phố",
       title: "Căn hộ cao cấp tại trung tâm",
       address: "Quận 1, TP.HCM",
       price: "5 tỷ",
@@ -53,6 +57,7 @@ export default function Home() {
       mapLink: "/map/1",
     },
     {
+      image: "/dark-blue-house-exterior-2.png?height=100&width=100&text=Nhà+phố",
       title: "Nhà phố hiện đại",
       address: "Quận 2, TP.HCM",
       price: "8 tỷ",
@@ -60,6 +65,7 @@ export default function Home() {
       mapLink: "/map/2",
     },
     {
+      image: "/dark-blue-house-exterior-2.png?height=100&width=100&text=Nhà+phố",
       title: "Biệt thự ven sông",
       address: "Quận 7, TP.HCM",
       price: "15 tỷ",
@@ -69,16 +75,19 @@ export default function Home() {
   ]
   const blogs = [
     {
+      image: "/dark-blue-house-exterior-2.png?height=100&width=100&text=Nhà+phố",
       title: "Understanding React Hooks",
       date: "2024-10-01",
       view: 150
     },
     {
+      image: "/dark-blue-house-exterior-2.png?height=100&width=100&text=Nhà+phố",
       title: "JavaScript ES2024 Features",
       date: "2024-10-10",
       view: 200
     },
     {
+      image: "/dark-blue-house-exterior-2.png?height=100&width=100&text=Nhà+phố",
       title: "Building a PDF Preview with React",
       date: "2024-10-15",
       view: 75

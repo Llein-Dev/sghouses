@@ -217,10 +217,10 @@ export function HeaderComponent() {
                       </p>
                     </div>
                   </div>
-                  <Button variant="ghost" className="justify-start" onClick={() => {}}>
+                  <Button variant="ghost" className="justify-start" onClick={() => { }}>
                     Hồ sơ
                   </Button>
-                  <Button variant="ghost" className="justify-start" onClick={() => {}}>
+                  <Button variant="ghost" className="justify-start" onClick={() => { }}>
                     Cài đặt
                   </Button>
                   <Button variant="ghost" className="justify-start" onClick={handleLoginToggle}>

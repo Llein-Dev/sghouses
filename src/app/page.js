@@ -11,9 +11,9 @@ import { ArrowRight } from "lucide-react";
 export default function Home() {
   const images = [
     "/pexels-photo-106399.jpeg?height=400&width=800&text=Slide+1",
-    "/pexels-photo-106399.jpeg?height=400&width=800&text=Slide+2",
-    "/pexels-photo-106399.jpeg?height=400&width=800&text=Slide+3",
-    "/pexels-photo-106399.jpeg?height=400&width=800&text=Slide+4",
+    "/background-phong-khach-dep-3.jpg?height=400&width=800&text=Slide+2",
+    "/mau-sac-hai-hoa-mang-den-Background-dep.jpg?height=400&width=800&text=Slide+3",
+    "/istockphoto-1026205392-612x612.jpg?height=400&width=800&text=Slide+4",
   ]
   const categories = [
     { imageUrl: "/dark-blue-house-exterior-2.png?height=100&width=100&text=Nhà+phố", title: "Nhà phố", href: "/nha-pho" },

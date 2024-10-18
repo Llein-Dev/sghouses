@@ -24,7 +24,7 @@ export function SearchBarComponent() {
 
   return (
     (<div
-      className="md:absolute relative  md:bottom-0 md:left-1/2  md:transform md:-translate-x-1/2 md:translate-y-1/2 w-full max-w-6xl bg-[#00008B] rounded-none md:rounded-lg shadow-lg p-4 z-10">
+      className="md:absolute relative  md:bottom-0 md:left-1/2  md:transform md:-translate-x-1/2 md:translate-y-1/2 w-full max-w-6xl bg-[#00008B] rounded-none md:rounded-xl shadow-lg p-4 z-10">
       <div className="flex flex-col md:flex-row gap-4">
         <div className="flex-grow">
           <Label htmlFor="keyword" className="sr-only">

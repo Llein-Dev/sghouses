@@ -1,5 +1,6 @@
 import { HeaderComponent } from "@/components/header";
 import "./globals.css";
+import { FooterComponent } from "@/components/footer";
 
 export default function RootLayout({ children }) {
   return (
@@ -24,6 +25,7 @@ export default function RootLayout({ children }) {
       <body className="antialiased montserrat-header">
         <HeaderComponent />
         {children}
+        <FooterComponent/>
       </body>
     </html>
   );

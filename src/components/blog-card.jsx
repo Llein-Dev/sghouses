@@ -25,8 +25,7 @@ export function Blog_card({
                 </div>
                 <h3 className="text-lg font-semibold mb-2">{title}</h3>
             </CardContent>
-            <CardFooter className="p-4 pt-0">
-            </CardFooter>
+      
         </Card>)
     );
 }

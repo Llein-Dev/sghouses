@@ -123,7 +123,7 @@ export default function Home() {
         </div>
 
         {/* background blue */}
-        <div className="w-full bg-[#00008B] aspect-[10/1] container mx-auto rounded-none md:rounded-lg "></div>
+        <div className="w-full bg-[#00008B] aspect-[10/3]  md:aspect-[10/1] container mx-auto rounded-none md:rounded-none 2xl:rounded-lg "></div>
 
         {/* Products */}
         <div className="space-y-8 flex flex-col justify-center items-center container mx-auto">
@@ -137,7 +137,7 @@ export default function Home() {
         </div>
 
         {/* background blue */}
-        <div className="w-full bg-[#00008B] aspect-[10/1] container mx-auto rounded-none md:rounded-lg "></div>
+        <div className="w-full bg-[#00008B] aspect-[10/3]  md:aspect-[10/1] container mx-auto rounded-none md:rounded-none 2xl:rounded-lg "></div>
 
         {/* blogs */}
         <div className="space-y-8 flex flex-col justify-center items-center container mx-auto">

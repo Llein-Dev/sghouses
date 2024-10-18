@@ -105,7 +105,7 @@ export default function Home() {
         {/* Products */}
         <div className="space-y-8 flex flex-col justify-center items-center container mx-auto">
           <h2 className="text-start w-full font-bold text-2xl text-[#00008B]">Phòng trọ <span className="text-[#FF5C00]">nổi bật</span></h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 container mx-auto justify-center gap-6 mb-12">
+          <div className="grid grid-cols-2 md:grid-cols-4 w-full gap-6 mb-12">
             {products.map((product, index) => (
               <ProductCardColComponent key={index} {...product} />
             ))}
@@ -119,7 +119,7 @@ export default function Home() {
         {/* Products */}
         <div className="space-y-8 flex flex-col justify-center items-center container mx-auto">
           <h2 className="text-start w-full font-bold text-2xl text-[#00008B]">Phòng trọ <span className="text-[#FF5C00]">nổi bật</span></h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 container mx-auto justify-center gap-6 mb-12">
+          <div className="grid grid-cols-2 md:grid-cols-4 w-full gap-6 mb-12">
             {products.map((product, index) => (
               <ProductCardColComponent key={index} {...product} />
             ))}
@@ -133,7 +133,7 @@ export default function Home() {
         {/* blogs */}
         <div className="space-y-8 flex flex-col justify-center items-center container mx-auto">
           <h2 className="text-start w-full font-bold text-2xl text-[#00008B]">Tin tức <span className="text-[#FF5C00]">nổi bật</span></h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 container mx-auto justify-center gap-6 mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-4 w-full gap-6 mb-12">
             {blogs.map((product, index) => (
               <Blog_card key={index} {...product} />
             ))}

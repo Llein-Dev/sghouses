@@ -1,9 +1,11 @@
+
+import { Blog_card } from "@/components/blog-card";
 import { CarouselComponent } from "@/components/carousel";
 import VerticalCategory from "@/components/category-card";
-import { ProductCardComponent } from "@/components/product-card";
+import { ProductCardColComponent } from "@/components/product-card";
 import { SearchBarComponent } from "@/components/search-bar";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, ArrowRight, ArrowUpLeft } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 
 export default function Home() {
@@ -43,7 +45,46 @@ export default function Home() {
       size: "500m²",
       mapLink: "/map/3",
     },
+    {
+      title: "Căn hộ cao cấp tại trung tâm",
+      address: "Quận 1, TP.HCM",
+      price: "5 tỷ",
+      size: "100m²",
+      mapLink: "/map/1",
+    },
+    {
+      title: "Nhà phố hiện đại",
+      address: "Quận 2, TP.HCM",
+      price: "8 tỷ",
+      size: "200m²",
+      mapLink: "/map/2",
+    },
+    {
+      title: "Biệt thự ven sông",
+      address: "Quận 7, TP.HCM",
+      price: "15 tỷ",
+      size: "500m²",
+      mapLink: "/map/3",
+    },
   ]
+  const blogs = [
+    {
+      title: "Understanding React Hooks",
+      date: "2024-10-01",
+      view: 150
+    },
+    {
+      title: "JavaScript ES2024 Features",
+      date: "2024-10-10",
+      view: 200
+    },
+    {
+      title: "Building a PDF Preview with React",
+      date: "2024-10-15",
+      view: 75
+    }
+  ];
+
   return (
     <>
       <div className="space-y-24">
@@ -53,21 +94,48 @@ export default function Home() {
         </div>
 
         {/* Categories */}
-        <div className="space-y-16">
+        <div className="space-y-8">
           <h2 className="text-center font-bold text-2xl uppercase text-[#00008B]">Khu vực <span className="text-[#FF5C00]">nổi bật</span></h2>
-          <div className="grid grid-cols-2 md:grid-cols-6 container mx-auto justify-center gap-8 mb-12">
+          <div className="grid grid-cols-2 md:grid-cols-6 container mx-auto justify-center gap-6 mb-12">
             {categories.map((category, index) => (
               <VerticalCategory key={index} {...category} />
             ))}
           </div>
         </div>
+        {/* Products */}
+        <div className="space-y-8 flex flex-col justify-center items-center container mx-auto">
+          <h2 className="text-start w-full font-bold text-2xl text-[#00008B]">Phòng trọ <span className="text-[#FF5C00]">nổi bật</span></h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 container mx-auto justify-center gap-6 mb-12">
+            {products.map((product, index) => (
+              <ProductCardColComponent key={index} {...product} />
+            ))}
+          </div>
+          <Button className="w-36" variant="blue">Xem chi tiết <ArrowRight /></Button>
+        </div>
+
+        {/* background blue */}
+        <div className="w-full bg-[#00008B] aspect-[10/1] container mx-auto rounded-lg"></div>
 
         {/* Products */}
-        <div className="space-y-16 flex flex-col justify-center items-center container mx-auto">
+        <div className="space-y-8 flex flex-col justify-center items-center container mx-auto">
           <h2 className="text-start w-full font-bold text-2xl text-[#00008B]">Phòng trọ <span className="text-[#FF5C00]">nổi bật</span></h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 container mx-auto justify-center gap-8 mb-12">
+          <div className="grid grid-cols-2 md:grid-cols-4 container mx-auto justify-center gap-6 mb-12">
             {products.map((product, index) => (
-              <ProductCardComponent key={index} {...product} />
+              <ProductCardColComponent key={index} {...product} />
+            ))}
+          </div>
+          <Button className="w-36" variant="blue">Xem chi tiết <ArrowRight /></Button>
+        </div>
+
+        {/* background blue */}
+        <div className="w-full bg-[#00008B] aspect-[10/1] container mx-auto rounded-lg"></div>
+
+        {/* blogs */}
+        <div className="space-y-8 flex flex-col justify-center items-center container mx-auto">
+          <h2 className="text-start w-full font-bold text-2xl text-[#00008B]">Tin tức <span className="text-[#FF5C00]">nổi bật</span></h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 container mx-auto justify-center gap-6 mb-12">
+            {blogs.map((product, index) => (
+              <Blog_card key={index} {...product} />
             ))}
           </div>
           <Button className="w-36" variant="blue">Xem chi tiết <ArrowRight /></Button>

@@ -1,5 +1,5 @@
 
-import { Blog_card } from "@/components/blog-card";
+import { BlogCard } from "@/components/blog-card";
 import { CarouselComponent } from "@/components/carousel";
 import VerticalCategory from "@/components/category-card";
 import { ProductCardColComponent } from "@/components/product-card";
@@ -9,6 +9,7 @@ import { ArrowRight } from "lucide-react";
 
 
 export default function Home() {
+  
   const images = [
     "/pexels-photo-106399.jpeg?height=400&width=800&text=Slide+1",
     "/background-phong-khach-dep-3.jpg?height=400&width=800&text=Slide+2",
@@ -96,7 +97,7 @@ export default function Home() {
 
   return (
     <>
-      <div className="space-y-24">
+      <div className="space-y-24 mb-24">
         <div className="relative">
           <CarouselComponent images={images} autoPlayInterval={5000} />
           <SearchBarComponent />
@@ -111,6 +112,7 @@ export default function Home() {
             ))}
           </div>
         </div>
+        
         {/* Products */}
         <div className="space-y-8 flex flex-col justify-center items-center container mx-auto">
           <h2 className="text-start w-full font-bold text-2xl text-[#00008B]">Phòng trọ <span className="text-[#FF5C00]">nổi bật</span></h2>
@@ -144,7 +146,7 @@ export default function Home() {
           <h2 className="text-start w-full font-bold text-2xl text-[#00008B]">Tin tức <span className="text-[#FF5C00]">nổi bật</span></h2>
           <div className="grid grid-cols-1 md:grid-cols-4 w-full gap-6 mb-12">
             {blogs.map((product, index) => (
-              <Blog_card key={index} {...product} />
+              <BlogCard key={index} {...product} />
             ))}
           </div>
           <Button className="w-36" variant="blue">Xem chi tiết <ArrowRight /></Button>

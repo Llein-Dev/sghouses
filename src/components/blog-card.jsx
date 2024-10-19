@@ -3,7 +3,7 @@
 import { Clock, Eye } from "lucide-react"
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
 
-export function Blog_card({
+export function BlogCard({
     image,
     title,
     date,

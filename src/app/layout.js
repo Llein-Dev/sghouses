@@ -28,8 +28,8 @@ export default function RootLayout({ children }) {
           {children}
         </div>
         <FooterComponent />
-        
       </body>
     </html>
   );
 }
+

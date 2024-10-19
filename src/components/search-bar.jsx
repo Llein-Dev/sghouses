@@ -14,10 +14,10 @@ import { Label } from "@/components/ui/label"
 
 export function SearchBarComponent() {
   const [keyword, setKeyword] = useState("")
-  const [area, setArea] = useState("Tất cả khu vực")
-  const [building, setBuilding] = useState("Tất cả tòa nhà")
-  const [price, setPrice] = useState("Tất cả mức giá")
-  const [size, setSize] = useState("Tất cả diện tích")
+  const [area, setArea] = useState("khu vực")
+  const [building, setBuilding] = useState("tòa nhà")
+  const [price, setPrice] = useState("mức giá")
+  const [size, setSize] = useState("diện tích")
   const handleSearch = () => {
     console.log("Searching with:", { keyword, area, building, price, size })
   }

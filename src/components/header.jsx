@@ -22,18 +22,21 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { useRouter } from "next/navigation";
 
 export function HeaderComponent() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [notificationCount, setNotificationCount] = useState(1);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
+  const router = useRouter();
   const clearNotifications = () => {
     setNotificationCount(0);
   };
 
   const handleLoginToggle = () => {
     setIsLoggedIn(!isLoggedIn);
+    // You can now use router.push or router.replace for navigation
+    router.push("/login"); // Example navigation
   };
 
   const NavItems = () => (
@@ -51,7 +54,7 @@ export function HeaderComponent() {
   );
 
   return (
-    (<header className="bg-background border-b">
+    (<header className="bg-background border-b fixed w-full top-0 z-40">
       <div className="container mx-auto px-4 py-3 flex items-center justify-between">
         <div className="flex items-center">
           <Link href="/">

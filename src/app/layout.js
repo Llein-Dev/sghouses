@@ -24,8 +24,11 @@ export default function RootLayout({ children }) {
       </head>
       <body className="antialiased montserrat-header">
         <HeaderComponent />
-        {children}
-        <FooterComponent/>
+        <div className="mt-[72px]">
+          {children}
+        </div>
+        <FooterComponent />
+        
       </body>
     </html>
   );

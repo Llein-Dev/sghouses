@@ -35,7 +35,7 @@ export function CarouselComponent({ images = [], autoPlayInterval = 5000 }) {
   return (
     <div className="md:relative md:w-full md:block hidden">
       <div
-        className="overflow-hidden rounded-lg relative"
+        className="overflow-hidden relative"
         style={{ aspectRatio: "10 / 2" }}
       >
         {images.map((image, index) => (
@@ -76,7 +76,9 @@ export function CarouselComponent({ images = [], autoPlayInterval = 5000 }) {
           <br />
           TẠI <span className="text-[#FF5C00]">TP. HỒ CHÍ MINH</span>
         </h1>
-        <p className="text-gray-200 mt-4">Hiện đang có hơn 40 địa điểm và 2000 phòng cho bạn lựa chọn</p>
+        <p className="text-gray-200 mt-4">
+          Hiện đang có hơn 40 địa điểm và 2000 phòng cho bạn lựa chọn
+        </p>
       </div>
       <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
         {images.map((_, index) => (

@@ -97,7 +97,7 @@ export default function Home() {
 
   return (
     <>
-      <div className="space-y-24 mb-24">
+      <div className="space-y-24 pb-24">
         <div className="relative">
           <CarouselComponent images={images} autoPlayInterval={5000} />
           <SearchBarComponent />

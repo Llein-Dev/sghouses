@@ -24,7 +24,7 @@ export default function RootLayout({ children }) {
       </head>
       <body className="antialiased montserrat-header">
         <HeaderComponent />
-        <div className="mt-[72px]">
+        <div className="mt-[72px] bg-gray-100">
           {children}
         </div>
         <FooterComponent />

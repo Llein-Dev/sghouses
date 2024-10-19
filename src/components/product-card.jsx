@@ -13,7 +13,7 @@ export function ProductCardColComponent({
   mapLink
 }) {
   return (
-    (<Card className="overflow-hidden">
+    (<Card className="overflow-hidden ">
       <div className="relative w-full aspect-video mb-2 overflow-hidden ">
         <img src={image} alt="" />
       </div>

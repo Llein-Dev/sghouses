@@ -38,7 +38,7 @@ export function AuthFormComponent() {
   );
 
   const FormSection = () => (
-    <div className="w-full md:w-1/2 flex items-center justify-center p-8">
+    <div className="w-full bg-white md:w-1/2 flex items-center justify-center p-8">
       <Card className="w-full max-w-md border-0">
         <CardHeader>
           <CardTitle>{isLogin ? "Đăng nhập" : "Đăng ký"}</CardTitle>

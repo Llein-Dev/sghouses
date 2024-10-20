@@ -12,7 +12,7 @@ const Breadcrumb = () => {
       <ol className="flex items-center space-x-2 text-gray-500">
         {/* Breadcrumb cho "Trang chủ" */}
         <li>
-          <Link href="/" className="text-blue-500 hover:underline">
+          <Link href="/" className="text-[#00008B]  hover:underline">
             Trang chủ
           </Link>
         </li>
@@ -33,11 +33,11 @@ const Breadcrumb = () => {
             <li key={index} className="flex items-center space-x-2">
               <span className="text-gray-500">/</span>
               {index === pathArray.length - 1 ? (
-                <span className="text-blue-500 ">
+                <span className="text-[#00008B]  ">
                   {part}
                 </span>
               ) : (
-                <Link href={href} className="text-blue-500 hover:underline">
+                <Link href={href} className="text-[#00008B]  hover:underline">
                   {part}
                 </Link>
               )}

@@ -23,10 +23,10 @@ export function ProductCardColComponent({
         </p>
         <h3 className="text-lg font-semibold mb-2">{title}</h3>
         <div className="flex items-center"> <p className="mr-2 text-primary mb-2">Giá từ</p> <p className="text-lg text-red-500  text-primary mb-2">{price}</p></div>
-        <div className="flex flex-wrap gap-2 mb-2">
-          <Badge variant="secondary">{address}</Badge>
-          <Badge variant="secondary">{size}</Badge>
-        </div>
+          <div className="flex flex-wrap gap-2 mb-2">
+            <Badge variant="secondary">{address}</Badge>
+            <Badge variant="secondary">{size}</Badge>
+          </div>
       </CardContent>
       <CardFooter className="p-4 pt-0">
         <Link

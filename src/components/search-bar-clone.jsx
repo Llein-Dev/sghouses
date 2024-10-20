@@ -13,7 +13,7 @@ import {
 import { Label } from "@/components/ui/label"
 import { useRouter } from "next/navigation"
 
-export function SearchBarComponent() {
+export function SearchBarComponentClone() {
   const [keyword, setKeyword] = useState("")
   const [area, setArea] = useState("khu vực")
   const [building, setBuilding] = useState("tòa nhà")
@@ -27,8 +27,8 @@ export function SearchBarComponent() {
   }
 
   return (
-    (<div
-      className="md:absolute relative  md:bottom-0 md:left-1/2  md:transform md:-translate-x-1/2 md:translate-y-1/2 w-full max-w-6xl bg-[#00008B] rounded-none md:rounded-xl shadow-lg p-4 z-10">
+    <div className="flex justify-center items-center w-full h-full">
+    <div className="md:transform w-full max-w-10xl bg-[#00008B] rounded-none md:rounded-xl shadow-lg p-4 ">
       <div className="flex flex-col md:flex-row gap-4">
         <div className="flex-grow">
           <Label htmlFor="keyword" className="sr-only">
@@ -40,10 +40,11 @@ export function SearchBarComponent() {
             placeholder="Nhập từ khóa tìm kiếm..."
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
-            className="w-full" />
+            className="w-full"
+          />
         </div>
-
-        <DropdownMenu >
+  
+        <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="w-full md:w-auto">
               <MapIcon /> {area} <ChevronDown className="ml-2 h-4 w-4" />
@@ -57,10 +58,11 @@ export function SearchBarComponent() {
             ))}
           </DropdownMenuContent>
         </DropdownMenu>
+        
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="w-full md:w-auto">
-              <Building />   {building}<ChevronDown className="ml-2 h-4 w-4" />
+              <Building /> {building} <ChevronDown className="ml-2 h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
@@ -71,10 +73,11 @@ export function SearchBarComponent() {
             ))}
           </DropdownMenuContent>
         </DropdownMenu>
+  
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="w-full md:w-auto">
-              <Filter />  {price}<ChevronDown className="ml-2 h-4 w-4" />
+              <Filter /> {price} <ChevronDown className="ml-2 h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
@@ -85,6 +88,7 @@ export function SearchBarComponent() {
             ))}
           </DropdownMenuContent>
         </DropdownMenu>
+  
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="w-full md:w-auto">
@@ -99,11 +103,13 @@ export function SearchBarComponent() {
             ))}
           </DropdownMenuContent>
         </DropdownMenu>
-
-        <Button  onClick={handleSearch} variant="orange" className="w-full md:w-auto">
-          <Search  className="mr-2 h-4 w-4" /> Tìm kiếm
+  
+        <Button onClick={handleSearch} variant="orange" className="w-full md:w-auto">
+          <Search className="mr-2 h-4 w-4" /> Tìm kiếm
         </Button>
       </div>
-    </div>)
+    </div>
+  </div>
+  
   );
 }

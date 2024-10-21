@@ -43,9 +43,8 @@ export function CarouselComponent({ images = [], autoPlayInterval = 5000 }) {
             key={index}
             src={image}
             alt={`Slide ${index + 1}`}
-            className={`absolute w-full h-full object-cover transition-opacity duration-500 ${
-              index === currentIndex ? "opacity-100" : "opacity-0"
-            }`}
+            className={`absolute w-full h-full object-cover transition-opacity duration-500 ${index === currentIndex ? "opacity-100" : "opacity-0"
+              }`}
           />
         ))}
         {/* Overlay div */}
@@ -70,7 +69,7 @@ export function CarouselComponent({ images = [], autoPlayInterval = 5000 }) {
         <ChevronRight className="h-4 w-4" />
         <span className="sr-only">Next slide</span>
       </Button>
-      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 container mx-auto">
+      <div className="absolute top-1/2 left-2/3 transform -translate-x-1/2 -translate-y-1/2 container mx-auto">
         <h1 className="uppercase leading-snug text-white font-bold text-4xl">
           TÌM NHANH, KIẾM DỄ
           <br />
@@ -84,9 +83,8 @@ export function CarouselComponent({ images = [], autoPlayInterval = 5000 }) {
         {images.map((_, index) => (
           <button
             key={index}
-            className={`w-2 h-2 rounded-full transition-colors ${
-              index === currentIndex ? "bg-white" : "bg-white/50"
-            }`}
+            className={`w-2 h-2 rounded-full transition-colors ${index === currentIndex ? "bg-white" : "bg-white/50"
+              }`}
             onClick={() => setCurrentIndex(index)}
           >
             <span className="sr-only">Go to slide {index + 1}</span>

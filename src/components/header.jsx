@@ -41,11 +41,11 @@ export function HeaderComponent() {
 
   const NavItems = () => (
     <>
-      <Link href="#" className="text-foreground hover:text-primary transition-colors">
-        Trang chủ
+      <Link href="/filter" className="text-foreground hover:text-primary transition-colors">
+        Tòa Nhà
       </Link>
-      <Link href="#" className="text-foreground hover:text-primary transition-colors">
-        Giới thiệu
+      <Link href="/building" className="text-foreground hover:text-primary transition-colors">
+        Test Bulding
       </Link>
       <Link href="#" className="text-foreground hover:text-primary transition-colors">
         Liên hệ
@@ -54,7 +54,7 @@ export function HeaderComponent() {
   );
 
   return (
-    (<header className="bg-background border-b fixed w-full top-0 z-40">
+    (<header className="bg-background border-b fixed w-full top-0 z-40 px-4">
       <div className="container mx-auto px-4 py-3 flex items-center justify-between">
         <div className="flex items-center">
           <Link href="/">

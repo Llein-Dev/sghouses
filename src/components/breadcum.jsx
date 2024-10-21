@@ -23,8 +23,8 @@ const Breadcrumb = () => {
     };
 
     return (
-        <div className='bg-white border-b text-sm'>
-            <nav aria-label="Breadcrumb" className="py-4 container mx-auto ">
+        <div className='bg-white  border-b text-sm'>
+            <nav aria-label="Breadcrumb" className="py-4 px-8 container mx-auto ">
                 <ol className="flex items-center space-x-2">
                     <li>
                         <Link href="/" className="text-blue-500 hover:text-blue-400 transition-colors flex items-center">

@@ -2,7 +2,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 
 // Base URL of your backend
-const API_BASE_URL = 'http://localhost:3000'; // Change to your actual backend URL
+const API_BASE_URL = 'http://localhost:8000'; // Change to your actual backend URL
 
 // Function for user login
 export const loginAPI = async (email, password) => {

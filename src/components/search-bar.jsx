@@ -24,13 +24,14 @@ export function SearchBarComponent() {
 
   return (
     (<div
-      className="md:absolute relative  md:bottom-0 md:left-1/2  md:transform md:-translate-x-1/2 md:translate-y-1/2 w-full max-w-6xl bg-[#00008B] rounded-none md:rounded-xl shadow-lg p-4 z-10">
+      className="md:absolute relative  md:bottom-0 md:left-1/2  md:transform md:-translate-x-1/2 md:translate-y-1/2 w-full max-w-7xl bg-[#00008B] rounded-none md:rounded-xl shadow-lg p-4 z-10">
       <div className="flex flex-col md:flex-row gap-4">
         <div className="flex-grow">
           <Label htmlFor="keyword" className="sr-only">
             Từ khóa
           </Label>
           <Input
+            size="lg"
             id="keyword"
             type="text"
             placeholder="Nhập từ khóa tìm kiếm..."
@@ -41,13 +42,13 @@ export function SearchBarComponent() {
 
         <DropdownMenu >
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="w-full md:w-auto">
+            <Button  variant="outline" className=" h-12  w-full md:w-auto">
               <MapIcon /> {area} <ChevronDown className="ml-2 h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             {[" khu vực", "Khu vực A", "Khu vực B", "Khu vực C"].map((item) => (
-              <DropdownMenuItem key={item} onSelect={() => setArea(item)}>
+              <DropdownMenuItem  key={item} onSelect={() => setArea(item)}>
                 {item}
               </DropdownMenuItem>
             ))}
@@ -55,13 +56,13 @@ export function SearchBarComponent() {
         </DropdownMenu>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="w-full md:w-auto">
+            <Button  variant="outline" className=" h-12  w-full md:w-auto">
               <Building />   {building}<ChevronDown className="ml-2 h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             {[" tòa nhà", "Tòa nhà X", "Tòa nhà Y", "Tòa nhà Z"].map((item) => (
-              <DropdownMenuItem key={item} onSelect={() => setBuilding(item)}>
+              <DropdownMenuItem  key={item} onSelect={() => setBuilding(item)}>
                 {item}
               </DropdownMenuItem>
             ))}
@@ -69,13 +70,13 @@ export function SearchBarComponent() {
         </DropdownMenu>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="w-full md:w-auto">
+            <Button  variant="outline" className=" h-12  w-full md:w-auto">
               <Filter />  {price}<ChevronDown className="ml-2 h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             {[" mức giá", "Dưới 1 tỷ", "1-2 tỷ", "2-3 tỷ", "Trên 3 tỷ"].map((item) => (
-              <DropdownMenuItem key={item} onSelect={() => setPrice(item)}>
+              <DropdownMenuItem  key={item} onSelect={() => setPrice(item)}>
                 {item}
               </DropdownMenuItem>
             ))}
@@ -83,20 +84,20 @@ export function SearchBarComponent() {
         </DropdownMenu>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="w-full md:w-auto">
+            <Button  variant="outline" className=" h-12  w-full md:w-auto">
               <Box /> {size} <ChevronDown className="ml-2 h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             {[" diện tích", "Dưới 50m²", "50-100m²", "100-150m²", "Trên 150m²"].map((item) => (
-              <DropdownMenuItem key={item} onSelect={() => setSize(item)}>
+              <DropdownMenuItem  key={item} onSelect={() => setSize(item)}>
                 {item}
               </DropdownMenuItem>
             ))}
           </DropdownMenuContent>
         </DropdownMenu>
 
-        <Button onClick={handleSearch} variant="orange" className="w-full md:w-auto">
+        <Button onClick={handleSearch} variant="orange" className="w-full h-12 text md:w-auto">
           <Search className="mr-2 h-4 w-4" /> Tìm kiếm
         </Button>
       </div>

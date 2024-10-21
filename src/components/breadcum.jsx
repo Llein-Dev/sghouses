@@ -1,4 +1,5 @@
 "use client";
+import { ChevronRight, House } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
@@ -8,8 +9,8 @@ const pathNameMap = {
     details: 'Product Details',
     dashboard: 'Dashboard',
     filter: 'Lọc Sản phẩm',
-    login: 'Đăng nhập và đăng ký',
-    home:"Trang chủ"
+    login: 'Tài khoản',
+    home: "Trang chủ"
 };
 
 const Breadcrumb = () => {
@@ -22,37 +23,44 @@ const Breadcrumb = () => {
     };
 
     return (
-        <nav aria-label="breadcrumb" className="py-4 container mx-auto">
-            <ol className="list-none p-0 inline-flex">
-                <li className="flex items-center">
-                    <Link href="/" className="text-blue-500 hover:text-blue-700">
-                        Home
-                    </Link>
-                    <span className="mx-2 text-gray-400">/</span>
-                </li>
-                {pathArray.map((path, index) => {
-                    const href = `/${pathArray.slice(0, index + 1).join('/')}`;
-                    const isLast = index === pathArray.length - 1;
-
-                    return (
-                        <li key={href} className="flex items-center">
-                            {!isLast ? (
-                                <>
-                                    <Link href={href} className="text-blue-500 hover:text-blue-700">
-                                        {getBreadcrumbName(path)}
-                                    </Link>
-                                    <span className="mx-2 text-gray-400">/</span>
-                                </>
-                            ) : (
-                                <Link href={href} className="text-blue-500 hover:text-blue-700">
-                                    {getBreadcrumbName(path)}
-                                </Link>
-                            )}
+        <div className='bg-white border-b text-sm'>
+            <nav aria-label="Breadcrumb" className="py-4 container mx-auto ">
+                <ol className="flex items-center space-x-2">
+                    <li>
+                        <Link href="/" className="text-blue-500 hover:text-blue-400 transition-colors flex items-center">
+                            <House className="h-4 w-4 mr-2" />
+                            <span>Trang chủ</span>
+                        </Link>
+                    </li>
+                    {pathArray.length > 0 && (
+                        <li>
+                            <ChevronRight className="h-4 w-4 text-muted-foreground" />
                         </li>
-                    );
-                })}
-            </ol>
-        </nav>
+                    )}
+                    {pathArray.map((path, index) => {
+                        const href = `/${pathArray.slice(0, index + 1).join('/')}`
+                        const isLast = index === pathArray.length - 1
+
+                        return (
+                            <li key={href} className="flex items-center">
+                                {!isLast ? (
+                                    <>
+                                        <Link href={href} className="text-primary hover:text-primary-foreground transition-colors">
+                                            {getBreadcrumbName(path)}
+                                        </Link>
+                                        <ChevronRight className="h-4 w-4 text-muted-foreground mx-2" />
+                                    </>
+                                ) : (
+                                    <span className="text-muted-foreground" aria-current="page">
+                                        {getBreadcrumbName(path)}
+                                    </span>
+                                )}
+                            </li>
+                        )
+                    })}
+                </ol>
+            </nav>
+        </div>
     );
 };
 

@@ -13,18 +13,18 @@ export function ProductCardRowComponent({
     price,
     size,
     mapLink,
-    imageUrl
+    image
 }) {
     return (
-        <Card className="overflow-hidden">
+        <Card className="overflow-hidden ">
             <div className="flex flex-col sm:flex-row">
-                <div className="relative w-full sm:w-1/3 aspect-video sm:aspect-square">
+                <div className="relative w-full sm:w-1/3 md:aspect-[4/3]   aspect-video">
                     <Image
-                        src={imageUrl}
+                        src={image}
                         alt={title}
                         layout="fill"
                         objectFit="cover"
-                        className="rounded-t-lg sm:rounded-l-lg sm:rounded-t-none"
+                        className="rounded-t-lg sm:rounded-l-lg sm:rounded-t-none "
                     />
                 </div>
                 <div className="flex flex-col justify-between w-full sm:w-2/3">

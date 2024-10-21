@@ -3,7 +3,7 @@ import Link from "next/link"
 import { MapPin } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
-
+// GetAllBuilding 
 export function ProductCardColComponent({
   image,
   title,
@@ -15,7 +15,7 @@ export function ProductCardColComponent({
   return (
     (<Card className="overflow-hidden ">
       <div className="relative w-full aspect-video mb-2 overflow-hidden ">
-        <img src={image} alt="" />
+        <img src={image} className="" alt={title} />
       </div>
       <CardContent className="p-4">
         <p className="text-sm text-muted-foreground mb-2 flex items-center">

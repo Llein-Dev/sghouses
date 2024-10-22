@@ -25,7 +25,7 @@ import {
 import { useRouter } from "next/navigation";
 
 export function HeaderComponent() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIns, setisLoggedIns] = useState(false);
   const [notificationCount, setNotificationCount] = useState(1);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const router = useRouter();
@@ -34,7 +34,7 @@ export function HeaderComponent() {
   };
 
   const handleLoginToggle = () => {
-    setIsLoggedIn(!isLoggedIn);
+    setisLoggedIns(!isLoggedIns);
     // You can now use router.push or router.replace for navigation
     router.push("/login"); // Example navigation
   };
@@ -46,6 +46,9 @@ export function HeaderComponent() {
       </Link>
       <Link href="/building" className="text-foreground hover:text-primary transition-colors">
         Test Bulding
+      </Link>
+      <Link href="/blog" className="text-foreground hover:text-primary transition-colors">
+        blog
       </Link>
       <Link href="#" className="text-foreground hover:text-primary transition-colors">
         Liên hệ
@@ -111,7 +114,7 @@ export function HeaderComponent() {
               )}
             </DropdownMenuContent>
           </DropdownMenu>
-          {isLoggedIn ? (
+          {isLoggedIns ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="relative h-8 w-8 rounded-full">
@@ -121,7 +124,7 @@ export function HeaderComponent() {
                   </Avatar>
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="" align="end" forceMount>
+              <DropdownMenuContent className=" w-full" align="end" forceMount>
                 <div className="flex items-center space-x-2 p-2">
                   <Avatar className="h-10 w-10">
                     <AvatarImage src="/placeholder-avatar.jpg" alt="Hữu Đạt" />
@@ -152,6 +155,8 @@ export function HeaderComponent() {
           )}
         </nav>
 
+        {/* Mobile Header */}
+
         <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
           <SheetTrigger asChild>
             <Button variant="ghost" size="icon" className="md:hidden">
@@ -177,7 +182,7 @@ export function HeaderComponent() {
                     )}
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-[250px]">
+                <DropdownMenuContent align="end" className="">
                   <DropdownMenuLabel>Thông báo</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   {notificationCount > 0 ? (
@@ -206,7 +211,7 @@ export function HeaderComponent() {
                   )}
                 </DropdownMenuContent>
               </DropdownMenu>
-              {isLoggedIn ? (
+              {isLoggedIns ? (
                 <>
                   <div className="flex items-center space-x-2 p-2">
                     <Avatar className="h-10 w-10">

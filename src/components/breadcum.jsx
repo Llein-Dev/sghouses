@@ -23,7 +23,7 @@ const Breadcrumb = () => {
     };
 
     return (
-        <div className='bg-white  border-b text-sm'>
+        <div className=' container mx-auto  text-sm'>
             <nav aria-label="Breadcrumb" className="py-4 px-8 container mx-auto ">
                 <ol className="flex items-center space-x-2">
                     <li>

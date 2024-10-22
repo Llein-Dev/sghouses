@@ -119,3 +119,36 @@ export const steps = [
         description: "Chúng tôi sẽ liên hệ để xác nhận lịch hẹn"
     }
 ]
+
+// Mock data for news articles
+export const featuredNews = {
+    id: '1',
+    title: 'Phát hiện bất ngờ về xu hướng thuê nhà trong năm 2024',
+    excerpt: 'Các chuyên gia dự đoán sự thay đổi lớn trong nhu cầu thuê nhà khi người dân chuyển từ các đô thị lớn sang các vùng ngoại ô và khu vực ven biển.',
+    image: '/pexels-photo-106399.jpeg',
+    date: '2024-10-20',
+}
+
+export const sideNews = [
+    { id: '2', title: 'Giá thuê nhà ở TP. Hồ Chí Minh tăng mạnh', excerpt: 'Nhu cầu thuê nhà ở tăng cao khiến giá cả tại các quận trung tâm TP. Hồ Chí Minh tăng vọt.', image: '/pexels-photo-106399.jpeg', date: '2024-10-19' },
+    { id: '3', title: 'Lợi ích của việc thuê nhà tại các khu vực ngoại ô', excerpt: 'Nhiều người chuyển ra ngoại ô sinh sống để có môi trường sống tốt hơn và chi phí thuê nhà rẻ hơn.', image: '/pexels-photo-106399.jpeg', date: '2024-10-18' },
+    { id: '4', title: 'Xu hướng thuê căn hộ nhỏ cho người độc thân', excerpt: 'Người độc thân hiện nay có xu hướng chọn thuê các căn hộ nhỏ để tiết kiệm chi phí và phù hợp với nhu cầu sống cá nhân.', image: '/pexels-photo-106399.jpeg', date: '2024-10-17' },
+]
+
+export const moreNews = [
+    { id: '5', title: 'Những điều cần lưu ý khi thuê nhà dài hạn', excerpt: 'Hợp đồng thuê nhà dài hạn mang lại nhiều lợi ích cho người thuê, nhưng cũng cần chú ý đến các điều khoản ràng buộc.', image: '/pexels-photo-106399.jpeg', date: '2024-10-16' },
+    { id: '5', title: 'Những điều cần lưu ý khi thuê nhà dài hạn', excerpt: 'Hợp đồng thuê nhà dài hạn mang lại nhiều lợi ích cho người thuê, nhưng cũng cần chú ý đến các điều khoản ràng buộc.', image: '/pexels-photo-106399.jpeg', date: '2024-10-16' },
+    { id: '5', title: 'Những điều cần lưu ý khi thuê nhà dài hạn', excerpt: 'Hợp đồng thuê nhà dài hạn mang lại nhiều lợi ích cho người thuê, nhưng cũng cần chú ý đến các điều khoản ràng buộc.', image: '/pexels-photo-106399.jpeg', date: '2024-10-16' },
+    { id: '5', title: 'Những điều cần lưu ý khi thuê nhà dài hạn', excerpt: 'Hợp đồng thuê nhà dài hạn mang lại nhiều lợi ích cho người thuê, nhưng cũng cần chú ý đến các điều khoản ràng buộc.', image: '/pexels-photo-106399.jpeg', date: '2024-10-16' },
+]
+
+export const recommendedNews = [
+    { id: '1', title: 'Xu hướng căn hộ chung cư', date: '2024-10-12' },
+    { id: '2', title: 'Đầu tư vào nhà cho thuê', date: '2024-10-11' },
+    { id: '3', title: 'Khu vực nào hợp lý nhất?', date: '2024-10-10' },
+    { id: '4', title: 'Thị trường nhà khu công nghiệp', date: '2024-10-09' },
+    { id: '5', title: 'Xu hướng căn hộ chung cư', date: '2024-10-12' },
+    { id: '6', title: 'Đầu tư vào nhà cho thuê', date: '2024-10-11' },
+    { id: '7', title: 'Khu vực nào hợp lý nhất?', date: '2024-10-10' },
+    { id: '8', title: 'Thị trường nhà khu công nghiệp', date: '2024-10-09' },
+]

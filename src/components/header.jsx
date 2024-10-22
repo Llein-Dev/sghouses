@@ -23,6 +23,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { useRouter } from "next/navigation";
+import UserProfile from "./UserProfile";
 
 export function HeaderComponent() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -147,7 +148,7 @@ export function HeaderComponent() {
           ) : (
             <Button onClick={handleLoginToggle} variant="orange" size="lg">
               <DoorOpen className="mr-2 h-4 w-4" />
-              Đăng nhập
+              <UserProfile></UserProfile  >
             </Button>
           )}
         </nav>

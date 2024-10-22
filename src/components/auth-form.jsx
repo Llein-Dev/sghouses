@@ -12,20 +12,54 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  EyeIcon,
-  EyeOffIcon,
-  GithubIcon,
-  TwitterIcon,
-  FacebookIcon,
-} from "lucide-react";
+import { EyeIcon, EyeOffIcon, GithubIcon, FacebookIcon } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
+import axios from 'axios'; // Import axios
 
 export function AuthFormComponent() {
+
+
+
+
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState(''); // For error handling
+  const [loading, setLoading] = useState(false); // For loading state
 
   const toggleForm = () => setIsLogin(!isLogin);
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const response = await axios.post('http://localhost:8000/api/login', {
+        email,
+        password,
+      });
+      const { token, message, user } = response.data;
+      // Lưu token và thông tin người dùng vào localStorage
+      localStorage.setItem('token', token);
+      localStorage.setItem('user', JSON.stringify(user));
+
+      // Hiển thị thông báo từ backend
+      alert(message);
+
+      // Xóa lỗi (nếu có) và điều hướng người dùng sau khi đăng nhập thành công
+      setError('');
+      window.location.href = '/'; // Điều hướng đến trang chủ
+    } catch (err) {
+      // Hiển thị thông báo lỗi từ backend nếu có
+      if (err.response && err.response.data && err.response.data.message) {
+        setError(err.response.data.message);
+      } else {
+        setError('Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.');
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const ImageSection = () => (
     <div className="w-full md:aspect-auto aspect-[21/9] overflow-hidden md:w-1/2 bg-gray-100">
@@ -49,18 +83,14 @@ export function AuthFormComponent() {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          {!isLogin && (
-            <div className="space-y-2">
-              <Label htmlFor="name">Full Name</Label>
-              <Input id="name" type="text" placeholder="Miêu Hính" required />
-            </div>
-          )}
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
             <Input
+              type="text"
               id="email"
-              type="email"
               placeholder="minhtuong@example.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required
             />
           </div>
@@ -68,12 +98,14 @@ export function AuthFormComponent() {
             <Label htmlFor="password">Password</Label>
             <div className="relative">
               <Input
-                id="password"
                 type={showPassword ? "text" : "password"}
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 required
               />
               <Button
-                type="button"
+                type="text"
                 variant="ghost"
                 size="icon"
                 className="absolute right-2 top-1/2 transform -translate-y-1/2"
@@ -87,12 +119,18 @@ export function AuthFormComponent() {
               </Button>
             </div>
           </div>
-          <Button variant="link" onClick={toggleForm} className="w-full">
-            {isLogin
-              ? "Chưa có tài khoản?"
-              : "Đã có tài khoản rồi?"}
+          {error && <p className="text-red-500">{error}</p>}
+          <Button
+            variant="blue"
+            className="w-full"
+            onClick={handleLogin}
+            disabled={loading}
+          >
+            {loading ? "Đang xử lý..." : isLogin ? "Đăng nhập" : "Đăng ký"}
           </Button>
-          <Button variant="blue" className="w-full">{isLogin ? "Đăng nhập" : "Đăng ký"}</Button>
+          <Button variant="link" onClick={toggleForm} className="w-full">
+            {isLogin ? "Chưa có tài khoản?" : "Đã có tài khoản rồi?"}
+          </Button>
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
               <Separator className="w-full" />
@@ -114,15 +152,13 @@ export function AuthFormComponent() {
             </Button>
           </div>
         </CardContent>
-        <CardFooter>
-
-        </CardFooter>
+        <CardFooter></CardFooter>
       </Card>
     </div>
   );
 
   return (
-    <div className="flex flex-col md:flex-row container mx-auto ">
+    <div className="flex flex-col md:flex-row container mx-auto">
       {isLogin ? (
         <>
           <ImageSection />

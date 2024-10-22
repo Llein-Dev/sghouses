@@ -1,6 +1,9 @@
+// "use client"
 import { HeaderComponent } from "@/components/header";
 import "./globals.css";
 import { FooterComponent } from "@/components/footer";
+import { Provider } from "react-redux";
+import store from "@/redux/store";
 
 export default function RootLayout({ children }) {
   return (
@@ -32,9 +35,11 @@ export default function RootLayout({ children }) {
 
       </head>
       <body className="antialiased montserrat-header">
+        {/* <Provider store={store}> */}
         <HeaderComponent />
         <div className="mt-[72px] bg-gray-100">{children}</div>
         <FooterComponent />
+        {/* </Provider> */}
       </body>
     </html>
   );

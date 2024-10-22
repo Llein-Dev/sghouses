@@ -11,8 +11,6 @@ export const loginAPI = async (email, password) => {
             email,
             password,
         });
-
-        // Store the token in cookies
         Cookies.set('token', response.data.token, { expires: 7 }); // Token will expire in 7 days
         return response.data; // Return the response data (optional)
     } catch (error) {
@@ -20,7 +18,6 @@ export const loginAPI = async (email, password) => {
     }
 };
 
-// Function for user signup
 export const signupAPI = async (name, email, password) => {
     try {
         const response = await axios.post(`${API_BASE_URL}/api/register`, {
@@ -28,11 +25,28 @@ export const signupAPI = async (name, email, password) => {
             email,
             password,
         });
-
-        // Store the token in cookies
         Cookies.set('token', response.data.token, { expires: 7 }); // Token will expire in 7 days
         return response.data; // Return the response data (optional)
     } catch (error) {
+        // Log detailed error information
+        console.error('Signup error:', error.response);
         throw error.response?.data?.message || 'Signup failed. Please try again.';
+    }
+};
+    
+
+// Function for fetching user profile
+export const profileAPI = async () => {
+    const token = Cookies.get('token');
+    try {
+        // Send a GET request with token in header
+        const response = await axios.get(`${API_BASE_URL}/api/profile`, {
+            headers: {
+                Authorization: `Bearer ${token}`, // Send token via Authorization header
+            },
+        });
+        return response.data; // Return the response data
+    } catch (error) {
+        throw error.response?.data?.message || 'Failed to fetch profile. Please try again.';
     }
 };

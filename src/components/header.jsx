@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { LogOut, Bell, DoorOpen, Menu } from "lucide-react";
@@ -23,21 +23,46 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
+import { profileAPI } from "@/utils/api/Auth/api";
 
 export function HeaderComponent() {
   const [isLoggedIns, setisLoggedIns] = useState(false);
   const [notificationCount, setNotificationCount] = useState(1);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [user, setUser] = useState(null);
   const router = useRouter();
   const clearNotifications = () => {
     setNotificationCount(0);
   };
 
   const handleLoginToggle = () => {
-    setisLoggedIns(!isLoggedIns);
-    // You can now use router.push or router.replace for navigation
     router.push("/login"); // Example navigation
   };
+  console.log(user);
+
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const profile = await profileAPI(); // Fetch user profile
+        setUser(profile[0]); // Set the user data
+        setisLoggedIns(true); // Update login state
+      } catch (error) {
+        console.error(error);
+        setisLoggedIns(false); // Update login state on error
+      }
+    };
+
+
+
+    // Fetch the user profile if the token exists
+    const token = Cookies.get('token');
+    if (token) {
+      fetchUserProfile();
+    }
+  }, []); // Run only on mount
+
 
   const NavItems = () => (
     <>
@@ -117,23 +142,26 @@ export function HeaderComponent() {
           {isLoggedIns ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-                  <Avatar className="h-12 w-12">
-                    <AvatarImage src="/placeholder-avatar.jpg" alt="Hữu Đạt" />
-                    <AvatarFallback>HĐ</AvatarFallback>
+                <Button variant="ghost" className="relative p-0">
+                <div className="flex items-center space-x-2 p-2">
+                  <Avatar className="h-10 w-10">
+                    <AvatarImage src="/placeholder-avatar.jpg" alt={user?.name || "User"} />
+                    <AvatarFallback>{user?.name.charAt(0) || "User"}</AvatarFallback>
                   </Avatar>
+      
+                </div>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className=" w-full" align="end" forceMount>
                 <div className="flex items-center space-x-2 p-2">
                   <Avatar className="h-10 w-10">
-                    <AvatarImage src="/placeholder-avatar.jpg" alt="Hữu Đạt" />
-                    <AvatarFallback>HĐ</AvatarFallback>
+                    <AvatarImage src="/placeholder-avatar.jpg" alt={user?.name || "User"} />
+                    <AvatarFallback>{user?.name.charAt(0) || "User"}</AvatarFallback>
                   </Avatar>
                   <div className="flex flex-col space-y-1">
-                    <p className="text-sm font-medium leading-none">Hữu Đạt</p>
+                    <p className="text-sm font-medium leading-none">{user?.name || "User"}</p>
                     <p className="text-xs leading-none text-muted-foreground">
-                      vohuudat282224@gmail.com
+                      {user?.email || "Email"}
                     </p>
                   </div>
                 </div>
@@ -215,13 +243,14 @@ export function HeaderComponent() {
                 <>
                   <div className="flex items-center space-x-2 p-2">
                     <Avatar className="h-10 w-10">
-                      <AvatarImage src="/placeholder-avatar.jpg" alt="Hữu Đạt" />
-                      <AvatarFallback>HĐ</AvatarFallback>
+                      <AvatarImage src="/placeholder-avatar.jpg" alt={user?.name || "User"} />
+                      <AvatarFallback>{user?.name.charAt(0) || "User"}</AvatarFallback>
+                      
                     </Avatar>
                     <div className="flex flex-col space-y-1">
-                      <p className="text-sm font-medium leading-none">Hữu Đạt</p>
+                      <p className="text-sm font-medium leading-none">{user?.name || "User"}</p>
                       <p className="text-xs leading-none text-muted-foreground">
-                        vohuudat282224@gmail.com
+                        {user?.email || "Email"}
                       </p>
                     </div>
                   </div>

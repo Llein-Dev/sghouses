@@ -1,18 +1,20 @@
 "use client";
 
 import { useState } from "react";
-
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { loginAPI, signupAPI } from "@/utils/api/Auth/api";
+import { useRouter } from "next/navigation";
 
 export function AuthForm() {
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({ name: '', email: '', password: '' });
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const router = useRouter(); 
 
   const toggleForm = () => {
     setIsLogin(!isLogin);
@@ -37,30 +39,28 @@ export function AuthForm() {
       if (isLogin) {
         const response = await loginAPI(formData.email, formData.password);
         console.log("Login successful:", response);
-        // Handle successful login (e.g., redirect or show success message)
+        router.push('/'); // Navigate to the homepage on successful login
       } else {
         const response = await signupAPI(formData.name, formData.email, formData.password);
         console.log("Signup successful:", response);
-        // Handle successful signup (e.g., redirect or show success message)
+        toggleForm();
       }
     } catch (err) {
-      setError(err.message);
+      setError(err.message || 'An error occurred. Please try again.'); // Set error message
     } finally {
       setLoading(false);
     }
   };
-
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 bg-white container mx-auto h-[70vh] rounded shadow">
-      <div className="overflow-hidden  md:aspect-auto aspect-video md:flex  items-center justify-center bg-gray-200">
+    <div className="flex bg-white container mx-auto h-[70vh]">
+      <div className="hidden md:flex flex-1 items-center justify-center bg-gray-200">
         <img
           src="/dark-blue-house-exterior-2.png"
           alt="Auth illustration"
-
           className="object-cover w-full h-full"
         />
       </div>
-      <div className="flex items-center justify-center p-4 ">
+      <div className="flex-1 flex items-center justify-center p-4">
         <div className="w-full max-w-md border-none">
           <CardHeader>
             <CardTitle className="text-2xl font-bold">{isLogin ? "Login" : "Sign Up"}</CardTitle>
@@ -103,7 +103,7 @@ export function AuthForm() {
                 />
               </div>
               {error && <p className="text-red-500 text-sm">{error}</p>}
-              <Button variant="link" className="text-gray-500 w-full" onClick={toggleForm} >
+              <Button variant="link" type="button" className="text-gray-500 w-full" onClick={toggleForm}>
                 {isLogin ? "Don't have an account? Sign Up" : "Already have an account? Login"}
               </Button>
               <Button type="submit" variant="blue" className="w-full" disabled={loading}>
@@ -113,7 +113,7 @@ export function AuthForm() {
           </CardContent>
         </div>
       </div>
-
     </div>
   );
 }
+

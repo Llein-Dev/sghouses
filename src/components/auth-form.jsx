@@ -1,56 +1,12 @@
-"use client";
 
-import { useState } from "react";
-import Image from "next/image";
+
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { loginAPI, signupAPI } from "@/utils/api/Auth/api";
-import { useRouter } from "next/navigation";
 
-export function AuthForm() {
-  const [isLogin, setIsLogin] = useState(true);
-  const [formData, setFormData] = useState({ name: '', email: '', password: '' });
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const router = useRouter(); 
 
-  const toggleForm = () => {
-    setIsLogin(!isLogin);
-    setFormData({ name: '', email: '', password: '' });
-    setError(null);
-  };
-
-  const handleChange = (e) => {
-    const { id, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [id]: value,
-    }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError(null);
-
-    try {
-      if (isLogin) {
-        const response = await loginAPI(formData.email, formData.password);
-        console.log("Login successful:", response);
-        router.push('/'); // Navigate to the homepage on successful login
-      } else {
-        const response = await signupAPI(formData.name, formData.email, formData.password);
-        console.log("Signup successful:", response);
-        toggleForm();
-      }
-    } catch (err) {
-      setError(err.message || 'An error occurred. Please try again.'); // Set error message
-    } finally {
-      setLoading(false);
-    }
-  };
+export function AuthForm({ isLogin, formData, error, loading, toggleForm, handleChange, handleSubmit }) {
   return (
     <div className="flex bg-white container mx-auto h-[70vh]">
       <div className="hidden md:flex flex-1 items-center justify-center bg-gray-200">

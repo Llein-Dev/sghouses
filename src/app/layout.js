@@ -14,7 +14,7 @@ export default function RootLayout({ children }) {
         <meta name="keywords" content="SGHouses, thuê nhà, thuê phòng trọ, nhà trọ Việt Nam, phòng trọ, thuê nhà giá rẻ, thuê phòng trọ Sài Gòn, tìm nhà trọ" />
         <meta name="author" content="SGHouses Team" />
         <title>SGHouses - Tìm Nhà Trọ Hồ Chí Minh</title>
-       
+
         {/* Fonts */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />

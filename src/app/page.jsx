@@ -1,4 +1,4 @@
-
+"use client"
 import { BlogCard } from "@/components/blog-card";
 import { CarouselComponent } from "@/components/carousel";
 import VerticalCategory from "@/components/category-card";
@@ -7,14 +7,11 @@ import { ProductCardColComponent } from "@/components/product-card";
 import { SearchBarComponent } from "@/components/search-bar";
 import { Button } from "@/components/ui/button";
 import UserGuidance from "@/components/userguide";
-import { blogs, categories, images, keywords, products, steps } from "@/utils/data";
+import { blogs, images, keywords, products, steps } from "@/utils/data";
 import { ArrowRight } from "lucide-react";
-
-
+import { useFetchCategories } from '../utils/api/GET/api'; // Import custom hook
 export default function Home() {
-
-
-
+  const { categories, loading, error } = useFetchCategories(); // Sử dụng custom hook
   return (
     <>
       <div className="space-y-24 pb-24">
@@ -26,11 +23,9 @@ export default function Home() {
         {/* Categories */}
         <div className="px-4 space-y-8">
           <h2 className="text-center font-bold text-2xl uppercase text-[#00008B]">Khu vực <span className="text-[#FF5C00]">nổi bật</span></h2>
-          <div className="grid grid-cols-2 md:grid-cols-6 container mx-auto justify-center gap-6 mb-12">
-            {categories.map((category, index) => (
-              <VerticalCategory key={index} {...category} />
-            ))}
-          </div>
+          {loading && <p>Loading categories...</p>} {/* Hiển thị loading nếu đang fetch */}
+                {error && <p className="text-red-500">{error}</p>} {/* Hiển thị lỗi nếu có */}
+          <VerticalCategory categories={categories} />
         </div>
 
         {/* Products */}

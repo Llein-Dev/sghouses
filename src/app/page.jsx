@@ -19,11 +19,10 @@ export default function Home() {
           <CarouselComponent images={images} autoPlayInterval={5000} />
           <SearchBarComponent />
         </div>
-
         {/* Categories */}
         <div className="px-4 space-y-8">
           <h2 className="text-center font-bold text-2xl uppercase text-[#00008B]">Khu vực <span className="text-[#FF5C00]">nổi bật</span></h2>
-          {loading && <p>Loading categories...</p>} {/* Hiển thị loading nếu đang fetch */}
+          {loading && <p className="text-center">Loading categories...</p>} {/* Hiển thị loading nếu đang fetch */}
                 {error && <p className="text-red-500">{error}</p>} {/* Hiển thị lỗi nếu có */}
           <VerticalCategory categories={categories} />
         </div>

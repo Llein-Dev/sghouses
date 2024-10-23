@@ -1,5 +1,5 @@
-
 import { useState, useEffect } from 'react';
+
 
 // -------------------- Fetch Categories
 export const useFetchCategories = () => {
@@ -30,7 +30,6 @@ export const useFetchCategories = () => {
 };
 
 
-//----------------Fetch Featured House (tòa nhà nổi bật) 
 export const useFetchFeaturedHouse = () => {
     const [featuredHouse, setFeaturedHouse] = useState([]);
     const [error, setError] = useState(null);
@@ -44,12 +43,11 @@ export const useFetchFeaturedHouse = () => {
                     throw new Error('Lỗi khi fetch dữ liệu tòa nhà nổi bật');
                 }
                 const data = await response.json();
-                // Cập nhật state với dữ liệu từ thuộc tính 'data'
-                setFeaturedHouse(data.data); 
+                setFeaturedHouse(data.data); // Cập nhật state với dữ liệu từ thuộc tính 'data'
             } catch (error) {
-                setError(error.message);
+                setError(error.message); // Set error nếu có lỗi
             } finally {
-                setLoading(false);
+                setLoading(false); // Đặt loading thành false khi hoàn thành
             }
         };
 
@@ -58,6 +56,8 @@ export const useFetchFeaturedHouse = () => {
 
     return { featuredHouse, loading, error };
 };
+
+
 
 // ------------- Fetch Cheap House (tòa nhà giá rẻ)
 export const useFetchCheapHouse = () => {
@@ -70,15 +70,14 @@ export const useFetchCheapHouse = () => {
             try {
                 const response = await fetch('http://localhost:8000/api/toa-nha/listView');
                 if (!response.ok) {
-                    throw new Error('Lỗi khi fetch dữ liệu tòa nhà nổi bật');
+                    throw new Error('Lỗi khi fetch dữ liệu tòa nhà giá rẻ');
                 }
                 const data = await response.json();
-                // Cập nhật state với dữ liệu từ thuộc tính 'data'
-                setCheapHouse(data.data); 
+                setCheapHouse(data.data); // Cập nhật state với dữ liệu từ thuộc tính 'data'
             } catch (error) {
-                setError(error.message);
+                setError(error.message); // Set error nếu có lỗi
             } finally {
-                setLoading(false);
+                setLoading(false); // Đặt loading thành false khi hoàn thành
             }
         };
 

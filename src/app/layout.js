@@ -1,11 +1,17 @@
-// "use client"
+"use client";
 import { HeaderComponent } from "@/components/header";
 import "./globals.css";
 import { FooterComponent } from "@/components/footer";
 import { Provider } from "react-redux";
 import store from "@/redux/store";
+import { usePathname } from "next/navigation";
+import AdminDashboardComponent from "./admin/layout";
 
 export default function RootLayout({ children }) {
+  const pathname = usePathname(); // Get the current pathname
+
+  const isAdminRoute = pathname.startsWith('/admin'); // Check if the current route is for admin
+
   return (
     <html lang="en">
       <head>
@@ -35,11 +41,18 @@ export default function RootLayout({ children }) {
 
       </head>
       <body className="antialiased montserrat-header">
-        {/* <Provider store={store}> */}
-        <HeaderComponent />
-        <div className="mt-[72px] bg-gray-100">{children}</div>
-        <FooterComponent />
-        {/* </Provider> */}
+        <Provider store={store}>
+          {/* Use AdminLayout for /admin routes, else use default layout */}
+          {isAdminRoute ? (
+            <>{children}</>
+          ) : (
+            <>
+              <HeaderComponent />
+              <div className="mt-[72px] bg-gray-100">{children}</div>
+              <FooterComponent />
+            </>
+          )}
+        </Provider>
       </body>
     </html>
   );

@@ -29,25 +29,38 @@ export default function LoginPage() {
     }));
   };
 
+  // Xử lý khi submit form
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError(null);
-
+    setError(null);  // Reset lại lỗi trước khi gửi request
+  
     try {
+      let response;
       if (isLogin) {
-        const response = await loginAPI(formData.email, formData.password);
-        console.log("Login successful:", response);
-        router.push('/'); // Navigate to the homepage on successful login
+        response = await loginAPI(formData.email, formData.password);
+        console.log("Login response:", response);
       } else {
-        const response = await signupAPI(formData.name, formData.email, formData.password);
-        console.log("Signup successful:", response);
-        toggleForm();
+        response = await signupAPI(formData.name, formData.email, formData.password);
+        console.log("Signup response:", response);
+      }
+
+      // Kiểm tra nếu có lỗi từ API
+      if (!response.success) {
+        setError(response.message);
+      } else {
+        if (isLogin) {
+          // Điều hướng tới trang chủ sau khi đăng nhập thành công
+          router.push('/');
+        } else {
+          // Chuyển về form đăng nhập sau khi đăng ký thành công
+          toggleForm();
+        }
       }
     } catch (err) {
-      setError(err.message || 'An error occurred. Please try again.'); // Set error message
+      setError( err.message ||' Email này chưa được đăng ký');
     } finally {
-      setLoading(false);
+      setLoading(false);  // Tắt loading sau khi hoàn thành
     }
   };
   return (

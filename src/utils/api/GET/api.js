@@ -1,6 +1,7 @@
 
 import { useState, useEffect } from 'react';
 
+// -------------------- Fetch Categories
 export const useFetchCategories = () => {
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -28,3 +29,61 @@ export const useFetchCategories = () => {
     return { categories, loading, error }; // Trả về categories, loading, error
 };
 
+
+//----------------Fetch Featured House (tòa nhà nổi bật) 
+export const useFetchFeaturedHouse = () => {
+    const [featuredHouse, setFeaturedHouse] = useState([]);
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchFeaturedHouse = async () => {
+            try {
+                const response = await fetch('http://localhost:8000/api/toa-nha/listHot');
+                if (!response.ok) {
+                    throw new Error('Lỗi khi fetch dữ liệu tòa nhà nổi bật');
+                }
+                const data = await response.json();
+                // Cập nhật state với dữ liệu từ thuộc tính 'data'
+                setFeaturedHouse(data.data); 
+            } catch (error) {
+                setError(error.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchFeaturedHouse();
+    }, []);
+
+    return { featuredHouse, loading, error };
+};
+
+// ------------- Fetch Cheap House (tòa nhà giá rẻ)
+export const useFetchCheapHouse = () => {
+    const [CheapHouse, setCheapHouse] = useState([]);
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchCheapHouse = async () => {
+            try {
+                const response = await fetch('http://localhost:8000/api/toa-nha/listView');
+                if (!response.ok) {
+                    throw new Error('Lỗi khi fetch dữ liệu tòa nhà nổi bật');
+                }
+                const data = await response.json();
+                // Cập nhật state với dữ liệu từ thuộc tính 'data'
+                setCheapHouse(data.data); 
+            } catch (error) {
+                setError(error.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchCheapHouse();
+    }, []);
+
+    return { CheapHouse, loading, error };
+};

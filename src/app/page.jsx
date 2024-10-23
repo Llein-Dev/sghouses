@@ -9,9 +9,12 @@ import { Button } from "@/components/ui/button";
 import UserGuidance from "@/components/userguide";
 import { blogs, images, keywords, products, steps } from "@/utils/data";
 import { ArrowRight } from "lucide-react";
-import { useFetchCategories } from '../utils/api/GET/api'; // Import custom hook
+import { useFetchCategories, useFetchCheapHouse, useFetchFeaturedHouse } from '../utils/api/GET/api'; // Import custom hook
+import { ProductCardColCheapComponent } from "@/components/product-card-cheap";
 export default function Home() {
-  const { categories, loading, error } = useFetchCategories(); // Sử dụng custom hook
+  const { categories, loading: categoriesLoading, error: categoriesError } = useFetchCategories(); // Sử dụng custom hook
+  const { featuredHouse , loading: featuredLoading, error: featuredError } = useFetchFeaturedHouse()
+  const { CheapHouse , loading: CheapLoading, error: CheapError } = useFetchCheapHouse()
   return (
     <>
       <div className="space-y-24 pb-24">
@@ -23,22 +26,21 @@ export default function Home() {
         {/* Categories */}
         <div className="px-4 space-y-8">
           <h2 className="text-center font-bold text-2xl uppercase text-[#00008B]">Khu vực <span className="text-[#FF5C00]">nổi bật</span></h2>
-          {loading && <p>Loading categories...</p>} {/* Hiển thị loading nếu đang fetch */}
-                {error && <p className="text-red-500">{error}</p>} {/* Hiển thị lỗi nếu có */}
+          {categoriesLoading && <p className="text-center">Loading categories...</p>} {/* Hiển thị loading nếu đang fetch */}
+          {categoriesError && <p className="text-red-500">{error}</p>} {/* Hiển thị lỗi nếu có */}
           <VerticalCategory categories={categories} />
         </div>
 
-        {/* Products */}
+        {/* Featured Products */}
         <div className="px-4 space-y-8 flex flex-col justify-center items-center container mx-auto">
           <h2 className="text-start w-full font-bold text-2xl text-[#00008B]">Phòng trọ <span className="text-[#FF5C00]">nổi bật</span></h2>
+          {featuredLoading && <p className="text-center">Loading Featured House...</p>}
+          {featuredError && <p className="text-red-500">{featuredError}</p>}
           <div className="grid grid-cols-2 md:grid-cols-4 w-full gap-6 mb-12">
-            {products.map((product, index) => (
-              <ProductCardColComponent key={index} {...product} />
-            ))}
+          <ProductCardColComponent productsHouseFeatured={featuredHouse} />
           </div>
           <Button className="w-36" variant="blue">Xem chi tiết <ArrowRight /></Button>
         </div>
-
         {/* background blue */}
         <div className="px-4 w-full bg-gradient-to-r from-[#00008B] to-[#4169E1]  container mx-auto py-12 px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
@@ -54,10 +56,10 @@ export default function Home() {
         {/* Products */}
         <div className="px-4 space-y-8 flex flex-col justify-center items-center container mx-auto">
           <h2 className="text-start w-full font-bold text-2xl text-[#00008B]">Phòng trọ <span className="text-[#FF5C00]">nổi bật</span></h2>
+          {CheapLoading && <p className="text-center">Loading Featured House...</p>}
+          {CheapError && <p className="text-red-500">{CheapError}</p>}
           <div className="grid grid-cols-2 md:grid-cols-4 w-full gap-6 mb-12">
-            {products.map((product, index) => (
-              <ProductCardColComponent key={index} {...product} />
-            ))}
+          <ProductCardColCheapComponent productsHouseCheap={CheapHouse} />
           </div>
           <Button className="w-36" variant="blue">Xem chi tiết <ArrowRight /></Button>
         </div>

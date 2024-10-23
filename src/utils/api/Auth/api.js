@@ -14,7 +14,7 @@ export const loginAPI = async (email, password) => {
         Cookies.set('token', response.data.token, { expires: 7 }); // Token will expire in 7 days
         return response.data; // Return the response data (optional)
     } catch (error) {
-        throw error.response?.data?.message || 'Login failed. Please try again.';
+        throw error.message;
     }
 };
 
@@ -30,7 +30,7 @@ export const signupAPI = async (name, email, password) => {
     } catch (error) {
         // Log detailed error information
         console.error('Signup error:', error.response);
-        throw error.response?.data?.message || 'Signup failed. Please try again.';
+        throw error.message ;
     }
 };
     
@@ -47,6 +47,6 @@ export const profileAPI = async () => {
         });
         return response.data; // Return the response data
     } catch (error) {
-        throw error.response?.data?.message || 'Failed to fetch profile. Please try again.';
+        throw error.message ;
     }
 };

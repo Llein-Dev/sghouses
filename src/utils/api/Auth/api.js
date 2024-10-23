@@ -30,7 +30,8 @@ export const signupAPI = async (name, email, password) => {
     } catch (error) {
         // Log detailed error information
         console.error('Signup error:', error.response);
-        throw error.message ;
+
+        throw error.response?.data?.message;
     }
 };
     
@@ -47,6 +48,8 @@ export const profileAPI = async () => {
         });
         return response.data; // Return the response data
     } catch (error) {
-        throw error.message ;
+
+        throw error.response?.data?.message ;
+
     }
 };

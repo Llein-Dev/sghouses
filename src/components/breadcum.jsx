@@ -6,11 +6,14 @@ import { usePathname } from 'next/navigation';
 // Map đường dẫn với label đẹp hơn
 const pathNameMap = {
     products: 'Products',
-    details: 'Product Details',
     dashboard: 'Dashboard',
     filter: 'Lọc Sản phẩm',
     login: 'Tài khoản',
-    home: "Trang chủ"
+    home: "Trang chủ",
+    blog: "Nhật ký trọ",
+    detail:"Trang chi tiết",
+    about:"Giới thiệu",
+    contact:"Liên hệ",
 };
 
 const Breadcrumb = () => {
@@ -34,7 +37,7 @@ const Breadcrumb = () => {
                     </li>
                     {pathArray.length > 0 && (
                         <li>
-                            <ChevronRight className="h-4 w-4 text-muted-foreground" />
+                            <ChevronRight className="h-4 w-4 text-blue-800 " />
                         </li>
                     )}
                     {pathArray.map((path, index) => {
@@ -45,13 +48,13 @@ const Breadcrumb = () => {
                             <li key={href} className="flex items-center">
                                 {!isLast ? (
                                     <>
-                                        <Link href={href} className="text-primary hover:text-primary-foreground transition-colors">
+                                        <Link href={href} className=" text-blue-500 hover:text-blue-400 transition-colors">
                                             {getBreadcrumbName(path)}
                                         </Link>
-                                        <ChevronRight className="h-4 w-4 text-muted-foreground mx-2" />
+                                        <ChevronRight className="h-4 w-4 text-blue-800  mx-2" />
                                     </>
                                 ) : (
-                                    <span className="text-muted-foreground" aria-current="page">
+                                    <span className="text-muted-foreground" aria-current="page">    
                                         {getBreadcrumbName(path)}
                                     </span>
                                 )}

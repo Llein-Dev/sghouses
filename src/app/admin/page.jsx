@@ -115,7 +115,7 @@ export default function Home() {
       </div>
 
       {/* Charts */}
-      <div className="mt-4 hidden md:grid grid-cols-1 gap-4 md:grid-cols-2 ">
+      <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2 ">
         <Card>
           <CardHeader>
             <CardTitle>Deployments</CardTitle>
@@ -128,7 +128,7 @@ export default function Home() {
                   color: "hsl(var(--chart-1))",
                 },
               }}
-              className="h-[300px]">
+              className="h-full">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={deploymentData}>
                   <CartesianGrid strokeDasharray="3 3" />
@@ -153,7 +153,7 @@ export default function Home() {
                   color: "hsl(var(--chart-2))",
                 },
               }}
-              className="h-[300px]">
+              className="h-full">
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={usageData}>
                   <CartesianGrid strokeDasharray="3 3" />

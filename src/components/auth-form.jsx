@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 
 export function AuthForm({ isLogin, formData, error, loading, toggleForm, handleChange, handleSubmit }) {
   return (
-    <div className="flex bg-white container mx-auto h-[70vh]">
+    <div className="flex bg-white container mx-auto h-[80vh]">
       <div className="hidden md:flex flex-1 items-center justify-center bg-gray-200">
         <img
           src="/dark-blue-house-exterior-2.png"

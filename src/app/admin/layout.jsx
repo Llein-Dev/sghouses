@@ -27,40 +27,40 @@ export default function RootLayout({ children }) {
     return (
         (<div className="flex  bg-gray-100">
             {/* Sidebar */}
-            <aside className="w-64 bg-white shadow-md w-16 md:w-64">
-                <div className="p-4 md:block hidden">
+            <aside className="w-64 bg-white shadow-m w-12 md:w-64">
+                <div className="p-5 md:block hidden">
                     <h1 className="text-2xl font-bold">SGHouses</h1>
                 </div>
-                <nav className="mt-4 space-y-2">
+                <nav className="space-y-2 text-sm font-semibold">
                     <Link
                         href="#"
                         onClick={() => setActiveTab('dashboard')}
-                        className={`flex items-center px-4 py-3 text-gray-700 ${activeTab === 'dashboard' ? 'bg-gray-200' : ''}`}>
-                        <LayoutDashboard className="md:mr-2 m-0 " />
+                        className={`flex items-center space-x-0 lg:space-x-3 px-4 py-3 text-gray-700 ${activeTab === 'dashboard' ? 'bg-gray-200' : ''}`}>
+                        <LayoutDashboard className='' />
                         <span className="hidden md:block">Dashboard</span> {/* Hide on mobile */}
                     </Link>
                     <Link
                         href="#"
                         onClick={() => setActiveTab('projects')}
-                        className={`flex items-center px-4 py-3 text-gray-700 ${activeTab === 'projects' ? 'bg-gray-200' : ''}`}>
-                        <Home className="md:mr-2 m-0 " />
+                        className={`flex items-center space-x-0 lg:space-x-3 px-4 py-3 text-gray-700 ${activeTab === 'projects' ? 'bg-gray-200' : ''}`}>
+                        <Home className='' />
                         <span className="hidden md:block">Projects</span> {/* Hide on mobile */}
                     </Link>
                     <Link
                         href="#"
                         onClick={() => setActiveTab('users')}
-                        className={`flex items-center px-4 py-3 text-gray-700 ${activeTab === 'users' ? 'bg-gray-200' : ''}`}>
-                        <Users className="md:mr-2 m-0 " />
+                        className={`flex items-center space-x-0 lg:space-x-3 px-4 py-3 text-gray-700 ${activeTab === 'users' ? 'bg-gray-200' : ''}`}>
+                        <Users className='' />
                         <span className="hidden md:block">Users</span> {/* Hide on mobile */}
                     </Link>
                     <Link
                         href="#"
                         onClick={() => setActiveTab('settings')}
-                        className={`flex items-center px-4 py-3 text-gray-700 ${activeTab === 'settings' ? 'bg-gray-200' : ''}`}>
-                        <Settings className="md:mr-2 m-0 " />
+                        className={`flex items-center space-x-0 lg:space-x-3 px-4 py-3 text-gray-700 ${activeTab === 'settings' ? 'bg-gray-200' : ''}`}>
+                        <Settings className='' />
                         <span className="hidden md:block">Settings</span> {/* Hide on mobile */}
                     </Link>
-                </nav>F
+                </nav>
             </aside>
 
             {/* Main content */}
@@ -97,7 +97,7 @@ export default function RootLayout({ children }) {
                 <div className="p-4">
                     {children}
                     {/* Overview Cards */}
-                    
+
                 </div>
             </main>
         </div>)

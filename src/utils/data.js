@@ -152,3 +152,41 @@ export const recommendedNews = [
     { id: '7', title: 'Khu vực nào hợp lý nhất?', date: '2024-10-10' },
     { id: '8', title: 'Thị trường nhà khu công nghiệp', date: '2024-10-09' },
 ]
+export const faqData = [
+    {
+        question: "Làm thế nào để tạo văn bản mới?",
+        answer: "Để tạo văn bản mới, truy cập vào trang tạo văn bản, chọn loại văn bản và phòng ban, sau đó điền các thông tin cần thiết và lưu lại."
+    },
+    {
+        question: "Làm cách nào để kiểm tra sự tồn tại của văn bản?",
+        answer: "Bạn có thể kiểm tra sự tồn tại của văn bản bằng cách tìm kiếm theo loại văn bản và mã phòng ban trong hệ thống quản lý văn bản."
+    },
+    {
+        question: "Làm thế nào để chỉnh sửa văn bản đã tạo?",
+        answer: "Để chỉnh sửa văn bản, tìm văn bản cần chỉnh sửa trong danh sách văn bản, nhấp vào nút 'Chỉnh sửa', thực hiện thay đổi và lưu lại."
+    },
+    {
+        question: "Làm thế nào để xóa văn bản?",
+        answer: "Để xóa văn bản, tìm văn bản cần xóa trong danh sách văn bản, nhấp vào nút 'Xóa' và xác nhận hành động của bạn."
+    },
+    {
+        question: "Làm thế nào để tạo tài khoản?",
+        answer: "Để tạo tài khoản, nhấp vào nút 'Đăng ký' ở góc trên bên phải của trang chủ. Điền thông tin cần thiết và làm theo hướng dẫn trên màn hình."
+    },
+    {
+        question: "Làm cách nào để đặt lại mật khẩu?",
+        answer: "Trên trang đăng nhập, nhấp vào liên kết 'Quên mật khẩu'. Nhập địa chỉ email của bạn và chúng tôi sẽ gửi cho bạn hướng dẫn đặt lại mật khẩu."
+    },
+    {
+        question: "Làm thế nào để liên hệ với bộ phận hỗ trợ?",
+        answer: "Bạn có thể liên hệ với bộ phận hỗ trợ của chúng tôi bằng cách gửi email đến support@example.com hoặc sử dụng biểu mẫu liên hệ trên trang web của chúng tôi."
+    },
+    {
+        question: "Các phương thức thanh toán được chấp nhận là gì?",
+        answer: "Chúng tôi chấp nhận các phương thức thanh toán sau: Visa, MasterCard, American Express, và PayPal."
+    },
+    {
+        question: "Chính sách hoàn trả của bạn là gì?",
+        answer: "Chúng tôi cung cấp chính sách hoàn trả trong vòng 30 ngày cho hầu hết các sản phẩm. Vui lòng xem trang Chính sách Hoàn trả của chúng tôi để biết thêm chi tiết."
+    }
+];

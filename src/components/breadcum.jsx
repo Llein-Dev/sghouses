@@ -14,6 +14,7 @@ const pathNameMap = {
     detail:"Trang chi tiết",
     about:"Giới thiệu",
     contact:"Liên hệ",
+    support:"Hỗ trợ",
 };
 
 const Breadcrumb = () => {

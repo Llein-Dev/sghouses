@@ -12,7 +12,7 @@ function NewsCard({ id, title, excerpt, image, date }) {
             <div className="w-full aspect-video overflow-hidden">
                 <img src={image} alt={title} className="object-cover w-full h-full" />
             </div>
-            <CardHeader>
+            <CardHeader >
                 <CardTitle className="text-lg">{title}</CardTitle>
             </CardHeader>
             <CardContent className="flex-grow">
@@ -38,7 +38,7 @@ function NewsCardRow({ id, title, excerpt, image, date }) {
                     <CardTitle className="text-lg">{title}</CardTitle>
                 </CardHeader>
                 <CardContent className="flex-grow">
-                    <p className="text-sm text-muted-foreground">{excerpt}</p>
+                    <p className="text-sm text-muted-foreground line-clamp-3">{excerpt}</p>
                 </CardContent>
                 <CardFooter className="flex justify-between items-center">
                     <span className="text-xs text-muted-foreground">{date}</span>
@@ -68,10 +68,10 @@ export default function NewsHomepage() {
                     </div>
                 </div>
             </section>
-            <section className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <section className="grid grid-cols-1 md:grid-cols-5 gap-4">
 
                 {/* Large News */}
-                <Card className="md:col-span-2 space-y-2 h-full flex flex-col overflow-hidden">
+                <Card className="md:col-span-3 space-y-2 h-full flex flex-col overflow-hidden">
                     <div className="relative aspect-video overflow-hidden">
                         <img src={featuredNews.image} alt={featuredNews.title} fill className="object-cover w-full" />
                     </div>
@@ -90,7 +90,7 @@ export default function NewsHomepage() {
                 </Card>
 
                 {/* Side news */}
-                <div className="space-y-4 h-full flex flex-col">
+                <div className="space-y-4 md:col-span-2  h-full flex flex-col">
                     {sideNews.map((news) => (
                         < NewsCardRow key={news.id} {...news} />
                     ))}

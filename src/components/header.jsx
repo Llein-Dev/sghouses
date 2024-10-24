@@ -70,16 +70,16 @@ export function HeaderComponent() {
 
   const NavItems = () => (
     <>
-      <Link href="/filter" className="text-foreground text-sm hover:text-primary transition-colors">
-        Danh Sách Nhà Trọ
+      <Link href="/filter" className="text-blue-900 font-medium text-sm  hover:text-blue-500 border-b-none hover:border-b border-blue-500 transition">
+        Nhà Trọ
       </Link>
-      <Link href="/blog" className="text-foreground text-sm hover:text-primary transition-colors">
+      <Link href="/blog" className="text-blue-900 font-medium text-sm  hover:text-blue-500 border-b-none hover:border-b border-blue-500 transition">
         Nhật Ký Trọ
       </Link>
-      <Link href="/about" className="text-foreground text-sm hover:text-primary transition-colors">
+      <Link href="/about" className="text-blue-900 font-medium text-sm  hover:text-blue-500 border-b-none hover:border-b border-blue-500 transition">
         Giới Thiệu
       </Link>
-      <Link href="/contact" className="text-foreground text-sm hover:text-primary transition-colors">
+      <Link href="/contact" className="text-blue-900 font-medium text-sm  hover:text-blue-500 border-b-none hover:border-b border-blue-500 transition">
         Liên Hệ
       </Link>
     </>
@@ -89,18 +89,19 @@ export function HeaderComponent() {
   return (
     (<header className="bg-background border-b fixed w-full top-0 z-40 px-4">
       <div className="container mx-auto px-4 py-3 flex items-center justify-between">
-        <div className="flex items-center">
+        <div className="flex items-center space-x-6">
           <Link href="/">
             <img
-              className="h-12 w-auto object-cover"
+              className="h-12 w-auto object-cover mr-8"
               src="/favicon.ico"
               alt="Logo"
             />
           </Link>
+          <NavItems />
         </div>
 
         <nav className="hidden md:flex items-center space-x-8">
-          <NavItems />
+
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" size="lg" className="relative p-3">

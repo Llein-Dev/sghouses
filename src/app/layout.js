@@ -5,11 +5,11 @@ import { FooterComponent } from "@/components/footer";
 import { Provider } from "react-redux";
 import store from "@/redux/store";
 import { usePathname } from "next/navigation";
-import AdminDashboardComponent from "./admin/layout";
+import MotionWrapper from "@/components/motionWrapper";
+
 
 export default function RootLayout({ children }) {
   const pathname = usePathname(); // Get the current pathname
-
   const isAdminRoute = pathname.startsWith('/admin'); // Check if the current route is for admin
 
   return (
@@ -48,12 +48,16 @@ export default function RootLayout({ children }) {
           ) : (
             <>
               <HeaderComponent />
-              <div className="mt-[72px] bg-gray-100">{children}</div>
+              <div className="mt-[72px] bg-gray-100">
+                <MotionWrapper animationType="fade" key={pathname}>
+                  {children}
+                </MotionWrapper>
+              </div>
               <FooterComponent />
             </>
           )}
         </Provider>
       </body>
-    </html>
+    </html >
   );
 }

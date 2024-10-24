@@ -54,7 +54,7 @@ export function ProductFilter() {
   }
 
   return (
-    (<Card className="w-full max-w-sm border-none shadow-md">
+    (<Card className="w-full max-w-sm border-none shadow-md py-5">
       <CardHeader>
         <CardTitle><div className=" justify-center text-[#00008B]  flex "><Filter className="mr-4" />Lọc kết quả nhanh</div></CardTitle>
       </CardHeader>

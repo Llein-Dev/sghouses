@@ -28,7 +28,10 @@ export default function Home() {
           <CarouselComponent images={images} autoPlayInterval={5000} />
           <SearchBarComponent />
         </div>
+
+        
         <WhyUs />
+
         {/* Categories */}
         <div className="px-4 space-y-8">
           {categoriesLoading && <p className="text-center"> <Spinner /> </p>} {/* Hiển thị loading nếu đang fetch */}

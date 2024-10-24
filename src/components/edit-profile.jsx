@@ -64,13 +64,6 @@ export function EditProfileComponent() {
     alert('Thông tin liên hệ đã được cập nhật!')
   }
 
-  const handlePreferencesSubmit = (e) => {
-    e.preventDefault()
-    // Handle preferences submission
-    console.log('Updated preferences:', preferences)
-    alert('Thông tin ưu tiên đã được cập nhật!')
-  }
-
   const handlePasswordSubmit = (e) => {
     e.preventDefault()
     // Handle password update submission
@@ -117,38 +110,54 @@ export function EditProfileComponent() {
           </CardHeader>
           <form onSubmit={handlePersonalSubmit} className="space-y-6">
             <CardContent className="space-y-6">
-              <div>
-                <Label htmlFor="fullName">Họ và tên</Label>
-                <Input
-                  id="fullName"
-                  name="fullName"
-                  value={personalInfo.fullName}
-                  onChange={handlePersonalChange} />
+              <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
+                <div>
+                  <Label htmlFor="fullName">Họ và tên<span className='text-red-500'>*</span></Label>
+                  <Input
+                    id="fullName"
+                    name="fullName"
+                    value={personalInfo.fullName}
+                    onChange={handlePersonalChange} />
+                </div>
+                <div>
+                  <Label htmlFor="joinDate">Tham gia từ</Label>
+                  <Input
+                    id="joinDate"
+                    name="joinDate"
+                    disabled
+                    value={personalInfo.joinDate}
+                    onChange={handlePersonalChange}
+                    aria-readonly="true"
+                  />
+                </div>
               </div>
-              <div>
-                <Label htmlFor="gender">Giới tính</Label>
-                <Select
-                  name="gender"
-                  value={personalInfo.gender}
-                  onValueChange={(value) => setPersonalInfo(prev => ({ ...prev, gender: value }))}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Chọn giới tính" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Nam">Nam</SelectItem>
-                    <SelectItem value="Nữ">Nữ</SelectItem>
-                    <SelectItem value="Khác">Khác</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <Label htmlFor="birthDate">Ngày sinh</Label>
-                <Input
-                  id="birthDate"
-                  name="birthDate"
-                  type="date"
-                  value={personalInfo.birthDate}
-                  onChange={handlePersonalChange} />
+
+              <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
+                <div>
+                  <Label htmlFor="gender">Giới tính</Label>
+                  <Select
+                    name="gender"
+                    value={personalInfo.gender}
+                    onValueChange={(value) => setPersonalInfo(prev => ({ ...prev, gender: value }))}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Chọn giới tính" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Nam">Nam</SelectItem>
+                      <SelectItem value="Nữ">Nữ</SelectItem>
+                      <SelectItem value="Khác">Khác</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label htmlFor="birthDate">Ngày sinh<span className='text-red-500'>*</span></Label>
+                  <Input
+                    id="birthDate"
+                    name="birthDate"
+                    type="date"
+                    value={personalInfo.birthDate}
+                    onChange={handlePersonalChange} />
+                </div>
               </div>
               <div>
                 <Label htmlFor="education">Trường học</Label>
@@ -158,14 +167,7 @@ export function EditProfileComponent() {
                   value={personalInfo.education}
                   onChange={handlePersonalChange} />
               </div>
-              <div>
-                <Label htmlFor="joinDate">Tham gia từ</Label>
-                <Input
-                  id="joinDate"
-                  name="joinDate"
-                  value={personalInfo.joinDate}
-                  onChange={handlePersonalChange} />
-              </div>
+
               <Button type="submit" className="w-full" variant="blue" >Cập nhật thông tin cá nhân</Button>
             </CardContent>
 
@@ -182,7 +184,7 @@ export function EditProfileComponent() {
           <form onSubmit={handleContactSubmit} className="space-y-6">
             <CardContent className="space-y-6">
               <div>
-                <Label htmlFor="phone">Số điện thoại</Label>
+                <Label htmlFor="phone">Số điện thoại<span className='text-red-500'>*</span></Label>
                 <Input id="phone" name="phone" value={contactInfo.phone} onChange={handleContactChange} />
               </div>
               <div>
@@ -195,7 +197,7 @@ export function EditProfileComponent() {
                   onChange={handleContactChange} />
               </div>
               <div>
-                <Label htmlFor="address">Địa chỉ</Label>
+                <Label htmlFor="address">Địa chỉ<span className='text-red-500'>*</span></Label>
                 <Textarea
                   id="address"
                   name="address"
@@ -216,7 +218,7 @@ export function EditProfileComponent() {
           <form onSubmit={handlePasswordSubmit} className="space-y-6">
             <CardContent className="space-y-6">
               <div>
-                <Label htmlFor="password">Mật khẩu cũ</Label>
+                <Label htmlFor="password">Mật khẩu cũ<span className='text-red-500'>*</span></Label>
                 <Input
                   id="password"
                   name="password"
@@ -225,7 +227,7 @@ export function EditProfileComponent() {
                   onChange={handlePasswordChange} />
               </div>
               <div>
-                <Label htmlFor="password">Mật khẩu mới</Label>
+                <Label htmlFor="password">Mật khẩu mới<span className='text-red-500'>*</span></Label>
                 <Input
                   id="password"
                   name="password"
@@ -234,7 +236,7 @@ export function EditProfileComponent() {
                   onChange={handlePasswordChange} />
               </div>
               <div>
-                <Label htmlFor="password">Xác nhận mật khẩu</Label>
+                <Label htmlFor="password">Xác nhận mật khẩu<span className='text-red-500'>*</span></Label>
                 <Input
                   id="password"
                   name="password"

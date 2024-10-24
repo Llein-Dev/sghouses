@@ -40,7 +40,7 @@ export function HeaderComponent() {
     router.push("/login"); // Example navigation
   };
   console.log(user);
-  
+
   const handleLogout = () => {
     Cookies.remove("token");
     handleLoginToggle();
@@ -70,20 +70,21 @@ export function HeaderComponent() {
 
   const NavItems = () => (
     <>
-      <Link href="/filter" className="text-foreground hover:text-primary transition-colors">
-        Tòa Nhà
+      <Link href="/filter" className="text-foreground text-sm hover:text-primary transition-colors">
+        Danh Sách Nhà Trọ
       </Link>
-      <Link href="/building" className="text-foreground hover:text-primary transition-colors">
-        Test Bulding
+      <Link href="/blog" className="text-foreground text-sm hover:text-primary transition-colors">
+        Nhật Ký Trọ
       </Link>
-      <Link href="/blog" className="text-foreground hover:text-primary transition-colors">
-        blog
+      <Link href="/about" className="text-foreground text-sm hover:text-primary transition-colors">
+        Giới Thiệu
       </Link>
-      <Link href="#" className="text-foreground hover:text-primary transition-colors">
-        Liên hệ
+      <Link href="/contact" className="text-foreground text-sm hover:text-primary transition-colors">
+        Liên Hệ
       </Link>
     </>
   );
+
 
   return (
     (<header className="bg-background border-b fixed w-full top-0 z-40 px-4">

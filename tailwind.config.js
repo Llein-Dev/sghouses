@@ -9,13 +9,15 @@ module.exports = {
 	theme: {
 
 		container: {
-			margin: {
-				DEFAULT: '1rem',
-				sm: '2rem',
-				lg: '4rem',
-				xl: '5rem',
-				'2xl': '6rem',
-			},
+			center: true,
+			padding: '1rem',  // padding giống với Bootstrap
+		},
+		screens: {
+			sm: '576px',  // giống container-sm của Bootstrap
+			md: '768px',  // giống container-md của Bootstrap
+			lg: '992px',  // giống container-lg của Bootstrap
+			xl: '1200px',  // giống container-xl của Bootstrap
+			'2xl': '1400px',  // cho những màn hình lớn hơn
 		},
 		extend: {
 			colors: {

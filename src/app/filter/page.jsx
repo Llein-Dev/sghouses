@@ -5,6 +5,7 @@ import { ProductFilter } from "@/components/product-filter";
 
 import Breadcrumb from "@/components/breadcum";
 import { products } from "@/utils/data";
+import { SearchBarComponent } from "@/components/search-bar";
 
 export default function ProductPage() {
 
@@ -12,6 +13,7 @@ export default function ProductPage() {
 
     return (
         <>
+        
             <div className="container mx-auto px-4 space-y-4 py-4">
                 <Breadcrumb />
                 <div className="flex flex-col-reverse md:flex-row gap-8">

@@ -12,7 +12,7 @@ export function FooterComponent() {
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
-            <img src="favicon.ico" className="mb-4"/>
+            <img src="logo.svg" className="mb-4 w-full"/>
 
             <p className="text-sm text-muted-foreground">
               Chúng tôi là công ty bất động sản hàng đầu, cung cấp dịch vụ chất lượng cao và đáng tin cậy cho khách hàng.

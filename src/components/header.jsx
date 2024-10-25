@@ -40,7 +40,7 @@ export function HeaderComponent() {
     router.push("/login"); // Example navigation
   };
   console.log(user);
-  
+
   const handleLogout = () => {
     Cookies.remove("token");
     handleLoginToggle();
@@ -70,36 +70,44 @@ export function HeaderComponent() {
 
   const NavItems = () => (
     <>
-      <Link href="/filter" className="text-foreground hover:text-primary transition-colors">
-        Tòa Nhà
+      <Link href="/filter" className="text-blue-900 font-medium text-sm  hover:text-blue-500 border-b-none hover:border-b border-blue-500 transition">
+        Nhà Trọ
       </Link>
-      <Link href="/building" className="text-foreground hover:text-primary transition-colors">
-        Test Bulding
+      <Link href="/blog" className="text-blue-900 font-medium text-sm  hover:text-blue-500 border-b-none hover:border-b border-blue-500 transition">
+        Nhật Ký Trọ
       </Link>
-      <Link href="/blog" className="text-foreground hover:text-primary transition-colors">
-        blog
+      <Link href="/about" className="text-blue-900 font-medium text-sm  hover:text-blue-500 border-b-none hover:border-b border-blue-500 transition">
+        Giới Thiệu
       </Link>
-      <Link href="#" className="text-foreground hover:text-primary transition-colors">
-        Liên hệ
+      <Link href="/contact" className="text-blue-900 font-medium text-sm  hover:text-blue-500 border-b-none hover:border-b border-blue-500 transition">
+        Liên Hệ
+      </Link>
+      <Link href="/support" className="text-blue-900 font-medium text-sm  hover:text-blue-500 border-b-none hover:border-b border-blue-500 transition">
+        Hỗ trợ
       </Link>
     </>
   );
 
+
   return (
     (<header className="bg-background border-b fixed w-full top-0 z-40 px-4">
       <div className="container mx-auto px-4 py-3 flex items-center justify-between">
-        <div className="flex items-center">
+        <div className="flex items-center space-x-8">
           <Link href="/">
             <img
-              className="h-12 w-auto object-cover"
+              className="h-12 w-auto object-cover mr-8"
               src="/favicon.ico"
               alt="Logo"
             />
           </Link>
+          <div className="hidden md:flex gap-8">
+            <NavItems />
+          </div>
+
         </div>
 
         <nav className="hidden md:flex items-center space-x-8">
-          <NavItems />
+
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" size="lg" className="relative p-3">
@@ -171,6 +179,7 @@ export function HeaderComponent() {
                 </div>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>Hồ sơ</DropdownMenuItem>
+                <DropdownMenuItem>Lịch sử</DropdownMenuItem>
                 <DropdownMenuItem>Cài đặt</DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={handleLogout}>

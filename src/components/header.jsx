@@ -100,7 +100,10 @@ export function HeaderComponent() {
               alt="Logo"
             />
           </Link>
-          <NavItems />
+          <div className="hidden md:flex gap-8">
+            <NavItems />
+          </div>
+
         </div>
 
         <nav className="hidden md:flex items-center space-x-8">
@@ -176,6 +179,7 @@ export function HeaderComponent() {
                 </div>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>Hồ sơ</DropdownMenuItem>
+                <DropdownMenuItem>Lịch sử</DropdownMenuItem>
                 <DropdownMenuItem>Cài đặt</DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={handleLogout}>

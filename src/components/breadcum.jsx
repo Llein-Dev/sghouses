@@ -11,10 +11,10 @@ const pathNameMap = {
     login: 'Tài khoản',
     home: "Trang chủ",
     blog: "Nhật ký trọ",
-    detail:"Trang chi tiết",
-    about:"Giới thiệu",
-    contact:"Liên hệ",
-    support:"Hỗ trợ",
+    detail: "Trang chi tiết",
+    about: "Giới thiệu",
+    contact: "Liên hệ",
+    support: "Hỗ trợ",
 };
 
 const Breadcrumb = () => {
@@ -28,7 +28,7 @@ const Breadcrumb = () => {
 
     return (
         <div className=' container mx-auto  text-sm'>
-            <nav aria-label="Breadcrumb" className="py-4 px-8 container mx-auto ">
+            <nav aria-label="Breadcrumb" className="py-4 px-2 md:px-8 container mx-auto ">
                 <ol className="flex items-center space-x-2">
                     <li>
                         <Link href="/" className="text-blue-500 hover:text-blue-400 transition-colors flex items-center">
@@ -55,7 +55,7 @@ const Breadcrumb = () => {
                                         <ChevronRight className="h-4 w-4 text-blue-800  mx-2" />
                                     </>
                                 ) : (
-                                    <span className="text-muted-foreground" aria-current="page">    
+                                    <span className="text-muted-foreground" aria-current="page">
                                         {getBreadcrumbName(path)}
                                     </span>
                                 )}

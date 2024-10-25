@@ -86,3 +86,37 @@ export const useFetchCheapHouse = () => {
 
     return { CheapHouse, loading, error };
 };
+
+
+// Custom hook để fetch dữ liệu chi tiết tòa nhà
+const useBuildingDetails = (slug) => {
+    const [building, setBuilding] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const fetchBuildingDetails = async () => {
+            try {
+                const response = await fetch(`http://localhost:8000/api/toa-nha/?slug=${slug}`);
+                if (!response.ok) {
+                    throw new Error("Failed to fetch building details");
+                }
+                const data = await response.json();
+                setBuilding(data);
+            } catch (err) {
+                setError(err);
+                console.error("Error fetching building data:", err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        if (slug) {
+            fetchBuildingDetails();
+        }
+    }, [slug]);
+
+    return { building, loading, error };
+};
+
+export default useBuildingDetails;

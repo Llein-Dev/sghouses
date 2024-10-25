@@ -19,9 +19,9 @@ export function ProductCardColCheapComponent({ productsHouseCheap }) {
           </div>
           <CardContent className="p-4">
             <p className="text-sm text-muted-foreground mb-2 flex items-center">
-              <MapPin className="w-4 h-4 mr-1" /> {houseCheap.name_area}
+              <MapPin className="w-4 h-4 mr-1" />Số phòng hiện có: {houseCheap.count_rooms}
             </p>
-            <h3 className="text-lg font-semibold mb-2">{houseCheap.name}</h3>
+           <Link href={`/building/${houseCheap.slug}`}><h3 className="text-lg font-semibold mb-2">{houseCheap.name}</h3></Link> 
             <div className="flex items-center"> 
               <p className="mr-2 text-primary mb-2">Giá từ</p> 
               <p className="text-lg text-red-500 text-primary mb-2">{houseCheap.gia_thue}</p>
@@ -33,7 +33,7 @@ export function ProductCardColCheapComponent({ productsHouseCheap }) {
           </CardContent>
           <CardFooter className="p-4 pt-0">
             <Link
-              href={`/CheapHouse/${houseCheap.id}`}
+              href={""}
               className="text-sm text-primary hover:underline flex items-center">
               <MapPin className="w-4 h-4 mr-1" /> Xem bản đồ
             </Link>

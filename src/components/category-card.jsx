@@ -17,9 +17,7 @@ export default function VerticalCategory({ categories }) {
                                 className="transition-transform duration-300 group-hover:scale-110"
                             />
                         </div>
-                        <h3 className="text-sm font-medium text-center pb-3 group-hover:text-primary transition-colors">
-                            {category.name}
-                        </h3>
+                  
                     </Link>
                 ))}
             </div>

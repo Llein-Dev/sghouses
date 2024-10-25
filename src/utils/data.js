@@ -65,24 +65,35 @@ export const products = [
 ]
 export const blogs = [
     {
-        image: "/dark-blue-house-exterior-2.png?height=100&width=100&text=Nhà+phố",
-        title: "Understanding React Hooks",
+        id: 1,
+        image: "/dark-blue-house-exterior-2.png",
+        title: "564 - Võ Nguyên Giáp",
         date: "2024-10-01",
         view: 150
     },
     {
-        image: "/dark-blue-house-exterior-2.png?height=100&width=100&text=Nhà+phố",
-        title: "JavaScript ES2024 Features",
+        id: 2,
+        image: "/dark-blue-house-exterior-2.png",
+        title: "16/7/3 Tôn Quyền",
         date: "2024-10-10",
         view: 200
     },
     {
-        image: "/dark-blue-house-exterior-2.png?height=100&width=100&text=Nhà+phố",
-        title: "Building a PDF Preview with React",
+        id: 3,
+        image: "/dark-blue-house-exterior-2.png",
+        title: "29/08 Hà Tôn Quyền",
+        date: "2024-10-15",
+        view: 75
+    },
+    {
+        id: 4,
+        image: "/dark-blue-house-exterior-2.png",
+        title: "57/15 Lê Quý Đôn",
         date: "2024-10-15",
         view: 75
     }
 ];
+
 
 export const keywords = [
     "Căn hộ cho thuê",

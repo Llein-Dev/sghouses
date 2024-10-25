@@ -1,12 +1,15 @@
+"use client"
 import Image from 'next/image'
 import Link from 'next/link'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { featuredNews, moreNews, recommendedNews, sideNews } from '@/utils/data';
 import Breadcrumb from '@/components/breadcum';
-
+import { useParams } from 'next/navigation';
+import { blogs } from '@/utils/data';
 
 
 function NewsCard({ id, title, excerpt, image, date }) {
+    
     return (
         <Card className="h-full flex  overflow-hidden flex-col">
             <div className="w-full aspect-video overflow-hidden">
@@ -52,6 +55,12 @@ function NewsCardRow({ id, title, excerpt, image, date }) {
 }
 
 export default function NewsHomepage() {
+    const { id } = useParams(); // Lấy id từ URL
+    const blogPost = blogs.find(blog => blog.id === parseInt(id)); // Tìm blog post dựa trên id
+
+    if (!blogPost) {
+        return <p>Bài viết không tồn tại.</p>;
+    }
     return (
         <div className="container mx-auto px-4 space-y-4 py-4">
             <Breadcrumb />
@@ -68,22 +77,23 @@ export default function NewsHomepage() {
                     </div>
                 </div>
             </section>
+
             <section className="grid grid-cols-1 md:grid-cols-5 gap-4">
 
                 {/* Large News */}
                 <Card className="md:col-span-3 space-y-2 h-full flex flex-col overflow-hidden">
                     <div className="relative aspect-video overflow-hidden">
-                        <img src={featuredNews.image} alt={featuredNews.title} fill className="object-cover w-full" />
+                        <img src={blogPost.image} alt={blogPost.title} fill className="object-cover w-full" />
                     </div>
                     <CardHeader>
-                        <CardTitle className="text-2xl">{featuredNews.title}</CardTitle>
+                        <CardTitle className="text-2xl">{blogPost.title}</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <p className="text-muted-foreground">{featuredNews.excerpt}</p>
+                        <p className="text-muted-foreground">Lượt xem: {blogPost.view}</p>
                     </CardContent>
                     <CardFooter className="flex justify-between items-center">
-                        <span className="text-sm text-muted-foreground">{featuredNews.date}</span>
-                        <Link href={`/news/${featuredNews.id}`} className="text-primary hover:underline">
+                        <span className="text-sm text-muted-foreground">Ngày Đăng: {blogPost.date}</span>
+                        <Link href={`/news/${blogPost.id}`} className="text-primary hover:underline">
                             Xem thêm
                         </Link>
                     </CardFooter>

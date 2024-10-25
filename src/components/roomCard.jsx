@@ -1,37 +1,21 @@
-import { useState } from "react"
-import { Heart, ChevronLeft, ChevronRight, Lightbulb, Droplet, Wifi, Trash } from "lucide-react"
+import { useState } from "react";
+import { Heart, ChevronLeft, ChevronRight, Lightbulb, Droplet, Wifi, Trash } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import {
-  Dialog,
-  DialogContent,
-  DialogTrigger,
-} from "@/components/ui/dialog"
-
-const images = [
-  "pexels-photo-106399.jpeg",
-  "pexels-photo-106399.jpeg",
-  "pexels-photo-106399.jpeg",
-  "pexels-photo-106399.jpeg",
-  "pexels-photo-106399.jpeg",
-  "pexels-photo-106399.jpeg",
-  "pexels-photo-106399.jpeg",
-  "pexels-photo-106399.jpeg",
-  "pexels-photo-106399.jpeg",
-]
-
-export default function RoomComponents() {
-  const [currentImageIndex, setCurrentImageIndex] = useState(0)
+export default function RoomComponents({ room }) {  // Nhận props room
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const images = Object.values(room.gallery);  // Lấy hình ảnh từ room.gallery
 
   const nextImage = () => {
-    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length)
-  }
+    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+  };
 
   const prevImage = () => {
-    setCurrentImageIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length)
-  }
+    setCurrentImageIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
+  };
 
   return (
     <Card className="w-full border-none shadow-md">
@@ -42,7 +26,7 @@ export default function RoomComponents() {
             <Dialog>
               <DialogTrigger asChild>
                 <img
-                  src={images[0]}
+                  src={images[0]}  // Hiển thị hình ảnh đầu tiên
                   alt="Room Image"
                   width={1600}
                   height={900}
@@ -82,25 +66,31 @@ export default function RoomComponents() {
           {/* Content Column */}
           <div className="w-full lg:w-1/3 flex flex-col justify-between">
             <div>
-              <h3 className="text-xl font-semibold mb-2">Mã phòng: R001</h3>
-              <p className="text-sm text-green-600 mb-2">Tình trạng: Còn trống</p>
-              <p className="text-2xl font-bold mb-2 text-[#FF5C00]">2,500,000 đ/tháng</p>
+              <h3 className="text-xl font-semibold mb-2"> {room.name}</h3> {/* Hiển thị mã phòng */}
+              <p className="text-sm text-green-600 mb-2">Tình trạng: {room.gac_lung ? "Có" : "Không"}</p>
+              <p className="text-2xl font-bold mb-2 text-[#FF5C00]">{room.price.toLocaleString()} đ/tháng</p>
               <Badge className="mb-4">Phòng cao cấp</Badge>
               <div className="space-y-4">
                 <div>
                   <h4 className="font-semibold mb-2">Nội thất:</h4>
                   <ul className="text-sm flex flex-wrap gap-x-4 gap-y-2">
-                    <li className="flex items-center"><span className="w-2 h-2 bg-primary rounded-full mr-2"></span>Giường đôi</li>
-                    <li className="flex items-center"><span className="w-2 h-2 bg-primary rounded-full mr-2"></span>Tủ quần áo</li>
-                    <li className="flex items-center"><span className="w-2 h-2 bg-primary rounded-full mr-2"></span>Bàn làm việc</li>
+                    {room.noi_that.split(",").map((item, idx) => (
+                      <li key={idx} className="flex items-center">
+                        <span className="w-2 h-2 bg-primary rounded-full mr-2"></span>
+                        {item}
+                      </li>
+                    ))}
                   </ul>
                 </div>
                 <div>
                   <h4 className="font-semibold mb-2">Tiện ích:</h4>
                   <ul className="text-sm flex flex-wrap gap-x-4 gap-y-2">
-                    <li className="flex items-center"><span className="w-2 h-2 bg-primary rounded-full mr-2"></span>Điều hòa</li>
-                    <li className="flex items-center"><span className="w-2 h-2 bg-primary rounded-full mr-2"></span>Wifi</li>
-                    <li className="flex items-center"><span className="w-2 h-2 bg-primary rounded-full mr-2"></span>Tủ lạnh</li>
+                    {room.tien_ich.split(",").map((item, idx) => (
+                      <li key={idx} className="flex items-center">
+                        <span className="w-2 h-2 bg-primary rounded-full mr-2"></span>
+                        {item}
+                      </li>
+                    ))}
                   </ul>
                 </div>
               </div>
@@ -111,7 +101,7 @@ export default function RoomComponents() {
           <div className="w-full lg:w-1/3 flex flex-col justify-between">
             <div className="flex flex-col h-full">
               <div className="flex-grow">
-                <h3 className="text-xl  font-semibold mb-4">Phí dịch vụ:</h3>
+                <h3 className="text-xl font-semibold mb-4">Phí dịch vụ:</h3>
                 <ul className="list-none space-y-4">
                   <li className="flex justify-between items-center pb-2">
                     <span className="flex items-center"><Lightbulb className="h-4 w-4 mr-2" />Điện:</span>
@@ -143,5 +133,5 @@ export default function RoomComponents() {
         </div>
       </CardContent>
     </Card>
-  )
+  );
 }

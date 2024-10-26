@@ -87,6 +87,62 @@ export const useFetchCheapHouse = () => {
     return { CheapHouse, loading, error };
 };
 
+// -------------- Fetch House nhiều lượt xem nhất
+export const useFetchViewHouse = () => {
+    const [ViewHouse, setViewHouse] = useState([]);
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchViewHouse = async () => {
+            try {
+                const response = await fetch('http://localhost:8000/api/toa-nha/listCheap');
+                if (!response.ok) {
+                    throw new Error('Lỗi khi fetch dữ liệu tòa nhà giá rẻ');
+                }
+                const data = await response.json();
+                setViewHouse(data.data); // Cập nhật state với dữ liệu từ thuộc tính 'data'
+            } catch (error) {
+                setError(error.message); // Set error nếu có lỗi
+            } finally {
+                setLoading(false); // Đặt loading thành false khi hoàn thành
+            }
+        };
+
+        fetchViewHouse();
+    }, []);
+
+    return { ViewHouse, loading, error };
+};
+
+
+export const useFetchBlogHouse = () => {
+    const [BlogHouse, setBlogHouse] = useState([]);
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchBlogHouse = async () => {
+            try {
+                const response = await fetch("http://localhost:8000/api/blog/all");
+                if (!response.ok) {
+                    throw new Error("Lỗi khi fetch dữ liệu blog.");
+                }
+                const data = await response.json();
+                setBlogHouse(Array.isArray(data) ? data : []); // Đảm bảo BlogHouse luôn là mảng
+            } catch (error) {
+                setError(error.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchBlogHouse();
+    }, []);
+
+    return { BlogHouse, loading, error };
+};
+
 
 // Custom hook để fetch dữ liệu chi tiết tòa nhà
 const useBuildingDetails = (slug) => {

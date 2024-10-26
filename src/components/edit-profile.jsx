@@ -8,27 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
-export function EditProfileComponent() {
-  const [personalInfo, setPersonalInfo] = useState({
-    fullName: 'Nguyễn Văn A',
-    gender: 'Nam',
-    birthDate: '2004-02-28',
-    education: 'Đại Học sư phạm kỹ thuật',
-    joinDate: 'Tháng 1, 2023'
-  })
-
-  const [contactInfo, setContactInfo] = useState({
-    phone: '+84 123 456 789',
-    email: 'nguyenvana@email.com',
-    address: 'Quận 12, Cầu giấy, Mũi Cà Mau, Việt Nam'
-  })
-
-  const [preferences, setPreferences] = useState({
-    roomType: 'Phòng riêng',
-    budget: '3 - 5 triệu VND/tháng',
-    preferredArea: 'Quận Cầu Giấy, Hà Nội'
-  })
-
+export function EditProfileComponent({ user }) {
   const [password, setPassword] = useState('')
 
   const handlePersonalChange = (e) => {
@@ -52,23 +32,14 @@ export function EditProfileComponent() {
 
   const handlePersonalSubmit = (e) => {
     e.preventDefault()
-    // Handle personal info submission
-    console.log('Updated personal info:', personalInfo)
-    alert('Thông tin cá nhân đã được cập nhật!')
   }
 
   const handleContactSubmit = (e) => {
     e.preventDefault()
-    // Handle contact info submission
-    console.log('Updated contact info:', contactInfo)
-    alert('Thông tin liên hệ đã được cập nhật!')
   }
 
   const handlePasswordSubmit = (e) => {
     e.preventDefault()
-    // Handle password update submission
-    console.log('Updated password:', password)
-    alert('Mật khẩu đã được cập nhật!')
   }
 
   return (
@@ -82,7 +53,7 @@ export function EditProfileComponent() {
             {/* Image Box */}
             <img
               src="path/to/your/image.jpg" // Replace with your image path
-              alt="Profile Picture"
+              alt={user?.avatar || "---"}
               className="w-3/4 aspect-square rounded p-2 border object-cover" // Adjust size and styling as needed
             />
 
@@ -116,7 +87,7 @@ export function EditProfileComponent() {
                   <Input
                     id="fullName"
                     name="fullName"
-                    value={personalInfo.fullName}
+                    value={user?.name}
                     onChange={handlePersonalChange} />
                 </div>
                 <div>
@@ -125,7 +96,7 @@ export function EditProfileComponent() {
                     id="joinDate"
                     name="joinDate"
                     disabled
-                    value={personalInfo.joinDate}
+                    value={user?.created_at}
                     onChange={handlePersonalChange}
                     aria-readonly="true"
                   />
@@ -137,7 +108,7 @@ export function EditProfileComponent() {
                   <Label htmlFor="gender">Giới tính</Label>
                   <Select
                     name="gender"
-                    value={personalInfo.gender}
+                    value={user?.gender}
                     onValueChange={(value) => setPersonalInfo(prev => ({ ...prev, gender: value }))}>
                     <SelectTrigger>
                       <SelectValue placeholder="Chọn giới tính" />
@@ -155,7 +126,7 @@ export function EditProfileComponent() {
                     id="birthDate"
                     name="birthDate"
                     type="date"
-                    value={personalInfo.birthDate}
+                    value={user?.born}
                     onChange={handlePersonalChange} />
                 </div>
               </div>
@@ -164,7 +135,7 @@ export function EditProfileComponent() {
                 <Input
                   id="education"
                   name="education"
-                  value={personalInfo.education}
+                  value={user?.major}
                   onChange={handlePersonalChange} />
               </div>
 
@@ -185,7 +156,7 @@ export function EditProfileComponent() {
             <CardContent className="space-y-6">
               <div>
                 <Label htmlFor="phone">Số điện thoại<span className='text-red-500'>*</span></Label>
-                <Input id="phone" name="phone" value={contactInfo.phone} onChange={handleContactChange} />
+                <Input id="phone" name="phone" value={user?.phone} onChange={handleContactChange} />
               </div>
               <div>
                 <Label htmlFor="email">Email</Label>
@@ -193,7 +164,7 @@ export function EditProfileComponent() {
                   id="email"
                   name="email"
                   type="email"
-                  value={contactInfo.email}
+                  value={user?.email}
                   onChange={handleContactChange} />
               </div>
               <div>
@@ -201,7 +172,7 @@ export function EditProfileComponent() {
                 <Textarea
                   id="address"
                   name="address"
-                  value={contactInfo.address}
+                  value={user?.address}
                   onChange={handleContactChange} />
               </div>
               <Button type="submit" className="w-full" variant="blue" >Cập nhật thông tin liên hệ</Button>

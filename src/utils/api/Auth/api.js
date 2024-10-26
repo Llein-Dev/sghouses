@@ -11,13 +11,20 @@ export const loginAPI = async (email, password) => {
             email,
             password,
         });
-        Cookies.set('token', response.data.token, { expires: 7 }); // Token will expire in 7 days
-        return response.data; // Return the response data (optional)
+        Cookies.set('token', response.data.token, { expires: 7 }); // Token sẽ hết hạn sau 7 ngày
+        return response.data; // Trả về dữ liệu phản hồi
     } catch (error) {
-        throw error.message;
+        // Kiểm tra xem có phản hồi từ server không
+        if (error.response) {
+            // Nếu có, lấy thông điệp lỗi từ phản hồi
+            const errorMessage = error.response.data.message || 'Login failed. Please try again.';
+            throw new Error(errorMessage);
+        } else {
+            // Nếu không có phản hồi, có thể do lỗi mạng
+            throw new Error('Network error. Please try again later.');
+        }
     }
 };
-
 export const signupAPI = async (name, email, password) => {
     try {
         const response = await axios.post(`${API_BASE_URL}/api/register`, {
@@ -25,16 +32,16 @@ export const signupAPI = async (name, email, password) => {
             email,
             password,
         });
-        Cookies.set('token', response.data.token, { expires: 7 }); // Token will expire in 7 days
-        return response.data; // Return the response data (optional)
+        return response.data; 
     } catch (error) {
-        // Log detailed error information
-        console.error('Signup error:', error.response);
-
-        throw error.response?.data?.message;
+        if (error.response) {
+            const errorMessage = error.response.data.message || 'Sign up failed. Please try again.';
+            throw new Error(errorMessage);
+        } else {
+            throw new Error('Network error. Please try again later.');
+        }
     }
 };
-    
 
 // Function for fetching user profile
 export const profileAPI = async () => {
@@ -49,7 +56,7 @@ export const profileAPI = async () => {
         return response.data; // Return the response data
     } catch (error) {
 
-        throw error.response?.data?.message ;
+        throw error.response?.data?.message;
 
     }
 };

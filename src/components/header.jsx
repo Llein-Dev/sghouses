@@ -39,13 +39,13 @@ export function HeaderComponent() {
   const handleLoginToggle = () => {
     router.push("/login"); // Example navigation
   };
-  console.log(user);
+
 
   const handleLogout = () => {
     Cookies.remove("token");
     handleLoginToggle();
   };
-
+  
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
@@ -66,7 +66,6 @@ export function HeaderComponent() {
       fetchUserProfile();
     }
   }, []); // Run only on mount
-
 
   const NavItems = () => (
     <>
@@ -178,9 +177,9 @@ export function HeaderComponent() {
                   </div>
                 </div>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>Hồ sơ</DropdownMenuItem>
-                <DropdownMenuItem>Lịch sử</DropdownMenuItem>
-                <DropdownMenuItem>Cài đặt</DropdownMenuItem>
+                <DropdownMenuItem><Link className="w-full" href="/profile">Hồ sơ</Link> </DropdownMenuItem>
+                <DropdownMenuItem><Link className="w-full" href="/history">Lịch sử</Link> </DropdownMenuItem>
+                <DropdownMenuItem><Link className="w-full" href="/profile/edit">Cài đặt</Link> </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={handleLogout}>
                   <LogOut className="mr-2 h-4 w-4" />

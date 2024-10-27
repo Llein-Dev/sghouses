@@ -28,7 +28,7 @@ export function BlogCard({
                 </div>
                 {/* Wrap title in a Link */}
                 <Link href={`/blog/${slug}`}>
-                    <h3 className="text-lg font-semibold mb-2 cursor-pointer">{body}</h3>
+                    <h3 className="text-lg font-semibold mb-2 cursor-pointer">{title}</h3>
                 </Link>
             </CardContent>
         </Card>

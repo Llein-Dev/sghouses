@@ -11,7 +11,7 @@ import ErrorComponent from "./ui/error";
 
 export default function UserProfile({ user, GoEditProfile }) {
     const { CheapHouse, loading: CheapLoading, error: CheapError } = useFetchCheapHouse();
-    console.log(user);
+
     return (
         <div className="container mx-auto p-4 space-y-8">
             <Card className="flex justify-between bg-white bg-opacity-75 px-2 py-4 border rounded-lg">

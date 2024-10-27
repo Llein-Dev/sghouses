@@ -12,7 +12,8 @@ import {
   Settings,
   Bell,
   ChevronDown,
-  Image
+  Image,
+  DoorOpen
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -51,26 +52,41 @@ export default function RootLayout({ children }) {
 
   return (
     <div className="flex bg-gray-100 h-screen">
-      <aside className="w-64 shadow-md overflow-y-auto bg-white">
-        <div className="m-2 pb-5 hidden md:block border-b">
-          <img src="/logo.svg" alt="" className="w-full" />
-        </div>
-        <nav className="space-y-2 text-sm font-semibold px-2">
-          {navItems.map(({ href, label, icon, key }) => (
-            <Link
-              key={key}
-              href={href}
-              onClick={() => setActiveTab(key)}
-              className={`flex items-center space-x-0 rounded lg:space-x-3 px-4 py-3 transition-colors duration-200 ${activeTab === key
+      <aside className="w-64 h-full shadow-md flex flex-col justify-between  bg-white">
+        <div>
+          <div className="m-2 pb-5 hidden md:block border-b">
+            <img src="/logo.svg" alt="" className="w-full" />
+          </div>
+          <nav className="space-y-2 text-sm font-semibold px-2">
+            {navItems.map(({ href, label, icon, key }) => (
+              <Link
+                key={key}
+                href={href}
+                onClick={() => setActiveTab(key)}
+                className={`flex items-center space-x-0 rounded lg:space-x-3 px-4 py-3 transition-colors duration-200 ${activeTab === key
                   ? "bg-blue-900 text-white"
                   : "bg-gray-100 text-gray-700 hover:bg-blue-100 hover:text-blue-900"
-                }`}
-            >
-              {icon}
-              <span className="hidden md:block">{label}</span>
-            </Link>
-          ))}
-        </nav>
+                  }`}
+              >
+                {icon}
+                <span className="hidden md:block">{label}</span>
+              </Link>
+            ))}
+          </nav></div>
+
+        <Button variant="orange" className="space-y-2 text-sm font-semibold mx-2 mb-4">
+          <Link
+
+            href="/"
+            onClick={() => setActiveTab(key)}
+            className={` flex items-center space-x-0 rounded lg:space-x-3 px-4 py-3 transition-colors duration-200 `}
+          >
+            <DoorOpen />
+            <span className="hidden md:block">Về trang chủ</span>
+          </Link>
+        </Button>
+
+
       </aside>
 
       <main className="flex-1 flex flex-col">
@@ -78,12 +94,12 @@ export default function RootLayout({ children }) {
           <div className="p-4 flex justify-between items-center">
             <h2 className="font-semibold text-xl ">{activeTabLabel}</h2>
             <div className="flex items-center">
-              <Button variant="secondary"  size="icon" className="mr-2 bg-white text-blue-950">
+              <Button variant="secondary" size="icon" className="mr-2 bg-white text-blue-950">
                 <Bell className="h-5 w-5" />
               </Button>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="secondary"  className="flex items-center bg-white text-blue-950">
+                  <Button variant="secondary" className="flex items-center bg-white text-blue-950">
                     Admin User
                     <ChevronDown className="ml-2 h-4 w-4" />
                   </Button>

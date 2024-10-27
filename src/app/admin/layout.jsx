@@ -53,43 +53,74 @@ export default function RootLayout({ children }) {
         </div>
         <nav className="space-y-2 text-sm font-semibold">
           <Link
-            href="#"
+            href="/dashboard"
             onClick={() => setActiveTab("dashboard")}
-            className={`flex items-center space-x-0 lg:space-x-3 px-4 py-3 text-gray-700 ${
-              activeTab === "dashboard" ? "bg-gray-200" : ""
-            }`}
+            className={`flex items-center space-x-0 lg:space-x-3 px-4 py-3 text-gray-700 ${activeTab === "dashboard" ? "bg-gray-200" : ""}`}
           >
-            <LayoutDashboard className="" />
+            <LayoutDashboard />
             <span className="hidden md:block">Dashboard</span> {/* Hide on mobile */}
           </Link>
+
           <Link
-            href="#"
+            href="/projects"
             onClick={() => setActiveTab("projects")}
-            className={`flex items-center space-x-0 lg:space-x-3 px-4 py-3 text-gray-700 ${
-              activeTab === "projects" ? "bg-gray-200" : ""
-            }`}
+            className={`flex items-center space-x-0 lg:space-x-3 px-4 py-3 text-gray-700 ${activeTab === "projects" ? "bg-gray-200" : ""}`}
           >
-            <Home className="" />
+            <Home />
             <span className="hidden md:block">Projects</span> {/* Hide on mobile */}
           </Link>
+
           <Link
-            href="#"
+            href="/users"
             onClick={() => setActiveTab("users")}
-            className={`flex items-center space-x-0 lg:space-x-3 px-4 py-3 text-gray-700 ${
-              activeTab === "users" ? "bg-gray-200" : ""
-            }`}
+            className={`flex items-center space-x-0 lg:space-x-3 px-4 py-3 text-gray-700 ${activeTab === "users" ? "bg-gray-200" : ""}`}
           >
-            <Users className="" />
+            <Users />
             <span className="hidden md:block">Users</span> {/* Hide on mobile */}
           </Link>
+
           <Link
-            href="#"
-            onClick={() => setActiveTab("settings")}
-            className={`flex items-center space-x-0 lg:space-x-3 px-4 py-3 text-gray-700 ${
-              activeTab === "settings" ? "bg-gray-200" : ""
-            }`}
+            href="/contact"
+            onClick={() => setActiveTab("contact")}
+            className={`flex items-center space-x-0 lg:space-x-3 px-4 py-3 text-gray-700 ${activeTab === "contact" ? "bg-gray-200" : ""}`}
           >
-            <Settings className="" />
+            <Users /> {/* Replace with appropriate icon for Contact */}
+            <span className="hidden md:block">Contact</span> {/* Hide on mobile */}
+          </Link>
+
+          <Link
+            href="/contract"
+            onClick={() => setActiveTab("contract")}
+            className={`flex items-center space-x-0 lg:space-x-3 px-4 py-3 text-gray-700 ${activeTab === "contract" ? "bg-gray-200" : ""}`}
+          >
+            <Users /> {/* Replace with appropriate icon for Contract */}
+            <span className="hidden md:block">Contracts</span> {/* Hide on mobile */}
+          </Link>
+
+          <Link
+            href="/rooms"
+            onClick={() => setActiveTab("rooms")}
+            className={`flex items-center space-x-0 lg:space-x-3 px-4 py-3 text-gray-700 ${activeTab === "rooms" ? "bg-gray-200" : ""}`}
+          >
+            <Users /> {/* Replace with appropriate icon for Rooms */}
+            <span className="hidden md:block">Rooms</span> {/* Hide on mobile */}
+          </Link>
+
+          <Link
+            href="/buildings"
+            onClick={() => setActiveTab("buildings")}
+            className={`flex items-center space-x-0 lg:space-x-3 px-4 py-3 text-gray-700 ${activeTab === "buildings" ? "bg-gray-200" : ""}`}
+          >
+            <Users /> {/* Replace with appropriate icon for Buildings */}
+            <span className="hidden md:block">Buildings</span> {/* Hide on mobile */}
+          </Link>
+
+          <Link
+            href="/settings"
+            onClick={() => setActiveTab("settings")}
+            className={`flex items-center space-x-0 lg:space-x-3 px-4 py-3 text-gray-700 ${activeTab === "settings" ? "bg-gray-200" : ""}`}
+          >
+            <Settings />
             <span className="hidden md:block">Settings</span> {/* Hide on mobile */}
           </Link>
         </nav>

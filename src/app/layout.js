@@ -1,4 +1,5 @@
 "use client";
+
 import { HeaderComponent } from "@/components/header";
 import "./globals.css";
 import { FooterComponent } from "@/components/footer";
@@ -6,56 +7,66 @@ import { Provider } from "react-redux";
 import store from "@/redux/store";
 import { usePathname, useRouter } from "next/navigation";
 import MotionWrapper from "@/components/motionWrapper";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
-import jwtDecode from "jwt-decode"; // Make sure to import jwtDecode
+import { Spinner } from "@/components/ui/loading";
+import { profileAPI } from "@/utils/api/Auth/api";
 
 export default function RootLayout({ children }) {
-  const pathname = usePathname(); // Get the current pathname
-  const router = useRouter(); // To redirect
+  const pathname = usePathname();
+  const router = useRouter();
   const isAdminRoute = pathname.startsWith('/admin');
-
-  // Check if the user is an admin immediately before rendering
   const token = Cookies.get("token");
-  let isAdmin = false;
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  if (token) {
-    try {
-      const decodedToken = jwtDecode(token);
-      isAdmin = decodedToken.role === "admin";
-    } catch (error) {
-      console.error("Token decoding failed:", error);
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      if (token) {
+        try {
+          const profile = await profileAPI();
+          if (profile && profile.length > 0) {
+            const user = profile[0];
+            console.log(user);
+            setIsAdmin(user.role === 0);
+          } else {
+            setIsAdmin(false);
+          }
+        } catch (error) {
+          console.error("Failed to fetch user profile:", error);
+          setIsAdmin(false);
+        }
+      } else {
+        setIsAdmin(false);
+      }
+      setLoading(false);
+    };
+
+    fetchUserProfile();
+  }, [token]);
+
+  useEffect(() => {
+    if (!loading && isAdminRoute && !isAdmin) {
+      router.push("/");
     }
-  }
-
-  // Redirect to home if trying to access admin route and not an admin
-  if (isAdminRoute && !isAdmin) {
-    router.push("/"); // Redirect if not an admin
-    return null; // Prevent rendering the rest of the layout
-  }
+  }, [loading, isAdmin, isAdminRoute, router]);
 
   return (
     <html lang="en">
       <head>
-        {/* SEO Meta Tags */}
         <meta charSet="UTF-8" />
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="description" content="SGHouses - Tìm nhà trọ, phòng trọ cho thuê tại Việt Nam. Nền tảng hàng đầu giúp bạn kết nối với chủ nhà và tìm thuê chỗ ở một cách nhanh chóng, tiện lợi." />
-        <meta name="keywords" content="SGHouses, thuê nhà, thuê phòng trọ, nhà trọ Việt Nam, phòng trọ, thuê nhà giá rẻ, thuê phòng trọ Sài Gòn, tìm nhà trọ" />
+        <meta name="description" content="SGHouses - Tìm nhà trọ, phòng trọ cho thuê tại Việt Nam." />
+        <meta name="keywords" content="SGHouses, thuê nhà, thuê phòng trọ" />
         <meta name="author" content="SGHouses Team" />
         <title>SGHouses - Tìm Nhà Trọ Hồ Chí Minh</title>
-
-        {/* Fonts */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
         <link
           href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
           rel="stylesheet"
         />
-        <link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" as="style" />
-
-        {/* Live Chat Script */}
         <script
           src="https://messenger.svc.chative.io/static/v1.0/channels/s234b8103-0c4b-4d7d-bf67-f1c60325ddf5/messenger.js?mode=livechat"
           defer
@@ -63,18 +74,25 @@ export default function RootLayout({ children }) {
       </head>
       <body className="antialiased montserrat-header">
         <Provider store={store}>
-          {/* Render layout based on user role */}
-          {isAdminRoute ? (
-            <>{children}</>
+          {loading ? (
+            <div className="h-screen w-full flex justify-center items-center">
+              <Spinner />
+            </div>
           ) : (
             <>
-              <HeaderComponent />
-              <div className="mt-[72px] bg-gray-100">
-                <MotionWrapper animationType="fade" key={pathname}>
-                  {children}
-                </MotionWrapper>
-              </div>
-              <FooterComponent />
+              {isAdminRoute && isAdmin ? (
+                children
+              ) : (
+                <>
+                  <HeaderComponent />
+                  <div className="mt-[72px] bg-gray-100">
+                    <MotionWrapper animationType="fade" key={pathname}>
+                      {children}
+                    </MotionWrapper>
+                  </div>
+                  <FooterComponent />
+                </>
+              )}
             </>
           )}
         </Provider>

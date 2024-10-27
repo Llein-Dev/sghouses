@@ -1,41 +1,13 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-
-// Mock data for news articles
-const featuredNews = {
-    id: '1',
-    title: 'Major Breakthrough in Renewable Energy',
-    excerpt: 'Scientists have made a groundbreaking discovery that could revolutionize the way we harness solar power, potentially solving global energy crisis.',
-    image: '/mau-sac-hai-hoa-mang-den-Background-dep.jpg',
-    date: '2023-05-20',
-}
-
-const sideNews = [
-    { id: '2', title: 'Stock Market Hits Record High', excerpt: 'Global markets surge as economic recovery accelerates.', image: '/mau-sac-hai-hoa-mang-den-Background-dep.jpg', date: '2023-05-19' },
-    { id: '3', title: 'New AI Model Surpasses Human Performance', excerpt: 'OpenAIs latest language model achieves unprecedented scores on cognitive tests.', image: '/mau-sac-hai-hoa-mang-den-Background-dep.jpg', date: '2023-05-18' },
-    { id: '4', title: 'Climate Summit Reaches Landmark Agreement', excerpt: 'World leaders commit to ambitious carbon reduction targets.', image: '/mau-sac-hai-hoa-mang-den-Background-dep.jpg', date: '2023-05-17' },
-]
-
-const moreNews = [
-    { id: '5', title: 'SpaceX Launches First Civilian Mission to Mars', excerpt: 'Private space company makes history with groundbreaking interplanetary journey.', image: '/mau-sac-hai-hoa-mang-den-Background-dep.jpg', date: '2023-05-16' },
-    { id: '6', title: 'Global Pandemic Officially Declared Over', excerpt: 'WHO announces end of COVID-19 pandemic as vaccination efforts prove successful.', image: '/mau-sac-hai-hoa-mang-den-Background-dep.jpg', date: '2023-05-15' },
-    { id: '7', title: 'Quantum Computing Breakthrough Promises Faster Drug Discovery', excerpt: 'Researchers use quantum algorithms to simulate complex molecular interactions.', image: '/mau-sac-hai-hoa-mang-den-Background-dep.jpg', date: '2023-05-14' },
-    { id: '8', title: 'Self-Driving Cars Get Green Light for Urban Use', excerpt: 'Government approves autonomous vehicles for city streets after successful trials.', image: '/mau-sac-hai-hoa-mang-den-Background-dep.jpg', date: '2023-05-13' },
-]
-
-const recommendedNews = [
-    { id: '9', title: 'New Study Links Coffee Consumption to Longevity', date: '2023-05-12' },
-    { id: '10', title: 'Tech Giants Announce Collaboration on AR Glasses', date: '2023-05-11' },
-    { id: '11', title: 'Archaeologists Uncover Ancient City in Amazon Rainforest', date: '2023-05-10' },
-    { id: '12', title: 'Renewable Energy Surpasses Fossil Fuels in Global Usage', date: '2023-05-09' },
-]
-
+import { featuredNews, moreNews, recommendedNews, sideNews } from '@/utils/data';
+import Breadcrumb from '@/components/breadcum';
 function NewsCard({ id, title, excerpt, image, date }) {
     return (
-        <Card className="h-full flex flex-col">
-            <div className="relative h-48">
-                <img src={image} alt={title} fill className="object-cover" />
+        <Card className="h-full flex  overflow-hidden flex-col">
+            <div className="w-full aspect-video overflow-hidden">
+                <img src={image} alt={title} className="object-cover w-full h-full" />
             </div>
             <CardHeader>
                 <CardTitle className="text-lg">{title}</CardTitle>
@@ -46,7 +18,7 @@ function NewsCard({ id, title, excerpt, image, date }) {
             <CardFooter className="flex justify-between items-center">
                 <span className="text-xs text-muted-foreground">{date}</span>
                 <Link href={`/news/${id}`} className="text-primary hover:underline text-sm">
-                    Read more
+                    Xem thêm
                 </Link>
             </CardFooter>
         </Card>
@@ -54,38 +26,46 @@ function NewsCard({ id, title, excerpt, image, date }) {
 }
 function NewsCardRow({ id, title, excerpt, image, date }) {
     return (
-        <Card className="h-full  flex flex-row">
-            <div className="h-full aspect-[4/3] overflow-hidden">
-                <img src={image} alt={title} fill className="object-cover h-full" />
+        <Card className="h-full flex  overflow-hidden flex-row">
+            <div className="w-2/5 aspect-square overflow-hidden">
+                <img src={image} alt={title} className="object-cover w-full h-full" />
             </div>
-            <CardHeader>
-                <CardTitle className="text-lg">{title}</CardTitle>
-            </CardHeader>
-            <CardContent className="flex-grow">
-                <p className="text-sm text-muted-foreground">{excerpt}</p>
-            </CardContent>
-            <CardFooter className="flex justify-between items-center">
-                <span className="text-xs text-muted-foreground">{date}</span>
-                <Link href={`/news/${id}`} className="text-primary hover:underline text-sm">
-                    Read more
-                </Link>
-            </CardFooter>
+            <div className="flex flex-col justify-between w-3/5">
+                <CardHeader>
+                    <CardTitle className="text-lg">{title}</CardTitle>
+                </CardHeader>
+                <CardContent className="flex-grow">
+                    <p className="text-sm text-muted-foreground">{excerpt}</p>
+                </CardContent>
+                <CardFooter className="flex justify-between items-center">
+                    <span className="text-xs text-muted-foreground">{date}</span>
+                    <Link href={`/news/${id}`} className="text-primary hover:underline text-sm">
+                        Xem thêm
+                    </Link>
+                </CardFooter>
+            </div>
         </Card>
-    )
+    );
 }
-
 export default function NewsHomepage() {
     return (
-        <div className="container mx-auto px-4 py-8">
-            <header className="mb-8">
-                <h1 className="text-4xl font-bold mb-2">Daily News</h1>
-                <p className="text-muted-foreground">Your source for the latest updates</p>
-            </header>
-
-
-            {/* Featured news and side news section */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <Card className="md:col-span-2 space-y-4 h-full flex flex-col">
+        <div className="container mx-auto px-4 space-y-4 py-4">
+            <Breadcrumb />
+            <section className='pb-4'>
+                <div class="relative rounded px-2" >
+                    <div class="absolute inset-0 flex items-center px-4" >
+                        <div class="shrink-0 bg-blue-900 h-[1px] w-full " ></div>
+                    </div>
+                    <div class="relative flex items-center h-full justify-start" >
+                        <h2 className="text-blue-900 px-4 bg-gray-100 text-center text-xl md:text-3xl m-0 font-bold ">
+                            Tin tức nổi bật
+                        </h2>
+                    </div>
+                </div>
+            </section>
+            <section className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {/* Large News */}
+                <Card className="md:col-span-2 space-y-2 h-full flex flex-col overflow-hidden">
                     <div className="relative aspect-video overflow-hidden">
                         <img src={featuredNews.image} alt={featuredNews.title} fill className="object-cover w-full" />
                     </div>
@@ -98,35 +78,33 @@ export default function NewsHomepage() {
                     <CardFooter className="flex justify-between items-center">
                         <span className="text-sm text-muted-foreground">{featuredNews.date}</span>
                         <Link href={`/news/${featuredNews.id}`} className="text-primary hover:underline">
-                            Read full story
+                            Xem thêm
                         </Link>
                     </CardFooter>
                 </Card>
-
                 {/* Side news */}
-                <div className="space-y-4 h-full grid-cols-1">
+                <div className="space-y-4 h-full flex flex-col">
                     {sideNews.map((news) => (
                         < NewsCardRow key={news.id} {...news} />
                     ))}
                 </div>
-            </div>
+            </section>
             {/* More news section */}
-            <section className="mb-8">
-                <h2 className="text-2xl font-bold mb-4">More News</h2>
+            <section className="">
+                <h2 className="text-2xl font-bold mb-4">Tin tức khác</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     {moreNews.map((news) => (
                         <NewsCard key={news.id} {...news} />
                     ))}
                 </div>
             </section>
-
             {/* Recommended news section */}
             <section>
-                <h2 className="text-2xl font-bold mb-4">Recommended for You</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <h2 className="text-2xl font-bold mb-4">Danh mục</h2>
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                     {recommendedNews.map((news) => (
                         <Card key={news.id} className="flex items-center p-4">
-                            <div className="mr-4 bg-primary text-primary-foreground rounded-full w-12 h-12 flex items-center justify-center text-xl font-bold">
+                            <div className="mr-4 bg-primary text-primary-foreground rounded-full aspect-square h-12 flex items-center justify-center text-xl font-bold">
                                 {news.id}
                             </div>
                             <div>
@@ -137,6 +115,6 @@ export default function NewsHomepage() {
                     ))}
                 </div>
             </section>
-        </div>
+        </div >
     )
 }

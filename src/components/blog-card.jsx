@@ -8,8 +8,9 @@ export function BlogCard({
     id,
     image,
     title,
-    date,
-    view
+    name_cate,
+    body,
+    slug
 }) {
     return (
         <Card className="overflow-hidden bg-white">
@@ -19,15 +20,15 @@ export function BlogCard({
             <CardContent className="p-4">
                 <div className="flex gap-4">
                     <p className="text-sm text-muted-foreground mb-2 flex items-center">
-                        <Clock className="w-4 h-4 mr-1" /> {date}
+                        <Clock className="w-4 h-4 mr-1" /> {name_cate}
                     </p>
                     <p className="text-sm text-muted-foreground mb-2 flex items-center">
-                        <Eye className="w-4 h-4 mr-1" /> {view}
+                        <Eye className="w-4 h-4 mr-1" /> {id}
                     </p>
                 </div>
                 {/* Wrap title in a Link */}
-                <Link href={`/blog/${id}`}>
-                    <h3 className="text-lg font-semibold mb-2 cursor-pointer">{title}</h3>
+                <Link href={`/blog/${slug}`}>
+                    <h3 className="text-lg font-semibold mb-2 cursor-pointer">{body}</h3>
                 </Link>
             </CardContent>
         </Card>

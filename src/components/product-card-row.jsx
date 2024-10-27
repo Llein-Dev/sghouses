@@ -1,11 +1,10 @@
 'use client';
 
-import Link from "next/link"
-import Image from "next/image"
-import { MapPin } from "lucide-react"
-import { Badge } from "@/components/ui/badge"
-import { Card, CardContent, CardFooter } from "@/components/ui/card"
-
+import Link from "next/link";
+import Image from "next/image";
+import { MapPin } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
 
 export function ProductCardRowComponent({
     title,
@@ -15,10 +14,15 @@ export function ProductCardRowComponent({
     mapLink,
     image
 }) {
+    // Hàm format tiền
+    const formatCurrency = (amount) => {
+        return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
+    };
+
     return (
         <Card className="overflow-hidden ">
             <div className="flex flex-col sm:flex-row">
-                <div className="relative w-full sm:w-1/3 md:aspect-[4/3]   aspect-video">
+                <div className="relative w-full sm:w-1/3 md:aspect-[4/3] aspect-video">
                     <Image
                         src={image}
                         alt={title}
@@ -35,7 +39,9 @@ export function ProductCardRowComponent({
                         <h3 className="text-lg font-semibold mb-2">{title}</h3>
                         <div className="flex items-center mb-2">
                             <p className="mr-2 text-primary">Giá từ</p>
-                            <p className="text-lg font-bold text-red-500">{price}</p>
+                            <p className="text-lg font-bold text-red-500">
+                                {formatCurrency(price)}
+                            </p>
                         </div>
                         <div className="flex flex-wrap gap-2">
                             <Badge variant="secondary">{address}</Badge>

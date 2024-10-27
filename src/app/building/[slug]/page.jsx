@@ -1,6 +1,4 @@
-// Trong BuildingDetailComponent
-
-'use client' // Đảm bảo dòng này có ở đầu file
+'use client'; // Đảm bảo dòng này có ở đầu file
 
 import Image from "next/image";
 import { useParams } from "next/navigation"; // Import useRouter từ next/navigation cho app router (v13+)
@@ -18,30 +16,32 @@ export default function BuildingDetailComponent() {
     // Sử dụng custom hook
     const { building, loading, error } = useBuildingDetails(slug);
     if (loading) {
-        return <div>Loading...</div>;
+        return <div>Đang tải...</div>;
     }
     if (error) {
-        return <div>Error: {error.message}</div>;
+        return <div>Lỗi: {error.message}</div>;
     }
+console.log(building);
+
     return (
         <div className="container mx-auto px-4 space-y-4 py-4">
             <Breadcrumb />
             <Card>
                 <CardHeader>
                     <CardTitle>
-                        <h1 className="text-3xl font-bold mb-2">{building.name}</h1>
-                        <Badge variant="secondary">Luxury Living</Badge>
+                        <h1 className="text-3xl font-bold mb-2">{building.ten}</h1>
+                        <Badge variant="secondary">Cuộc sống sang trọng</Badge>
                     </CardTitle>
                 </CardHeader>
                 <CardContent>
-                    {/* Ảnh ở đầu page */}
+                    {/* Ảnh ở đầu trang */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div className="md:col-span-2 space-y-4 h-full flex flex-col">
                             {building.image.split(";").slice(0, 2).map((imgUrl, index) => (
                                 <Image
                                     key={index}
                                     src={imgUrl}
-                                    alt={`Building view ${index + 1}`}
+                                    alt={`Hình ảnh tòa nhà ${index + 1}`}
                                     width={600}
                                     height={300}
                                     className="w-full rounded-lg flex-1 object-cover"
@@ -53,7 +53,7 @@ export default function BuildingDetailComponent() {
                                 <Image
                                     key={index}
                                     src={imgUrl}
-                                    alt={`Interior view ${index + 1}`}
+                                    alt={`Hình ảnh nội thất ${index + 1}`}
                                     width={300}
                                     height={200}
                                     className="w-full rounded-lg flex-1 object-cover"
@@ -66,7 +66,7 @@ export default function BuildingDetailComponent() {
 
             <Card>
                 <CardHeader>
-                    <CardTitle>Description</CardTitle>
+                    <CardTitle>Mô tả</CardTitle>
                 </CardHeader>
                 <CardContent>
                     {building.mo_ta}
@@ -76,7 +76,7 @@ export default function BuildingDetailComponent() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
                 <Card>
                     <CardHeader>
-                        <CardTitle>Common Amenities</CardTitle>
+                        <CardTitle>Tiện nghi chung</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <ul className="list-disc pl-5 space-y-2">
@@ -89,7 +89,7 @@ export default function BuildingDetailComponent() {
 
                 <Card>
                     <CardHeader>
-                        <CardTitle>Addresses</CardTitle>
+                        <CardTitle>Địa chỉ</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <ul className="list-disc pl-5 space-y-2">
@@ -103,11 +103,11 @@ export default function BuildingDetailComponent() {
 
             <Card>
                 <CardHeader>
-                    <CardTitle>Available Rooms</CardTitle>
+                    <CardTitle>Các phòng có sẵn</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <div className="space-y-4">
-                        {Object.values(building.list_room || []).map((room, index) => (
+                        {Object.values(building?.phong_tro || []).map((room, index) => (
                             <RoomComponents key={index} room={room} />
                         ))}
                     </div>

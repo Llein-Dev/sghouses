@@ -5,9 +5,13 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 
-export default function RoomComponents({ room }) {  // Nhận props room
+export default function RoomComponents({ room }) {
+  console.log(room);
+
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const images = Object.values(room.gallery);  // Lấy hình ảnh từ room.gallery
+
+  // Sử dụng split để tạo mảng hình ảnh từ chuỗi
+  const images = room.hinh_anh.split(";");  // Tách chuỗi thành mảng
 
   const nextImage = () => {
     setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
@@ -26,7 +30,7 @@ export default function RoomComponents({ room }) {  // Nhận props room
             <Dialog>
               <DialogTrigger asChild>
                 <img
-                  src={images[0]}  // Hiển thị hình ảnh đầu tiên
+                  src={`http://localhost:8000/storage/room/${images[0]}`}  // Hiển thị hình ảnh đầu tiên
                   alt="Room Image"
                   width={1600}
                   height={900}
@@ -36,11 +40,10 @@ export default function RoomComponents({ room }) {  // Nhận props room
               <DialogContent className="max-w-[60vw] max-h-[90vh] p-0">
                 <div className="relative h-full">
                   <img
-                    src={images[currentImageIndex]}
+                    src={`http://localhost:8000/storage/room/${images[currentImageIndex]}`} // Sử dụng đường dẫn đầy đủ
                     alt={`Room Image ${currentImageIndex + 1}`}
-                    layout="fill"
-                    objectFit="contain"
                     className="rounded-lg"
+                    style={{ width: "100%", height: "100%", objectFit: "contain" }} // CSS để hình ảnh hiển thị đúng
                   />
                   <Button
                     variant="outline"
@@ -66,9 +69,9 @@ export default function RoomComponents({ room }) {  // Nhận props room
           {/* Content Column */}
           <div className="w-full lg:w-1/3 flex flex-col justify-between">
             <div>
-              <h3 className="text-xl font-semibold mb-2"> {room.name}</h3> {/* Hiển thị mã phòng */}
+              <h3 className="text-xl font-semibold mb-2">{room.name}</h3>
               <p className="text-sm text-green-600 mb-2">Tình trạng: {room.gac_lung ? "Có" : "Không"}</p>
-              <p className="text-2xl font-bold mb-2 text-[#FF5C00]">{room.price.toLocaleString()} đ/tháng</p>
+              <p className="text-2xl font-bold mb-2 text-[#FF5C00]">{room.gia_thue.toLocaleString()} đ/tháng</p>
               <Badge className="mb-4">Phòng cao cấp</Badge>
               <div className="space-y-4">
                 <div>
@@ -105,19 +108,19 @@ export default function RoomComponents({ room }) {  // Nhận props room
                 <ul className="list-none space-y-4">
                   <li className="flex justify-between items-center pb-2">
                     <span className="flex items-center"><Lightbulb className="h-4 w-4 mr-2" />Điện:</span>
-                    <span className="font-medium text-sm ">3,500 đ/kWh</span>
+                    <span className="font-medium text-sm">3,500 đ/kWh</span>
                   </li>
                   <li className="flex justify-between items-center pb-2">
                     <span className="flex items-center"><Droplet className="h-4 w-4 mr-2" />Nước:</span>
-                    <span className="font-medium text-sm ">100,000 đ/người/tháng</span>
+                    <span className="font-medium text-sm">100,000 đ/người/tháng</span>
                   </li>
                   <li className="flex justify-between items-center pb-2">
                     <span className="flex items-center"><Wifi className="h-4 w-4 mr-2" />Internet:</span>
-                    <span className="font-medium text-sm ">100,000 đ/phòng/tháng</span>
+                    <span className="font-medium text-sm">100,000 đ/phòng/tháng</span>
                   </li>
                   <li className="flex justify-between items-center pb-2">
                     <span className="flex items-center"><Trash className="h-4 w-4 mr-2" />Dọn vệ sinh:</span>
-                    <span className="font-medium text-sm ">50,000 đ/lần</span>
+                    <span className="font-medium text-sm">50,000 đ/lần</span>
                   </li>
                 </ul>
               </div>
@@ -126,7 +129,7 @@ export default function RoomComponents({ room }) {  // Nhận props room
                   <Heart className="h-4 w-4" />
                   <span className="sr-only">Add to favorites</span>
                 </Button>
-                <Button variant="orange" className="">Thuê ngay</Button>
+                <Button variant="orange">Thuê ngay</Button>
               </div>
             </div>
           </div>

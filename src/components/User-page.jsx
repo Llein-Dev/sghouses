@@ -18,7 +18,7 @@ export default function UserProfile({ user, GoEditProfile }) {
                 <div className="flex items-end space-x-4">
                     <Avatar className="w-24 h-24 border-4 border-white shadow-lg">
                         <AvatarImage src="/placeholder.svg?height=96&width=96" alt={user?.name || "---"} />
-                        <AvatarFallback><Camera className="opacity-75"/></AvatarFallback>
+                        <AvatarFallback><Camera className="opacity-75" /></AvatarFallback>
                     </Avatar>
                     <div className="mb-1">
                         <h1 className="text-3xl font-bold text-blue-900 mb-1">{user?.name || "---"}</h1>
@@ -32,6 +32,7 @@ export default function UserProfile({ user, GoEditProfile }) {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <Card>
+
                     <CardContent className="p-6 space-y-4">
                         <h2 className="text-2xl font-semibold">Thông tin liên hệ</h2>
                         <div className="space-y-2">
@@ -53,7 +54,7 @@ export default function UserProfile({ user, GoEditProfile }) {
                         </div>
                     </CardContent>
                 </Card>
-               
+
             </div>
 
             <div className="py-12 w-full">

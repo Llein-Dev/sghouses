@@ -3,6 +3,7 @@ import Cookies from "js-cookie";
 import { profileAPI } from "@/utils/api/Auth/api";
 import { useEffect, useState } from "react";
 import { EditProfileComponent } from "@/components/edit-profile";
+import EditProfile2Component from "@/components/edit-profile2";
 
 export default function EditProfilePage() {
 
@@ -26,7 +27,7 @@ export default function EditProfilePage() {
     console.log(user);
     return (
         <>
-            <EditProfileComponent user={user} />
+            <EditProfile2Component user={user} />
         </>
     )
 }

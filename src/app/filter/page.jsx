@@ -10,17 +10,15 @@ import { SearchFilterComponent } from "@/components/search-bar-filter";
 export default function FilterPage() {
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [loading, setLoading] = useState(false);
-    const productCount = filteredProducts.length; // No need for optional chaining here
+    const [searchParams, setSearchParams] = useState(new URLSearchParams(window.location.search));
+    const productCount = filteredProducts.length;
 
     const fetchFilteredProducts = async () => {
         setLoading(true);
         try {
-            // Get the current search parameters from the window location
-            const params = new URLSearchParams(window.location.search);
-            const response = await fetch(`http://localhost:8000/api/filter?${params.toString()}`);
+            const response = await fetch(`http://localhost:8000/api/filter?${searchParams.toString()}`);
 
             if (!response.ok) {
-                // If response is not ok, check for a 404 status
                 if (response.status === 404) {
                     setFilteredProducts([]); // Set to empty array on 404
                 } else {
@@ -40,12 +38,12 @@ export default function FilterPage() {
 
     useEffect(() => {
         fetchFilteredProducts();
-    }, [window.location.search]);
+    }, [searchParams]); // Depend on searchParams instead of window.location.search
 
     return (
         <div className="container mx-auto px-4 space-y-4 py-4">
             <Breadcrumb />
-            <SearchFilterComponent />
+            <SearchFilterComponent setSearchParams={setSearchParams} />
             <div className="flex flex-col-reverse md:flex-row gap-8">
                 <div className="md:w-3/4 space-y-4 bg-white rounded-lg p-4 shadow-md">
                     <div className="flex justify-between items-center">

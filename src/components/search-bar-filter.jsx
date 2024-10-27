@@ -1,28 +1,28 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { useRouter } from "next/navigation" // Import useRouter from Next.js
-import { Search, ChevronDown, MapIcon, Filter, Box } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { Search, ChevronDown, MapIcon, Filter, Box } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Label } from "@/components/ui/label"
-import { RangeBox } from "./range-box"
+} from "@/components/ui/dropdown-menu";
+import { Label } from "@/components/ui/label";
+import { RangeBox } from "./range-box";
 
-export function SearchFilterComponent() {
-  const [keyword, setKeyword] = useState("")
-  const [area, setArea] = useState("khu vực")
-  const [priceRange, setPriceRange] = useState({ min: 0, max: 20000000, [0]: 0, [1]: 20000000 })
-  const [sizeRange, setSizeRange] = useState({ min: 0, max: 100, [0]: 0, [1]: 100 })
-  const router = useRouter() // Initialize the router
+export function SearchFilterComponent({ setSearchParams }) {
+  const [keyword, setKeyword] = useState("");
+  const [area, setArea] = useState("khu vực");
+  const [priceRange, setPriceRange] = useState({ min: 0, max: 20000000, [0]: 0, [1]: 20000000 });
+  const [sizeRange, setSizeRange] = useState({ min: 0, max: 100, [0]: 0, [1]: 100 });
+  const router = useRouter();
 
   const handleSearch = (e) => {
-    e.preventDefault(); // Prevent default form submission behavior
+    e.preventDefault(); // Prevent the default form submission
 
     const query = new URLSearchParams({
       keyword,
@@ -30,6 +30,9 @@ export function SearchFilterComponent() {
       price: `${priceRange[0]}to${priceRange[1]}`,
       size: `${sizeRange[0]}to${sizeRange[1]}`,
     }).toString();
+
+    // Update search parameters in parent component
+    setSearchParams(query); // Call setSearchParams with the query
 
     // Navigate to the /filter page with query parameters
     router.push(`/filter?${query}`);
@@ -45,7 +48,7 @@ export function SearchFilterComponent() {
 
   return (
     <div className="w-full bg-white rounded-none md:rounded-xl shadow p-4">
-      <form className="flex flex-col md:flex-row gap-4" onSubmit={handleSearch}>
+      <form onSubmit={handleSearch} className="flex flex-col md:flex-row gap-4">
         <div className="flex-grow">
           <Label htmlFor="keyword" className="sr-only">
             Từ khóa
@@ -56,7 +59,8 @@ export function SearchFilterComponent() {
             placeholder="Nhập từ khóa tìm kiếm..."
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
-            className="w-full" />
+            className="w-full"
+          />
         </div>
 
         <DropdownMenu>
@@ -108,7 +112,7 @@ export function SearchFilterComponent() {
           </DropdownMenuContent>
         </DropdownMenu>
 
-        <Button type="submit" variant="orange" className="w-full text md:w-auto">
+        <Button type="submit" variant="orange" className="w-full md:w-auto">
           <Search className="mr-2 h-4 w-4" /> Tìm kiếm
         </Button>
       </form>

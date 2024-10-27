@@ -78,12 +78,12 @@ export default function RootLayout({ children }) {
           <div className="p-4 flex justify-between items-center">
             <h2 className="font-semibold text-xl ">{activeTabLabel}</h2>
             <div className="flex items-center">
-              <Button variant="ghost" size="icon" className="mr-2">
+              <Button variant="secondary"  size="icon" className="mr-2 bg-white text-blue-950">
                 <Bell className="h-5 w-5" />
               </Button>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="flex items-center">
+                  <Button variant="secondary"  className="flex items-center bg-white text-blue-950">
                     Admin User
                     <ChevronDown className="ml-2 h-4 w-4" />
                   </Button>

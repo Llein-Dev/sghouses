@@ -38,7 +38,7 @@ export default function BannerContent() {
   }
 
   const handleToggleActive = (id) => {
-    setBanners(banners.map(banner => 
+    setBanners(banners.map(banner =>
       banner.id === id ? { ...banner, active: !banner.active } : banner
     ))
   }
@@ -46,11 +46,11 @@ export default function BannerContent() {
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
-  
+
         <Dialog>
           <DialogTrigger asChild>
-            <Button>
-              <PlusCircle className="mr-2 h-4 w-4" /> 
+            <Button variant="blue">
+              <PlusCircle className="mr-2 h-4 w-4" />
               Add New Banner
             </Button>
           </DialogTrigger>
@@ -86,7 +86,7 @@ export default function BannerContent() {
               </div>
             </div>
             <DialogFooter>
-              <Button type="submit" onClick={handleAddBanner}>Add Banner</Button>
+              <Button variant="blue" type="submit" onClick={handleAddBanner}>Add Banner</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>

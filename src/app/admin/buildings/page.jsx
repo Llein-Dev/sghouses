@@ -67,7 +67,7 @@ export default function BuildingContent() {
         </div>
         <Dialog>
           <DialogTrigger asChild>
-            <Button>
+          <Button variant="blue">
               <PlusCircle className="mr-2 h-4 w-4" />
               Add New Building
             </Button>
@@ -116,7 +116,7 @@ export default function BuildingContent() {
               </div>
             </div>
             <DialogFooter>
-              <Button type="submit" onClick={handleAddBuilding}>Add Building</Button>
+            <Button variant="blue" type="submit" onClick={handleAddBuilding}>Add Building</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>

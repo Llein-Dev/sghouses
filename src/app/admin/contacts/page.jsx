@@ -57,7 +57,7 @@ export default function ContractContent() {
             className="max-w-sm"
           />
         </div>
-        <Button>
+        <Button variant="blue">
           <FileText className="mr-2 h-4 w-4" />
           New Contract
         </Button>

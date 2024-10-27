@@ -57,7 +57,7 @@ export default function UsersContent() {
         </div>
         <Dialog>
           <DialogTrigger asChild>
-            <Button>
+          <Button variant="blue">
               <UserPlus className="mr-2 h-4 w-4" />
               Add New User
             </Button>

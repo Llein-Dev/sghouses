@@ -1,9 +1,9 @@
 "use client";
-import { useState } from "react"
-import { ChevronDown, ChevronUp, Filter } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Checkbox } from "@/components/ui/checkbox"
+import { useState } from "react";
+import { ChevronDown, ChevronUp, Filter } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const filterCategories = [
   {
@@ -33,39 +33,49 @@ const filterCategories = [
       { id: "area-district-4", label: "Quận 4" },
     ],
   },
-]
+];
 
 export function ProductFilter() {
-  const [openCategories, setOpenCategories] = useState([])
-  const [selectedFilters, setSelectedFilters] = useState([])
+  // Initialize all categories to open by default
+  const [openCategories, setOpenCategories] = useState(
+    filterCategories.map((category) => category.name)
+  );
+  const [selectedFilters, setSelectedFilters] = useState([]);
 
   const toggleCategory = (categoryName) => {
     setOpenCategories((prev) =>
       prev.includes(categoryName)
         ? prev.filter((name) => name !== categoryName)
-        : [...prev, categoryName])
-  }
+        : [...prev, categoryName]
+    );
+  };
 
   const toggleFilter = (filterId) => {
     setSelectedFilters((prev) =>
       prev.includes(filterId)
         ? prev.filter((id) => id !== filterId)
-        : [...prev, filterId])
-  }
+        : [...prev, filterId]
+    );
+  };
 
   return (
-    (<Card className="w-full max-w-sm border-none shadow-md py-5">
+    <Card className="w-full max-w-sm border-none shadow-md py-5">
       <CardHeader>
-        <CardTitle><div className=" justify-center text-[#00008B]  flex "><Filter className="mr-4" />Lọc kết quả nhanh</div></CardTitle>
+        <CardTitle>
+          <div className="justify-center text-[#00008B] flex">
+            <Filter className="mr-4" />
+            Lọc kết quả nhanh
+          </div>
+        </CardTitle>
       </CardHeader>
       <CardContent>
         {filterCategories.map((category) => (
           <div key={category.name} className="mb-4">
             <Button
               variant="ghost"
-              size-
               className="w-full justify-between text-lg"
-              onClick={() => toggleCategory(category.name)}>
+              onClick={() => toggleCategory(category.name)}
+            >
               {category.name}
               {openCategories.includes(category.name) ? (
                 <ChevronUp className="h-4 w-4" />
@@ -80,10 +90,12 @@ export function ProductFilter() {
                     <Checkbox
                       id={option.id}
                       checked={selectedFilters.includes(option.id)}
-                      onCheckedChange={() => toggleFilter(option.id)} />
+                      onCheckedChange={() => toggleFilter(option.id)}
+                    />
                     <label
                       htmlFor={option.id}
-                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    >
                       {option.label}
                     </label>
                   </div>
@@ -93,6 +105,6 @@ export function ProductFilter() {
           </div>
         ))}
       </CardContent>
-    </Card>)
+    </Card>
   );
 }

@@ -12,6 +12,7 @@ import { DropdownMenu } from '@radix-ui/react-dropdown-menu'
 import { DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from './ui/dropdown-menu'
 import { updateAvatar, updateProfile } from '@/utils/api/Auth/api'
 import { Spinner } from './ui/loading'
+import Breadcrumb from './breadcum'
 
 const formatDate = (isoDateString) => {
     if (!isoDateString) return '---'; // Return placeholder if the date string is not valid
@@ -87,7 +88,8 @@ export default function EditProfile2Component({ user }) {
     };
 
     return (
-        <div className="container mx-auto p-4 flex gap-4 flex-wrap">
+        <div className="container mx-auto px-4 py-4 flex flex-wrap gap-4">
+            <Breadcrumb />
             {loading ? (
                 <div className='flex justify-center w-full h-64'>  <Spinner /></div>
             ) : (
@@ -110,7 +112,7 @@ export default function EditProfile2Component({ user }) {
                             ))}
                         </nav>
                     </Card>
-                    <div className="flex-1 space-y-6">
+                    <div className="flex-1">
                         {activeTab === "canhan" && (
                             <Card className="p-2">
                                 <CardHeader>

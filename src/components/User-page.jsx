@@ -8,12 +8,14 @@ import { ProductCardColCheapComponent } from "./product-card-cheap";
 import { useFetchCheapHouse } from "@/utils/api/GET/api";
 import { Spinner } from "./ui/loading";
 import ErrorComponent from "./ui/error";
+import Breadcrumb from "./breadcum";
 
 export default function UserProfile({ user, GoEditProfile }) {
     const { CheapHouse, loading: CheapLoading, error: CheapError } = useFetchCheapHouse();
 
     return (
-        <div className="container mx-auto p-4 space-y-8">
+        <div className="container mx-auto px-4 space-y-4 py-4 gap-4">
+            <Breadcrumb />
             <Card className="flex justify-between bg-white bg-opacity-75 px-2 py-4 border rounded-lg">
                 <div className="flex items-end space-x-4">
                     <Avatar className="w-24 h-24 border-4 border-white shadow-lg">

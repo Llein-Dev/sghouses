@@ -5,6 +5,7 @@ import { ProductCardRowComponent } from "@/components/product-card-row";
 import { ProductFilter } from "@/components/product-filter";
 import Breadcrumb from "@/components/breadcum";
 import { Spinner } from "@/components/ui/loading";
+import { SearchFilterComponent } from "@/components/search-bar-filter";
 
 export default function FilterPage() {
     const [filteredProducts, setFilteredProducts] = useState([]);
@@ -36,6 +37,7 @@ export default function FilterPage() {
     return (
         <div className="container mx-auto px-4 space-y-4 py-4">
             <Breadcrumb />
+            <SearchFilterComponent/>
             <div className="flex flex-col-reverse md:flex-row gap-8">
                 <div className="md:w-3/4 space-y-4 bg-white rounded-lg p-4 shadow-md">
                     <div className="flex justify-between items-center">

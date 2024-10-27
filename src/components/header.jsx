@@ -178,7 +178,7 @@ export function HeaderComponent() {
                 </div>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem><Link className="w-full" href="/profile">Hồ sơ</Link> </DropdownMenuItem>
-                <DropdownMenuItem><Link className="w-full" href="/history">Lịch sử</Link> </DropdownMenuItem>
+                <DropdownMenuItem><Link className="w-full" href="/profile/history">Lịch sử</Link> </DropdownMenuItem>
                 <DropdownMenuItem><Link className="w-full" href="/profile/edit">Cài đặt</Link> </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={handleLogout}>
@@ -269,6 +269,7 @@ export function HeaderComponent() {
                   <Button variant="ghost" className="justify-start" onClick={() => { }}>
                     Hồ sơ
                   </Button>
+                  
                   <Button variant="ghost" className="justify-start" onClick={() => { }}>
                     Cài đặt
                   </Button>

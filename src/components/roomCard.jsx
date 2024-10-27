@@ -3,12 +3,24 @@ import { Heart, ChevronLeft, ChevronRight, Lightbulb, Droplet, Wifi, Trash } fro
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Label } from "./ui/label";
+import { Input } from "./ui/input";
+import { Textarea } from "./ui/textarea";
 
 export default function RoomComponents({ room }) {
   console.log(room);
 
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0)
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const [formData, setFormData] = useState({
+    fullname: "",
+    phonenumber: "",
+    id_user: "",
+    id_room: room.id,
+    content: ""
+  });
+
 
   // Sử dụng split để tạo mảng hình ảnh từ chuỗi
   const images = room.hinh_anh.split(";");  // Tách chuỗi thành mảng
@@ -20,6 +32,41 @@ export default function RoomComponents({ room }) {
   const prevImage = () => {
     setCurrentImageIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
   };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target
+    setFormData(prevData => ({
+      ...prevData,
+      [name]: value
+    }))
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const dataToSubmit = {
+      ...formData,
+      id_user: formData.id_user || null, 
+    };
+
+    try {
+      const response = await fetch('http://localhost:8000/api/contact_room/add', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dataToSubmit),
+      });
+
+      if (response.ok) {
+        setIsDialogOpen(false);
+      } else {
+        throw new Error('Failed to submit rental request');
+      }
+    } catch (error) {
+      console.error(error); // Optional: Log the error for debugging
+    }
+  };
+
 
   return (
     <Card className="w-full border-none shadow-md">
@@ -129,7 +176,61 @@ export default function RoomComponents({ room }) {
                   <Heart className="h-4 w-4" />
                   <span className="sr-only">Add to favorites</span>
                 </Button>
-                <Button variant="orange">Thuê ngay</Button>
+                <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                  <DialogTrigger asChild>
+                    <Button variant="orange">Thuê ngay</Button>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-[425px]">
+                    <DialogHeader>
+                      <DialogTitle>Đăng ký thuê phòng</DialogTitle>
+                    </DialogHeader>
+                    <form onSubmit={handleSubmit} className="grid space-y-4 py-4">
+                      <div className="grid grid-cols-1 items-center gap-4">
+                        <Label htmlFor="fullname" >
+                          Họ tên
+                        </Label>
+                        <Input
+                          id="fullname"
+                          name="fullname"
+                          value={formData.fullname}
+                          onChange={handleInputChange}
+                          className="col-span-3"
+                          required
+                        />
+                      </div>
+                      <div className="grid grid-cols-1 items-center gap-4">
+                        <Label htmlFor="phonenumber">
+                          Số điện thoại
+                        </Label>
+                        <Input
+                          id="phonenumber"
+                          name="phonenumber"
+                          value={formData.phonenumber}
+                          onChange={handleInputChange}
+                          className="col-span-3"
+                          required
+                        />
+
+                      </div>
+                      <div className="grid grid-cols-1 items-center gap-4">
+                        <Label htmlFor="content">Nội dung</Label>
+                        <Textarea
+                          id="content"
+                          name="content"
+                          value={formData.content}
+                          onChange={handleInputChange}
+                          className="w-full"
+                          required
+                        />
+                      </div>
+                      <input type="hidden" name="id_user" value={formData.id_user} />
+                      <input type="hidden" name="id_room" value={formData.id_room} />
+                      <div className="flex justify-end mt-4">
+                        <Button className="w-full" variant="orange" type="submit">Gửi yêu cầu</Button>
+                      </div>
+                    </form>
+                  </DialogContent>
+                </Dialog>
               </div>
             </div>
           </div>

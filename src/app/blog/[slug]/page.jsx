@@ -1,11 +1,21 @@
-
+"use client"
 import { ArrowLeft, Facebook, Twitter, Linkedin } from 'lucide-react'
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import Breadcrumb from '@/components/breadcum'
+import { useParams } from 'next/navigation'
+import { useFetchDetailBlog } from '@/utils/api/GET/api'
 
 export default function ArticleDetail() {
+    const i =[
+        {image01:"/dark-blue-house-exterior-2.png"},
+        {image01:"/dark-blue-house-exterior-2.png"},
+        {image01:"/dark-blue-house-exterior-2.png"}
+       
+    ]
+    const { slug } = useParams(); 
+    const { detailBlog } = useFetchDetailBlog(slug);
     return (
         <div className="container mx-auto px-4 space-y-4 pt-4">
             <Breadcrumb />
@@ -14,7 +24,7 @@ export default function ArticleDetail() {
 
                     <div className="lg:col-span-2 bg-white p-8 ">
                         <div className="mb-8 space-y-4">
-                            <h1 className="text-4xl text-blue-900 font-bold mb-4">Tiêu đề bài viết: Khám phá văn hóa SGhouses Việt Nam</h1>
+                            <h1 className="text-4xl text-blue-900 font-bold mb-4">{detailBlog.title}</h1>
                             <div className="flex items-center space-x-4 text-sm text-muted-foreground">
                                 <span>Ngày tải: Ngày 24 tháng 10, 2024</span>
 

@@ -1,37 +1,26 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation"; // To access URL params
 import { ProductCardRowComponent } from "@/components/product-card-row";
 import { ProductFilter } from "@/components/product-filter";
 import Breadcrumb from "@/components/breadcum";
-import { SearchBarComponent } from "@/components/search-bar";
 import { Spinner } from "@/components/ui/loading";
 
-export default function ProductPage() {
-    const searchParams = useSearchParams();
+export default function FilterPage() {
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [loading, setLoading] = useState(false);
 
     const productCount = filteredProducts?.length || 0;
 
-    // Fetch filtered products based on URL params
     const fetchFilteredProducts = async () => {
         setLoading(true);
         try {
-            // Create query string from URL params
-            const params = new URLSearchParams(searchParams);
-
+            // Get the current search parameters from the window location
+            const params = new URLSearchParams(window.location.search);
             const response = await fetch(`http://localhost:8000/api/filter?${params.toString()}`);
-            console.log(`Fetching from: http://localhost:8000/api/filter?${params.toString()}`);
-
+            
             if (!response.ok) throw new Error("Failed to fetch data");
-
             const data = await response.json();
-
-            // Log the data in a readable format
-            console.log("Fetched data:", data); // Pretty print the JSON data
-
             setFilteredProducts(data);
         } catch (error) {
             console.error("Error fetching products:", error);
@@ -40,11 +29,9 @@ export default function ProductPage() {
         }
     };
 
-
     useEffect(() => {
         fetchFilteredProducts();
-    }, [searchParams]); // Re-run fetch whenever URL params change
-    console.log(filteredProducts);
+    }, []); // Empty dependency array ensures it runs only on mount
 
     return (
         <div className="container mx-auto px-4 space-y-4 py-4">
@@ -62,7 +49,7 @@ export default function ProductPage() {
                     {loading ? (
                         <div className="py-8"><Spinner /></div>
                     ) : (
-                        filteredProducts?.map((product, index) => (
+                        filteredProducts.map((product, index) => (
                             <ProductCardRowComponent key={index} product={product} />
                         ))
                     )}

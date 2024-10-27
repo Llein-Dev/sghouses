@@ -34,40 +34,31 @@ export default function BuildingDetailComponent() {
                     </CardTitle>
                 </CardHeader>
                 <CardContent>
+                    {/* Ảnh ở đầu page */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div className="md:col-span-2 space-y-4 h-full flex flex-col">
-                            <Image
-                                src={building.gallery.image_1}
-                                alt="Building front view"
-                                width={600}
-                                height={300}
-                                className="w-full rounded-lg flex-1 object-cover" />
-                            <Image
-                                src={building.gallery.image_2}
-                                alt="Building side view"
-                                width={600}
-                                height={300}
-                                className="w-full rounded-lg flex-1 object-cover" />
+                            {building.image.split(";").slice(0, 2).map((imgUrl, index) => (
+                                <Image
+                                    key={index}
+                                    src={imgUrl}
+                                    alt={`Building view ${index + 1}`}
+                                    width={600}
+                                    height={300}
+                                    className="w-full rounded-lg flex-1 object-cover"
+                                />
+                            ))}
                         </div>
                         <div className="space-y-4 h-full flex flex-col">
-                            <Image
-                                src={building.gallery.image_3}
-                                alt="Interior view 1"
-                                width={300}
-                                height={200}
-                                className="w-full rounded-lg flex-1 object-cover" />
-                            <Image
-                                src={building.gallery.image_4}
-                                alt="Interior view 2"
-                                width={300}
-                                height={200}
-                                className="w-full rounded-lg flex-1 object-cover" />
-                            <Image
-                                src={building.gallery.image_5}
-                                alt="Interior view 3"
-                                width={300}
-                                height={200}
-                                className="w-full rounded-lg flex-1 object-cover" />
+                            {building.image.split(";").slice(2, 5).map((imgUrl, index) => (
+                                <Image
+                                    key={index}
+                                    src={imgUrl}
+                                    alt={`Interior view ${index + 1}`}
+                                    width={300}
+                                    height={200}
+                                    className="w-full rounded-lg flex-1 object-cover"
+                                />
+                            ))}
                         </div>
                     </div>
                 </CardContent>
@@ -78,7 +69,7 @@ export default function BuildingDetailComponent() {
                     <CardTitle>Description</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    {building.description}
+                    {building.mo_ta}
                 </CardContent>
             </Card>
 
@@ -116,7 +107,7 @@ export default function BuildingDetailComponent() {
                 </CardHeader>
                 <CardContent>
                     <div className="space-y-4">
-                        {Object.values(building.list_room).map((room, index) => (
+                        {Object.values(building.list_room || []).map((room, index) => (
                             <RoomComponents key={index} room={room} />
                         ))}
                     </div>

@@ -32,7 +32,7 @@ export default function UserPage() {
             fetchUserProfile();
         }
     }, []); // Run only on mount
-    console.log(user);
+
 
     return (
         <>

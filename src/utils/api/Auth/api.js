@@ -11,20 +11,13 @@ export const loginAPI = async (email, password) => {
             email,
             password,
         });
-        Cookies.set('token', response.data.token, { expires: 7 }); // Token sẽ hết hạn sau 7 ngày
-        return response.data; // Trả về dữ liệu phản hồi
+        Cookies.set('token', response.data.token, { expires: 7 }); // Token will expire in 7 days
+        return response.data; // Return response data
     } catch (error) {
-        // Kiểm tra xem có phản hồi từ server không
-        if (error.response) {
-            // Nếu có, lấy thông điệp lỗi từ phản hồi
-            const errorMessage = error.response.data.message || 'Login failed. Please try again.';
-            throw new Error(errorMessage);
-        } else {
-            // Nếu không có phản hồi, có thể do lỗi mạng
-            throw new Error('Network error. Please try again later.');
-        }
+        handleApiError(error, 'Login failed. Please try again.');
     }
 };
+
 export const signupAPI = async (name, email, password) => {
     try {
         const response = await axios.post(`${API_BASE_URL}/api/register`, {
@@ -32,14 +25,9 @@ export const signupAPI = async (name, email, password) => {
             email,
             password,
         });
-        return response.data; 
+        return response.data;
     } catch (error) {
-        if (error.response) {
-            const errorMessage = error.response.data.message || 'Sign up failed. Please try again.';
-            throw new Error(errorMessage);
-        } else {
-            throw new Error('Network error. Please try again later.');
-        }
+        handleApiError(error, 'Sign up failed. Please try again.');
     }
 };
 
@@ -47,16 +35,52 @@ export const signupAPI = async (name, email, password) => {
 export const profileAPI = async () => {
     const token = Cookies.get('token');
     try {
-        // Send a GET request with token in header
         const response = await axios.get(`${API_BASE_URL}/api/profile`, {
             headers: {
-                Authorization: `Bearer ${token}`, // Send token via Authorization header
+                Authorization: `Bearer ${token}`,
             },
         });
-        return response.data; // Return the response data
+        return response.data;
     } catch (error) {
+        handleApiError(error, 'Failed to fetch profile.');
+    }
+};
 
-        throw error.response?.data?.message;
+export const updateAvatar = async (formData) => {
+    const token = Cookies.get('token');
+    try {
+        const response = await axios.post(`${API_BASE_URL}/api/updateAvatar`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        return response.data;
+    } catch (error) {
+        handleApiError(error, 'Failed to update avatar.');
+    }
+};
 
+export const updateProfile = async (data) => {
+    const token = Cookies.get('token');
+    try {
+        const response = await axios.put(`${API_BASE_URL}/api/updateProfile`, data, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        return response.data;
+    } catch (error) {
+        handleApiError(error, 'Failed to update profile.');
+    }
+};
+
+// Centralized error handling function
+const handleApiError = (error, defaultMessage) => {
+    if (error.response) {
+        const errorMessage = error.response.data.message || defaultMessage;
+        throw new Error(errorMessage);
+    } else {
+        throw new Error('Network error. Please try again later.');
     }
 };

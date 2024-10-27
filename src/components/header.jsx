@@ -45,7 +45,7 @@ export function HeaderComponent() {
     Cookies.remove("token");
     handleLoginToggle();
   };
-  
+
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
@@ -156,7 +156,7 @@ export function HeaderComponent() {
                 <Button variant="ghost" className="relative p-0">
                   <div className="flex items-center space-x-2 p-2">
                     <Avatar className="h-10 w-10">
-                      <AvatarImage src="/placeholder-avatar.jpg" alt={user?.name || "User"} />
+                      <AvatarImage alt={user?.name || "User"} src={`http://localhost:8000/storage/${user.avatar}`} />
                       <AvatarFallback>{user?.name.charAt(0) || "User"}</AvatarFallback>
                     </Avatar>
 
@@ -166,7 +166,7 @@ export function HeaderComponent() {
               <DropdownMenuContent className=" w-full" align="end" forceMount>
                 <div className="flex items-center space-x-2 p-2">
                   <Avatar className="h-10 w-10">
-                    <AvatarImage src="/placeholder-avatar.jpg" alt={user?.name || "User"} />
+                    <AvatarImage alt={user?.name || "User"} src={`http://localhost:8000/storage/${user.avatar}`} />
                     <AvatarFallback>{user?.name.charAt(0) || "User"}</AvatarFallback>
                   </Avatar>
                   <div className="flex flex-col space-y-1">
@@ -255,7 +255,7 @@ export function HeaderComponent() {
                 <>
                   <div className="flex items-center space-x-2 p-2">
                     <Avatar className="h-10 w-10">
-                      <AvatarImage src="/placeholder-avatar.jpg" alt={user?.name || "User"} />
+                      <AvatarImage alt={user?.name || "User"} src={`http://localhost:8000/storage/${user?.avatar}`} />
                       <AvatarFallback>{user?.name.charAt(0) || "User"}</AvatarFallback>
 
                     </Avatar>

@@ -9,7 +9,8 @@ import { Card, CardContent, CardFooter, CardTitle } from "@/components/ui/card";
 export function ProductCardRowComponent({
     product
 }) {
-
+    console.log(product);
+    
 
     const formatCurrency = (amount) => {
         return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);

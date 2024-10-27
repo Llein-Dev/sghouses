@@ -16,7 +16,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
-import { useFetchAdminTotal } from '@/AdminAPI/GET/api';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+// import { useFetchAdminTotal } from '@/AdminAPI/GET/api';
 const deploymentData = [
   { name: 'Jan', deployments: 65 },
   { name: 'Feb', deployments: 59 },
@@ -44,8 +46,50 @@ const recentDeployments = [
   { id: 4, project: 'Analytics Dashboard', status: 'In Progress', time: 'Just now' },
 ]
 
+
+
 export default function Home() {
-  const [Total] = useFetchAdminTotal();
+  // const [Total] = useFetchAdminTotal();
+
+  const [data, setData] = useState([]);
+  const [error, setError] = useState(null);
+  const router = useRouter();
+  
+  useEffect(() => {
+    const adminToken = 'Rn9cqwezWLEUKqk4jrJuTfG7lZs5XZnlQreS9HR1bf837a1d'; // Token cần thiết
+  
+    const fetchData = async () => {
+      try {
+        const response = await fetch('http://localhost:8000/api/dashboard/total', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${adminToken}`,
+            'Content-Type': 'application/json',
+          },
+        });
+  
+        if (!response.ok) {
+          throw new Error('Không thể truy cập dữ liệu');
+        }
+  
+        const result = await response.json();
+        setData(result);
+      } catch (error) {
+        setError(error.message);
+      }
+    };
+  
+    // Kiểm tra token trước khi gọi API
+    if (adminToken === 'Rn9cqwezWLEUKqk4jrJuTfG7lZs5XZnlQreS9HR1bf837a1d') {
+      fetchData();
+    } else {
+      router.push('/login'); // Nếu token không hợp lệ, chuyển về trang đăng nhập
+    }
+  }, [router]);
+  
+  if (error) return <p>Lỗi: {error}</p>;
+  if (!data) return <p>Đang tải dữ liệu...</p>;
+
 
   return (
     <>
@@ -66,7 +110,7 @@ export default function Home() {
             </svg>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{Total.total_user}---</div>
+            <div className="text-2xl font-bold">{data.total_user}</div>
           </CardContent>
         </Card>
         <Card>
@@ -87,7 +131,7 @@ export default function Home() {
             </svg>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{Total.total_view}---</div>
+            <div className="text-2xl font-bold">{data.total_view}</div>
           
           </CardContent>
         </Card>
@@ -108,7 +152,7 @@ export default function Home() {
             </svg>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{Total.total_contact_room}---</div>
+            <div className="text-2xl font-bold">{data.total_contact_room}</div>
           </CardContent>
         </Card>
       </div>

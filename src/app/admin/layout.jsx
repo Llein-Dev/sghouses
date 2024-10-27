@@ -1,33 +1,20 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
-
-// Thay đổi cách import từ recharts
-import BarChart from "recharts/lib/chart/BarChart";
-import Bar from "recharts/lib/cartesian/Bar";
-import XAxis from "recharts/lib/cartesian/XAxis";
-import YAxis from "recharts/lib/cartesian/YAxis";
-import CartesianGrid from "recharts/lib/cartesian/CartesianGrid";
-import Tooltip from "recharts/lib/component/Tooltip";
-import ResponsiveContainer from "recharts/lib/component/ResponsiveContainer";
-
 import {
+  LayoutDashboard,
+  Users,
+  PhoneCall,
+  FileText,
+  Bed,
+  Building,
+  Settings,
   Bell,
   ChevronDown,
-  Home,
-  LayoutDashboard,
-  Settings,
-  Users,
+  Image
 } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -36,102 +23,60 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 
-// Sample data for charts
+const navItems = [
+  { href: "/admin", label: "Dashboard", icon: <LayoutDashboard className="p-1 bg-blue-900 rounded text-white" />, key: "dashboard" },
+  { href: "/admin/users", label: "Users", icon: <Users className="p-1 bg-blue-900 rounded text-white" />, key: "users" },
+  { href: "/admin/contacts", label: "Contacts", icon: <PhoneCall className="p-1 bg-blue-900 rounded text-white" />, key: "contacts" },
+  { href: "/admin/contracts", label: "Contracts", icon: <FileText className="p-1 bg-blue-900 rounded text-white" />, key: "contracts" },
+  { href: "/admin/rooms", label: "Rooms", icon: <Bed className="p-1 bg-blue-900 rounded text-white" />, key: "rooms" },
+  { href: "/admin/buildings", label: "Buildings", icon: <Building className="p-1 bg-blue-900 rounded text-white" />, key: "buildings" },
+  { href: "/admin/banners", label: "Banners", icon: <Image className="p-1 bg-blue-900 rounded text-white" />, key: "banners" },
+  { href: "/admin/settings", label: "Settings", icon: <Settings className="p-1 bg-blue-900 rounded text-white" />, key: "settings" },
+];
 
 export default function RootLayout({ children }) {
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState("dashboard");
 
+  useEffect(() => {
+    const path = router.pathname;
+    if (path) {
+      const foundTab = navItems.find(item => path.includes(item.href));
+      setActiveTab(foundTab ? foundTab.key : "dashboard");
+    }
+  }, [router.pathname]);
+
+  const activeTabLabel = navItems.find(item => item.key === activeTab)?.label || "Dashboard";
+
   return (
-    <div className="flex  bg-gray-100">
-      {/* Sidebar */}
-      <aside className="w-64 bg-white shadow-m w-12 md:w-64">
-        <div className="p-5 md:block hidden">
-          <h1 className="text-2xl font-bold">SGHouses</h1>
+    <div className="flex bg-gray-100 h-screen">
+      <aside className="w-64 shadow-md overflow-y-auto bg-white">
+        <div className="m-2 pb-5 hidden md:block border-b">
+          <img src="/logo.svg" alt="" className="w-full" />
         </div>
-        <nav className="space-y-2 text-sm font-semibold">
-          <Link
-            href="/dashboard"
-            onClick={() => setActiveTab("dashboard")}
-            className={`flex items-center space-x-0 lg:space-x-3 px-4 py-3 text-gray-700 ${activeTab === "dashboard" ? "bg-gray-200" : ""}`}
-          >
-            <LayoutDashboard />
-            <span className="hidden md:block">Dashboard</span> {/* Hide on mobile */}
-          </Link>
-
-          <Link
-            href="/projects"
-            onClick={() => setActiveTab("projects")}
-            className={`flex items-center space-x-0 lg:space-x-3 px-4 py-3 text-gray-700 ${activeTab === "projects" ? "bg-gray-200" : ""}`}
-          >
-            <Home />
-            <span className="hidden md:block">Projects</span> {/* Hide on mobile */}
-          </Link>
-
-          <Link
-            href="/users"
-            onClick={() => setActiveTab("users")}
-            className={`flex items-center space-x-0 lg:space-x-3 px-4 py-3 text-gray-700 ${activeTab === "users" ? "bg-gray-200" : ""}`}
-          >
-            <Users />
-            <span className="hidden md:block">Users</span> {/* Hide on mobile */}
-          </Link>
-
-          <Link
-            href="/contact"
-            onClick={() => setActiveTab("contact")}
-            className={`flex items-center space-x-0 lg:space-x-3 px-4 py-3 text-gray-700 ${activeTab === "contact" ? "bg-gray-200" : ""}`}
-          >
-            <Users /> {/* Replace with appropriate icon for Contact */}
-            <span className="hidden md:block">Contact</span> {/* Hide on mobile */}
-          </Link>
-
-          <Link
-            href="/contract"
-            onClick={() => setActiveTab("contract")}
-            className={`flex items-center space-x-0 lg:space-x-3 px-4 py-3 text-gray-700 ${activeTab === "contract" ? "bg-gray-200" : ""}`}
-          >
-            <Users /> {/* Replace with appropriate icon for Contract */}
-            <span className="hidden md:block">Contracts</span> {/* Hide on mobile */}
-          </Link>
-
-          <Link
-            href="/rooms"
-            onClick={() => setActiveTab("rooms")}
-            className={`flex items-center space-x-0 lg:space-x-3 px-4 py-3 text-gray-700 ${activeTab === "rooms" ? "bg-gray-200" : ""}`}
-          >
-            <Users /> {/* Replace with appropriate icon for Rooms */}
-            <span className="hidden md:block">Rooms</span> {/* Hide on mobile */}
-          </Link>
-
-          <Link
-            href="/buildings"
-            onClick={() => setActiveTab("buildings")}
-            className={`flex items-center space-x-0 lg:space-x-3 px-4 py-3 text-gray-700 ${activeTab === "buildings" ? "bg-gray-200" : ""}`}
-          >
-            <Users /> {/* Replace with appropriate icon for Buildings */}
-            <span className="hidden md:block">Buildings</span> {/* Hide on mobile */}
-          </Link>
-
-          <Link
-            href="/settings"
-            onClick={() => setActiveTab("settings")}
-            className={`flex items-center space-x-0 lg:space-x-3 px-4 py-3 text-gray-700 ${activeTab === "settings" ? "bg-gray-200" : ""}`}
-          >
-            <Settings />
-            <span className="hidden md:block">Settings</span> {/* Hide on mobile */}
-          </Link>
+        <nav className="space-y-2 text-sm font-semibold px-2">
+          {navItems.map(({ href, label, icon, key }) => (
+            <Link
+              key={key}
+              href={href}
+              onClick={() => setActiveTab(key)}
+              className={`flex items-center space-x-0 rounded lg:space-x-3 px-4 py-3 transition-colors duration-200 ${activeTab === key
+                  ? "bg-blue-900 text-white"
+                  : "bg-gray-100 text-gray-700 hover:bg-blue-100 hover:text-blue-900"
+                }`}
+            >
+              {icon}
+              <span className="hidden md:block">{label}</span>
+            </Link>
+          ))}
         </nav>
       </aside>
 
-      {/* Main content */}
-      <main className="w-full">
-        {/* Top navigation */}
-        <header className="bg-white shadow-sm">
-          <div className=" p-4 flex justify-between items-center">
-            <h2 className="font-semibold text-xl text-gray-800">Dashboard</h2>
+      <main className="flex-1 flex flex-col">
+        <header className="bg-blue-900 shadow-sm text-white">
+          <div className="p-4 flex justify-between items-center">
+            <h2 className="font-semibold text-xl ">{activeTabLabel}</h2>
             <div className="flex items-center">
               <Button variant="ghost" size="icon" className="mr-2">
                 <Bell className="h-5 w-5" />
@@ -155,10 +100,9 @@ export default function RootLayout({ children }) {
           </div>
         </header>
 
-        {/* Dashboard content */}
-        <div className="p-4">
+        {/* Scrollable content area */}
+        <div className="flex-1 overflow-y-auto p-4">
           {children}
-          {/* Overview Cards */}
         </div>
       </main>
     </div>

@@ -24,24 +24,24 @@ import {
 import { Label } from "@/components/ui/label"
 import { Badge } from "@/components/ui/badge"
 
-export default function RoomContent() {
-  const [rooms, setRooms] = useState([
+export default function BuildingContent() {
+  const [Buildings, setBuildings] = useState([
     { id: 1, number: "A101", type: "Single", price: 500, status: "Available" },
     { id: 2, number: "B205", type: "Double", price: 750, status: "Occupied" },
     { id: 3, number: "C310", type: "Suite", price: 1000, status: "Maintenance" },
   ])
 
-  const [newRoom, setNewRoom] = useState({ number: "", type: "", price: "", status: "Available" })
+  const [newBuilding, setNewBuilding] = useState({ number: "", type: "", price: "", status: "Available" })
   const [searchTerm, setSearchTerm] = useState("")
 
-  const handleAddRoom = () => {
-    setRooms([...rooms, { id: rooms.length + 1, ...newRoom }])
-    setNewRoom({ number: "", type: "", price: "", status: "Available" })
+  const handleAddBuilding = () => {
+    setBuildings([...Buildings, { id: Buildings.length + 1, ...newBuilding }])
+    setNewBuilding({ number: "", type: "", price: "", status: "Available" })
   }
 
-  const filteredRooms = rooms.filter(room => 
-    room.number.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    room.type.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredBuildings = Buildings.filter(Building =>
+    Building.number.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    Building.type.toLowerCase().includes(searchTerm.toLowerCase())
   )
 
   const getStatusColor = (status) => {
@@ -56,30 +56,38 @@ export default function RoomContent() {
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold">Room Management</h2>
+        <div className="flex items-center space-x-2">
+          <Search className="h-5 w-5 text-gray-500" />
+          <Input
+            placeholder="Search Buildings..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="max-w-sm"
+          />
+        </div>
         <Dialog>
           <DialogTrigger asChild>
             <Button>
               <PlusCircle className="mr-2 h-4 w-4" />
-              Add New Room
+              Add New Building
             </Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
-              <DialogTitle>Add New Room</DialogTitle>
+              <DialogTitle>Add New Building</DialogTitle>
               <DialogDescription>
-                Create a new room in the system.
+                Create a new Building in the system.
               </DialogDescription>
             </DialogHeader>
             <div className="grid gap-4 py-4">
               <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="number" className="text-right">
-                  Room Number
+                  Building Number
                 </Label>
                 <Input
                   id="number"
-                  value={newRoom.number}
-                  onChange={(e) => setNewRoom({ ...newRoom, number: e.target.value })}
+                  value={newBuilding.number}
+                  onChange={(e) => setNewBuilding({ ...newBuilding, number: e.target.value })}
                   className="col-span-3"
                 />
               </div>
@@ -89,8 +97,8 @@ export default function RoomContent() {
                 </Label>
                 <Input
                   id="type"
-                  value={newRoom.type}
-                  onChange={(e) => setNewRoom({ ...newRoom, type: e.target.value })}
+                  value={newBuilding.type}
+                  onChange={(e) => setNewBuilding({ ...newBuilding, type: e.target.value })}
                   className="col-span-3"
                 />
               </div>
@@ -101,45 +109,38 @@ export default function RoomContent() {
                 <Input
                   id="price"
                   type="number"
-                  value={newRoom.price}
-                  onChange={(e) => setNewRoom({ ...newRoom, price: e.target.value })}
+                  value={newBuilding.price}
+                  onChange={(e) => setNewBuilding({ ...newBuilding, price: e.target.value })}
                   className="col-span-3"
                 />
               </div>
             </div>
             <DialogFooter>
-              <Button type="submit" onClick={handleAddRoom}>Add Room</Button>
+              <Button type="submit" onClick={handleAddBuilding}>Add Building</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
+
       </div>
-      <div className="flex items-center space-x-2">
-        <Search className="h-5 w-5 text-gray-500" />
-        <Input
-          placeholder="Search rooms..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="max-w-sm"
-        />
-      </div>
+
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Room Number</TableHead>
+            <TableHead>Building Number</TableHead>
             <TableHead>Type</TableHead>
             <TableHead>Price</TableHead>
             <TableHead>Status</TableHead>
             <TableHead>Actions</TableHead>
           </TableRow>
         </TableHeader>
-        <TableBody>
-          {filteredRooms.map((room) => (
-            <TableRow key={room.id}>
-              <TableCell>{room.number}</TableCell>
-              <TableCell>{room.type}</TableCell>
-              <TableCell>${room.price}</TableCell>
+        <TableBody className="">
+          {filteredBuildings.map((Building) => (
+            <TableRow key={Building.id}>
+              <TableCell>{Building.number}</TableCell>
+              <TableCell>{Building.type}</TableCell>
+              <TableCell>${Building.price}</TableCell>
               <TableCell>
-                <Badge className={getStatusColor(room.status)}>{room.status}</Badge>
+                <Badge className={getStatusColor(Building.status)}>{Building.status}</Badge>
               </TableCell>
               <TableCell>
                 <div className="flex space-x-2">

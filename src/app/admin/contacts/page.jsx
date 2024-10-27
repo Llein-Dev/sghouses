@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Search, FileText, Eye, Download } from  "lucide-react"
+import { Search, FileText, Eye, Download } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
@@ -31,7 +31,7 @@ export default function ContractContent() {
 
   const [searchTerm, setSearchTerm] = useState("")
 
-  const filteredContracts = contracts.filter(contract => 
+  const filteredContracts = contracts.filter(contract =>
     contract.tenant.toLowerCase().includes(searchTerm.toLowerCase()) ||
     contract.room.toLowerCase().includes(searchTerm.toLowerCase())
   )
@@ -48,21 +48,21 @@ export default function ContractContent() {
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold">Contract Management</h2>
+        <div className="flex items-center space-x-2">
+          <Search className="h-5 w-5 text-gray-500" />
+          <Input
+            placeholder="Search contracts..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="max-w-sm"
+          />
+        </div>
         <Button>
           <FileText className="mr-2 h-4 w-4" />
           New Contract
         </Button>
       </div>
-      <div className="flex items-center space-x-2">
-        <Search className="h-5 w-5 text-gray-500" />
-        <Input
-          placeholder="Search contracts..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="max-w-sm"
-        />
-      </div>
+
       <Table>
         <TableHeader>
           <TableRow>

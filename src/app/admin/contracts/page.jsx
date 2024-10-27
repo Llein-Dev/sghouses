@@ -31,7 +31,7 @@ export default function ContactContent() {
 
   const [searchTerm, setSearchTerm] = useState("")
 
-  const filteredContacts = contacts.filter(contact => 
+  const filteredContacts = contacts.filter(contact =>
     contact.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     contact.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
     contact.phone.includes(searchTerm)
@@ -49,17 +49,17 @@ export default function ContactContent() {
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold">Contact Management</h2>
+        <div className="flex items-center space-x-2">
+          <Search className="h-5 w-5 text-gray-500" />
+          <Input
+            placeholder="Search contacts..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="max-w-sm"
+          />
+        </div>
       </div>
-      <div className="flex items-center space-x-2">
-        <Search className="h-5 w-5 text-gray-500" />
-        <Input
-          placeholder="Search contacts..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="max-w-sm"
-        />
-      </div>
+
       <Table>
         <TableHeader>
           <TableRow>

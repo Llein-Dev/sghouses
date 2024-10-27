@@ -46,11 +46,11 @@ export default function BannerContent() {
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold">Banner Management</h2>
+  
         <Dialog>
           <DialogTrigger asChild>
             <Button>
-              <PlusCircle className="mr-2 h-4 w-4" />
+              <PlusCircle className="mr-2 h-4 w-4" /> 
               Add New Banner
             </Button>
           </DialogTrigger>

@@ -38,7 +38,7 @@ export default function UsersContent() {
     setNewUser({ name: "", email: "", role: "User" })
   }
 
-  const filteredUsers = users.filter(user => 
+  const filteredUsers = users.filter(user =>
     user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     user.email.toLowerCase().includes(searchTerm.toLowerCase())
   )
@@ -46,7 +46,15 @@ export default function UsersContent() {
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold">User Management</h2>
+        <div className="flex items-center space-x-2">
+          <Search className="h-5 w-5 text-gray-500" />
+          <Input
+            placeholder="Search users..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="max-w-sm"
+          />
+        </div>
         <Dialog>
           <DialogTrigger asChild>
             <Button>
@@ -91,15 +99,6 @@ export default function UsersContent() {
             </DialogFooter>
           </DialogContent>
         </Dialog>
-      </div>
-      <div className="flex items-center space-x-2">
-        <Search className="h-5 w-5 text-gray-500" />
-        <Input
-          placeholder="Search users..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="max-w-sm"
-        />
       </div>
       <Table>
         <TableHeader>

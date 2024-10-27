@@ -10,18 +10,21 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import Breadcrumb from "@/components/breadcum";
 import useBuildingDetails from "@/utils/api/GET/api"; // Import custom hook
+import { Spinner } from "@/components/ui/loading";
 
 export default function BuildingDetailComponent() {
     const { slug } = useParams(); // Lấy slug từ URL
     // Sử dụng custom hook
     const { building, loading, error } = useBuildingDetails(slug);
     if (loading) {
-        return <div>Đang tải...</div>;
+        return <div className="h-screen w-full flex justify-center items-center">
+            <Spinner />
+        </div>;
     }
     if (error) {
         return <div>Lỗi: {error.message}</div>;
     }
-console.log(building);
+    console.log(building);
 
     return (
         <div className="container mx-auto px-4 space-y-4 py-4">

@@ -50,7 +50,7 @@ export default function RootLayout({ children }) {
       router.push("/");
     }
   }, [loading, isAdmin, isAdminRoute, router]);
-
+  const isNotFoundPage = pathname === "/not-found";
   return (
     <html lang="en">
       <head>
@@ -80,7 +80,8 @@ export default function RootLayout({ children }) {
             </div>
           ) : (
             <>
-              {isAdminRoute && isAdmin ? (
+              {/* Render layout only if not on the Not Found page */}
+              {!isNotFoundPage && (isAdminRoute && isAdmin ? (
                 children
               ) : (
                 <>
@@ -92,7 +93,9 @@ export default function RootLayout({ children }) {
                   </div>
                   <FooterComponent />
                 </>
-              )}
+              ))}
+              {/* Render children for the Not Found page */}
+              {isNotFoundPage && children}
             </>
           )}
         </Provider>

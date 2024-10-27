@@ -27,8 +27,7 @@ export function SearchBarComponent() {
       className="md:absolute relative  md:bottom-0 md:left-1/2  md:transform md:-translate-x-1/2 md:translate-y-1/2 w-full max-w-6xl bg-[#00008B] rounded-none md:rounded-xl shadow-lg p-4 z-10">
       <div className="flex flex-col md:flex-row gap-4">
         <div className="flex-grow">
-          <Label htmlFor="keyword" className="sr-only">
-            Từ khóa
+          <Label htmlFor="keyword" className="sr-onưly">
           </Label>
           <Input
             size="lg"
@@ -50,21 +49,7 @@ export function SearchBarComponent() {
             {[" khu vực", "Khu vực A", "Khu vực B", "Khu vực C"].map((item) => (
               <DropdownMenuItem  key={item} onSelect={() => setArea(item)}>
                 {item}
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button  variant="outline" className=" h-12  w-full md:w-auto">
-              <Building />   {building}<ChevronDown className="ml-2 h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            {[" tòa nhà", "Tòa nhà X", "Tòa nhà Y", "Tòa nhà Z"].map((item) => (
-              <DropdownMenuItem  key={item} onSelect={() => setBuilding(item)}>
-                {item}
-              </DropdownMenuItem>
+              </DropdownMenuItem> 
             ))}
           </DropdownMenuContent>
         </DropdownMenu>

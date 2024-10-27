@@ -16,6 +16,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
+import { useFetchAdminTotal } from '@/AdminAPI/GET/api';
 const deploymentData = [
   { name: 'Jan', deployments: 65 },
   { name: 'Feb', deployments: 59 },
@@ -44,14 +45,14 @@ const recentDeployments = [
 ]
 
 export default function Home() {
-
+  const [Total] = useFetchAdminTotal();
 
   return (
     <>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 w-full">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Deployments</CardTitle>
+            <CardTitle className="text-sm font-medium">Tài khoản</CardTitle>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -65,13 +66,12 @@ export default function Home() {
             </svg>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">2,345</div>
-            <p className="text-xs text-muted-foreground">+20.1% from last month</p>
+            <div className="text-2xl font-bold">{Total.total_user}---</div>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Active Users</CardTitle>
+            <CardTitle className="text-sm font-medium">Tổng lượt liên hệ</CardTitle>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -87,13 +87,13 @@ export default function Home() {
             </svg>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">+573</div>
-            <p className="text-xs text-muted-foreground">+201 since last hour</p>
+            <div className="text-2xl font-bold">{Total.total_view}---</div>
+          
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Server Usage</CardTitle>
+            <CardTitle className="text-sm font-medium">Tổng hợp đồng</CardTitle>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -108,8 +108,7 @@ export default function Home() {
             </svg>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">78%</div>
-            <p className="text-xs text-muted-foreground">+5% from yesterday</p>
+            <div className="text-2xl font-bold">{Total.total_contact_room}---</div>
           </CardContent>
         </Card>
       </div>
@@ -118,7 +117,7 @@ export default function Home() {
       <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2 ">
         <Card>
           <CardHeader>
-            <CardTitle>Deployments</CardTitle>
+            <CardTitle>Lượt xem tháng</CardTitle>
           </CardHeader>
           <CardContent>
             <ChartContainer

@@ -1,6 +1,6 @@
 "use client";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
+import jwtDecode from "jwt-decode"; // Add this line
 import Link from "next/link";
 import {
   LayoutDashboard,
@@ -24,6 +24,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import Cookies from "js-cookie";
 
 const navItems = [
   { href: "/admin", label: "Dashboard", icon: <LayoutDashboard className="p-1 bg-blue-900 rounded text-white" />, key: "dashboard" },
@@ -37,22 +38,27 @@ const navItems = [
 ];
 
 export default function RootLayout({ children }) {
-  const router = useRouter();
+
   const [activeTab, setActiveTab] = useState("dashboard");
-
-  useEffect(() => {
-    const path = router.pathname;
-    if (path) {
-      const foundTab = navItems.find(item => path.includes(item.href));
-      setActiveTab(foundTab ? foundTab.key : "dashboard");
+  const token = Cookies.get("token");
+  let isAdmin = false;
+  if (token) {
+    try {
+      const decodedToken = jwtDecode(token);
+      isAdmin = decodedToken.role === "admin";
+    } catch (error) {
+      console.error("Token decoding failed:", error);
     }
-  }, [router.pathname]);
-
+  }
+  if (isAdminRoute && !isAdmin) {
+    router.push("/"); 
+    return null; 
+  }
   const activeTabLabel = navItems.find(item => item.key === activeTab)?.label || "Dashboard";
 
   return (
     <div className="flex bg-gray-100 h-screen">
-      <aside className="w-64 h-full shadow-md flex flex-col justify-between  bg-white">
+      <aside className="w-64 h-full shadow-md flex flex-col justify-between bg-white">
         <div>
           <div className="m-2 pb-5 hidden md:block border-b">
             <img src="/logo.svg" alt="" className="w-full" />
@@ -72,27 +78,25 @@ export default function RootLayout({ children }) {
                 <span className="hidden md:block">{label}</span>
               </Link>
             ))}
-          </nav></div>
+          </nav>
+        </div>
 
         <Button variant="orange" className="space-y-2 text-sm font-semibold mx-2 mb-4">
           <Link
-
             href="/"
             onClick={() => setActiveTab(key)}
-            className={` flex items-center space-x-0 rounded lg:space-x-3 px-4 py-3 transition-colors duration-200 `}
+            className={`flex items-center space-x-0 rounded lg:space-x-3 px-4 py-3 transition-colors duration-200`}
           >
             <DoorOpen />
             <span className="hidden md:block">Về trang chủ</span>
           </Link>
         </Button>
-
-
       </aside>
 
       <main className="flex-1 flex flex-col">
         <header className="bg-blue-900 shadow-sm text-white">
           <div className="p-4 flex justify-between items-center">
-            <h2 className="font-semibold text-xl ">{activeTabLabel}</h2>
+            <h2 className="font-semibold text-xl">{activeTabLabel}</h2>
             <div className="flex items-center">
               <Button variant="secondary" size="icon" className="mr-2 bg-white text-blue-950">
                 <Bell className="h-5 w-5" />

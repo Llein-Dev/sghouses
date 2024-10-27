@@ -54,10 +54,9 @@ export default function Home() {
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
   const router = useRouter();
-  
+
   useEffect(() => {
     const adminToken = 'Rn9cqwezWLEUKqk4jrJuTfG7lZs5XZnlQreS9HR1bf837a1d'; // Token cần thiết
-  
     const fetchData = async () => {
       try {
         const response = await fetch('http://localhost:8000/api/dashboard/total', {
@@ -67,18 +66,15 @@ export default function Home() {
             'Content-Type': 'application/json',
           },
         });
-  
-        if (!response.ok) {
-          throw new Error('Không thể truy cập dữ liệu');
-        }
-  
+
+
         const result = await response.json();
         setData(result);
       } catch (error) {
         setError(error.message);
       }
     };
-  
+
     // Kiểm tra token trước khi gọi API
     if (adminToken === 'Rn9cqwezWLEUKqk4jrJuTfG7lZs5XZnlQreS9HR1bf837a1d') {
       fetchData();
@@ -86,7 +82,7 @@ export default function Home() {
       router.push('/login'); // Nếu token không hợp lệ, chuyển về trang đăng nhập
     }
   }, [router]);
-  
+
   if (error) return <p>Lỗi: {error}</p>;
   if (!data) return <p>Đang tải dữ liệu...</p>;
 
@@ -132,7 +128,7 @@ export default function Home() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{data.total_view}</div>
-          
+
           </CardContent>
         </Card>
         <Card>

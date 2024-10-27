@@ -4,13 +4,35 @@ import "./globals.css";
 import { FooterComponent } from "@/components/footer";
 import { Provider } from "react-redux";
 import store from "@/redux/store";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import MotionWrapper from "@/components/motionWrapper";
-
+import { useEffect } from "react";
+import Cookies from "js-cookie";
+import jwtDecode from "jwt-decode"; // Make sure to import jwtDecode
 
 export default function RootLayout({ children }) {
   const pathname = usePathname(); // Get the current pathname
-  const isAdminRoute = pathname.startsWith('/admin'); // Check if the current route is for admin
+  const router = useRouter(); // To redirect
+  const isAdminRoute = pathname.startsWith('/admin');
+
+  // Check if the user is an admin immediately before rendering
+  const token = Cookies.get("token");
+  let isAdmin = false;
+
+  if (token) {
+    try {
+      const decodedToken = jwtDecode(token);
+      isAdmin = decodedToken.role === "admin";
+    } catch (error) {
+      console.error("Token decoding failed:", error);
+    }
+  }
+
+  // Redirect to home if trying to access admin route and not an admin
+  if (isAdminRoute && !isAdmin) {
+    router.push("/"); // Redirect if not an admin
+    return null; // Prevent rendering the rest of the layout
+  }
 
   return (
     <html lang="en">
@@ -38,11 +60,10 @@ export default function RootLayout({ children }) {
           src="https://messenger.svc.chative.io/static/v1.0/channels/s234b8103-0c4b-4d7d-bf67-f1c60325ddf5/messenger.js?mode=livechat"
           defer
         ></script>
-
       </head>
       <body className="antialiased montserrat-header">
         <Provider store={store}>
-          {/* Use AdminLayout for /admin routes, else use default layout */}
+          {/* Render layout based on user role */}
           {isAdminRoute ? (
             <>{children}</>
           ) : (
@@ -58,6 +79,6 @@ export default function RootLayout({ children }) {
           )}
         </Provider>
       </body>
-    </html >
+    </html>
   );
 }

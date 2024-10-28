@@ -81,7 +81,7 @@ export default function NewsHomepage() {
                 {/* Large News */}
                 <Card className="md:col-span-2 space-y-2 h-full flex flex-col overflow-hidden">
                     <div className="relative aspect-video overflow-hidden">
-                        <img src={featuredNews.image} alt={featuredNews.title} className="object-cover w-full" />
+                        <img src="http://localhost:3000/dark-blue-house-exterior-2.png" alt={featuredNews.title} className="object-cover w-full" />
                     </div>
                     <CardHeader>
                         <CardTitle className="text-2xl">{featuredNews.title}</CardTitle>
@@ -91,7 +91,7 @@ export default function NewsHomepage() {
                     </CardContent>
                     <CardFooter className="flex justify-between items-center">
                         <span className="text-sm text-muted-foreground">{new Date(featuredNews.created_at).toLocaleDateString()}</span>
-                        <Link href={`/news/${featuredNews.id}`} className="text-primary hover:underline">
+                        <Link href={`/blog/${featuredNews.slug}`} className="text-primary hover:underline">
                             Xem thêm
                         </Link>
                     </CardFooter>

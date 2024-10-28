@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Label } from "@/components/ui/label"
 import { RangeBox } from "./range-box"
+import { locations } from "@/utils/data"
 
 export function SearchBarComponent() {
   const [keyword, setKeyword] = useState("")
@@ -64,8 +65,8 @@ export function SearchBarComponent() {
               <MapIcon /> {area} <ChevronDown className="ml-2 h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            {["khu vực", "Khu vực A", "Khu vực B", "Khu vực C"].map((item) => (
+          <DropdownMenuContent className="h-56">
+            {locations.map((item) => (
               <DropdownMenuItem key={item} onSelect={() => setArea(item)}>
                 {item}
               </DropdownMenuItem>

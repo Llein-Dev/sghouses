@@ -25,6 +25,8 @@ import {
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import { profileAPI } from "@/utils/api/Auth/api";
+import { useDispatch } from "react-redux";
+import { logout, setProfile } from "@/redux/authSlice";
 
 export function HeaderComponent() {
   const [isLoggedIns, setisLoggedIns] = useState(false);
@@ -43,14 +45,19 @@ export function HeaderComponent() {
 
   const handleLogout = () => {
     Cookies.remove("token");
+    dispatch(logout()); // Clear user data from Redux
     handleLoginToggle();
   };
+
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
         const profile = await profileAPI(); // Fetch user profile
         setUser(profile[0]); // Set the user data
+        dispatch(setProfile(profile[0])); // Dispatch user data to Redux
         setisLoggedIns(true); // Update login state
       } catch (error) {
         console.error(error);
@@ -58,14 +65,13 @@ export function HeaderComponent() {
       }
     };
 
-
-
     // Fetch the user profile if the token exists
     const token = Cookies.get('token');
     if (token) {
       fetchUserProfile();
     }
-  }, []); // Run only on mount
+  }, [dispatch]); // Run only on mount
+
 
   const NavItems = () => (
     <>
@@ -269,7 +275,7 @@ export function HeaderComponent() {
                   <Button variant="ghost" className="justify-start" onClick={() => { }}>
                     Hồ sơ
                   </Button>
-                  
+
                   <Button variant="ghost" className="justify-start" onClick={() => { }}>
                     Cài đặt
                   </Button>

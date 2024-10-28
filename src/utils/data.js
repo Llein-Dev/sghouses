@@ -163,6 +163,27 @@ export const recommendedNews = [
     { id: '7', title: 'So sánh các ứng dụng thuê phòng hiện nay', date: '2024-10-06' },
     { id: '8', title: 'Cách tạo tài khoản nhanh chóng và hiệu quả', date: '2024-10-05' },
 ]
+export const locations = [
+    "Quận 1",
+    "Quận 2",
+    "Quận 3",
+    "Quận 4",
+    "Quận 5",
+    "Quận 6",
+    "Quận 7",
+    "Quận 8",
+    "Quận 9",
+    "Quận 10",
+    "Quận 11",
+    "Quận 12",
+    "Quận Tân Bình",
+    "Quận Bình Tân",
+    "Quận Bình Thạnh",
+    "Quận Tân Phú",
+    "Quận Gò Vấp",
+    "Quận Phú Nhuận"
+];
+
 
 export const faqData = [
     {

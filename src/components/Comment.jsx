@@ -1,65 +1,43 @@
-import { useState } from "react"
-import { MessageCircle, ThumbsUp, ThumbsDown, Send } from "lucide-react"
+import { useState } from "react";
+import { MessageCircle, ThumbsUp, Send } from "lucide-react";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Separator } from "@/components/ui/separator"
-import { Badge } from "@/components/ui/badge"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator";
 
-const comments = [
-    {
-        id: 1,
-        author: "Nguyễn Văn A",
-        avatar: "/placeholder.svg",
-        content: "Bài viết rất hay! Rất nhiều thông tin hữu ích.",
-        likes: 15,
-        dislikes: 2,
-        replies: 3,
-    },
-    {
-        id: 2,
-        author: "Trần Thị B",
-        avatar: "/placeholder.svg",
-        content: "Tôi học được rất nhiều điều từ bài viết này. Cảm ơn vì đã chia sẻ!",
-        likes: 10,
-        dislikes: 1,
-        replies: 1,
-    },
-    {
-        id: 3,
-        author: "Phạm Văn C",
-        avatar: "/placeholder.svg",
-        content: "Quan điểm rất thú vị. Tôi muốn đọc thêm về chủ đề này.",
-        likes: 8,
-        dislikes: 0,
-        replies: 2,
-    },
-]
+export default function CommentComponent({ comments = [], onCommentAdd, user }) {
+    const [newComment, setNewComment] = useState("");
+    console.log(user);
 
-
-export default function CommentComponent() {
-    const [newComment, setNewComment] = useState("")
+    const handleCommentSubmit = () => {
+        if (newComment.trim() !== "") {
+            // Call the provided function to add the new comment
+            onCommentAdd(newComment);
+            setNewComment(""); // Clear input after submission
+        }
+    };
 
     return (
         <Card>
             <CardHeader>
-                <CardTitle>Comments</CardTitle>
+                <CardTitle>Bình luận</CardTitle>
             </CardHeader>
             <CardContent>
-
                 <div className="flex items-center space-x-2">
                     <Avatar>
-                        <AvatarImage src="" alt="" />
-                        <AvatarFallback>123</AvatarFallback>
+                        <AvatarImage src={`http://localhost:8000/storage/${user?.avatar}`} alt="" />
+
+                        <AvatarFallback>{user?.name}</AvatarFallback>
                     </Avatar>
                     <Input
                         placeholder="Add a comment..."
                         value={newComment}
                         onChange={(e) => setNewComment(e.target.value)}
+                        onKeyDown={(e) => e.key === 'Enter' && handleCommentSubmit()}
                     />
-                    <Button className="px-3" variant="blue" size="icon">
+                    <Button className="px-3" variant="blue" size="icon" onClick={handleCommentSubmit}>
                         <Send className="h-4 w-4" />
                     </Button>
                 </div>
@@ -89,9 +67,7 @@ export default function CommentComponent() {
                         </div>
                     ))}
                 </div>
-
             </CardContent>
         </Card>
-
-    )
+    );
 }

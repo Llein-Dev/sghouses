@@ -19,7 +19,7 @@ export default function UserProfile({ user, GoEditProfile }) {
             <Card className="flex justify-between bg-white bg-opacity-75 px-2 py-4 border rounded-lg">
                 <div className="flex items-end space-x-4">
                     <Avatar className="w-24 h-24 border-4 border-white shadow-lg">
-                        <AvatarImage src="/placeholder.svg?height=96&width=96" alt={user?.name || "---"} />
+                        <AvatarImage src={`http://localhost:8000/storage/${user.avatar}`} alt={user?.name || "---"} />
                         <AvatarFallback><Camera className="opacity-75" /></AvatarFallback>
                     </Avatar>
                     <div className="mb-1">

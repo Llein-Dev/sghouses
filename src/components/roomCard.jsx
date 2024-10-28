@@ -7,18 +7,19 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
+import axios from "axios";
 
 export default function RoomComponents({ room }) {
-  console.log(room);
+
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [formData, setFormData] = useState({
-    fullname: "",
-    phonenumber: "",
-    id_user: "",
+    name: "",
+    phone: "",
+    content: "",
     id_room: room.id,
-    content: ""
+    id_user: "",
   });
 
 
@@ -43,30 +44,29 @@ export default function RoomComponents({ room }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log(formData);
+
     const dataToSubmit = {
       ...formData,
-      id_user: formData.id_user || null, 
+      id_user: formData.id_user || null,
     };
 
     try {
-      const response = await fetch('http://localhost:8000/api/contact_room/add', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(dataToSubmit),
-      });
+      const response = await axios.post('http://localhost:8000/api/contact_room/add', dataToSubmit);
+      console.log("API response status:", response.status);
 
-      if (response.ok) {
+      // Check for 200 or 201 status codes for success
+      if (response.status === 200 || response.status === 201) {
+        alert("Gửi liên hệ thành công:", response.data.message);
         setIsDialogOpen(false);
       } else {
+        console.error("Unexpected API response details:", response.data);
         throw new Error('Failed to submit rental request');
       }
     } catch (error) {
-      console.error(error); // Optional: Log the error for debugging
+      console.error("Catch block error:", error);
     }
   };
-
 
   return (
     <Card className="w-full border-none shadow-md">
@@ -190,9 +190,9 @@ export default function RoomComponents({ room }) {
                           Họ tên
                         </Label>
                         <Input
-                          id="fullname"
-                          name="fullname"
-                          value={formData.fullname}
+                          id="name"
+                          name="name"
+                          value={formData.name}
                           onChange={handleInputChange}
                           className="col-span-3"
                           required
@@ -203,9 +203,9 @@ export default function RoomComponents({ room }) {
                           Số điện thoại
                         </Label>
                         <Input
-                          id="phonenumber"
-                          name="phonenumber"
-                          value={formData.phonenumber}
+                          id="phone"
+                          name="phone"
+                          value={formData.phone}
                           onChange={handleInputChange}
                           className="col-span-3"
                           required

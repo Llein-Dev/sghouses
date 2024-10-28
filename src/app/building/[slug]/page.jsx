@@ -69,9 +69,9 @@ export default function BuildingDetailComponent() {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div className="md:col-span-2 space-y-4 h-full flex flex-col">
                             {building.image.split(";").slice(0, 2).map((imgUrl, index) => (
-                                <Image
+                                <img
                                     key={index}
-                                    src={imgUrl}
+                                    src={`http://localhost:8000/storage/${imgUrl}`} 
                                     alt={`Hình ảnh tòa nhà ${index + 1}`}
                                     width={600}
                                     height={300}
@@ -81,9 +81,9 @@ export default function BuildingDetailComponent() {
                         </div>
                         <div className="space-y-4 h-full flex flex-col">
                             {building.image.split(";").slice(2, 5).map((imgUrl, index) => (
-                                <Image
+                                <img
                                     key={index}
-                                    src={imgUrl}
+                                    src={`http://localhost:8000/storage/${imgUrl}`} 
                                     alt={`Hình ảnh nội thất ${index + 1}`}
                                     width={300}
                                     height={200}

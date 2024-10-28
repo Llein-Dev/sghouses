@@ -15,15 +15,15 @@ export function ProductCardColViewComponent({ productsViewHouse }) {
       {productsViewHouse.map((houseView, index) => (
         <Card key={index} className="overflow-hidden ">
           <div className="relative w-full aspect-video mb-2 overflow-hidden ">
-            <img src={houseView.image} alt={houseView.slug} />
+            <img src={`http://localhost:8000/storage/${houseView?.image}`} />
           </div>
           <CardContent className="p-4">
             <p className="text-sm text-muted-foreground mb-2 flex items-center">
               <HouseIcon className="w-4 h-4 mr-1" />Phòng trống: {houseView.count_rooms}
             </p>
-           <Link href={`/building/${houseView.slug}`}><h3 className="text-lg font-semibold mb-2">{houseView.name}</h3></Link> 
-            <div className="flex items-center"> 
-              <p className="mr-2 text-primary mb-2">Giá từ</p> 
+            <Link href={`/building/${houseView.slug}`}><h3 className="text-lg font-semibold mb-2">{houseView.name}</h3></Link>
+            <div className="flex items-center">
+              <p className="mr-2 text-primary mb-2">Giá từ</p>
               <p className="text-lg text-red-500 text-primary mb-2">{houseView.gia_thue}</p>
             </div>
             <div className="flex flex-wrap gap-2 mb-2">

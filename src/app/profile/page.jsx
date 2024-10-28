@@ -7,20 +7,24 @@ import { useEffect, useState } from "react";
 
 
 export default function UserPage() {
+
     const router = useRouter();
     const [user, setUser] = useState(null);
     const GoEditProfile = () => {
         router.push('/profile/edit');
+    }
+    const GoManageRoom = () => {
+        router.push('/profile/history');
     }
     useEffect(() => {
         const fetchUserProfile = async () => {
             try {
                 const profile = await profileAPI(); // Fetch user profile
                 setUser(profile[0]); // Set the user data
-                setisLoggedIns(true); // Update login state
+        
             } catch (error) {
                 console.error(error);
-                setisLoggedIns(false); // Update login state on error
+    
             }
         };
 
@@ -36,7 +40,7 @@ export default function UserPage() {
 
     return (
         <>
-            <UserProfile user={user} GoEditProfile={GoEditProfile} />
+            <UserProfile user={user} GoEditProfile={GoEditProfile} GoManageRoom={GoManageRoom} />
         </>
     );
 }

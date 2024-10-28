@@ -20,7 +20,7 @@ export function ProductCardColCheapComponent({ productsHouseCheap }) {
       {productsHouseCheap.map((houseCheap, index) => (
         <Card key={index} className="overflow-hidden ">
           <div className="relative w-full aspect-video mb-2 overflow-hidden ">
-            <img src={houseCheap.image} alt={houseCheap.slug} />
+            <img src={`http://localhost:8000/storage/${houseCheap?.image}`} />
           </div>
           <CardContent className="p-4">
             <p className="text-sm text-muted-foreground mb-2 flex items-center">

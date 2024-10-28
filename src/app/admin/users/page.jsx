@@ -26,24 +26,6 @@ import Cookies from "js-cookie"
 import { useRouter } from "next/navigation"
 
 export default function UsersContent() {
-  // const [users, setUsers] = useState([
-  //   { id: 1, name: "John Doe", email: "john@example.com", role: "Admin" },
-  //   { id: 2, name: "Jane Smith", email: "jane@example.com", role: "User" },
-  //   { id: 3, name: "Bob Johnson", email: "bob@example.com", role: "User" },
-  // ])
-
-  // const [newUser, setNewUser] = useState({ name: "", email: "", role: "User" })
-  // const [searchTerm, setSearchTerm] = useState("")
-
-  // const handleAddUser = () => {
-  //   setUsers([...users, { id: users.length + 1, ...newUser }])
-  //   setNewUser({ name: "", email: "", role: "User" })
-  // }
-
-  // const filteredUsers = users.filter(user =>
-  //   user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-  //   user.email.toLowerCase().includes(searchTerm.toLowerCase())
-  // )
 
   const [users, setUsers] = useState([]);
   const [error, setError] = useState(null);
@@ -84,6 +66,7 @@ export default function UsersContent() {
     fetchData();
   }, [router]);
 
+
   // nhân bản user
   const handleCopyUser = async (id) => {
     // Kiểm tra ID
@@ -96,9 +79,7 @@ export default function UsersContent() {
           "Content-Type": "application/json",
         },
       });
-
       console.log('Response status:', response.status); // Kiểm tra trạng thái phản hồi
-
       if (response.ok) {
         const newUser = await response.json();
         setUsers((prevUsers) => [...prevUsers, newUser]); // Cập nhật danh sách người dùng
@@ -111,7 +92,6 @@ export default function UsersContent() {
       setError("Có lỗi xảy ra khi sao chép người dùng");
     }
   };
-
 
   // Delete user
   const handleDeleteUser = async (id) => {

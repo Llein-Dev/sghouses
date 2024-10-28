@@ -1,30 +1,47 @@
-import { useState } from "react";
+
 import { Heart, ChevronLeft, ChevronRight, Lightbulb, Droplet, Wifi, Trash } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "./ui/label";
-import { Input } from "./ui/input";
+
 import { Textarea } from "./ui/textarea";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+
+import { useState, useEffect } from "react";
+import { setProfile } from "@/redux/authSlice";
+import { Input } from "./ui/input";
+import Cookies from "js-cookie";
 
 export default function RoomComponents({ room }) {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.user);
 
-
-  const [currentImageIndex, setCurrentImageIndex] = useState(0)
-  const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
     content: "",
     id_room: room.id,
-    id_user: "",
+    id_user: user ? user.id : "", // Initialize id_user from user state
   });
 
+  useEffect(() => {
+    if (user) {
+      dispatch(setProfile(user)); // Dispatch action to set user profile
+      // Update id_user in formData when user changes
+      setFormData((prevData) => ({
+        ...prevData,
+        id_user: user.id, // Update id_user when user is available
+      }));
+    }
+  }, [user, dispatch]);
 
-  // Sử dụng split để tạo mảng hình ảnh từ chuỗi
-  const images = room.hinh_anh.split(";");  // Tách chuỗi thành mảng
+  // Split image string into an array
+  const images = room.hinh_anh.split(";");
 
   const nextImage = () => {
     setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
@@ -35,13 +52,14 @@ export default function RoomComponents({ room }) {
   };
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target
-    setFormData(prevData => ({
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
       ...prevData,
-      [name]: value
-    }))
-  }
+      [name]: value,
+    }));
+  };
 
+  const token = Cookies.get('token'); // Get the token from cookies
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(formData);
@@ -52,20 +70,30 @@ export default function RoomComponents({ room }) {
     };
 
     try {
-      const response = await axios.post('http://localhost:8000/api/contact_room/add', dataToSubmit);
+      const response = await axios.post('http://localhost:8000/api/contact_room/add', dataToSubmit, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Include the token in the headers
+        },
+      });
       console.log("API response status:", response.status);
 
-      // Check for 200 or 201 status codes for success
       if (response.status === 200 || response.status === 201) {
-        alert("Gửi liên hệ thành công:", response.data.message);
-        setIsDialogOpen(false);
+        alert("Gửi liên hệ thành công: " + response.data.message);
+        setIsDialogOpen(false); // Close the dialog on success
       } else {
         console.error("Unexpected API response details:", response.data);
         throw new Error('Failed to submit rental request');
       }
     } catch (error) {
       console.error("Catch block error:", error);
+      if (error.response) {
+        console.error("Error response data:", error.response.data); // Log the detailed error response
+        alert("Error: " + error.response.data.message || "Có lỗi xảy ra. Vui lòng thử lại.");
+      } else {
+        alert("Có lỗi xảy ra. Vui lòng thử lại.");
+      }
     }
+
   };
 
   return (

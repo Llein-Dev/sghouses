@@ -11,19 +11,48 @@ import { ArrowRight } from "lucide-react";
 import Breadcrumb from "@/components/breadcum";
 import useBuildingDetails from "@/utils/api/GET/api"; // Import custom hook
 import { Spinner } from "@/components/ui/loading";
+import { useEffect, useState } from "react"; // Don't forget to import useState
+import { useDispatch, useSelector } from "react-redux";
+import { setProfile } from "@/redux/authSlice";
 
 export default function BuildingDetailComponent() {
     const { slug } = useParams(); // Lấy slug từ URL
-    // Sử dụng custom hook
     const { building, loading, error } = useBuildingDetails(slug);
+    const [comments, setComments] = useState([]); // State to manage comments
+    const dispatch = useDispatch(); // Initialize dispatch
+    const user = useSelector((state) => state.auth.user); // Access user from Redux store
+
+    useEffect(() => {
+        // Example: Set user data, replace this with your actual user fetching logic
+        if (user) {
+            dispatch(setProfile(user)); // Dispatch action to set user
+        }
+    }, [user, dispatch]);
+
+    const addComment = (newComment) => {
+        const newCommentObj = {
+            id: comments.length + 1,
+            author: user ? user.name : "User", // Use actual user data
+            content: newComment,
+            likes: 0,
+            replies: 0,
+            avatar: user ? `http://localhost:8000/storage/${user?.avatar}` : "", // Use user avatar if available
+        };
+        setComments([...comments, newCommentObj]);
+    };
+
     if (loading) {
-        return <div className="h-screen w-full flex justify-center items-center">
-            <Spinner />
-        </div>;
+        return (
+            <div className="h-screen w-full flex justify-center items-center">
+                <Spinner />
+            </div>
+        );
     }
+
     if (error) {
         return <div>Lỗi: {error.message}</div>;
     }
+
     console.log(building);
 
     return (
@@ -37,7 +66,6 @@ export default function BuildingDetailComponent() {
                     </CardTitle>
                 </CardHeader>
                 <CardContent>
-                    {/* Ảnh ở đầu trang */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div className="md:col-span-2 space-y-4 h-full flex flex-col">
                             {building.image.split(";").slice(0, 2).map((imgUrl, index) => (
@@ -117,7 +145,7 @@ export default function BuildingDetailComponent() {
                 </CardContent>
             </Card>
 
-            <CommentComponent />
+            <CommentComponent comments={comments} onCommentAdd={addComment} user={user} /> {/* Pass comments and addComment function here */}
 
             <div className="px-4 space-y-8 py-12 flex flex-col justify-center items-center container mx-auto">
                 <h2 className="text-center w-full font-bold text-2xl text-[#00008B]">

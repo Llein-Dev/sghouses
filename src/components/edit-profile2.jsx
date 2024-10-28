@@ -8,95 +8,228 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { cn } from "@/lib/utils"
 import { Camera, ChevronDown } from 'lucide-react'
-import { DropdownMenu } from '@radix-ui/react-dropdown-menu'
-import { DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from './ui/dropdown-menu'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { updateAvatar, updateProfile } from '@/utils/api/Auth/api'
 import { Spinner } from './ui/loading'
 import Breadcrumb from './breadcum'
 
+const genderOptions = [
+    { value: 0, label: 'Nam' },
+    { value: 1, label: 'Nữ' },
+    { value: '', label: 'Khác' },
+]
+
 const formatDate = (isoDateString) => {
-    if (!isoDateString) return '---'; // Return placeholder if the date string is not valid
-    const date = new Date(isoDateString);
-    return date.toISOString().split('T')[0]; // Returns date in 'yyyy-MM-dd' format
-};
+    if (!isoDateString) return '---'
+    const date = new Date(isoDateString)
+    return date.toISOString().split('T')[0]
+}
+
+
 export default function EditProfile2Component({ user }) {
-    const [activeTab, setActiveTab] = useState("canhan");
-    const [gender, setGender] = useState(user?.gender || "Chọn giới tính");
-    const [avatar, setAvatar] = useState(user?.avatar || 'default-avatar-url.jpg');
-    const [name, setName] = useState(user?.name || '');
-    const [born, setBorn] = useState(user?.born || '');
-    const [email, setEmail] = useState(user?.email || '');
-    const [phone, setPhone] = useState(user?.phone || '');
-    const [address, setAddress] = useState(user?.address || '');
-    const [currentPassword, setCurrentPassword] = useState('');
-    const [newPassword, setNewPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [loading, setLoading] = useState(true);
+    const [activeTab, setActiveTab] = useState("canhan")
+    const [formData, setFormData] = useState({
+        gender: '',
+        avatar: 'default-avatar-url.jpg',
+        name: '',
+        born: '',
+        email: '',
+        phone: '',
+        address: '',
+    })
+    const [currentPassword, setCurrentPassword] = useState('')
+    const [newPassword, setNewPassword] = useState('')
+    const [confirmPassword, setConfirmPassword] = useState('')
+    const [loading, setLoading] = useState(true)
+
     useEffect(() => {
         if (user) {
-            console.log(user);
-
-            // Cập nhật dữ liệu nếu user đã có giá trị
-            setGender(user.gender || "Chọn giới tính");
-            setAvatar(user.avatar || 'default-avatar-url.jpg');
-            setName(user.name || '');
-            setBorn(user.born || '');
-            setEmail(user.email || '');
-            setPhone(user.phone || '');
-            setAddress(user.address || '');
-            setLoading(false); // Ngắt loading
+            setFormData({
+                gender: user.gender ?? -1,
+                avatar: user.avatar ?? 'default-avatar-url.jpg',
+                name: user.name ?? '',
+                born: user.born ?? '',
+                email: user.email ?? '',
+                phone: user.phone ?? '',
+                address: user.address ?? '',
+            })
+            setLoading(false)
         }
-    }, [user]);
+    }, [user])
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target
+        setFormData(prev => ({ ...prev, [name]: value }))
+    }
 
     const handleAvatarUpload = async (e) => {
-        const file = e.target.files?.[0];
-        if (!file) return;
+        const file = e.target.files?.[0]
+        if (!file) return
 
-        const formData = new FormData();
-        formData.append("avatar", file);
+        const formData = new FormData()
+        formData.append("avatar", file)
 
         try {
-            const data = await updateAvatar(formData);
-            setAvatar(data.avatarUrl);
-            alert('Avatar updated successfully!');
+            const data = await updateAvatar(formData)
+            setFormData(prev => ({ ...prev, avatar: data.avatarUrl }))
+            alert('Avatar updated successfully!')
         } catch (error) {
-            console.error('Error updating avatar:', error);
+            console.error('Error updating avatar:', error)
         }
-    };
+    }
 
     const handleProfileUpdate = async (e) => {
-        e.preventDefault();
+        e.preventDefault()
 
         const profileData = {
-            name,
-            gender,
-            born,
-            email,
-            phone,
-            address,
+            ...formData,
             currentPassword,
             newPassword,
             confirmPassword,
-        };
+        }
 
         try {
-            await updateProfile(profileData);
-            alert('Profile updated successfully!');
+            await updateProfile(profileData)
+            alert('Profile updated successfully!')
         } catch (error) {
-            console.error('Error updating profile:', error);
+            console.error('Error updating profile:', error)
         }
-    };
+    }
+
+    const renderPersonalInfo = () => (
+        <Card className="p-2">
+            <CardHeader>
+                <CardTitle>Thông tin cá nhân</CardTitle>
+                <CardDescription>Sử dụng địa chỉ thường trú nơi bạn có thể nhận thư.</CardDescription>
+            </CardHeader>
+            <CardContent>
+                <form className="space-y-6" onSubmit={handleProfileUpdate}>
+                    <div className="flex items-center space-x-4">
+                        <Avatar className="h-24 w-24">
+                            <AvatarImage alt={formData.name || "User"} src={`http://localhost:8000/storage/${formData.avatar}`} />
+                            <AvatarFallback><Camera className="opacity-75" /></AvatarFallback>
+                        </Avatar>
+                        <div>
+                            <Button variant="outline" onClick={() => document.getElementById('avatar-upload')?.click()}>
+                                Đổi ảnh đại diện
+                            </Button>
+                            <input
+                                id="avatar-upload"
+                                type="file"
+                                className="hidden"
+                                accept="image/*"
+                                onChange={handleAvatarUpload}
+                            />
+                            <p className="text-sm text-muted-foreground mt-1">JPG, GIF hoặc PNG. Tối đa 1MB.</p>
+                        </div>
+                    </div>
+                    <div className="grid grid-cols-3 gap-4">
+                        <div className="space-y-2 col-span-2">
+                            <Label htmlFor="name">Họ Tên</Label>
+                            <Input id="name" value={formData.name} onChange={handleInputChange} name="name" />
+                        </div>
+                        <div className="flex flex-col col-span-1 justify-end space-y-2">
+                            <Label htmlFor="gender">Giới tính</Label>
+                            <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                    <Button variant="outline" className="flex justify-between">
+                                        {genderOptions.find(option => option.value === formData.gender)?.label || 'Chọn giới tính'}
+                                        <ChevronDown className="ml-2 h-4 w-4" />
+                                    </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent>
+                                    {genderOptions.map((option) => (
+                                        <DropdownMenuItem
+                                            key={option.value}
+                                            onSelect={() => setFormData(prev => ({ ...prev, gender: option.value }))}
+                                        >
+                                            {option.label}
+                                        </DropdownMenuItem>
+                                    ))}
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+                        </div>
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="born">Sinh nhật</Label>
+                        <Input id="born" value={formData.born} onChange={handleInputChange} name="born" type="date" />
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="created_at">Ngày tạo tài khoản</Label>
+                        <Input disabled id="created_at" value={formatDate(user?.created_at || '')} name="created_at" type="date" />
+                    </div>
+                    <Button variant="default" type="submit">Xác nhận</Button>
+                </form>
+            </CardContent>
+        </Card>
+    )
+
+    const renderPasswordChange = () => (
+        <Card className="p-2">
+            <CardHeader>
+                <CardTitle>Đổi mật khẩu</CardTitle>
+                <CardDescription>Cập nhật mật khẩu liên kết với tài khoản của bạn.</CardDescription>
+            </CardHeader>
+            <CardContent>
+                <form className="space-y-6" onSubmit={handleProfileUpdate}>
+                    <div className="space-y-2">
+                        <Label htmlFor="currentPassword">Mật khẩu hiện tại</Label>
+                        <Input id="currentPassword" value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} name="currentPassword" type="password" />
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="newPassword">Mật khẩu mới</Label>
+                        <Input id="newPassword" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} name="newPassword" type="password" />
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="confirmPassword">Xác nhận mật khẩu</Label>
+                        <Input id="confirmPassword" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} name="confirmPassword" type="password" />
+                    </div>
+                    <Button variant="default" type="submit">Xác nhận</Button>
+                </form>
+            </CardContent>
+        </Card>
+    )
+
+    const renderContactInfo = () => (
+        <Card className="p-2">
+            <CardHeader>
+                <CardTitle>Thông tin liên hệ</CardTitle>
+                <CardDescription>Vui lòng nhập Thông tin liên hệ để xác nhận tất cả các thiết bị.</CardDescription>
+            </CardHeader>
+            <CardContent>
+                <form className="space-y-6" onSubmit={handleProfileUpdate}>
+                    <div className="space-y-2">
+                        <Label htmlFor="email">Địa chỉ Email</Label>
+                        <Input id="email" value={formData.email} onChange={handleInputChange} name="email" type="email" />
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="phone">Số điện thoại</Label>
+                        <Input id="phone" value={formData.phone} onChange={handleInputChange} name="phone" type="tel" />
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="address">Địa chỉ</Label>
+                        <Input id="address" value={formData.address} onChange={handleInputChange} name="address" type="text" />
+                    </div>
+                    <Button variant="default" type="submit">Lưu thông tin liên hệ</Button>
+                </form>
+            </CardContent>
+        </Card>
+    )
 
     return (
         <div className="container mx-auto px-4 py-4 flex flex-wrap gap-4">
             <Breadcrumb />
             {loading ? (
-                <div className='flex justify-center w-full h-64'>  <Spinner /></div>
+                <div className='flex justify-center w-full h-64'><Spinner /></div>
             ) : (
                 <>
                     <Card className="w-full md:w-1/5 border-r">
                         <nav className="space-y-2 p-4">
-                            {["canhan", "lienhe", "doiMatKhau"].map((id) => (
+                            {[
+                                { id: "canhan", label: "Thông tin cá nhân" },
+                                { id: "lienhe", label: "Thông tin liên hệ" },
+                                { id: "doiMatKhau", label: "Đổi mật khẩu" }
+                            ].map(({ id, label }) => (
                                 <button
                                     key={id}
                                     onClick={() => setActiveTab(id)}
@@ -107,133 +240,18 @@ export default function EditProfile2Component({ user }) {
                                             : "hover:bg-muted"
                                     )}
                                 >
-                                    {id === "canhan" ? "Thông tin cá nhân" : id === "lienhe" ? "Thông tin liên hệ" : "Đổi mật khẩu"}
+                                    {label}
                                 </button>
                             ))}
                         </nav>
                     </Card>
                     <div className="flex-1">
-                        {activeTab === "canhan" && (
-                            <Card className="p-2">
-                                <CardHeader>
-                                    <CardTitle>Thông tin cá nhân</CardTitle>
-                                    <CardDescription>Sử dụng địa chỉ thường trú nơi bạn có thể nhận thư.</CardDescription>
-                                </CardHeader>
-                                <CardContent>
-                                    <form className="space-y-6" onSubmit={handleProfileUpdate}>
-                                        <div className="flex items-center space-x-4">
-                                            <Avatar className="h-24 w-24">
-                                                <AvatarImage alt={user?.name || "User"} src={`http://localhost:8000/storage/${user.avatar}`} />
-                                                <AvatarFallback><Camera className="opacity-75" /></AvatarFallback>
-                                            </Avatar>
-                                            <div>
-                                                <Button variant="outline" onClick={() => document.getElementById('avatar-upload')?.click()}>
-                                                    Đổi ảnh đại diện
-                                                </Button>
-                                                <input
-                                                    id="avatar-upload"
-                                                    type="file"
-                                                    className="hidden"
-                                                    accept="image/*"
-                                                    onChange={handleAvatarUpload}
-                                                />
-                                                <p className="text-sm text-muted-foreground mt-1">JPG, GIF hoặc PNG. Tối đa 1MB.</p>
-                                            </div>
-                                        </div>
-                                        <div className="grid grid-cols-3 gap-4">
-                                            <div className="space-y-2 col-span-2">
-                                                <Label htmlFor="name">Họ Tên</Label>
-                                                <Input id="name" value={name} onChange={(e) => setName(e.target.value)} name="name" />
-                                            </div>
-                                            <div className="flex flex-col col-span-1 justify-end space-y-2">
-                                                <Label htmlFor="gender">Giới tính</Label>
-                                                <DropdownMenu>
-                                                    <DropdownMenuTrigger asChild>
-                                                        <Button variant="outline" className="flex justify-between">
-                                                            {gender} <ChevronDown className="ml-2 h-4 w-4" />
-                                                        </Button>
-                                                    </DropdownMenuTrigger>
-                                                    <DropdownMenuContent>
-                                                        {["Nam", "Nữ", "Khác"].map((item) => (
-                                                            <DropdownMenuItem
-                                                                key={item}
-                                                                onSelect={() => setGender(item)}
-                                                            >
-                                                                {item}
-                                                            </DropdownMenuItem>
-                                                        ))}
-                                                    </DropdownMenuContent>
-                                                </DropdownMenu>
-                                            </div>
-                                        </div>
-                                        <div className="space-y-2">
-                                            <Label htmlFor="born">Sinh nhật</Label>
-                                            <Input id="born" value={born} onChange={(e) => setBorn(e.target.value)} name="born" type="date" />
-                                        </div>
-                                        <div className="space-y-2">
-                                            <Label htmlFor="created_at">Ngày tạo tài khoản</Label>
-                                            <Input disabled id="created_at" value={formatDate(user?.created_at) || "---"} name="created_at" type="date" />
-                                        </div>
-                                        <Button variant="blue" type="submit">Xác nhận</Button>
-                                    </form>
-                                </CardContent>
-                            </Card>
-                        )}
-
-                        {activeTab === "doiMatKhau" && (
-                            <Card className="p-2">
-                                <CardHeader>
-                                    <CardTitle>Đổi mật khẩu</CardTitle>
-                                    <CardDescription>Cập nhật mật khẩu liên kết với tài khoản của bạn.</CardDescription>
-                                </CardHeader>
-                                <CardContent>
-                                    <form className="space-y-6" onSubmit={handleProfileUpdate}>
-                                        <div className="space-y-2">
-                                            <Label htmlFor="matKhauHienTai">Mật khẩu hiện tại</Label>
-                                            <Input id="matKhauHienTai" value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} name="matKhauHienTai" type="password" />
-                                        </div>
-                                        <div className="space-y-2">
-                                            <Label htmlFor="matKhauMoi">Mật khẩu mới</Label>
-                                            <Input id="matKhauMoi" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} name="matKhauMoi" type="password" />
-                                        </div>
-                                        <div className="space-y-2">
-                                            <Label htmlFor="xacNhanMatKhau">Xác nhận mật khẩu</Label>
-                                            <Input id="xacNhanMatKhau" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} name="xacNhanMatKhau" type="password" />
-                                        </div>
-                                        <Button variant="blue" type="submit">Xác nhận</Button>
-                                    </form>
-                                </CardContent>
-                            </Card>
-                        )}
-
-                        {activeTab === "lienhe" && (
-                            <Card className="p-2">
-                                <CardHeader>
-                                    <CardTitle>Thông tin liên hệ</CardTitle>
-                                    <CardDescription>Vui lòng nhập Thông tin liên hệ để xác nhận tất cả các thiết bị.</CardDescription>
-                                </CardHeader>
-                                <CardContent>
-                                    <form className="space-y-6" onSubmit={handleProfileUpdate}>
-                                        <div className="space-y-2">
-                                            <Label htmlFor="email">Địa chỉ Email</Label>
-                                            <Input id="email" value={email} onChange={(e) => setEmail(e.target.value)} name="email" type="email" />
-                                        </div>
-                                        <div className="space-y-2">
-                                            <Label htmlFor="phone">Số điện thoại</Label>
-                                            <Input id="phone" value={phone} onChange={(e) => setPhone(e.target.value)} name="phone" type="tel" />
-                                        </div>
-                                        <div className="space-y-2">
-                                            <Label htmlFor="address">Địa chỉ</Label>
-                                            <Input id="address" value={address} onChange={(e) => setAddress(e.target.value)} name="address" type="text" />
-                                        </div>
-                                        <Button variant="blue" type="submit">Lưu thông tin liên hệ</Button>
-                                    </form>
-                                </CardContent>
-                            </Card>
-                        )}
+                        {activeTab === "canhan" && renderPersonalInfo()}
+                        {activeTab === "doiMatKhau" && renderPasswordChange()}
+                        {activeTab === "lienhe" && renderContactInfo()}
                     </div>
                 </>
             )}
         </div>
-    );
+    )
 }

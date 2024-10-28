@@ -86,7 +86,7 @@ export default function RootLayout({ children }) {
               ) : (
                 <>
                   <HeaderComponent />
-                  <div className="mt-[72px] bg-gray-100">
+                  <div className="mt-[72px] bg-gray-100 overflow-y-auto">
                     <MotionWrapper animationType="fade" key={pathname}>
                       {children}
                     </MotionWrapper>

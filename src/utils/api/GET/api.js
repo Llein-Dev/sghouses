@@ -153,7 +153,7 @@ const useBuildingDetails = (slug) => {
     useEffect(() => {
         const fetchBuildingDetails = async () => {
             try {
-                const response = await fetch(`http://localhost:8000/api/toa-nha/?slug=${slug}`);
+                const response = await fetch(`http://localhost:8000/api/chi-tiet/?slug=${slug}`);
                 if (!response.ok) {
                     throw new Error("Failed to fetch building details");
                 }

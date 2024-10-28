@@ -7,36 +7,38 @@ import { Checkbox } from "@/components/ui/checkbox";
 
 const filterCategories = [
   {
-    name: "Diện tích",
+    name: "Tiện nghi",
     options: [
-      { id: "1", label: "Dưới 20m²" },
-      { id: "2", label: "20m² - 30m²" },
-      { id: "3", label: "30m² - 50m²" },
-      { id: "4", label: "Trên 50m²" },
+      { id: "thang mai", label: "Thang máy" },
+      { id: "thang bo", label: "Thang bộ" },
+      { id: "bao ve an ninh 24 7", label: "Bảo vệ an ninh 24/7" },
+      { id: "khu giat giu tren san thuong", label: "Khu giặt giũ trên sân thượng" },
+      { id: "camera an ninh", label: "Camera an ninh" },
+      { id: "cong toa nha mo khoa bang van tay", label: "Cổng tòa nhà mở khóa bằng vân tay" },
+      { id: "gio giac tu do", label: "Giờ giấc tự do" },
+      { id: "cho nuoi thu cung", label: "Cho nuôi thú cưng" },
     ],
   },
   {
     name: "Tiện ích",
     options: [
-      { id: "amenity-pool", label: "Hồ bơi" },
-      { id: "amenity-gym", label: "Phòng gym" },
-      { id: "amenity-parking", label: "Bãi đậu xe" },
-      { id: "amenity-security", label: "An ninh 24/7" },
+      { id: "bach hoa xanh", label: "Bách Hóa Xanh" },
+      { id: "tram xa", label: "Trạm xá" },
+      { id: "truong hoc", label: "Trường học" },
+      { id: "sieu thi", label: "Siêu thị" },
+      { id: "ben xe", label: "Bến xe" },
     ],
   },
   {
-    name: "Khu vực",
+    name: "Tình trạng",
     options: [
-      { id: "area-district-1", label: "Quận 1" },
-      { id: "area-district-2", label: "Quận 2" },
-      { id: "area-district-3", label: "Quận 3" },
-      { id: "area-district-4", label: "Quận 4" },
+      { id: "co", label: "Có phòng trống" },
     ],
   },
 ];
 
-export function ProductFilter() {
-  // Initialize all categories to open by default
+// Nhận một hàm callback để xử lý các bộ lọc đã chọn
+export function ProductFilter({ onFilterChange }) {
   const [openCategories, setOpenCategories] = useState(
     filterCategories.map((category) => category.name)
   );
@@ -51,11 +53,14 @@ export function ProductFilter() {
   };
 
   const toggleFilter = (filterId) => {
-    setSelectedFilters((prev) =>
-      prev.includes(filterId)
+    setSelectedFilters((prev) => {
+      const newFilters = prev.includes(filterId)
         ? prev.filter((id) => id !== filterId)
-        : [...prev, filterId]
-    );
+        : [...prev, filterId];
+      // Gọi hàm callback để thông báo về các bộ lọc đã thay đổi
+      onFilterChange(newFilters);
+      return newFilters;
+    });
   };
 
   return (

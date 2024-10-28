@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { featuredNews, moreNews, recommendedNews, sideNews } from '@/utils/data';
 import Breadcrumb from '@/components/breadcum';
+import { useFetchBlogHouse } from '@/utils/api/GET/api';
 function NewsCard({ id, title, excerpt, image, date }) {
     return (
         <Card className="h-full flex  overflow-hidden flex-col">
@@ -47,17 +48,30 @@ function NewsCardRow({ id, title, excerpt, image, date }) {
         </Card>
     );
 }
+
+
 export default function NewsHomepage() {
+    // Use the custom hook to fetch data
+    const { BlogHouse, loading, error } = useFetchBlogHouse();
+
+    if (loading) return <p>Loading...</p>; // Handle loading state
+    if (error) return <p>Error fetching news: {error.message}</p>; // Handle error state
+
+    const featuredNews = BlogHouse[0]; // Assuming the first item is featured
+    const sideNews = BlogHouse.slice(1, 4); // Adjust the slicing based on your data structure
+    const moreNews = BlogHouse.slice(4, 8); // Adjust accordingly
+    const recommendedNews = BlogHouse.slice(8, 12); // Adjust accordingly
+
     return (
         <div className="container mx-auto px-4 space-y-4 py-4">
             <Breadcrumb />
             <section className='pb-4'>
-                <div class="relative rounded px-2" >
-                    <div class="absolute inset-0 flex items-center px-4" >
-                        <div class="shrink-0 bg-blue-900 h-[1px] w-full " ></div>
+                <div className="relative rounded px-2">
+                    <div className="absolute inset-0 flex items-center px-4">
+                        <div className="shrink-0 bg-blue-900 h-[1px] w-full"></div>
                     </div>
-                    <div class="relative flex items-center h-full justify-start" >
-                        <h2 className="text-blue-900 px-4 bg-gray-100 text-center text-xl md:text-3xl m-0 font-bold ">
+                    <div className="relative flex items-center h-full justify-start">
+                        <h2 className="text-blue-900 px-4 bg-gray-100 text-center text-xl md:text-3xl m-0 font-bold">
                             Tin tức nổi bật
                         </h2>
                     </div>
@@ -67,17 +81,17 @@ export default function NewsHomepage() {
                 {/* Large News */}
                 <Card className="md:col-span-2 space-y-2 h-full flex flex-col overflow-hidden">
                     <div className="relative aspect-video overflow-hidden">
-                        <img src={featuredNews.image} alt={featuredNews.title} fill className="object-cover w-full" />
+                        <img src="http://localhost:3000/dark-blue-house-exterior-2.png" alt={featuredNews.title} className="object-cover w-full" />
                     </div>
                     <CardHeader>
                         <CardTitle className="text-2xl">{featuredNews.title}</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <p className="text-muted-foreground">{featuredNews.excerpt}</p>
+                        <p className="text-muted-foreground">{featuredNews.content.slice(0, 100)}...</p> {/* Display a snippet of the content */}
                     </CardContent>
                     <CardFooter className="flex justify-between items-center">
-                        <span className="text-sm text-muted-foreground">{featuredNews.date}</span>
-                        <Link href={`/news/${featuredNews.id}`} className="text-primary hover:underline">
+                        <span className="text-sm text-muted-foreground">{new Date(featuredNews.created_at).toLocaleDateString()}</span>
+                        <Link href={`/blog/${featuredNews.slug}`} className="text-primary hover:underline">
                             Xem thêm
                         </Link>
                     </CardFooter>
@@ -85,7 +99,7 @@ export default function NewsHomepage() {
                 {/* Side news */}
                 <div className="space-y-4 h-full flex flex-col">
                     {sideNews.map((news) => (
-                        < NewsCardRow key={news.id} {...news} />
+                        <NewsCardRow key={news.id} {...news} />
                     ))}
                 </div>
             </section>
@@ -109,12 +123,12 @@ export default function NewsHomepage() {
                             </div>
                             <div>
                                 <h3 className="font-semibold">{news.title}</h3>
-                                <p className="text-sm text-muted-foreground">{news.date}</p>
+                                <p className="text-sm text-muted-foreground">{new Date(news.created_at).toLocaleDateString()}</p>
                             </div>
                         </Card>
                     ))}
                 </div>
             </section>
-        </div >
-    )
+        </div>
+    );
 }

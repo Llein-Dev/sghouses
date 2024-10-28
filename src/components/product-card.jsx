@@ -20,13 +20,13 @@ export function ProductCardColComponent({ productsHouseFeatured }) {
       {productsHouseFeatured.map((houseFeatured, index) => (
         <Card key={index} className="overflow-hidden ">
           <div className="relative w-full aspect-video mb-2 overflow-hidden ">
-            <img src={houseFeatured.image} alt={houseFeatured.slug} />
+            <img src={`http://localhost:8000/storage/${houseFeatured?.image}`} />
           </div>
           <CardContent className="p-4">
             <p className="text-sm text-muted-foreground mb-2 flex items-center">
               <HouseIcon className="w-4 h-4 mr-1" />Phòng trống: {houseFeatured.count_rooms}
             </p>
-            <Link href={`building/${houseFeatured.slug}`}>
+            <Link href={`/building/${houseFeatured.slug}`}>
               <h3 className="text-lg font-semibold mb-2">{houseFeatured.name}</h3>
             </Link>
             <div className="flex items-center">

@@ -20,18 +20,18 @@ export function ProductCardRowComponent({
         <Card className="overflow-hidden ">
             <div className="flex flex-col sm:flex-row">
                 <div className="relative w-full sm:w-1/3 md:aspect-[4/3] aspect-video">
-                    <Image
-                        src={product?.image}
+                    <img
+                       src={`http://localhost:8000/storage/${product?.image}`} 
                         alt={product?.name}
                         layout="fill"
                         objectFit="cover"
-                        className="rounded-t-lg sm:rounded-l-lg sm:rounded-t-none "
+                        className="rounded-t-lg h-full sm:rounded-l-lg sm:rounded-t-none "
                     />
                 </div>
                 <div className="flex flex-col justify-between w-full sm:w-2/3">
                     <CardContent className="p-4 space-y-2">
                         <CardTitle className="flex justify-between">
-                            <Link href={`building/${product?.slug}`}>
+                            <Link href={`/building/${product?.slug}`}>
                                 <h3 className="text-lg font-semibold mb-2">{product?.name}</h3>
                             </Link>
                             <p className="text-sm text-muted-foreground mb-2 flex items-center">

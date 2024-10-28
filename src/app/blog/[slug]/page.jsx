@@ -8,14 +8,16 @@ import { useParams } from 'next/navigation'
 import { useFetchDetailBlog } from '@/utils/api/GET/api'
 
 export default function ArticleDetail() {
-    const i =[
-        {image01:"/dark-blue-house-exterior-2.png"},
-        {image01:"/dark-blue-house-exterior-2.png"},
-        {image01:"/dark-blue-house-exterior-2.png"}
-       
+    const i = [
+        { image01: "/dark-blue-house-exterior-2.png" },
+        { image01: "/dark-blue-house-exterior-2.png" },
+        { image01: "/dark-blue-house-exterior-2.png" }
+
     ]
-    const { slug } = useParams(); 
+    const { slug } = useParams();
     const { detailBlog } = useFetchDetailBlog(slug);
+    console.log(detailBlog);
+
     return (
         <div className="container mx-auto px-4 space-y-4 pt-4">
             <Breadcrumb />
@@ -39,24 +41,14 @@ export default function ArticleDetail() {
                             className="w-full h-[400px] object-cover rounded-lg mb-6 "
                         />
                         <div className="prose lg:prose-xl max-w-none space-y-4">
-                            <p>
-                                SGhouses Việt Nam không chỉ là một thức uống, mà còn là một phần không thể thiếu trong văn hóa và đời sống hàng ngày của người Việt. Từ những quán SGhouses vỉa hè đến những quán SGhouses sang trọng, SGhouses đã trở thành một biểu tượng của sự giao tiếp và thư giãn.
-                            </p>
-                            <h2 className="text-blue-900 text-2xl font-semibold">Lịch sử SGhouses Việt Nam</h2>
-                            <p>
-                                SGhouses được du nhập vào Việt Nam bởi người Pháp vào thế kỷ 19. Kể từ đó, nó đã phát triển thành một ngành công nghiệp quan trọng và một phần không thể thiếu trong văn hóa Việt Nam.
-                            </p>
-                            <h2 className="text-blue-900 text-2xl font-semibold">Các loại SGhouses phổ biến</h2>
-                            <ul className="list-disc list-inside space-y-2">
-                                <li>SGhouses đen</li>
-                                <li>SGhouses sữa đá</li>
-                                <li>Bạc xỉu</li>
-                                <li>SGhouses trứng</li>
-                            </ul>
-                            <p>
-                                Mỗi loại SGhouses đều có hương vị đặc trưng và cách thưởng thức riêng, phản ánh sự đa dạng trong văn hóa SGhouses Việt Nam.
-                            </p>
+                            {detailBlog?.body
+                                ?.split('\n')
+                                .filter(paragraph => paragraph.trim() !== '')
+                                .map((paragraph, index) => (
+                                    <p key={index}>{paragraph}</p> 
+                                ))}
                         </div>
+
 
                         {/* Author Info */}
                         <div className="flex items-center space-x-4 mt-8 p-4 bg-muted rounded-lg">

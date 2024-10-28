@@ -101,7 +101,7 @@ export default function Home() {
         <div className="px-4 space-y-8 flex flex-col justify-center items-center container mx-auto">
           <h2 className="text-center w-full font-bold text-2xl text-[#00008B] uppercase">Tin tức nổi bật</h2>
           <div className="grid grid-cols-1 md:grid-cols-4 w-full gap-6 mb-12">
-            {BlogHouse.map((productBlog, index) => (
+            {BlogHouse.slice(0, 4).map((productBlog, index) => (
               <BlogCard key={index} {...productBlog} />
             ))}
           </div>

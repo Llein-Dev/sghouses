@@ -33,27 +33,28 @@ export default function LoginPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError(null);  // Reset lại lỗi trước khi gửi request
+    setError(null); // Reset any previous errors
 
     try {
       let response;
       if (isLogin) {
         response = await loginAPI(formData.email, formData.password);
-        console.log("Login response:", response);
+        alert("Đăng nhập thành công!");
         router.push('/');
+        window.location.reload(); // Reload only after successful login
+
       } else {
         response = await signupAPI(formData.name, formData.email, formData.password);
-        console.log("Signup response:", response);
+        alert("Đăng ký thành công!");
         toggleForm();
- 
       }
-   
     } catch (err) {
-      setError(err.message || ' Email này chưa được đăng ký');
+      setError(err.message || 'Email này chưa được đăng ký');
     } finally {
-      setLoading(false);  // Tắt loading sau khi hoàn thành
+      setLoading(false); // Turn off loading after completion
     }
   };
+
   return (
     <>
       <div className="container mx-auto px-4 space-y-4 pt-4">

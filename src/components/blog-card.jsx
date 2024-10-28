@@ -15,7 +15,7 @@ export function BlogCard({
     return (
         <Card className="overflow-hidden bg-white">
             <div className="relative w-full aspect-video mb-2 overflow-hidden">
-                <img src={image} alt={title} />
+                <img src={`http://localhost:8000/storage/${image}`} alt={title} />
             </div>
             <CardContent className="p-4">
                 <div className="flex gap-4">

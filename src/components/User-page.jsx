@@ -12,6 +12,18 @@ import Breadcrumb from "./breadcum";
 
 export default function UserProfile({ user, GoEditProfile }) {
     const { CheapHouse, loading: CheapLoading, error: CheapError } = useFetchCheapHouse();
+    const getGenderLabel = (gender) => {
+        switch (gender) {
+            case 0:
+                return "Nam";
+            case 1:
+                return "Nữ";
+            case -1:
+                return "Khác"; // Hoặc có thể không hiển thị gì nếu không cần
+            default:
+                return "---";
+        }
+    };
 
     return (
         <div className="container mx-auto px-4 space-y-4 py-4 gap-4">
@@ -19,7 +31,7 @@ export default function UserProfile({ user, GoEditProfile }) {
             <Card className="flex justify-between bg-white bg-opacity-75 px-2 py-4 border rounded-lg">
                 <div className="flex items-end space-x-4">
                     <Avatar className="w-24 h-24 border-4 border-white shadow-lg">
-                        <AvatarImage src={`http://localhost:8000/storage/${user.avatar}`} alt={user?.name || "---"} />
+                        <AvatarImage src={`http://localhost:8000/storage/${user?.avatar}`} alt={user?.name || "---"} />
                         <AvatarFallback><Camera className="opacity-75" /></AvatarFallback>
                     </Avatar>
                     <div className="mb-1">
@@ -49,10 +61,10 @@ export default function UserProfile({ user, GoEditProfile }) {
                     <CardContent className="p-6 space-y-4">
                         <h2 className="text-2xl font-semibold">Thông tin cá nhân</h2>
                         <div className="space-y-2">
-                            <p className="flex items-center"><User2 className="w-4 h-4 mr-2" /> {user?.gender || "---"}</p>
-                            <p className="flex items-center"><CakeIcon className="w-4 h-4 mr-2" /> {user?.born || "---"}</p>
-                            <p className="flex items-center"><Building className="w-4 h-4 mr-2" /> {user?.major || "---"}</p>
-                            <p className="flex items-center"><CalendarDays className="w-4 h-4 mr-2" /> {user?.created_at || "---"}</p>
+                            <p className="flex items-center"><User2 className="w-4 h-4 mr-2" />Giới tính: {getGenderLabel(user?.gender) || "---"}</p>
+                            <p className="flex items-center"><CakeIcon className="w-4 h-4 mr-2" />Sinh nhật: {user?.born || "---"}</p>
+    
+                            <p className="flex items-center"><CalendarDays className="w-4 h-4 mr-2" />Ngày tạo: {user?.created_at || "---"}</p>
                         </div>
                     </CardContent>
                 </Card>

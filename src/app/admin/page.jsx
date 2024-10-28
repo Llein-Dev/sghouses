@@ -1,4 +1,3 @@
-
 "use client";
 import {
   BarChart,
@@ -11,14 +10,13 @@ import {
   Line,
 } from 'recharts';
 
-
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
-import { useRouter } from 'next/navigation';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { useEffect, useState } from 'react';
-// import { useFetchAdminTotal } from '@/AdminAPI/GET/api';
+import { useRouter } from 'next/navigation';
+import Cookies from 'js-cookie';
+
 const deploymentData = [
   { name: 'Jan', deployments: 65 },
   { name: 'Feb', deployments: 59 },
@@ -27,7 +25,7 @@ const deploymentData = [
   { name: 'May', deployments: 56 },
   { name: 'Jun', deployments: 55 },
   { name: 'Jul', deployments: 40 },
-]
+];
 
 const usageData = [
   { name: 'Mon', usage: 4000 },
@@ -37,26 +35,23 @@ const usageData = [
   { name: 'Fri', usage: 1890 },
   { name: 'Sat', usage: 2390 },
   { name: 'Sun', usage: 3490 },
-]
+];
 
 const recentDeployments = [
   { id: 1, project: 'E-commerce Site', status: 'Success', time: '2 hours ago' },
   { id: 2, project: 'Blog Platform', status: 'Failed', time: '5 hours ago' },
   { id: 3, project: 'Mobile App Backend', status: 'Success', time: '1 day ago' },
   { id: 4, project: 'Analytics Dashboard', status: 'In Progress', time: 'Just now' },
-]
-
-
+];
 
 export default function Home() {
-  // const [Total] = useFetchAdminTotal();
-
-  const [data, setData] = useState([]);
+  const [data, setData] = useState(null);
   const [error, setError] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
-    const adminToken = 'Rn9cqwezWLEUKqk4jrJuTfG7lZs5XZnlQreS9HR1bf837a1d'; // Token cần thiết
+    const adminToken = Cookies.get('token');
+
     const fetchData = async () => {
       try {
         const response = await fetch('http://localhost:8000/api/dashboard/total', {
@@ -67,25 +62,28 @@ export default function Home() {
           },
         });
 
-
-        const result = await response.json();
-        setData(result);
+        if (response.status === 200) {
+          const result = await response.json();
+          setData(result);
+        } else if (response.status === 403) {
+          setError('Không có quyền truy cập');
+        } else {
+          throw new Error('Không thể truy cập dữ liệu');
+        }
       } catch (error) {
         setError(error.message);
       }
     };
 
-    // Kiểm tra token trước khi gọi API
-    if (adminToken === 'Rn9cqwezWLEUKqk4jrJuTfG7lZs5XZnlQreS9HR1bf837a1d') {
+    if (adminToken) {
       fetchData();
     } else {
-      router.push('/login'); // Nếu token không hợp lệ, chuyển về trang đăng nhập
+      router.push('/login');
     }
   }, [router]);
 
   if (error) return <p>Lỗi: {error}</p>;
   if (!data) return <p>Đang tải dữ liệu...</p>;
-
 
   return (
     <>
@@ -127,8 +125,7 @@ export default function Home() {
             </svg>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{data.total_view}</div>
-
+            <div className="text-2xl font-bold">{data.total_contract}</div>
           </CardContent>
         </Card>
         <Card>
@@ -237,4 +234,3 @@ export default function Home() {
     </>
   );
 }
-

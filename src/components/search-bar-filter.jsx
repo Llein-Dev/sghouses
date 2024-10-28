@@ -30,11 +30,7 @@ export function SearchFilterComponent({ setSearchParams }) {
       price: `${priceRange[0]}to${priceRange[1]}`,
       size: `${sizeRange[0]}to${sizeRange[1]}`,
     }).toString();
-
-    // Update search parameters in parent component
-    setSearchParams(query); // Call setSearchParams with the query
-
-    // Navigate to the /filter page with query parameters
+    setSearchParams(query);
     router.push(`/filter?${query}`);
   };
 

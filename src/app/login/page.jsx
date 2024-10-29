@@ -41,8 +41,6 @@ export default function LoginPage() {
         response = await loginAPI(formData.email, formData.password);
         alert("Đăng nhập thành công!");
         router.push('/');
-        window.location.reload(); // Reload only after successful login
-
       } else {
         response = await signupAPI(formData.name, formData.email, formData.password);
         alert("Đăng ký thành công!");

@@ -29,59 +29,16 @@ export default function FilterPage() {
                 setFilteredProducts(data);
             }
         } catch (error) {
+            console.error("Error fetching products:", error);
             setFilteredProducts([]); // Optionally set to empty on other errors too
         } finally {
             setLoading(false);
         }
     };
 
-    const removeDiacritics = (str) => {
-        return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-    };
-
     useEffect(() => {
         fetchFilteredProducts();
-    }, [searchParams]); // Depend on searchParams
-
-    // Function to handle filter changes
-    const handleFilterChange = (selectedFilters) => {
-        const params = new URLSearchParams(searchParams);
-
-        // Update searchParams with selected filters
-        if (selectedFilters.length > 0) {
-            params.set("filters", selectedFilters.join(",")); // Assuming filters are sent as a comma-separated list
-        } else {
-            params.delete("filters"); // Remove the filters param if none are selected
-        }
-
-        setSearchParams(params);
-    };
-
-    const getFilteredProducts = () => {
-        const filterKeywords = searchParams.get("filters")?.split(",") || [];
-
-        // Nếu không có bộ lọc, trả về các sản phẩm đã lấy
-        if (filterKeywords.length === 0) {
-            return filteredProducts;
-        }
-
-        // Lọc sản phẩm dựa trên amenities/features
-        const filtered = filteredProducts.filter(product => {
-            // Chuyển đổi tiện nghi sang dạng không dấu
-            const amenities = Object.values(product.tien_ich || {}).map(amenity => removeDiacritics(amenity.toLowerCase()));
-
-            // Chuyển đổi từ khóa lọc sang dạng không dấu
-            const lowerCaseKeywords = filterKeywords.map(keyword => removeDiacritics(keyword.toLowerCase()));
-
-            // Kiểm tra xem tất cả từ khóa có khớp với amenities không
-            const matches = lowerCaseKeywords.every(keyword => amenities.includes(keyword));
-            return matches;
-        });
-
-        return filtered;
-    };
-
-    const finalFilteredProducts = getFilteredProducts();
+    }, [searchParams]); // Depend on searchParams instead of window.location.search
 
     return (
         <div className="container mx-auto px-4 space-y-4 py-4">
@@ -91,7 +48,7 @@ export default function FilterPage() {
                 <div className="md:w-3/4 space-y-4 bg-white rounded-lg p-4 shadow-md">
                     <div className="flex justify-between items-center">
                         <h2 className="text-start py-4 font-bold text-2xl text-[#00008B]">
-                            Có <span className="text-[#FF5C00]">{finalFilteredProducts.length}</span> kết quả phù hợp
+                            Có <span className="text-[#FF5C00]">{productCount}</span> kết quả phù hợp
                         </h2>
                         <div>
                             <h3 className="text-md">Sắp xếp theo:</h3>
@@ -100,8 +57,8 @@ export default function FilterPage() {
                     {loading ? (
                         <div className="py-8"><Spinner /></div>
                     ) : (
-                        finalFilteredProducts.length > 0 ? (
-                            finalFilteredProducts.map((product, index) => (
+                        filteredProducts.length > 0 ? (
+                            filteredProducts.map((product, index) => (
                                 <ProductCardRowComponent key={index} product={product} />
                             ))
                         ) : (
@@ -110,7 +67,7 @@ export default function FilterPage() {
                     )}
                 </div>
                 <div className="md:w-1/4">
-                    <ProductFilter onFilterChange={handleFilterChange} />
+                    <ProductFilter />
                 </div>
             </div>
         </div>

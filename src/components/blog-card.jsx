@@ -9,7 +9,6 @@ export function BlogCard({
     image,
     title,
     name_cate,
-    body,
     slug
 }) {
     return (

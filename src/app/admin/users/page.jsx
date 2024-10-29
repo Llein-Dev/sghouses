@@ -36,62 +36,63 @@ export default function UsersContent() {
   const [born, setBorn] = useState("");
   const router = useRouter()
 
-  useEffect(() => {
-    const adminToken = Cookies.get('token');
-    if (!adminToken) {
-      router.push('/');
-      return;
-    }
-
-    // fetch dữ liệu user
-
-    const fetchData = async () => {
-      try {
-        const response = await fetch('http://localhost:8000/api/user', {
-          headers: {
-            'Authorization': `Bearer ${adminToken}`,
-            'Content-Type': 'application/json',
-          },
-        });
-        if (response.ok) {
-          const result = await response.json();
-          setUsers(result.list || []);
-        } else {
-          setError('Không có quyền truy cập');
-        }
-      } catch (error) {
-        setError('Không thể truy cập dữ liệu');
-      }
-    };
-    fetchData();
-  }, [router]);
-
-
-  // nhân bản user
-  const handleCopyUser = async (id) => {
-    // Kiểm tra ID
+  // Định nghĩa hàm fetchData
+const fetchData = async () => {
+  try {
     const adminToken = Cookies.get("token");
-    try {
-      const response = await fetch(`http://localhost:8000/api/user/duplicate/${id}`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${adminToken}`,
-          "Content-Type": "application/json",
-        },
-      });
-      console.log('Response status:', response.status); // Kiểm tra trạng thái phản hồi
-      if (response.ok) {
-        const newUser = await response.json();
-        setUsers((prevUsers) => [...prevUsers, newUser]); // Cập nhật danh sách người dùng
-      } else {
-        const errorData = await response.json();
-        setError(errorData.message || "Lỗi lấy thông tin phản hồi");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-      setError("Có lỗi xảy ra khi sao chép người dùng");
+    const response = await fetch('http://localhost:8000/api/user', {
+      headers: {
+        'Authorization': `Bearer ${adminToken}`,
+        'Content-Type': 'application/json',
+      },
+    });
+    if (response.ok) {
+      const result = await response.json();
+      setUsers(result.list || []);
+    } else {
+      setError('Không có quyền truy cập');
     }
-  };
+  } catch (error) {
+    setError('Không thể truy cập dữ liệu');
+  }
+};
+
+// Gọi fetchData trong useEffect khi trang load lần đầu
+useEffect(() => {
+  const adminToken = Cookies.get('token');
+  if (!adminToken) {
+    router.push('/');
+    return;
+  }
+  fetchData();
+}, [router]);
+
+// Nhân bản user
+const handleCopyUser = async (id) => {
+  const adminToken = Cookies.get("token");
+  try {
+    const response = await fetch(`http://localhost:8000/api/user/duplicate/${id}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${adminToken}`,
+        "Content-Type": "application/json",
+      },
+    });
+    if (response.ok) {
+      const newUser = await response.json();
+      setUsers((prevUsers) => [...prevUsers, newUser]); // Cập nhật danh sách user
+      // Hiện thông báo và tải lại danh sách users
+        fetchData(); // Gọi lại fetchData để tải lại danh sách user mới
+      
+    } else {
+      const errorData = await response.json();
+      setError(errorData.message || "Lỗi lấy thông tin phản hồi");
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    setError("Có lỗi xảy ra khi sao chép người dùng");
+  }
+};
   
   // Delete user
   const handleDeleteUser = async (id) => {
@@ -150,6 +151,7 @@ export default function UsersContent() {
         setPhone("");
         setAddress("");
         setBorn("");
+        fetchData();
       } else {
         const errorData = await response.json();
         setError(errorData.message || "Lỗi khi cập nhật thông tin người dùng");

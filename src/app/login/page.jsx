@@ -7,8 +7,7 @@ import { useState } from "react";
 import { loginAPI, signupAPI } from "@/utils/api/Auth/api";
 import { useRouter } from "next/navigation";
 
-
-export default function LoginPage() {
+export default function LoginPage({fetchData}) {
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({ name: '', email: '', password: '' });
   const [error, setError] = useState(null);
@@ -22,7 +21,7 @@ export default function LoginPage() {
   };
 
   const handleChange = (e) => {
-    const { id, value } = e.target;
+    const { id, value } = e.target; 
     setFormData((prevData) => ({
       ...prevData,
       [id]: value,
@@ -42,8 +41,11 @@ export default function LoginPage() {
         alert("Đăng nhập thành công!");
         router.push('/');
       } else {
+        
         response = await signupAPI(formData.name, formData.email, formData.password);
         alert("Đăng ký thành công!");
+        await fetchData()
+
         toggleForm();
       }
     } catch (err) {

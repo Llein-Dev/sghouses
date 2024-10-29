@@ -25,7 +25,7 @@ import { Label } from "@/components/ui/label"
 import Cookies from "js-cookie"
 import { useRouter } from "next/navigation"
 
-export default function UsersContent() {
+export default function UsersContent({signupAPI}) {
 
   const [users, setUsers] = useState([]);
   const [error, setError] = useState(null);
@@ -65,7 +65,16 @@ useEffect(() => {
     return;
   }
   fetchData();
+   // Call the prop to expose fetchData
 }, [router]);
+
+
+// hàm này || sau khi người dùng đăng nhập thì load lại trang để thấy user mới nhất
+useEffect(() => {
+  if (typeof signupAPI === 'function') {
+    signupAPI(fetchData);
+  }
+}, [signupAPI, fetchData]);
 
 // Nhân bản user
 const handleCopyUser = async (id) => {
@@ -111,6 +120,12 @@ const handleCopyUser = async (id) => {
       if (response.ok) {
         // Cập nhật danh sách người dùng bằng cách loại bỏ người dùng đã xóa
         setUsers((prevUsers) => prevUsers.filter(user => user.id !== id));
+        const shouldGoToRecovery = window.confirm("Xóa người dùng thành công! Bạn có muốn đến trang khôi phục không?");
+        if (shouldGoToRecovery) {
+          router.push("/admin/KhoiPhucUsers"); // Chuyển đến trang khôi phục
+        } else {
+          fetchData(); // Cập nhật danh sách người dùng nếu không chuyển trang
+        }
       } else {
         const errorData = await response.json();
         setError(errorData.message || "Lỗi khi xóa người dùng");

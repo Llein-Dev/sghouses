@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { Search, FileText, Eye, Download, Trash2 } from "lucide-react"
+import { Search, FileText, Eye, Download, Trash2, BookCopy, Link } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
@@ -85,6 +85,12 @@ export default function ContractContent() {
     }
   };
 
+// khôi pbuc llien hệ
+const handleRefesh = () =>{
+  router.push('/admin/refeshContacts')
+}
+  
+
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
@@ -97,9 +103,9 @@ export default function ContractContent() {
             className="max-w-sm"
           />
         </div>
-        <Button variant="blue">
+        <Button  onClick={handleRefesh} variant="blue">
           <FileText className="mr-2 h-4 w-4" />
-          New Contract
+          Refesh Contract
         </Button>
       </div>
 
@@ -127,6 +133,7 @@ export default function ContractContent() {
                       <Button variant="outline" size="icon" onClick={() => handleDeleteContact_room(contract.id)}>
                         <Trash2 className="h-4 w-4" />
                       </Button>
+                    
                     </DialogTrigger>
                   </Dialog>
                 </div>

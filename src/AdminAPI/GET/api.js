@@ -23,51 +23,90 @@ export const useFetchAdminTotal = () =>{
     return [Total];
 }
 
-// // Fecth API Thống kê Liên hệ
-// export const useFetchAdminInfo = () =>{
-//     const [info , setInfo] = useState([]);
-//     const [error , setError] = useState(null)
+// --------------------------------------------------- // ---------------------------------------------------------//
 
-//     useEffect(() =>{
-//         const fetchAdminInfo = async ()=>{
-//           try {
-//             const response = await fetch('http://localhost:8000/api/admin/info')
-//             if(!response.ok){
-//                 setError('lỗi khi lấy api info thuộc Admin')
-//                 return;
-//             }
-//             const data = await response.json();
-//             setInfo(data);
-//           } catch (error) {
-//             setError(error.massage || 'Fetch API info gặp lỗi vui lòng kiểm tra lại admin info !')
-//           }
-//         }
-//         fetchAdminInfo();
-//     },[])
-//    return{info, error}
-// }
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////       END API USER        //////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// // fetch API admin thống kê hóa đơn 
-// export const useFetchAminBill = () =>{
-//     const [bill , setBill] = useState([])
-//     const [error , setError] = useState(null)
+// AdminAPI/GET/api.js
+import Cookies from 'js-cookie';
 
-//     useEffect(()=>{
-//     const fetchAdminBill = async () =>{
-//     try {
-//         const response = await fetch('http://localhost:8000/api/admin/bill')
-//         if(!response.ok){
-//             throw new Error('lỗi không kết nối được nới api Admin hóa đơn')
-//         }
-//         const data = await response.json()
-//         setBill(data);
+// Hàm lấy danh sách người dùng
+export const fetchUsers = async () => {
+  const adminToken = Cookies.get("token");
+  const response = await fetch('http://localhost:8000/api/user', {
+    headers: {
+      'Authorization': `Bearer ${adminToken}`,
+      'Content-Type': 'application/json',
+    },
+  });
 
-//     } catch (error) {
-//         setError(error.massage || 'lỗi khi fetch dữ liệu')
-//     }
-//     }
-//     fetchAdminBill();
-//     },[])
+  if (!response.ok) {
+    throw new Error('Không có quyền truy cập');
+  }
 
-//     return{bill,error}
-// }
+  const result = await response.json();
+  return result.list || [];
+};
+
+// Hàm sao chép người dùng
+export const copyUser = async (id) => {
+  const adminToken = Cookies.get("token");
+  const response = await fetch(`http://localhost:8000/api/user/duplicate/${id}`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${adminToken}`,
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.message || "Lỗi lấy thông tin phản hồi");
+  }
+
+  return await response.json();
+};
+
+// Hàm xóa người dùng
+export const deleteUser = async (id) => {
+  const adminToken = Cookies.get("token");
+  const response = await fetch(`http://localhost:8000/api/user/delete/${id}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${adminToken}`,
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.message || "Lỗi khi xóa người dùng");
+  }
+};
+
+// Hàm chỉnh sửa người dùng
+export const editUser = async (id, updatedUser) => {
+  const adminToken = Cookies.get("token");
+  const response = await fetch(`http://localhost:8000/api/user/edit/${id}`, {
+    method: "PUT",
+    headers: {
+      Authorization: `Bearer ${adminToken}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(updatedUser),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.message || "Lỗi khi cập nhật thông tin người dùng");
+  }
+
+  return await response.json();
+};
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////       END API USER        /////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// ------------------------------------------------- // ---------------------------------------------------------------------------------//

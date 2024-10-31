@@ -85,32 +85,6 @@ export default function ContractContent() {
     }
   };
 
-
-
-
-
-
-
-
-
-
-
-
-
-  // --------------- SEARCH Filter
-  const [searchTerm, setSearchTerm] = useState("")
-  // const filteredContracts = contracts.filter(contract =>
-  //   contract.tenant.toLowerCase().includes(searchTerm.toLowerCase()) ||
-  //   contract.room.toLowerCase().includes(searchTerm.toLowerCase())
-  // )
-  // const getStatusColor = (status) => {
-  //   switch (status) {
-  //     case "Active": return "bg-green-500"
-  //     case "Pending": return "bg-yellow-500"
-  //     case "Expired": return "bg-red-500"
-  //     default: return "bg-gray-500"
-  //   }
-  // }
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
@@ -154,25 +128,7 @@ export default function ContractContent() {
                         <Trash2 className="h-4 w-4" />
                       </Button>
                     </DialogTrigger>
-                    {/* <DialogContent>
-                      <DialogHeader>
-                        <DialogTitle>Contract Details</DialogTitle>
-                        <DialogDescription>
-                          Contract for {contract.tenant} - Room {contract.room}
-                        </DialogDescription>
-                      </DialogHeader>
-                      <div className="space-y-4">
-                        <p><strong>Tenantss:</strong> {contract.tenant}</p>
-                        <p><strong>Room:</strong> {contract.room}</p>
-                        <p><strong>Start Date:</strong> {contract.startDate}</p>
-                        <p><strong>End Date:</strong> {contract.endDate}</p>
-                        <p><strong>Status:</strong> {contract.status}</p>
-                      </div>
-                    </DialogContent> */}
                   </Dialog>
-                  <Button variant="outline" size="icon">
-                    <Download className="h-4 w-4" />
-                  </Button>
                 </div>
               </TableCell>
             </TableRow>

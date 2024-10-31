@@ -1,9 +1,10 @@
-"use client"
+// UsersContent.js
+"use client";
 
-import { useEffect, useState } from "react"
-import { Search, UserPlus, Pencil, Trash2, BookCopy } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import { useEffect, useState } from "react";
+import { Search, UserPlus, Pencil, Trash2, BookCopy } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
@@ -11,7 +12,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
+} from "@/components/ui/table";
 import {
   Dialog,
   DialogContent,
@@ -20,160 +21,99 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
-import { Label } from "@/components/ui/label"
-import Cookies from "js-cookie"
-import { useRouter } from "next/navigation"
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
+import { fetchUsers, copyUser, deleteUser, editUser } from "@/AdminAPI/GET/api";
 
-export default function UsersContent({signupAPI}) {
-
+export default function UsersContent() {
   const [users, setUsers] = useState([]);
   const [error, setError] = useState(null);
-  const [selectedUser, setSelectedUser] = useState(null); // State cho user cần chỉnh sửa
+  const [selectedUser, setSelectedUser] = useState(null);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
   const [born, setBorn] = useState("");
-  const router = useRouter()
+  const router = useRouter();
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredUsers, setFilteredUsers] = useState([]);
 
-  // Định nghĩa hàm fetchData
-const fetchData = async () => {
-  try {
-    const adminToken = Cookies.get("token");
-    const response = await fetch('http://localhost:8000/api/user', {
-      headers: {
-        'Authorization': `Bearer ${adminToken}`,
-        'Content-Type': 'application/json',
-      },
+  const handleSearchChange = (event) => {
+    const searchValue = event.target.value;
+    setSearchTerm(searchValue);
+
+    const filtered = users.filter((user) => {
+      const lowerCaseSearchValue = searchValue.toLowerCase().trim();
+      const combinedString = `${user.name.toLowerCase()} ${user.phone} ${user.id} ${user.email.toLowerCase()}`;
+      return combinedString.includes(lowerCaseSearchValue);
     });
-    if (response.ok) {
-      const result = await response.json();
-      setUsers(result.list || []);
-    } else {
-      setError('Không có quyền truy cập');
-    }
-  } catch (error) {
-    setError('Không thể truy cập dữ liệu');
-  }
-};
+    setFilteredUsers(filtered);
+  };
 
-// Gọi fetchData trong useEffect khi trang load lần đầu
-useEffect(() => {
-  const adminToken = Cookies.get('token');
-  if (!adminToken) {
-    router.push('/');
-    return;
-  }
-  fetchData();
-   // Call the prop to expose fetchData
-}, [router]);
-
-
-// hàm này || sau khi người dùng đăng nhập thì load lại trang để thấy user mới nhất
-useEffect(() => {
-  if (typeof signupAPI === 'function') {
-    signupAPI(fetchData);
-  }
-}, [signupAPI, fetchData]);
-
-// Nhân bản user
-const handleCopyUser = async (id) => {
-  const adminToken = Cookies.get("token");
-  try {
-    const response = await fetch(`http://localhost:8000/api/user/duplicate/${id}`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${adminToken}`,
-        "Content-Type": "application/json",
-      },
-    });
-    if (response.ok) {
-      const newUser = await response.json();
-      setUsers((prevUsers) => [...prevUsers, newUser]); // Cập nhật danh sách user
-      // Hiện thông báo và tải lại danh sách users
-        fetchData(); // Gọi lại fetchData để tải lại danh sách user mới
-      
-    } else {
-      const errorData = await response.json();
-      setError(errorData.message || "Lỗi lấy thông tin phản hồi");
-    }
-  } catch (error) {
-    console.error("Error:", error);
-    setError("Có lỗi xảy ra khi sao chép người dùng");
-  }
-};
-  
-  // Delete user
-  const handleDeleteUser = async (id) => {
-    const adminToken = Cookies.get("token");
+  const fetchData = async () => {
     try {
-      const response = await fetch(`http://localhost:8000/api/user/delete/${id}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${adminToken}`,
-          "Content-Type": "application/json",
-        },
-      });
-
-      console.log('Delete response status:', response.status);
-
-      if (response.ok) {
-        // Cập nhật danh sách người dùng bằng cách loại bỏ người dùng đã xóa
-        setUsers((prevUsers) => prevUsers.filter(user => user.id !== id));
-        const shouldGoToRecovery = window.confirm("Xóa người dùng thành công! Bạn có muốn đến trang khôi phục không?");
-        if (shouldGoToRecovery) {
-          router.push("/admin/KhoiPhucUsers"); // Chuyển đến trang khôi phục
-        } else {
-          fetchData(); // Cập nhật danh sách người dùng nếu không chuyển trang
-        }
-      } else {
-        const errorData = await response.json();
-        setError(errorData.message || "Lỗi khi xóa người dùng");
-      }
+      const usersList = await fetchUsers();
+      setUsers(usersList);
     } catch (error) {
-      console.error("Error:", error);
-      setError("Có lỗi xảy ra khi xóa người dùng");
+      setError(error.message);
     }
   };
 
-  // Edit user
-  const handleEditUser = async () => {
-    const adminToken = Cookies.get("token");
-    if (!selectedUser) return;
+  useEffect(() => {
+    const adminToken = Cookies.get('token');
+    if (!adminToken) {
+      router.push('/');
+      return;
+    }
+    fetchData();
+  }, [router]);
 
-    const updatedUser = {
-      name,
-      phone,
-      address,
-      born
-    };
+  useEffect(() => {
+    setFilteredUsers(users);
+  }, [users]);
 
+  const handleCopyUser = async (id) => {
     try {
-      const response = await fetch(`http://localhost:8000/api/user/edit/${selectedUser.id}`, {
-        method: "PUT", // Sử dụng PUT để cập nhật thông tin người dùng
-        headers: {
-          Authorization: `Bearer ${adminToken}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(updatedUser),
-      });
+      const newUser = await copyUser(id);
+      setUsers((prevUsers) => [...prevUsers, newUser]);
+      fetchData();
+    } catch (error) {
+      setError(error.message);
+    }
+  };
 
-      if (response.ok) {
-        const updatedData = await response.json();
-        setUsers(users.map(user => (user.id === selectedUser.id ? updatedData : user))); // Cập nhật danh sách người dùng
-        setSelectedUser(null); // Đặt lại user đã chọn
-        setName("");
-        setPhone("");
-        setAddress("");
-        setBorn("");
-        fetchData();
+  const handleDeleteUser = async (id) => {
+    try {
+      await deleteUser(id);
+      setUsers((prevUsers) => prevUsers.filter(user => user.id !== id));
+      const shouldGoToRecovery = window.confirm("Xóa người dùng thành công! Bạn có muốn đến trang khôi phục không?");
+      if (shouldGoToRecovery) {
+        router.push("/admin/KhoiPhucUsers");
       } else {
-        const errorData = await response.json();
-        setError(errorData.message || "Lỗi khi cập nhật thông tin người dùng");
+        fetchData();
       }
     } catch (error) {
-      console.error("Error:", error);
-      setError("Có lỗi xảy ra khi cập nhật thông tin người dùng");
+      setError(error.message);
+    }
+  };
+
+  const handleEditUser = async () => {
+    if (!selectedUser) return;
+
+    const updatedUser = { name, phone, address, born };
+
+    try {
+      const updatedData = await editUser(selectedUser.id, updatedUser);
+      setUsers(users.map(user => (user.id === selectedUser.id ? updatedData : user)));
+      setSelectedUser(null);
+      setName("");
+      setPhone("");
+      setAddress("");
+      setBorn("");
+      fetchData();
+    } catch (error) {
+      setError(error.message);
     }
   };
 
@@ -184,8 +124,8 @@ const handleCopyUser = async (id) => {
           <Search className="h-5 w-5 text-gray-500" />
           <Input
             placeholder="Search users..."
-            value={""}
-            // onChange={(e) => setSearchTerm(e.target.value)}
+            value={searchTerm}
+            onChange={handleSearchChange}
             className="max-w-sm"
           />
         </div>
@@ -200,7 +140,7 @@ const handleCopyUser = async (id) => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {users.map((user, index) => (
+          {filteredUsers.map((user, index) => (
             <TableRow key={index}>
               <TableCell>{user.id}</TableCell>
               <TableCell>{user.name}</TableCell>
@@ -208,11 +148,10 @@ const handleCopyUser = async (id) => {
               <TableCell>{user.phone}</TableCell>
               <TableCell>
                 <div className="flex space-x-2">
-
                   <Dialog>
                     <DialogTrigger asChild>
                       <Button variant="outline" onClick={() => {
-                        setSelectedUser(user); // Cập nhật user cần chỉnh sửa
+                        setSelectedUser(user);
                         setName(user.name);
                         setPhone(user.phone);
                         setAddress(user.address);
@@ -230,9 +169,7 @@ const handleCopyUser = async (id) => {
                       </DialogHeader>
                       <div className="grid gap-4 py-4">
                         <div className="grid grid-cols-4 items-center gap-4">
-                          <Label htmlFor="name" className="text-right">
-                            Name
-                          </Label>
+                          <Label htmlFor="name" className="text-right">Name</Label>
                           <Input
                             id="name"
                             value={name}
@@ -241,9 +178,7 @@ const handleCopyUser = async (id) => {
                           />
                         </div>
                         <div className="grid grid-cols-4 items-center gap-4">
-                          <Label htmlFor="phone" className="text-right">
-                            Phone
-                          </Label>
+                          <Label htmlFor="phone" className="text-right">Phone</Label>
                           <Input
                             id="phone"
                             type="phone"
@@ -253,41 +188,35 @@ const handleCopyUser = async (id) => {
                           />
                         </div>
                         <div className="grid grid-cols-4 items-center gap-4">
-                          <Label htmlFor="born" className="text-right">
-                            Born
-                          </Label>
-                          <Input
-                            id="born"
-                            type="born"
-                            value={born}
-                            onChange={(e) => setBorn(e.target.value)}
-                            className="col-span-3"
-                          />
-                        </div>
-                        <div className="grid grid-cols-4 items-center gap-4">
-                          <Label htmlFor="address" className="text-right">
-                            Address
-                          </Label>
+                          <Label htmlFor="address" className="text-right">Address</Label>
                           <Input
                             id="address"
-                            type="address"
                             value={address}
                             onChange={(e) => setAddress(e.target.value)}
                             className="col-span-3"
                           />
                         </div>
+                        <div className="grid grid-cols-4 items-center gap-4">
+                          <Label htmlFor="born" className="text-right">Born</Label>
+                          <Input
+                            id="born"
+                            value={born}
+                            onChange={(e) => setBorn(e.target.value)}
+                            className="col-span-3"
+                          />
+                        </div>
                       </div>
                       <DialogFooter>
-                        <Button type="submit" onClick={handleEditUser} >Add User</Button>
+                        <Button type="button" onClick={handleEditUser}>Save changes</Button>
+                        <Button type="button" variant="outline" onClick={() => setSelectedUser(null)}>Cancel</Button>
                       </DialogFooter>
                     </DialogContent>
                   </Dialog>
-                  <Button variant="outline" size="icon" onClick={() => handleDeleteUser(user.id)}>
-                    <Trash2 className="h-4 w-4" />
+                  <Button variant="outline" onClick={() => handleCopyUser(user.id)}>
+                    <BookCopy className="mr-2 h-4 w-4" />
                   </Button>
-                  <Button variant="outline" size="icon" onClick={() => handleCopyUser(user.id)} >
-                    <BookCopy className="h-4 w-4"
-                    />
+                  <Button variant="outline" onClick={() => handleDeleteUser(user.id)}>
+                    <Trash2 className="mr-2 h-4 w-4" />
                   </Button>
                 </div>
               </TableCell>
@@ -295,6 +224,7 @@ const handleCopyUser = async (id) => {
           ))}
         </TableBody>
       </Table>
+      {error && <div className="text-red-500">{error}</div>}
     </div>
-  )
+  );
 }

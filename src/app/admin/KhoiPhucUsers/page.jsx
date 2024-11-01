@@ -20,25 +20,25 @@ export default function KhoiPhucUsers() {
   const [error, setError] = useState(null);
   const router = useRouter();
 
-// search với fetchdata base
+  // search với fetchdata base
   const [searchTerm, setSearchTerm] = useState(""); // State lưu giá trị tìm kiếm
   const [filteredUsers, setFilteredUsers] = useState([]); // Danh sách user sau khi lọc
 
 
-// hàm tiềm kiếm dựa trên dữ liệu được fetch
-const handleSearchChange = (event) => {
-  const searchValue = event.target.value; // Nhận giá trị tìm kiếm từ người dùng
-  setSearchTerm(searchValue); // Cập nhật `searchTerm` với giá trị tìm kiếm mới
+  // hàm tiềm kiếm dựa trên dữ liệu được fetch
+  const handleSearchChange = (event) => {
+    const searchValue = event.target.value; // Nhận giá trị tìm kiếm từ người dùng
+    setSearchTerm(searchValue); // Cập nhật `searchTerm` với giá trị tìm kiếm mới
 
-  const filtered = deletedUsers.filter((user) => {
-    const lowerCaseSearchValue = searchValue.toLowerCase().trim();
-    // Tạo chuỗi kết hợp chứa tên, số điện thoại, ID và email để tìm kiếm toàn diện
-    const combinedString = `${user.name.toLowerCase()} ${user.phone} ${user.id} ${user.email.toLowerCase()}`;
-    // Kiểm tra xem chuỗi kết hợp có chứa giá trị tìm kiếm không
-    return combinedString.includes(lowerCaseSearchValue);
-  });
-  setFilteredUsers(filtered);
-};
+    const filtered = deletedUsers.filter((user) => {
+      const lowerCaseSearchValue = searchValue.toLowerCase().trim();
+      // Tạo chuỗi kết hợp chứa tên, số điện thoại, ID và email để tìm kiếm toàn diện
+      const combinedString = `${user.name.toLowerCase()} ${user.phone} ${user.id} ${user.email.toLowerCase()}`;
+      // Kiểm tra xem chuỗi kết hợp có chứa giá trị tìm kiếm không
+      return combinedString.includes(lowerCaseSearchValue);
+    });
+    setFilteredUsers(filtered);
+  };
 
 
   // Định nghĩa hàm fetchDeletedUsers
@@ -80,7 +80,7 @@ const handleSearchChange = (event) => {
   useEffect(() => {
     setFilteredUsers(deletedUsers); // Cập nhật  mỗi khi users thay đổi
   }, [deletedUsers]);
-  
+
 
 
   const handleRefesh = async (id) => {
@@ -146,10 +146,11 @@ const handleSearchChange = (event) => {
                 <TableCell>
                   <div className="flex space-x-2">
 
-                  
+
                     <Button variant="outline" size="icon" onClick={() => handleRefesh(user.id)}>
                       <RefreshCcw className="h-4 w-4" />
                     </Button>
+                  
                   </div>
                 </TableCell>
               </TableRow>

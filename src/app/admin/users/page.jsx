@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { Search, UserPlus, Pencil, Trash2, BookCopy } from "lucide-react"
+import { Search, UserPlus, Pencil, Trash2, BookCopy, Phone } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
@@ -42,87 +42,87 @@ export default function UsersContent() {
 
 
 
-// hàm tiềm kiếm dựa trên dữ liệu được fetch
-const handleSearchChange = (event) => {
-  const searchValue = event.target.value; // Nhận giá trị tìm kiếm từ người dùng
-  setSearchTerm(searchValue); // Cập nhật `searchTerm` với giá trị tìm kiếm mới
+  // hàm tiềm kiếm dựa trên dữ liệu được fetch
+  const handleSearchChange = (event) => {
+    const searchValue = event.target.value; // Nhận giá trị tìm kiếm từ người dùng
+    setSearchTerm(searchValue); // Cập nhật `searchTerm` với giá trị tìm kiếm mới
 
-  const filtered = users.filter((user) => {
-    const lowerCaseSearchValue = searchValue.toLowerCase().trim();
-    // Tạo chuỗi kết hợp chứa tên, số điện thoại, ID và email để tìm kiếm toàn diện
-    const combinedString = `${user.name.toLowerCase()} ${user.phone} ${user.id} ${user.email.toLowerCase()}`;
-    // Kiểm tra xem chuỗi kết hợp có chứa giá trị tìm kiếm không
-    return combinedString.includes(lowerCaseSearchValue);
-  });
-  setFilteredUsers(filtered);
-};
+    const filtered = users.filter((user) => {
+      const lowerCaseSearchValue = searchValue.toLowerCase().trim();
+      // Tạo chuỗi kết hợp chứa tên, số điện thoại, ID và email để tìm kiếm toàn diện
+      const combinedString = `${user.name.toLowerCase()} ${user.phone} ${user.id} ${user.email.toLowerCase()}`;
+      // Kiểm tra xem chuỗi kết hợp có chứa giá trị tìm kiếm không
+      return combinedString.includes(lowerCaseSearchValue);
+    });
+    setFilteredUsers(filtered);
+  };
 
 
   // Định nghĩa hàm fetchData
-const fetchData = async () => {
-  try {
+  const fetchData = async () => {
+    try {
+      const adminToken = Cookies.get("token");
+      const response = await fetch('http://localhost:8000/api/user', {
+        headers: {
+          'Authorization': `Bearer ${adminToken}`,
+          'Content-Type': 'application/json',
+        },
+      });
+      if (response.ok) {
+        const result = await response.json();
+        setUsers(result.list || []);
+      } else {
+        setError('Không có quyền truy cập');
+      }
+    } catch (error) {
+      setError('Không thể truy cập dữ liệu');
+    }
+  };
+
+  // Gọi fetchData trong useEffect khi trang load lần đầu
+  useEffect(() => {
+    const adminToken = Cookies.get('token');
+    if (!adminToken) {
+      router.push('/');
+      return;
+    }
+    fetchData();
+    // Call the prop to expose fetchData
+  }, [router]);
+
+
+  useEffect(() => {
+    setFilteredUsers(users); // Cập nhật filteredUsers mỗi khi users thay đổi
+  }, [users]);
+
+
+  // Nhân bản user
+  const handleCopyUser = async (id) => {
     const adminToken = Cookies.get("token");
-    const response = await fetch('http://localhost:8000/api/user', {
-      headers: {
-        'Authorization': `Bearer ${adminToken}`,
-        'Content-Type': 'application/json',
-      },
-    });
-    if (response.ok) {
-      const result = await response.json();
-      setUsers(result.list || []);
-    } else {
-      setError('Không có quyền truy cập');
-    }
-  } catch (error) {
-    setError('Không thể truy cập dữ liệu');
-  }
-};
-
-// Gọi fetchData trong useEffect khi trang load lần đầu
-useEffect(() => {
-  const adminToken = Cookies.get('token');
-  if (!adminToken) {
-    router.push('/');
-    return;
-  }
-  fetchData();
-   // Call the prop to expose fetchData
-}, [router]);
-
-
-useEffect(() => {
-  setFilteredUsers(users); // Cập nhật filteredUsers mỗi khi users thay đổi
-}, [users]);
-
-
-// Nhân bản user
-const handleCopyUser = async (id) => {
-  const adminToken = Cookies.get("token");
-  try {
-    const response = await fetch(`http://localhost:8000/api/user/duplicate/${id}`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${adminToken}`,
-        "Content-Type": "application/json",
-      },
-    });
-    if (response.ok) {
-      const newUser = await response.json();
-      setUsers((prevUsers) => [...prevUsers, newUser]); // Cập nhật danh sách user
-      // Hiện thông báo và tải lại danh sách users
+    try {
+      const response = await fetch(`http://localhost:8000/api/user/duplicate/${id}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${adminToken}`,
+          "Content-Type": "application/json",
+        },
+      });
+      if (response.ok) {
+        const newUser = await response.json();
+        setUsers((prevUsers) => [...prevUsers, newUser]); // Cập nhật danh sách user
+        // Hiện thông báo và tải lại danh sách users
         fetchData(); // Gọi lại fetchData để tải lại danh sách user mới
-      
-    } else {
-      const errorData = await response.json();
-      setError(errorData.message || "Lỗi lấy thông tin phản hồi");
+
+      } else {
+        const errorData = await response.json();
+        setError(errorData.message || "Lỗi lấy thông tin phản hồi");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      setError("Có lỗi xảy ra khi sao chép người dùng");
     }
-  } catch (error) {
-    console.error("Error:", error);
-    setError("Có lỗi xảy ra khi sao chép người dùng");
-  }
-};
-  
+  };
+
   // Delete user
   const handleDeleteUser = async (id) => {
     const adminToken = Cookies.get("token");
@@ -198,7 +198,6 @@ const handleCopyUser = async (id) => {
   };
 
 
-   
 
   return (
     <div className="space-y-4">
@@ -231,7 +230,7 @@ const handleCopyUser = async (id) => {
               <TableCell>{user.phone}</TableCell>
               <TableCell>
                 <div className="flex space-x-2">
-
+                  {/* Nút Gọi điện */}
                   <Dialog>
                     <DialogTrigger asChild>
                       <Button variant="outline" onClick={() => {
@@ -248,7 +247,7 @@ const handleCopyUser = async (id) => {
                       <DialogHeader>
                         <DialogTitle>Edit User</DialogTitle>
                         <DialogDescription>
-                         Edit a user account.
+                          Edit a user account.
                         </DialogDescription>
                       </DialogHeader>
                       <div className="grid gap-4 py-4">

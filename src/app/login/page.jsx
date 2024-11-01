@@ -7,7 +7,7 @@ import { useState } from "react";
 import { loginAPI, signupAPI } from "@/utils/api/Auth/api";
 import { useRouter } from "next/navigation";
 
-export default function LoginPage({fetchData}) {
+export default function LoginPage() {
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({ name: '', email: '', password: '' });
   const [error, setError] = useState(null);
@@ -44,8 +44,6 @@ export default function LoginPage({fetchData}) {
         
         response = await signupAPI(formData.name, formData.email, formData.password);
         alert("Đăng ký thành công!");
-        await fetchData()
-
         toggleForm();
       }
     } catch (err) {

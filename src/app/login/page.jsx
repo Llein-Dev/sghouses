@@ -1,4 +1,4 @@
-
+// LoginPage.js
 "use client";
 
 import { AuthForm } from "@/components/auth-form";
@@ -6,21 +6,25 @@ import Breadcrumb from "@/components/breadcum";
 import { useState } from "react";
 import { loginAPI, signupAPI } from "@/utils/api/Auth/api";
 import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { setProfile } from "@/redux/authSlice";
 
-export default function LoginPage({ fetchData }) {
+export default function LoginPage() {
   const [isLogin, setIsLogin] = useState(true);
-  const [formData, setFormData] = useState({ name: '', email: '', password: '' });
+  const [formData, setFormData] = useState({ name: "", email: "", password: "" });
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const dispatch = useDispatch();
 
   const toggleForm = () => {
-    setIsLogin(!isLogin);
-    setFormData({ name: '', email: '', password: '' });
+    setIsLogin((prev) => !prev);
+    setFormData({ name: "", email: "", password: "" });
     setError(null);
   };
+
   const handleToForgot = () => {
-    router.push('login/forgot-password')
+    router.push("login/forgot-password");
   };
 
   const handleChange = (e) => {
@@ -31,48 +35,43 @@ export default function LoginPage({ fetchData }) {
     }));
   };
 
-  // Xử lý khi submit form
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError(null); // Reset any previous errors
+    setError(null);
 
     try {
       let response;
       if (isLogin) {
         response = await loginAPI(formData.email, formData.password);
+        dispatch(setProfile(response));
         alert("Đăng nhập thành công!");
-        router.push('/');
+        router.push("/");
       } else {
-
         response = await signupAPI(formData.name, formData.email, formData.password);
         alert("Đăng ký thành công!");
-        await fetchData()
-
         toggleForm();
       }
     } catch (err) {
-      setError(err.message || 'Email này chưa được đăng ký');
+      setError(err.message || "Đã xảy ra lỗi. Vui lòng thử lại.");
     } finally {
-      setLoading(false); // Turn off loading after completion
+      setLoading(false);
     }
   };
 
   return (
-    <>
-      <div className="container mx-auto px-4 space-y-4 pt-4">
-        <Breadcrumb />
-        <AuthForm
-          isLogin={isLogin}
-          formData={formData}
-          error={error}
-          loading={loading}
-          toggleForm={toggleForm}
-          handleChange={handleChange}
-          handleSubmit={handleSubmit}
-          handleToForgot={handleToForgot}
-        />
-      </div>
-    </>
-  )
+    <div className="container mx-auto px-4 space-y-4 pt-4">
+      <Breadcrumb />
+      <AuthForm
+        isLogin={isLogin}
+        formData={formData}
+        error={error}
+        loading={loading}
+        toggleForm={toggleForm}
+        handleChange={handleChange}
+        handleSubmit={handleSubmit}
+        handleToForgot={handleToForgot}
+      />
+    </div>
+  );
 }

@@ -1,19 +1,21 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  user: null, // Ensure this is initialized
-  // other state properties...
-};
+  user: null,
+  isAuthenticated: false,
+}
 
 const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
     setProfile(state, action) {
-      state.user = action.payload; // Set user on login
+      state.user = action.payload;
+      state.isAuthenticated = true;
     },
     logout(state) {
-      state.user = null; // Reset user on logout
+      state.user = null;
+      state.isAuthenticated = false;
     },
     // other reducers...
   },

@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 
-export function AuthForm({ isLogin, formData, error, loading, toggleForm, handleChange, handleSubmit }) {
+export function AuthForm({ isLogin, formData, error, loading, toggleForm, handleChange, handleSubmit, handleToForgot }) {
   return (
     <div className="flex bg-white container mx-auto h-[80vh]">
       <div className="hidden md:flex flex-1 items-center justify-center bg-gray-200">
@@ -64,6 +64,9 @@ export function AuthForm({ isLogin, formData, error, loading, toggleForm, handle
               </Button>
               <Button type="submit" variant="blue" className="w-full" disabled={loading}>
                 {loading ? (isLogin ? "Logging in..." : "Signing up...") : (isLogin ? "Login" : "Sign Up")}
+              </Button>
+              <Button variant="link" type="button" className="text-gray-500 w-full" onClick={handleToForgot}>
+                Quên mật khẩu?
               </Button>
             </form>
           </CardContent>

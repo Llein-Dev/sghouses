@@ -5,68 +5,73 @@ import { usePathname } from 'next/navigation';
 
 // Map đường dẫn với label đẹp hơn
 const pathNameMap = {
-    products: 'Products',
-    dashboard: 'Dashboard',
-    filter: 'Lọc Sản phẩm',
-    login: 'Tài khoản',
-    home: "Trang chủ",
-    blog: "Nhật ký trọ",
-    detail: "Trang chi tiết",
-    about: "Giới thiệu",
-    contact: "Liên hệ",
-    support: "Hỗ trợ",
-    building:"Tòa nhà"
+  products: 'Products',
+  dashboard: 'Dashboard',
+  filter: 'Lọc Sản phẩm',
+  login: 'Tài khoản',
+  home: "Trang chủ",
+  blog: "Nhật ký trọ",
+  detail: "Trang chi tiết",
+  about: "Giới thiệu",
+  contact: "Liên hệ",
+  support: "Hỗ trợ",
+  building: "Tòa nhà"
 };
 
 const Breadcrumb = () => {
-    const pathname = usePathname();
-    const pathArray = pathname.split('/').filter((path) => path);
+  const pathname = usePathname();
+  const pathArray = pathname.split('/').filter((path) => path);
 
-    // Hàm để lấy tên breadcrumb thân thiện
-    const getBreadcrumbName = (path) => {
-        return pathNameMap[path] || path.charAt(0).toUpperCase() + path.slice(1);
-    };
+  // Hàm để lấy tên breadcrumb thân thiện
+  const getBreadcrumbName = (path) => {
+    return pathNameMap[path] || path.charAt(0).toUpperCase() + path.slice(1);
+  };
 
-    return (
-        <div className=' container mx-auto  text-sm'>
-            <nav aria-label="Breadcrumb" className="py-4 px-2 md:px-8 container mx-auto ">
-                <ol className="flex items-center space-x-2">
-                    <li>
-                        <Link href="/" className="text-blue-500 hover:text-blue-400 transition-colors flex items-center">
-                            <House className="h-4 w-4 mr-2" />
-                            <span>Trang chủ</span>
-                        </Link>
-                    </li>
-                    {pathArray.length > 0 && (
-                        <li>
-                            <ChevronRight className="h-4 w-4 text-blue-800 " />
-                        </li>
-                    )}
-                    {pathArray.map((path, index) => {
-                        const href = `/${pathArray.slice(0, index + 1).join('/')}`
-                        const isLast = index === pathArray.length - 1
+  return (
+    <div className='container mx-auto text-sm'>
+      <nav aria-label="Breadcrumb" className="py-4 px-2 md:px-8 container mx-auto">
+        <ol className="flex items-center space-x-2">
+          <li>
+            <Link href="/" className="text-blue-500 hover:text-blue-400 transition-colors flex items-center">
+              <House className="h-4 w-4 mr-2" />
+              <span>Trang chủ</span>
+            </Link>
+          </li>
+          {pathArray.length > 0 && (
+            <li>
+              <ChevronRight className="h-4 w-4 text-blue-800" />
+            </li>
+          )}
+          {pathArray.map((path, index) => {
+            // Build the path for this breadcrumb item
+            const href = `/${pathArray.slice(0, index + 1).join('/')}`;
+            const isLast = index === pathArray.length - 1;
 
-                        return (
-                            <li key={href} className="flex items-center">
-                                {!isLast ? (
-                                    <>
-                                        <Link href={href} className=" text-blue-500 hover:text-blue-400 transition-colors">
-                                            {getBreadcrumbName(path)}
-                                        </Link>
-                                        <ChevronRight className="h-4 w-4 text-blue-800  mx-2" />
-                                    </>
-                                ) : (
-                                    <span className="text-muted-foreground" aria-current="page">
-                                        {getBreadcrumbName(path)}
-                                    </span>
-                                )}
-                            </li>
-                        )
-                    })}
-                </ol>
-            </nav>
-        </div>
-    );
+            // Only show the link for this breadcrumb if it's part of the pathname
+            if (pathname.includes(href)) {
+              return (
+                <li key={href} className="flex items-center">
+                  {!isLast ? (
+                    <>
+                      <Link href={href} className="text-blue-500 hover:text-blue-400 transition-colors">
+                        {getBreadcrumbName(path)}
+                      </Link>
+                      <ChevronRight className="h-4 w-4 text-blue-800 mx-2" />
+                    </>
+                  ) : (
+                    <span className="text-muted-foreground" aria-current="page">
+                      {getBreadcrumbName(path)}
+                    </span>
+                  )}
+                </li>
+              );
+            }
+            return null; 
+          })}
+        </ol>
+      </nav>
+    </div>
+  );
 };
 
 export default Breadcrumb;

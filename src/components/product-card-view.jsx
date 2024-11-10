@@ -12,7 +12,7 @@ export function ProductCardColViewComponent({ productsViewHouse }) {
 
   return (
     <>
-      {productsViewHouse.map((houseView, index) => (
+      {productsViewHouse.slice(0, 4).map((houseView, index) => (
         <Card key={index} className="overflow-hidden ">
           <div className="relative w-full aspect-video mb-2 overflow-hidden ">
             <img src={`http://localhost:8000/storage/${houseView?.image}`} />

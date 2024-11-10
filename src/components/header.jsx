@@ -30,43 +30,46 @@ import { logout, setProfile } from "@/redux/authSlice";
 export function HeaderComponent() {
   const [notificationCount, setNotificationCount] = useState(1);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [user, setUser] = useState(null);
-  const router = useRouter();
   const dispatch = useDispatch();
-  
-  // Access authentication state from Redux
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const router = useRouter();
 
+  // Get user from Redux store
+  const user = useSelector((state) => state.auth.user);
+  console.log(user);
+  
   const clearNotifications = () => {
     setNotificationCount(0);
   };
 
   const handleLoginToggle = () => {
-    router.push("/login"); // Example navigation
+    router.push("/login");
   };
 
   const handleLogout = () => {
     Cookies.remove("token");
-    dispatch(logout()); // Clear user data from Redux
+    dispatch(logout());
     handleLoginToggle();
   };
 
   useEffect(() => {
+    const token = Cookies.get("token"); // Get token from cookies
     const fetchUserProfile = async () => {
-      try {
-        const profile = await profileAPI(); // Fetch user profile
-        setUser(profile[0]); // Set the user data
-        dispatch(setProfile(profile[0])); // Dispatch user data to Redux
-      } catch (error) {
-        console.error(error);
+      if (token) {
+        try {
+          const profile = await profileAPI();
+          if (profile && profile.length > 0) {
+            const userdata = profile[0];
+            dispatch(setProfile(userdata)); // Update Redux state with user data
+            console.log(userdata); // Log the user data to check
+          }
+        } catch (error) {
+          console.error("Failed to fetch user profile:", error);
+        }
       }
     };
 
-    // Fetch the user profile if the user is authenticated
-    if (isAuthenticated) {
-      fetchUserProfile();
-    }
-  }, [isAuthenticated, dispatch]); // Run when isAuthenticated changes
+    fetchUserProfile();
+  }, [dispatch]); // Adding dispatch in dependency array
 
   const NavItems = () => (
     <>
@@ -136,7 +139,7 @@ export function HeaderComponent() {
               )}
             </DropdownMenuContent>
           </DropdownMenu>
-          {isAuthenticated ? (
+          {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="relative p-0">
@@ -227,7 +230,7 @@ export function HeaderComponent() {
                   )}
                 </DropdownMenuContent>
               </DropdownMenu>
-              {isAuthenticated ? (
+              {user ? (
                 <>
                   <div className="flex items-center space-x-2 p-2">
                     <Avatar className="h-10 w-10">

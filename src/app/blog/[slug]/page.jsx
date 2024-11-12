@@ -2,53 +2,81 @@
 import { ArrowLeft, Facebook, Twitter, Linkedin } from 'lucide-react'
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardFooter } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import Breadcrumb from '@/components/breadcum'
 import { useParams } from 'next/navigation'
-import { useFetchDetailBlog } from '@/utils/api/GET/api'
+import { useFetchBlogHouse, useFetchDetailBlog } from '@/utils/api/GET/api'
+import { useState } from 'react'
+import Cookies from 'js-cookie'
+import axios from 'axios'
+import Link from 'next/link'
 
 export default function ArticleDetail() {
-    const i = [
-        { image01: "/dark-blue-house-exterior-2.png" },
-        { image01: "/dark-blue-house-exterior-2.png" },
-        { image01: "/dark-blue-house-exterior-2.png" }
-
-    ]
     const { slug } = useParams();
     const { detailBlog } = useFetchDetailBlog(slug);
+    const [newComment, setNewComment] = useState('');
+    const [comments, setComments] = useState(detailBlog?.list_cmt || []);
     console.log(detailBlog);
+    const { BlogHouse } = useFetchBlogHouse();
+    const handleCommentSubmit = async () => {
+        try {
+            const authToken = Cookies.get('token');
+            const response = await axios.post('http://localhost:8000/api/blog/comment',
+                { slug, message: newComment },
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`,
+                    },
+                    withCredentials: true
+                }
+            );
+            if (response.status === 200) {
+                const result = response.data;
+                setComments([...comments, result.newComment]);
+                setNewComment('');
+            } else {
+                console.error('Failed to submit comment', response);
+            }
+        } catch (error) {
+            if (error.response) {
+                console.error('Error response:', error.response.data);
+                console.error('Error status:', error.response.status);
+            } else {
+                console.error('Error submitting comment:', error.message);
+            }
+        }
+    };
 
     return (
         <div className="container mx-auto px-4 space-y-4 pt-4">
             <Breadcrumb />
             <main className="">
-                <div className="grid grid-cols-1  lg:grid-cols-3 gap-4">
-
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
                     <div className="lg:col-span-2 bg-white p-8 ">
                         <div className="mb-8 space-y-4">
                             <h1 className="text-4xl text-blue-900 font-bold mb-4">{detailBlog.title}</h1>
                             <div className="flex items-center space-x-4 text-sm text-muted-foreground">
                                 <span>Ngày tải: Ngày 24 tháng 10, 2024</span>
-
                             </div>
                             <p>
-                                SGhouses Việt Nam không chỉ là một thức uống, mà còn là một phần không thể thiếu trong văn hóa và đời sống hàng ngày của người Việt. Từ những quán SGhouses vỉa hè đến những quán SGhouses sang trọng, SGhouses đã trở thành một biểu tượng của sự giao tiếp và thư giãn.
+                                {detailBlog.description}
                             </p>
                         </div>
                         <img
-                            src="/dark-blue-house-exterior-2.png"
+                            src={`http://localhost:8000/storage/${detailBlog.image}`}
                             alt="SGhouses Việt Nam"
-                            className="w-full h-[400px] object-cover rounded-lg mb-6 "
+                            className="w-full h-[400px] object-cover rounded-lg mb-6"
+
                         />
                         <div className="prose lg:prose-xl max-w-none space-y-4">
                             {detailBlog?.body
                                 ?.split('\n')
                                 .filter(paragraph => paragraph.trim() !== '')
                                 .map((paragraph, index) => (
-                                    <p key={index}>{paragraph}</p> 
+                                    <p key={index}>{paragraph}</p>
                                 ))}
                         </div>
-
 
                         {/* Author Info */}
                         <div className="flex items-center space-x-4 mt-8 p-4 bg-muted rounded-lg">
@@ -74,32 +102,71 @@ export default function ArticleDetail() {
                                 <Linkedin className="h-4 w-4" />
                             </Button>
                         </div>
-                    </div>
 
-                    {/* Related Articles */}
-                    <div className="lg:col-span-1 bg-gray-100 ">
+                        {/* Comment Section */}
+                        <div className="mt-8">
+                            <h2 className="text-xl font-bold">Bình luận</h2>
+                            <textarea
+                                className="w-full border rounded-lg p-2 mt-2"
+                                rows="4"
+                                placeholder="Nhập bình luận của bạn..."
+                                value={newComment}
+                                onChange={(e) => setNewComment(e.target.value)}
+                            />
+                            <Button
+                                variant="blue"
+                                className="mt-2"
+                                onClick={handleCommentSubmit}
+                                disabled={!newComment}
+                            >
+                                Gửi bình luận
+                            </Button>
 
-                        <div className="space-y-4">
-                            {[1, 2, 3].map((i) => (
-                                <Card key={i}>
-                                    <CardContent className="flex justify-between p-0 overflow-hidden">
-                                        <img
-                                            src={`/placeholder.svg${i}`}
-                                            alt={`Related Article ${i}`}
-                                            className="h-w aspect-square object-cover"
-                                        />
-                                        <div className='p-5'>
-                                            <h3 className="font-semibold mb-2">Tiêu đề bài viết liên quan {i}</h3>
-                                            <p className="text-sm text-muted-foreground">Mô tả ngắn về bài viết liên quan...</p>
-
+                            <div className="mt-4 space-y-4">
+                                {detailBlog.list_cmt?.length > 0 ? (
+                                    detailBlog.list_cmt.map((comment, index) => (
+                                        <div key={comment.id || index} className="p-4 border rounded-lg bg-gray-50">
+                                            <p>{comment.content}</p>
+                                            <p className="text-sm text-muted-foreground">
+                                                {comment.name} - {comment.date}
+                                            </p>
                                         </div>
+                                    ))
+                                ) : (
+                                    <p className="text-center text-gray-500">No comments available.</p>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                    {/* Related Articles */}
+                    <div className="lg:col-span-1 bg-gray-100">
+                        <div className="space-y-4">
+                            {BlogHouse.map((i) => (
+                                <Card key={i.id}>
+                                    <CardContent className="grid p-0 overflow-hidden grid-cols-3">
+                                        {/* Image Section */}
+                                        <img
+                                            src={`http://localhost:8000/storage/${i.image}`}
+                                            alt={`Related Article ${i.title}`}
+                                            className="col-span-1 aspect-square object-cover"
+                                        />
 
+                                        {/* Text Content Section */}
+                                        <div className="p-5 col-span-2">
+                                            <Link href={`/blog/${i.slug}`}>
+                                                <h3 className="font-semibold mb-2">{i.title || 'Tiêu đề bài viết liên quan'}</h3>
+                                            </Link>
+                                            {/* Limited Description */}
+                                            <p className="text-sm text-muted-foreground line-clamp-2">
+                                                {i.description || 'Mô tả ngắn về bài viết liên quan...'}
+                                            </p>
+                                        </div>
                                     </CardContent>
-
                                 </Card>
                             ))}
                         </div>
                     </div>
+
                 </div>
             </main>
         </div>

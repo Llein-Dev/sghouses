@@ -9,7 +9,6 @@ import { Separator } from "@/components/ui/separator";
 
 export default function CommentComponent({ comments = [], onCommentAdd, user }) {
     const [newComment, setNewComment] = useState("");
-    console.log(user);
 
     const handleCommentSubmit = () => {
         if (newComment.trim() !== "") {
@@ -28,7 +27,6 @@ export default function CommentComponent({ comments = [], onCommentAdd, user }) 
                 <div className="flex items-center space-x-2">
                     <Avatar>
                         <AvatarImage src={`http://localhost:8000/storage/${user?.avatar}`} alt="" />
-
                         <AvatarFallback>{user?.name}</AvatarFallback>
                     </Avatar>
                     <Input
@@ -71,3 +69,4 @@ export default function CommentComponent({ comments = [], onCommentAdd, user }) 
         </Card>
     );
 }
+

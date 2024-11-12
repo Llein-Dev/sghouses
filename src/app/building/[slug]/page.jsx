@@ -14,6 +14,7 @@ import { Spinner } from "@/components/ui/loading";
 import { useEffect, useState } from "react"; // Don't forget to import useState
 import { useDispatch, useSelector } from "react-redux";
 import { setProfile } from "@/redux/authSlice";
+import Cookies from "js-cookie";
 
 export default function BuildingDetailComponent() {
     const { slug } = useParams(); // Lấy slug từ URL
@@ -21,39 +22,52 @@ export default function BuildingDetailComponent() {
     const [comments, setComments] = useState([]); // State to manage comments
     const dispatch = useDispatch(); // Initialize dispatch
     const user = useSelector((state) => state.auth.user); // Access user from Redux store
+    const token = Cookies.get('token');
 
     useEffect(() => {
-        // Example: Set user data, replace this with your actual user fetching logic
         if (user) {
             dispatch(setProfile(user)); // Dispatch action to set user
         }
     }, [user, dispatch]);
 
-    const addComment = (newComment) => {
+    const addComment = async (newComment) => {
+        if (!user) {
+            alert("Bạn chưa đăng nhập"); // Alert if user is not logged in
+            return;
+        }
+
+        // Optimistic update: Add the comment to UI immediately
         const newCommentObj = {
             id: comments.length + 1,
-            author: user ? user.name : "User", // Use actual user data
+            author: user ? user.name : "User",
             content: newComment,
             likes: 0,
             replies: 0,
-            avatar: user ? `http://localhost:8000/storage/${user?.avatar}` : "", // Use user avatar if available
+            avatar: user ? `http://localhost:8000/storage/${user?.avatar}` : "",
         };
         setComments([...comments, newCommentObj]);
+
+        // Send comment to backend
+        const response = await fetch(`http://localhost:8000/api/building_cmt/add`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+                slug: slug,    // Directly passing the values
+                message: newComment
+            })
+        });
+
+
+        const data = await response.json();
+        if (data.message !== "Bạn chưa đăng nhập") {
+            console.log("Comment added successfully:", data);
+        } else {
+            alert("Có lỗi xảy ra, vui lòng thử lại sau.");
+        }
     };
-
-    if (loading) {
-        return (
-            <div className="h-screen w-full flex justify-center items-center">
-                <Spinner />
-            </div>
-        );
-    }
-
-    if (error) {
-        return <div>Lỗi: {error.message}</div>;
-    }
-
-    console.log(building);
 
     return (
         <div className="container mx-auto px-4 space-y-4 py-4">
@@ -61,17 +75,17 @@ export default function BuildingDetailComponent() {
             <Card>
                 <CardHeader>
                     <CardTitle>
-                        <h1 className="text-3xl font-bold mb-2">{building.ten}</h1>
+                        <h1 className="text-3xl font-bold mb-2">{building?.ten}</h1>
                         <Badge variant="secondary">Cuộc sống sang trọng</Badge>
                     </CardTitle>
                 </CardHeader>
                 <CardContent>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div className="md:col-span-2 space-y-4 h-full flex flex-col">
-                            {building.image.split(";").slice(0, 2).map((imgUrl, index) => (
+                            {building?.image.split(";").slice(0, 2).map((imgUrl, index) => (
                                 <img
                                     key={index}
-                                    src={`http://localhost:8000/storage/${imgUrl}`} 
+                                    src={`http://localhost:8000/storage/${imgUrl}`}
                                     alt={`Hình ảnh tòa nhà ${index + 1}`}
                                     width={600}
                                     height={300}
@@ -80,10 +94,10 @@ export default function BuildingDetailComponent() {
                             ))}
                         </div>
                         <div className="space-y-4 h-full flex flex-col">
-                            {building.image.split(";").slice(2, 5).map((imgUrl, index) => (
+                            {building?.image.split(";").slice(2, 5).map((imgUrl, index) => (
                                 <img
                                     key={index}
-                                    src={`http://localhost:8000/storage/${imgUrl}`} 
+                                    src={`http://localhost:8000/storage/${imgUrl}`}
                                     alt={`Hình ảnh nội thất ${index + 1}`}
                                     width={300}
                                     height={200}
@@ -100,7 +114,7 @@ export default function BuildingDetailComponent() {
                     <CardTitle>Mô tả</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    {building.mo_ta}
+                    {building?.mo_ta}
                 </CardContent>
             </Card>
 
@@ -111,7 +125,7 @@ export default function BuildingDetailComponent() {
                     </CardHeader>
                     <CardContent>
                         <ul className="list-disc pl-5 space-y-2">
-                            {building.tien_ich.split(";").map((amenity, index) => (
+                            {building?.tien_ich.split(";").map((amenity, index) => (
                                 <li key={index}>{amenity}</li>
                             ))}
                         </ul>
@@ -124,7 +138,7 @@ export default function BuildingDetailComponent() {
                     </CardHeader>
                     <CardContent>
                         <ul className="list-disc pl-5 space-y-2">
-                            {building.vi_tri.split(";").map((address, index) => (
+                            {building?.vi_tri.split(";").map((address, index) => (
                                 <li key={index}>{address}</li>
                             ))}
                         </ul>

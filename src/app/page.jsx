@@ -52,25 +52,10 @@ export default function Home() {
             </>
           )}
         </div>
-        {/* Cheap House Products */}
-        <div className="px-4 space-y-8 flex flex-col justify-center items-center container mx-auto">
-          <h2 className="text-start w-full font-bold text-2xl text-[#00008B]">Phòng trọ <span className="text-[#FF5C00]">lượt xem nhiều nhất</span></h2>
 
-          {CheapLoading && <p className="text-center"> <Spinner /> </p>} {/* Hiển thị loading */}
-          {CheapError && <ErrorComponent message={CheapError} />} {/* Hiển thị lỗi */}
-
-          {!CheapError && ( // Ẩn phần dữ liệu và nút nếu có lỗi
-            <>
-              <div className="grid grid-cols-2 md:grid-cols-4 w-full gap-6 mb-12">
-                <ProductCardColCheapComponent productsHouseCheap={CheapHouse} />
-              </div>
-              <Button className="w-36" variant="blue">Xem chi tiết <ArrowRight /></Button>
-            </>
-          )}
-        </div>
         {/*View House Products */}
         <div className="px-4 space-y-8 flex flex-col justify-center items-center container mx-auto">
-          <h2 className="text-start w-full font-bold text-2xl text-[#00008B]">Phòng trọ <span className="text-[#FF5C00]">giá rẻ nhất</span></h2>
+          <h2 className="text-start w-full font-bold text-2xl text-[#00008B]">Phòng trọ <span className="text-[#FF5C00]">lượt xem nhiều nhất</span></h2>
 
           {ViewLoading && <p className="text-center"> <Spinner /> </p>} {/* Hiển thị loading */}
           {ViewError && <ErrorComponent message={ViewError} />} {/* Hiển thị lỗi */}
@@ -85,12 +70,29 @@ export default function Home() {
           )}
         </div>
 
+        {/* Cheap House Products */}
+        <div className="px-4 space-y-8 flex flex-col justify-center items-center container mx-auto">
+          <h2 className="text-start w-full font-bold text-2xl text-[#00008B]">Phòng trọ <span className="text-[#FF5C00]">giá rẻ nhất</span></h2>
+
+          {CheapLoading && <p className="text-center"> <Spinner /> </p>} {/* Hiển thị loading */}
+          {CheapError && <ErrorComponent message={CheapError} />} {/* Hiển thị lỗi */}
+
+          {!CheapError && ( // Ẩn phần dữ liệu và nút nếu có lỗi
+            <>
+              <div className="grid grid-cols-2 md:grid-cols-4 w-full gap-6 mb-12">
+                <ProductCardColCheapComponent productsHouseCheap={CheapHouse} />
+              </div>
+              <Button className="w-36" variant="blue">Xem chi tiết <ArrowRight /></Button>
+            </>
+          )}
+        </div>
+
         {/* Background blue */}
         <div className="px-4 w-full bg-gradient-to-r from-[#00008B] to-[#4169E1]  container mx-auto py-12 px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
             <h2 className="text-white text-center text-xl md:text-2xl font-bold mb-8">Thủ tục dễ dàng <span className="text-[#FF5C00]">(4 bước)</span></h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {steps.map((step, index) => (
+              {steps.slice(0, 4).map((step, index) => (
                 <UserGuidance key={index} index={index} step={step} />
               ))}
             </div>

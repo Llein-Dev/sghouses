@@ -45,7 +45,7 @@ export default function RoomComponents({ room }) {
 
   const nextImage = () => {
     setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
-  };
+  }
 
   const prevImage = () => {
     setCurrentImageIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
@@ -105,20 +105,20 @@ export default function RoomComponents({ room }) {
             <Dialog>
               <DialogTrigger asChild>
                 <img
-                  src={`http://localhost:8000/storage/room/${images[0]}`}  // Hiển thị hình ảnh đầu tiên
+                  src={`http://localhost:8000/storage/${images[0]}`}  // Hiển thị hình ảnh đầu tiên
                   alt="Room Image"
                   width={1600}
                   height={900}
-                  className="rounded-md object-cover w-full h-64 lg:h-full cursor-pointer"
+                  className="rounded-md object-cover w-full  lg:aspect-square cursor-pointer"
                 />
               </DialogTrigger>
               <DialogContent className="max-w-[60vw] max-h-[90vh] p-0">
                 <div className="relative h-full">
                   <img
-                    src={`http://localhost:8000/storage/room/${images[currentImageIndex]}`} // Sử dụng đường dẫn đầy đủ
+                    src={`http://localhost:8000/storage/${images[currentImageIndex]}`} // Sử dụng đường dẫn đầy đủ
                     alt={`Room Image ${currentImageIndex + 1}`}
                     className="rounded-lg"
-                    style={{ width: "100%", height: "100%", objectFit: "contain" }} // CSS để hình ảnh hiển thị đúng
+                    style={{ width: "100%", height: "80vh", objectFit: "cover" }} // CSS để hình ảnh hiển thị đúng
                   />
                   <Button
                     variant="outline"

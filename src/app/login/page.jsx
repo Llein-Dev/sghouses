@@ -4,7 +4,7 @@
 import { AuthForm } from "@/components/auth-form";
 import Breadcrumb from "@/components/breadcum";
 import { useState } from "react";
-import { loginAPI, signupAPI } from "@/utils/api/Auth/api";
+import { loginAPI, profileAPI, signupAPI } from "@/utils/api/Auth/api";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { setProfile } from "@/redux/authSlice";
@@ -45,9 +45,20 @@ export default function LoginPage() {
       let response;
       if (isLogin) {
         response = await loginAPI(formData.email, formData.password);
-        dispatch(setProfile(response));
         alert("Đăng nhập thành công!");
         router.push("/");
+        if (response) {
+          try {
+            const profile = await profileAPI();
+            if (profile && profile.length > 0) {
+              const userdata = profile[0];
+              dispatch(setProfile(userdata)); // Update Redux state with user data
+            
+            }
+          } catch (error) {
+            console.error("Failed to fetch user profile:", error);
+          }
+        }
       } else {
         response = await signupAPI(formData.name, formData.email, formData.password);
         alert("Đăng ký thành công!");

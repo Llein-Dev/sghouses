@@ -5,15 +5,17 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { ArrowRight, Camera, CakeIcon, CalendarDays, Mail, MapPin, Phone, User2, House, PaintBucket } from "lucide-react"
 import { ProductCardColCheapComponent } from "@/components/product-card-cheap"
-import { useFetchCheapHouse } from "@/utils/api/GET/api"
+import { useFetchViewHouse } from "@/utils/api/GET/api"
 import Breadcrumb from "./breadcum"
 import { Spinner } from "./ui/loading"
+import ErrorComponent from "./ui/error"
+import { ProductCardColViewComponent } from "./product-card-view"
 
 
 
 
 export default function UserProfile({ user, GoEditProfile, GoManageRoom }) {
-    const { CheapHouse, loading: CheapLoading, error: CheapError } = useFetchCheapHouse()
+    const { ViewHouse, loading: ViewLoading, error: ViewError } = useFetchViewHouse();
 
     const getGenderLabel = (gender) => {
         switch (gender) {
@@ -29,7 +31,7 @@ export default function UserProfile({ user, GoEditProfile, GoManageRoom }) {
     }
 
     return (
-        <div className="container mx-auto px-4 space-y-4 py-4">
+        <div className="container mx-auto px-4 space-y-4 py-4 mb-16">
             <Breadcrumb />
             <Card className="bg-white bg-opacity-75">
                 <CardContent className="flex flex-col sm:flex-row justify-between items-center p-6 space-y-4 sm:space-y-0">
@@ -81,25 +83,21 @@ export default function UserProfile({ user, GoEditProfile, GoManageRoom }) {
             </div>
 
             <div className="w-full">
-                <div className="h-0.5 bg-gray-900 opacity-10 w-full"></div>
+                <div className="h-0.5 bg-gray-900 opacity-10 w-full my-16"></div>
             </div>
 
-            <div className="space-y-8">
-                <h2 className="font-bold text-2xl text-[#00008B]">Phòng trọ <span className="text-[#FF5C00]">giá rẻ</span></h2>
+            <div className="px-4 space-y-8 flex flex-col justify-center items-center container mx-auto">
+                <h2 className="text-start w-full font-bold text-2xl text-[#00008B]">Phòng trọ <span className="text-[#FF5C00]">lượt xem nhiều nhất</span></h2>
 
-                {CheapLoading && <div className="flex justify-center"><Spinner /></div>}
-                {CheapError && <ErrorComponent message={CheapError} />}
+                {ViewLoading && <p className="text-center"> <Spinner /> </p>} {/* Hiển thị loading */}
+                {ViewError && <ErrorComponent message={ViewError} />} {/* Hiển thị lỗi */}
 
-                {!CheapError && !CheapLoading && (
+                {!ViewError && ( // Ẩn phần dữ liệu và nút nếu có lỗi
                     <>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                            <ProductCardColCheapComponent productsHouseCheap={CheapHouse} />
+                        <div className="grid grid-cols-2 md:grid-cols-4 w-full gap-6 mb-12">
+                            <ProductCardColViewComponent productsViewHouse={ViewHouse} />
                         </div>
-                        <div className="flex justify-center">
-                            <Button variant="blue" className="w-36">
-                                Xem chi tiết <ArrowRight className="ml-2" />
-                            </Button>
-                        </div>
+                        <Button className="w-36" variant="blue">Xem chi tiết <ArrowRight /></Button>
                     </>
                 )}
             </div>

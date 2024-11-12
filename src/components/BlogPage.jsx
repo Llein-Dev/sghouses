@@ -33,14 +33,14 @@ function NewsCardRow({ id, title, excerpt, image, date }) {
             </div>
             <div className="flex flex-col justify-between w-3/5">
                 <CardHeader>
-                    <CardTitle className="text-lg">{title}</CardTitle>
+                    <CardTitle className="text-lg"><Link href={`/blog/${id}`}>{title}</Link></CardTitle>
                 </CardHeader>
                 <CardContent className="flex-grow">
                     <p className="text-sm text-muted-foreground">{excerpt}</p>
                 </CardContent>
                 <CardFooter className="flex justify-between items-center">
                     <span className="text-xs text-muted-foreground">{date}</span>
-                    <Link href={`/news/${id}`} className="text-primary hover:underline text-sm">
+                    <Link href={`/blog/${id}`} className="text-primary hover:underline text-sm">
                         Xem thêm
                     </Link>
                 </CardFooter>
@@ -84,7 +84,7 @@ export default function NewsHomepage() {
                         <img src="http://localhost:3000/dark-blue-house-exterior-2.png" alt={featuredNews.title} className="object-cover w-full" />
                     </div>
                     <CardHeader>
-                        <CardTitle className="text-2xl">{featuredNews.title}</CardTitle>
+                        <CardTitle className="text-2xl"> <Link href={`/blog/${featuredNews.slug}`}>{featuredNews.title}  </Link></CardTitle>
                     </CardHeader>
                     <CardContent>
                         <p className="text-muted-foreground">{featuredNews.content.slice(0, 100)}...</p> {/* Display a snippet of the content */}

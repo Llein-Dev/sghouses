@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { Search, Trash2, BookCopy, Eye,  Plus, RefreshCcwDot, Book, Pen } from "lucide-react"
+import { Search, Trash2, BookCopy, Eye,  Plus, RefreshCcwDot,Pen } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
@@ -124,6 +124,9 @@ export default function BlogContent() {
   const handleDetailBlog = (id) => {
     router.push(`/admin/detail_blog/${id}`)
   }
+  const handleUpdateBlog = (id) => {
+    router.push(`/admin/update_blog/${id}`)
+  }
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
@@ -166,7 +169,7 @@ export default function BlogContent() {
           {blog.map((blogs, index) => (
             <TableRow key={index} >
               <TableCell>{blogs.id}</TableCell>
-              <TableCell>  <img src={`http://localhost:8000/storage/${blogs.image}`}></img> </TableCell>
+              <TableCell>  <img style={{height:"150px", objectFit:"cover", borderRadius:"10px"}} src={`http://localhost:8000/storage/${blogs.image}`}></img> </TableCell>
               <TableCell>{blogs.title} </TableCell>
               <TableCell>{blogs.name_cate}</TableCell>
               <TableCell>{blogs.content}</TableCell>
@@ -249,7 +252,7 @@ export default function BlogContent() {
                   <Button variant="outline" size="icon" onClick={() => handleDeleteBlog(blogs.id)} >
                     <Trash2 className="h-4 w-4" />
                   </Button>
-                  <Button variant="outline" size="icon" >
+                  <Button variant="outline" size="icon" onClick={() => handleUpdateBlog(blogs.id)} >
                     <Pen className="h-4 w-4"
                     />
                   </Button>

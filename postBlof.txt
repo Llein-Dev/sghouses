@@ -1,0 +1,16 @@
+    const [image, setImage] = useState(null);
+
+
+// Handle image change and convert image to base64
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setImage(reader.result); // Set the base64 image data in state
+            };
+            reader.readAsDataURL(file);
+        } else {
+            setImage(null);
+        }
+    };

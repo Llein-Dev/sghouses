@@ -6,29 +6,23 @@ import { useRouter } from "next/navigation";
 
 export default function CreateBlog() {
     const [title, setTitle] = useState("");
-    const [image, setImage] = useState(null);
+    const [image, setImage] = useState(null); // Giữ nguyên file ảnh thay vì mã hóa
     const [content, setContent] = useState("");
     const [slug, setSlug] = useState("draft");
     const [description, setDescription] = useState("");
-    const [cate_id, setCategory] = useState("");  // Changed to a text input for category
+    const [cate_id, setCategory] = useState("");
     const [loading, setLoading] = useState(false);
     const [successMessage, setSuccessMessage] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
     const router = useRouter();
 
-    // Handle image change
+    // Cập nhật hàm handleImageChange để lưu file thay vì mã hóa base64
     const handleImageChange = (e) => {
         const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onloadend = () => {
-                setImage(reader.result);
-            };
-        }
+        setImage(file ? file : null);
     };
 
-    // Handle form submit
+    // Hàm submit form
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -43,32 +37,33 @@ export default function CreateBlog() {
         setSuccessMessage("");
         setErrorMessage("");
 
-        const formData = {
-            title,
-            content,
-            description,
-            slug,
-            cate_id,  // Category from text input
-            image,
-        };
+        // Sử dụng FormData để gửi file ảnh
+        const formData = new FormData();
+        formData.append("title", title);
+        formData.append("content", content);
+        formData.append("description", description);
+        formData.append("slug", slug);
+        formData.append("cate_id", cate_id);
+        if (image) {
+            formData.append("image", image); // Đính kèm file ảnh
+        }
 
         try {
             const response = await fetch("http://localhost:8000/api/blog/add", {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json",
                     "Authorization": `Bearer ${adminToken}`,
                 },
-                body: JSON.stringify(formData),
+                body: formData, // Gửi FormData thay vì JSON
             });
 
             const data = await response.json();
-            console.log(data); // Log để xem chi tiết thông báo lỗi từ server
+            console.log(data);
 
             if (response.ok) {
                 setSuccessMessage("Blog đã được tạo thành công!");
             } else {
-                setErrorMessage("Đã có lỗi xảy ra, vui lòng thử lại.");
+                setErrorMessage(data.message || "Đã có lỗi xảy ra, vui lòng thử lại.");
             }
         } catch (error) {
             setErrorMessage("Không thể kết nối đến server, vui lòng thử lại sau.");

@@ -2,7 +2,7 @@
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useEffect, useState } from "react"
-import { Search, FileText, Eye, Download, Trash2, BookCopy, Link, Pencil } from "lucide-react"
+import { Search, FileText, Eye, Download, Trash2, BookCopy, Link, Pencil, Book, Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
@@ -36,6 +36,7 @@ export default function CategoryBlog() {
   const [slug, setSlug] = useState("");
   const [status, setStatus] = useState("");
   const [id, setId] = useState("");
+  
   useEffect(() => {
     const adminToken = Cookies.get('token');
     if (!adminToken) {
@@ -52,17 +53,31 @@ export default function CategoryBlog() {
             'Content-Type': 'application/json',
           },
         });
+    
         if (response.ok) {
           const result = await response.json();
-          console.log(result)
-          setCatagoryBlog(result.list_cate_blog || []);
-      } else {
+          // Kiểm tra nếu list_cate_blog là mảng hợp lệ
+          if (result && Array.isArray(result.list_cate_blog)) {
+            setCatagoryBlog(result.list_cate_blog);
+            console.log("Dữ liệu trả về từ API:", result.list_cate_blog);
+          } else {
+            // Nếu không phải mảng, gán mảng rỗng và log thông báo lỗi
+            setCatagoryBlog([]);
+            console.error("list_cate_blog không phải là mảng hợp lệ.");
+          }
+        } else {
+          // Xử lý khi không có quyền truy cập hoặc response không thành công
           setError('Không có quyền truy cập');
+          console.error('Không có quyền truy cập API');
         }
       } catch (error) {
+        // Xử lý khi có lỗi trong quá trình fetch
         setError('Không thể truy cập dữ liệu');
+        console.error('Lỗi khi fetch dữ liệu:', error);
       }
     };
+    
+    
     fetchDataCatagoryBlog();
   }, [router]);
 
@@ -93,71 +108,175 @@ export default function CategoryBlog() {
   };
 
 
-    // Edit user
-    const handleEditUser = async () => {
-      const adminToken = Cookies.get("token");
-      if (!selectedCateBlog) return;
-  
-      const updatedUser = {
-        id,
-        name,
-        slug,
-        status
-      };
-  
-      try {
-        const response = await fetch(`http://localhost:8000/api/cate_blog/edit/${selectedCateBlog.id}`, {
-          method: "PUT", // Sử dụng PUT để cập nhật thông tin người dùng
-          headers: {
-            Authorization: `Bearer ${adminToken}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(updatedUser),
-        });
-        if (response.ok) {
-          toast.success("Cập nhật thành công!");
-          setCatagoryBlog(categoryBlog.map(blogs => (blogs.id === selectedCateBlog.id ? updatedUser : blogs)));
-          setSelectedCateBlog(null);
-          setName("");
-          setSlug("");
-          setStatus("");
-          router.refresh();  // Load lại trang sau khi cập nhật thành công
-          alert('Đã cập nhật thành công')
-        } else {
-          const errorData = await response.json();
-          setError(errorData.message || "Lỗi khi cập nhật thông tin");
-        }
-      } catch (error) {
-        console.error("Error:", error);
-      }
-    };
-  
+  // Edit user
+  const handleEditUser = async () => {
+    const adminToken = Cookies.get("token");
+    if (!selectedCateBlog) return;
 
-// khôi pbuc llien hệ
-const handleRefesh = () =>{
-  router.push('/admin/categories_blogs/refesh_categoriesBlog')
-}
-  
+    const updatedUser = {
+      id,
+      name,
+      slug,
+      status
+    };
+
+    try {
+      const response = await fetch(`http://localhost:8000/api/cate_blog/edit/${selectedCateBlog.id}`, {
+        method: "PUT", // Sử dụng PUT để cập nhật thông tin người dùng
+        headers: {
+          Authorization: `Bearer ${adminToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedUser),
+      });
+      if (response.ok) {
+        toast.success("Cập nhật thành công!");
+        setCatagoryBlog(categoryBlog.map(blogs => (blogs.id === selectedCateBlog.id ? updatedUser : blogs)));
+        setSelectedCateBlog(null);
+        setName("");
+        setSlug("");
+        setStatus("");
+        router.refresh();  // Load lại trang sau khi cập nhật thành công
+        alert('Đã cập nhật thành công')
+      } else {
+        const errorData = await response.json();
+        setError(errorData.message || "Lỗi khi cập nhật thông tin");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  const handleAddCateBlog = async (e) => {
+    e.preventDefault();
+
+    const adminToken = Cookies.get("token");
+    if (!adminToken) {
+      alert("Vui lòng đăng nhập trước khi tạo blog!");
+      router.push("/");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("slug", slug);
+    formData.append("status", status);
+
+    try {
+      const response = await fetch("http://localhost:8000/api/cate_blog/add", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${adminToken}`,
+        },
+        body: formData,
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data);
+        toast.success("Thêm danh mục blog thành công!");
+      router.push('/admin/categories_blogs')
+        // Cập nhật lại danh sách categoryBlog ngay sau khi thêm
+        setCatagoryBlog(data);
+      } else {
+        const errorData = await response.json();
+        toast.error(`Lỗi khi thêm danh mục: ${errorData.message || "Có lỗi xảy ra"}`);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      toast.error("Có lỗi xảy ra khi kết nối API.");
+    }
+  };
+  // khôi pbuc llien hệ
+  const handleRefesh = () => {
+    router.push('/admin/categories_blogs/refesh_categoriesBlog')
+  }
+
 
 
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-between items-center">
-        <div className="flex items-center space-x-2">
-          <Search className="h-5 w-5 text-gray-500" />
-          <Input
-            placeholder="Search contracts..."
-            // value={searchTerm}
-            // onChange={(e) => setSearchTerm(e.target.value)}
-            className="max-w-sm"
-          />
-        </div>
-        <Button  onClick={handleRefesh} variant="blue">
-          <FileText className="mr-2 h-4 w-4" />
-          Refesh Contract
+   <div className="flex justify-between items-center">
+  {/* Cột chứa thanh tìm kiếm */}
+  <div className="flex items-center space-x-2 w-1/2">
+    <Search className="h-5 w-5 text-gray-500" />
+    <Input
+      placeholder="Search contracts..."
+      className="max-w-sm"
+      // value={searchTerm}
+      // onChange={(e) => setSearchTerm(e.target.value)}
+    />
+  </div>
+  
+  {/* Cột chứa 2 nút Refesh và Thêm Danh Mục */}
+  <div className="flex items-center space-x-4 w-1/2 justify-end">
+    {/* Nút Thêm Danh Mục và Modal */}
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button variant="blue" className="bg-green-700 text-white hover:bg-green-600">
+          <Plus className="mr-2 h-4 w-4" />
+          Thêm Danh Mục
         </Button>
-      </div>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>Add Cate Blog</DialogTitle>
+          <DialogDescription>
+            Add a Cate Blog account.
+          </DialogDescription>
+        </DialogHeader>
+        <div className="grid gap-4 py-4">
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="name" className="text-right">
+              Name
+            </Label>
+            <Input
+              id="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="col-span-3"
+            />
+          </div>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="phone" className="text-right">
+              Phone
+            </Label>
+            <Input
+              id="phone"
+              type="phone"
+              value={slug}
+              onChange={(e) => setSlug(e.target.value)}
+              className="col-span-3"
+            />
+          </div>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="born" className="text-right">
+              Born
+            </Label>
+            <Input
+              id="born"
+              type="born"
+              value={status}
+              onChange={(e) => setStatus(e.target.value)}
+              className="col-span-3"
+            />
+          </div>
+        </div>
+        <DialogFooter>
+          <Button type="button" onClick={handleAddCateBlog}>Thêm</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+
+       {/* khôi phục Danh Mục tin tức */}
+    <Button onClick={handleRefesh} variant="blue">
+      <FileText className="mr-2 h-4 w-4" />
+      Refesh Contract
+    </Button>
+  </div>
+</div>
+
 
       <Table>
         <TableHeader>
@@ -242,12 +361,12 @@ const handleRefesh = () =>{
                       </DialogFooter>
                     </DialogContent>
                   </Dialog>
+
+
+
+
                   <Button variant="outline" size="icon" onClick={() => handleDeleteCategoryBlog(blogs.id)}>
                     <Trash2 className="h-4 w-4" />
-                  </Button>
-                  <Button variant="outline" size="icon" onClick={() => handleCopyUser(user.id)} >
-                    <BookCopy className="h-4 w-4"
-                    />
                   </Button>
                 </div>
               </TableCell>

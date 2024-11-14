@@ -221,101 +221,101 @@ export default function UsersContent() {
             <TableHead>Actions</TableHead>
           </TableRow>
         </TableHeader>
-        <TableBody>
-          {filteredUsers.map((user, index) => (
-            <TableRow key={index}>
-              <TableCell>{user.id}</TableCell>
-              <TableCell>{user.name}</TableCell>
-              <TableCell>{user.email}</TableCell>
-              <TableCell>{user.phone}</TableCell>
-              <TableCell>
-                <div className="flex space-x-2">
-                  {/* Nút Gọi điện */}
-                  <Dialog>
-                    <DialogTrigger asChild>
-                      <Button variant="outline" onClick={() => {
-                        setSelectedUser(user); // Cập nhật user cần chỉnh sửa
-                        setName(user.name);
-                        setPhone(user.phone);
-                        setAddress(user.address);
-                        setBorn(user.born);
-                      }}>
-                        <Pencil className="mr-2 h-4 w-4" />
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent className="sm:max-w-[425px]">
-                      <DialogHeader>
-                        <DialogTitle>Edit User</DialogTitle>
-                        <DialogDescription>
-                          Edit a user account.
-                        </DialogDescription>
-                      </DialogHeader>
-                      <div className="grid gap-4 py-4">
-                        <div className="grid grid-cols-4 items-center gap-4">
-                          <Label htmlFor="name" className="text-right">
-                            Name
-                          </Label>
-                          <Input
-                            id="name"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            className="col-span-3"
-                          />
+          <TableBody>
+            {filteredUsers.map((user, index) => (
+              <TableRow key={index}>
+                <TableCell>{user.id}</TableCell>
+                <TableCell>{user.name}</TableCell>
+                <TableCell>{user.email}</TableCell>
+                <TableCell>{user.phone}</TableCell>
+                <TableCell>
+                  <div className="flex space-x-2">
+                    {/* Nút Gọi điện */}
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <Button variant="outline" onClick={() => {
+                          setSelectedUser(user); // Cập nhật user cần chỉnh sửa
+                          setName(user.name);
+                          setPhone(user.phone);
+                          setAddress(user.address);
+                          setBorn(user.born);
+                        }}>
+                          <Pencil className="mr-2 h-4 w-4" />
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent className="sm:max-w-[425px]">
+                        <DialogHeader>
+                          <DialogTitle>Edit User</DialogTitle>
+                          <DialogDescription>
+                            Edit a user account.
+                          </DialogDescription>
+                        </DialogHeader>
+                        <div className="grid gap-4 py-4">
+                          <div className="grid grid-cols-4 items-center gap-4">
+                            <Label htmlFor="name" className="text-right">
+                              Name
+                            </Label>
+                            <Input
+                              id="name"
+                              value={name}
+                              onChange={(e) => setName(e.target.value)}
+                              className="col-span-3"
+                            />
+                          </div>
+                          <div className="grid grid-cols-4 items-center gap-4">
+                            <Label htmlFor="phone" className="text-right">
+                              Phone
+                            </Label>
+                            <Input
+                              id="phone"
+                              type="phone"
+                              value={phone}
+                              onChange={(e) => setPhone(e.target.value)}
+                              className="col-span-3"
+                            />
+                          </div>
+                          <div className="grid grid-cols-4 items-center gap-4">
+                            <Label htmlFor="born" className="text-right">
+                              Born
+                            </Label>
+                            <Input
+                              id="born"
+                              type="born"
+                              value={born}
+                              onChange={(e) => setBorn(e.target.value)}
+                              className="col-span-3"
+                            />
+                          </div>
+                          <div className="grid grid-cols-4 items-center gap-4">
+                            <Label htmlFor="address" className="text-right">
+                              Address
+                            </Label>
+                            <Input
+                              id="address"
+                              type="address"
+                              value={address}
+                              onChange={(e) => setAddress(e.target.value)}
+                              className="col-span-3"
+                            />
+                          </div>
                         </div>
-                        <div className="grid grid-cols-4 items-center gap-4">
-                          <Label htmlFor="phone" className="text-right">
-                            Phone
-                          </Label>
-                          <Input
-                            id="phone"
-                            type="phone"
-                            value={phone}
-                            onChange={(e) => setPhone(e.target.value)}
-                            className="col-span-3"
-                          />
-                        </div>
-                        <div className="grid grid-cols-4 items-center gap-4">
-                          <Label htmlFor="born" className="text-right">
-                            Born
-                          </Label>
-                          <Input
-                            id="born"
-                            type="born"
-                            value={born}
-                            onChange={(e) => setBorn(e.target.value)}
-                            className="col-span-3"
-                          />
-                        </div>
-                        <div className="grid grid-cols-4 items-center gap-4">
-                          <Label htmlFor="address" className="text-right">
-                            Address
-                          </Label>
-                          <Input
-                            id="address"
-                            type="address"
-                            value={address}
-                            onChange={(e) => setAddress(e.target.value)}
-                            className="col-span-3"
-                          />
-                        </div>
-                      </div>
-                      <DialogFooter>
-                        <Button type="submit" onClick={handleEditUser} >Add User</Button>
-                      </DialogFooter>
-                    </DialogContent>
-                  </Dialog>
-                  <Button variant="outline" size="icon" onClick={() => handleDeleteUser(user.id)}>
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                  <Button variant="outline" size="icon" onClick={() => handleCopyUser(user.id)} >
-                    <BookCopy className="h-4 w-4"
-                    />
-                  </Button>
-                </div>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
+                        <DialogFooter>
+                          <Button type="submit" onClick={handleEditUser} >Add User</Button>
+                        </DialogFooter>
+                      </DialogContent>
+                    </Dialog>
+                    <Button variant="outline" size="icon" onClick={() => handleDeleteUser(user.id)}>
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                    <Button variant="outline" size="icon" onClick={() => handleCopyUser(user.id)} >
+                      <BookCopy className="h-4 w-4"
+                      />
+                    </Button>
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
       </Table>
     </div>
   )

@@ -35,6 +35,7 @@ const navItems = [
   { href: "/admin/contacts", label: "Contacts", icon: <PhoneCall className="p-1 bg-blue-900 rounded text-white" />, key: "contacts" },
   { href: "/admin/blog", label: "blog", icon: <Bed className="p-1 bg-blue-900 rounded text-white" />, key: "blog" },
   { href: "/admin/categories_blogs", label: "categories_blogs", icon: <Bed className="p-1 bg-blue-900 rounded text-white" />, key: "categories_blogs" },
+  { href: "/admin/contracts", label: "contracts", icon: <Building className="p-1 bg-blue-900 rounded text-white" />, key: "contracts" },
   { href: "/admin/buildings", label: "Buildings", icon: <Building className="p-1 bg-blue-900 rounded text-white" />, key: "buildings" },
   { href: "/admin/banners", label: "Banners", icon: <Image className="p-1 bg-blue-900 rounded text-white" />, key: "banners" },
   { href: "/admin/settings", label: "Settings", icon: <Settings className="p-1 bg-blue-900 rounded text-white" />, key: "settings" },

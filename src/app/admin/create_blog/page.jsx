@@ -15,7 +15,7 @@ export default function CreateBlog() {
     const [successMessage, setSuccessMessage] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
     const router = useRouter();
-
+    
     // Cập nhật hàm handleImageChange để lưu file thay vì mã hóa base64
     const handleImageChange = (e) => {
         const file = e.target.files[0];

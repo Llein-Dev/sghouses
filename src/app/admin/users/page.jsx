@@ -142,7 +142,7 @@ export default function UsersContent() {
         setUsers((prevUsers) => prevUsers.filter(user => user.id !== id));
         const shouldGoToRecovery = window.confirm("Xóa người dùng thành công! Bạn có muốn đến trang khôi phục không?");
         if (shouldGoToRecovery) {
-          router.push("/admin/KhoiPhucUsers"); // Chuyển đến trang khôi phục
+          router.push("/admin/users/KhoiPhucUsers"); // Chuyển đến trang khôi phục
         } else {
           fetchData(); // Cập nhật danh sách người dùng nếu không chuyển trang
         }

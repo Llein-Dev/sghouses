@@ -1,7 +1,8 @@
 "use client"
-
-import { useState } from "react"
-import { Search, PlusCircle, Pencil, Trash2 } from "lucide-react"
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useEffect, useState } from "react"
+import { Search, FileText, Eye, Download, Trash2, BookCopy, Link, Pencil, Book, Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
@@ -21,133 +22,231 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { Label } from "@/components/ui/label"
 import { Badge } from "@/components/ui/badge"
+import { useRouter } from "next/navigation"
+import Cookies from "js-cookie"
+import { Label } from "recharts"
 
-export default function BuildingContent() {
-  const [Buildings, setBuildings] = useState([
-    { id: 1, number: "A101", type: "Single", price: 500, status: "Available" },
-    { id: 2, number: "B205", type: "Double", price: 750, status: "Occupied" },
-    { id: 3, number: "C310", type: "Suite", price: 1000, status: "Maintenance" },
-  ])
 
-  const [newBuilding, setNewBuilding] = useState({ number: "", type: "", price: "", status: "Available" })
-  const [searchTerm, setSearchTerm] = useState("")
+export default function CategoryBlog() {
+  const [buildings, setCatagoryBlog] = useState([])
+  const router = useRouter()
 
-  const handleAddBuilding = () => {
-    setBuildings([...Buildings, { id: Buildings.length + 1, ...newBuilding }])
-    setNewBuilding({ number: "", type: "", price: "", status: "Available" })
-  }
-
-  const filteredBuildings = Buildings.filter(Building =>
-    Building.number.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    Building.type.toLowerCase().includes(searchTerm.toLowerCase())
-  )
-
-  const getStatusColor = (status) => {
-    switch (status) {
-      case "Available": return "bg-green-500"
-      case "Occupied": return "bg-blue-500"
-      case "Maintenance": return "bg-yellow-500"
-      default: return "bg-gray-500"
+  
+  useEffect(() => {
+    const adminToken = Cookies.get('token');
+    if (!adminToken) {
+      router.push('/');
+      return;
     }
-  }
+    // fetch dữ liệu user
+
+    const fetchDataBuilding = async () => {
+      try {
+        const response = await fetch('http://localhost:8000/api/toa-nha/', {
+          headers: {
+            'Authorization': `Bearer ${adminToken}`,
+            'Content-Type': 'application/json',
+          },
+        });
+    
+        if (response.ok) {
+          const result = await response.json();
+          // Kiểm tra nếu là mảng hợp lệ
+          if (result && Array.isArray(result)) {
+            setCatagoryBlog(result);
+            console.log("Dữ liệu trả về từ API:", result);
+          } else {
+            // Nếu không phải mảng, gán mảng rỗng và log thông báo lỗi
+            setCatagoryBlog([]);
+            console.error(" không phải là mảng hợp lệ.");
+          }
+        } else {
+          // Xử lý khi không có quyền truy cập hoặc response không thành công
+          setError('Không có quyền truy cập');
+          console.error('Không có quyền truy cập API');
+        }
+      } catch (error) {
+        // Xử lý khi có lỗi trong quá trình fetch
+        setError('Không thể truy cập dữ liệu');
+        console.error('Lỗi khi fetch dữ liệu:', error);
+      }
+    };
+    
+    
+    fetchDataBuilding();
+  }, [router]);
+
+
+
+
+
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-between items-center">
-        <div className="flex items-center space-x-2">
-          <Search className="h-5 w-5 text-gray-500" />
-          <Input
-            placeholder="Search Buildings..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="max-w-sm"
-          />
+   <div className="flex justify-between items-center">
+  {/* Cột chứa thanh tìm kiếm */}
+  <div className="flex items-center space-x-2 w-1/2">
+    <Search className="h-5 w-5 text-gray-500" />
+    <Input
+      placeholder="Search contracts..."
+      className="max-w-sm"
+      // value={searchTerm}
+      // onChange={(e) => setSearchTerm(e.target.value)}
+    />
+  </div>
+  
+  {/* Cột chứa 2 nút Refesh và Thêm Danh Mục */}
+  <div className="flex items-center space-x-4 w-1/2 justify-end">
+    {/* Nút Thêm Danh Mục và Modal */}
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button variant="blue" className="bg-green-700 text-white hover:bg-green-600">
+          <Plus className="mr-2 h-4 w-4" />
+          Thêm Danh Mục
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>Add Cate Blog</DialogTitle>
+          <DialogDescription>
+            Add a Cate Blog account.
+          </DialogDescription>
+        </DialogHeader>
+        <div className="grid gap-4 py-4">
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="name" className="text-right">
+              Name
+            </Label>
+            <Input
+              id="name"
+              // value={name}
+              // onChange={(e) => setName(e.target.value)}
+              className="col-span-3"
+            />
+          </div>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="phone" className="text-right">
+              Phone
+            </Label>
+            <Input
+              id="phone"
+              type="phone"
+              // value={slug}
+              // onChange={(e) => setSlug(e.target.value)}
+              className="col-span-3"
+            />
+          </div>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="born" className="text-right">
+              Born
+            </Label>
+            <Input
+              id="born"
+              type="born"
+              // value={status}
+              // onChange={(e) => setStatus(e.target.value)}
+              className="col-span-3"
+            />
+          </div>
         </div>
-        <Dialog>
-          <DialogTrigger asChild>
-          <Button variant="blue">
-              <PlusCircle className="mr-2 h-4 w-4" />
-              Add New Building
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-[425px]">
-            <DialogHeader>
-              <DialogTitle>Add New Building</DialogTitle>
-              <DialogDescription>
-                Create a new Building in the system.
-              </DialogDescription>
-            </DialogHeader>
-            <div className="grid gap-4 py-4">
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="number" className="text-right">
-                  Building Number
-                </Label>
-                <Input
-                  id="number"
-                  value={newBuilding.number}
-                  onChange={(e) => setNewBuilding({ ...newBuilding, number: e.target.value })}
-                  className="col-span-3"
-                />
-              </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="type" className="text-right">
-                  Type
-                </Label>
-                <Input
-                  id="type"
-                  value={newBuilding.type}
-                  onChange={(e) => setNewBuilding({ ...newBuilding, type: e.target.value })}
-                  className="col-span-3"
-                />
-              </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="price" className="text-right">
-                  Price
-                </Label>
-                <Input
-                  id="price"
-                  type="number"
-                  value={newBuilding.price}
-                  onChange={(e) => setNewBuilding({ ...newBuilding, price: e.target.value })}
-                  className="col-span-3"
-                />
-              </div>
-            </div>
-            <DialogFooter>
-            <Button variant="blue" type="submit" onClick={handleAddBuilding}>Add Building</Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+        <DialogFooter>
+          <Button type="button" >Thêm</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
 
-      </div>
+       {/* khôi phục Danh Mục tin tức */}
+    <Button  variant="blue">
+      <FileText className="mr-2 h-4 w-4" />
+      Refesh Contract
+    </Button>
+  </div>
+</div>
+
 
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Building Number</TableHead>
-            <TableHead>Type</TableHead>
-            <TableHead>Price</TableHead>
-            <TableHead>Status</TableHead>
+            <TableHead>ID</TableHead>
+            <TableHead>Tên Danh Mục Tin Tức</TableHead>
+            <TableHead>SLug</TableHead>
+            <TableHead>Tình trạng</TableHead>
             <TableHead>Actions</TableHead>
+            <TableHead>Order</TableHead>
           </TableRow>
         </TableHeader>
-        <TableBody className="">
-          {filteredBuildings.map((Building) => (
-            <TableRow key={Building.id}>
-              <TableCell>{Building.number}</TableCell>
-              <TableCell>{Building.type}</TableCell>
-              <TableCell>${Building.price}</TableCell>
-              <TableCell>
-                <Badge className={getStatusColor(Building.status)}>{Building.status}</Badge>
-              </TableCell>
+        <TableBody>
+          {buildings.map((building, index) => (
+            <TableRow key={index}>
+              <TableCell>{building.id}</TableCell>
+              <TableCell>{building.name}</TableCell>
+              <TableCell>{building.slug}</TableCell>
+              <TableCell>{building.name_area}</TableCell>
+              <TableCell>{building.view}</TableCell>
               <TableCell>
                 <div className="flex space-x-2">
-                  <Button variant="outline" size="icon">
-                    <Pencil className="h-4 w-4" />
-                  </Button>
-                  <Button variant="outline" size="icon">
+                  {/* Nút Gọi điện */}
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button variant="outline" >
+                        <Pencil className="mr-2 h-4 w-4" />
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-[425px]">
+                      <DialogHeader>
+                        <DialogTitle>Edit Cate BLog</DialogTitle>
+                        <DialogDescription>
+                          Edit a Cate Blog account.
+                        </DialogDescription>
+                      </DialogHeader>
+                      <div className="grid gap-4 py-4">
+                        <div className="grid grid-cols-4 items-center gap-4">
+                          <Label htmlFor="name" className="text-right">
+                            Name
+                          </Label>
+                          <Input
+                            id="name"
+                            // value={name}
+                            // onChange={(e) => setName(e.target.value)}
+                            className="col-span-3"
+                          />
+                        </div>
+                        <div className="grid grid-cols-4 items-center gap-4">
+                          <Label htmlFor="phone" className="text-right">
+                            Phone
+                          </Label>
+                          <Input
+                            id="phone"
+                            type="phone"
+                            // value={slug}
+                            // onChange={(e) => setSlug(e.target.value)}
+                            className="col-span-3"
+                          />
+                        </div>
+                        <div className="grid grid-cols-4 items-center gap-4">
+                          <Label htmlFor="born" className="text-right">
+                            Born
+                          </Label>
+                          <Input
+                            id="born"
+                            type="born"
+                            // value={status}
+                            // onChange={(e) => setStatus(e.target.value)}
+                            className="col-span-3"
+                          />
+                        </div>
+                      </div>
+                      <DialogFooter>
+                        <Button type="submit" >Add User</Button>
+                      </DialogFooter>
+                    </DialogContent>
+                  </Dialog>
+
+
+
+
+                  <Button variant="outline" size="icon" onClick={() => handleDeleteCategoryBlog(blogs.id)}>
                     <Trash2 className="h-4 w-4" />
                   </Button>
                 </div>

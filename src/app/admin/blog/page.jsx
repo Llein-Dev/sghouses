@@ -116,10 +116,10 @@ export default function BlogContent() {
   };
 
   const handleCreatPage = () => {
-    router.push('/admin/create_blog')
+    router.push('/admin/blog/create_blog')
   }
   const handleRefeshBlog = () => {
-    router.push('/admin/refesh_blog')
+    router.push('/admin/blog/refesh_blog')
   }
   const handleDetailBlog = (id) => {
     router.push(`/admin/detail_blog/${id}`)

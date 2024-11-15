@@ -30,7 +30,13 @@ import { Label } from "recharts"
 export default function Contract() {
   const [Contracts, setContracts] = useState([])
   const router = useRouter()
-  
+  const [id_room, setIdRoom] = useState("");
+  const [id_user, setIdUser] = useState("");
+  const [status, setStatus] = useState("");
+  const [date_start, setDateStart] = useState("");
+  const [date_end, setDateEnd] = useState("");
+
+
   useEffect(() => {
     const adminToken = Cookies.get('token');
     if (!adminToken) {
@@ -47,7 +53,7 @@ export default function Contract() {
             'Content-Type': 'application/json',
           },
         });
-    
+
         if (response.ok) {
           const result = await response.json();
           // Kiểm tra nếu list_cate_blog là mảng hợp lệ
@@ -99,6 +105,50 @@ export default function Contract() {
     }
   };
 
+  const handleAddContracts = async (e) => {
+    e.preventDefault();
+
+    const adminToken = Cookies.get("token");
+    if (!adminToken) {
+      alert("Vui lòng đăng nhập trước khi tạo blog!");
+      router.push("/");
+      return;
+    }
+
+    const data = {
+      id_room,
+      id_user,
+      status,
+      date_start,
+      date_end,
+    };
+    try {
+      const response = await fetch("http://localhost:8000/api/hop-dong/add", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${adminToken}`,
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data);
+        toast.success("Thêm danh mục blog thành công!");
+        setContracts(data);
+        if (window.confirm("Thêm danh mục blog thành công! vui lòng đợi trong giây lát.")) {
+          window.location.reload();
+        }
+      } else {
+        const errorData = await response.json();
+        toast.error(`Lỗi khi thêm danh mục: ${errorData.message || "Có lỗi xảy ra"}`);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      toast.error("Có lỗi xảy ra khi kết nối API.");
+    }
+  };
 
   const handleRefesh = () => {
     router.push('/admin/contracts/refesh_contracts')
@@ -106,85 +156,109 @@ export default function Contract() {
 
   return (
     <div className="space-y-4">
-   <div className="flex justify-between items-center">
-  {/* Cột chứa thanh tìm kiếm */}
-  <div className="flex items-center space-x-2 w-1/2">
-    <Search className="h-5 w-5 text-gray-500" />
-    <Input
-      placeholder="Search contracts..."
-      className="max-w-sm"
-      // value={searchTerm}
-      // onChange={(e) => setSearchTerm(e.target.value)}
-    />
-  </div>
-  
-  {/* Cột chứa 2 nút Refesh và Thêm Danh Mục */}
-  <div className="flex items-center space-x-4 w-1/2 justify-end">
-    {/* Nút Thêm Danh Mục và Modal */}
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button variant="blue" className="bg-green-700 text-white hover:bg-green-600">
-          <Plus className="mr-2 h-4 w-4" />
-          Thêm Danh Mục
-        </Button> 
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>Add Cate Blog</DialogTitle>
-          <DialogDescription>
-            Add a Cate Blog account.
-          </DialogDescription>
-        </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name
-            </Label>
-            <Input
-              id="name"
-              // value={name}
-              // onChange={(e) => setName(e.target.value)}
-              className="col-span-3"
-            />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="phone" className="text-right">
-              Phone
-            </Label>
-            <Input
-              id="phone"
-              type="phone"
-              // value={slug}
-              // onChange={(e) => setSlug(e.target.value)}
-              className="col-span-3"
-            />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="born" className="text-right">
-              Born
-            </Label>
-            <Input
-              id="born"
-              type="born"
-              // value={status}
-              // onChange={(e) => setStatus(e.target.value)}
-              className="col-span-3"
-            />
-          </div>
+      <div className="flex justify-between items-center">
+        {/* Cột chứa thanh tìm kiếm */}
+        <div className="flex items-center space-x-2 w-1/2">
+          <Search className="h-5 w-5 text-gray-500" />
+          <Input
+            placeholder="Search contracts..."
+            className="max-w-sm"
+          // value={searchTerm}
+          // onChange={(e) => setSearchTerm(e.target.value)}
+          />
         </div>
-        <DialogFooter>
-          <Button type="button">Thêm</Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
 
-       {/* khôi phục Danh Mục tin tức */}
-    <Button variant="blue"  onClick={handleRefesh}>
-      <FileText className="mr-2 h-4 w-4" />
-      Refesh Contract
-    </Button>
-  </div>
-</div>
+        {/* Cột chứa 2 nút Refesh và Thêm Danh Mục */}
+        <div className="flex items-center space-x-4 w-1/2 justify-end">
+          {/* Nút Thêm Danh Mục và Modal */}
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="blue" className="bg-green-700 text-white hover:bg-green-600">
+                <Plus className="mr-2 h-4 w-4" />
+                Thêm Danh Mục
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>Thêm hợp đồng</DialogTitle>
+                <DialogDescription>
+                  hãy thêm hợp đồng vào nhé !
+                </DialogDescription>
+              </DialogHeader>
+              <div className="grid gap-4 py-4">
+                <div className="grid grid-cols-4 items-center gap-4">
+                  <Label htmlFor="name" className="text-right">
+                    ID Room
+                  </Label>
+                  <Input
+                    id="id_room"
+                    value={id_room}
+                    onChange={(e) => setIdRoom(e.target.value)}
+                    className="col-span-3"
+                  />
+                </div>
+                <div className="grid grid-cols-4 items-center gap-4">
+                  <Label htmlFor="phone" className="text-right">
+                    ID User
+                  </Label>
+                  <Input
+                    id="phone"
+                    type="phone"
+                    value={id_user}
+                    onChange={(e) => setIdUser(e.target.value)}
+                    className="col-span-3"
+                  />
+                </div>
+                <div className="grid grid-cols-4 items-center gap-4">
+                  <Label htmlFor="born" className="text-right">
+                    Born
+                  </Label>
+                  <Input
+                    id="born"
+                    type="born"
+                    value={status}
+                    onChange={(e) => setStatus(e.target.value)}
+                    className="col-span-3"
+                  />
+                </div>
+                <div className="grid grid-cols-4 items-center gap-4">
+                  <Label htmlFor="born" className="text-right">
+                    Born
+                  </Label>
+                  <Input
+                    id="born"
+                    type="born"
+                    value={date_start}
+                    onChange={(e) => setDateStart(e.target.value)}
+                    className="col-span-3"
+                  />
+                </div>
+                <div className="grid grid-cols-4 items-center gap-4">
+                  <Label htmlFor="born" className="text-right">
+                    Born
+                  </Label>
+                  <Input
+                    id="born"
+                    type="born"
+                    value={date_end}
+                    onChange={(e) => setDateEnd(e.target.value)}
+                    className="col-span-3"
+                  />
+                </div>
+              </div>
+              <DialogFooter>
+                <Button onClick={handleAddContracts} type="button">Thêm</Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+
+          {/* khôi phục Danh Mục tin tức */}
+          <Button variant="blue" onClick={handleRefesh}>
+            <FileText className="mr-2 h-4 w-4" />
+            Refesh Contract
+          </Button>
+        </div>
+      </div>
 
 
       <Table>

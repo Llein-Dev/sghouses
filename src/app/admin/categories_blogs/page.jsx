@@ -149,7 +149,7 @@ export default function CategoryBlog() {
 
   const handleAddCateBlog = async (e) => {
     e.preventDefault();
-
+  
     const adminToken = Cookies.get("token");
     if (!adminToken) {
       alert("Vui lòng đăng nhập trước khi tạo blog!");
@@ -175,9 +175,10 @@ export default function CategoryBlog() {
         const data = await response.json();
         console.log(data);
         toast.success("Thêm danh mục blog thành công!");
-      router.push('/admin/categories_blogs')
-        // Cập nhật lại danh sách categoryBlog ngay sau khi thêm
         setCatagoryBlog(data);
+        if (window.confirm("Thêm danh mục blog thành công! vui lòng đợi trong giây lát.")) {
+          window.location.reload();
+        }
       } else {
         const errorData = await response.json();
         toast.error(`Lỗi khi thêm danh mục: ${errorData.message || "Có lỗi xảy ra"}`);
@@ -191,9 +192,6 @@ export default function CategoryBlog() {
   const handleRefesh = () => {
     router.push('/admin/categories_blogs/refesh_categoriesBlog')
   }
-
-
-
 
   return (
     <div className="space-y-4">
@@ -290,14 +288,15 @@ export default function CategoryBlog() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {categoryBlog.map((blogs, index) => (
-            <TableRow key={index}>
-              <TableCell>{blogs.id}</TableCell>
-              <TableCell>{blogs.name}</TableCell>
-              <TableCell>{blogs.slug}</TableCell>
-              <TableCell>{blogs.status}</TableCell>
-              <TableCell>{blogs.Order}</TableCell>
-              <TableCell>
+  {Array.isArray(categoryBlog) && categoryBlog.length > 0 ? (
+    categoryBlog.map((blogs, index) => (
+      <TableRow key={index}>
+        <TableCell>{blogs.id}</TableCell>
+        <TableCell>{blogs.name}</TableCell>
+        <TableCell>{blogs.slug}</TableCell>
+        <TableCell>{blogs.status}</TableCell>
+        <TableCell>{blogs.Order}</TableCell>
+        <TableCell>
                 <div className="flex space-x-2">
                   {/* Nút Gọi điện */}
                   <Dialog>
@@ -370,9 +369,14 @@ export default function CategoryBlog() {
                   </Button>
                 </div>
               </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
+      </TableRow>
+    ))
+  ) : (
+    <TableRow>
+    </TableRow>
+  )}
+</TableBody>
+
       </Table>
     </div>
   )

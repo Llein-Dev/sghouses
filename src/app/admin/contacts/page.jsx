@@ -87,7 +87,7 @@ export default function ContractContent() {
 
 // khôi pbuc llien hệ
 const handleRefesh = () =>{
-  router.push('/admin/refeshContacts')
+  router.push('/admin/contacts/refeshContacts')
 }
   
 

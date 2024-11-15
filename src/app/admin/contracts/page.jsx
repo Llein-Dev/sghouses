@@ -70,13 +70,39 @@ export default function Contract() {
         console.error('Lỗi khi fetch dữ liệu:', error);
       }
     };
-    
-    
     fetchDataContracts();
   }, [router]);
 
 
+  const handleDeleteContracts = async (id) => {
+    const adminToken = Cookies.get("token");
+    try {
+      const response = await fetch(`http://localhost:8000/api/hop-dong/delete/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${adminToken}`,
+          "Content-Type": "application/json",
+        },
+      });
 
+      console.log('Delete response status:', response.status);
+
+      if (response.ok) {
+        // Cập nhật danh sách người dùng bằng cách loại bỏ người dùng đã xóa
+        setContracts((prevContracts) => prevContracts.filter(contracts => contracts.id !== id));
+      } else {
+        const errorData = await response.json();
+        setError(errorData.message || "Lỗi khi xóa người dùng");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+
+  const handleRefesh = () => {
+    router.push('/admin/contracts/refesh_contracts')
+  }
 
   return (
     <div className="space-y-4">
@@ -100,7 +126,7 @@ export default function Contract() {
         <Button variant="blue" className="bg-green-700 text-white hover:bg-green-600">
           <Plus className="mr-2 h-4 w-4" />
           Thêm Danh Mục
-        </Button>
+        </Button> 
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
@@ -153,7 +179,7 @@ export default function Contract() {
     </Dialog>
 
        {/* khôi phục Danh Mục tin tức */}
-    <Button variant="blue">
+    <Button variant="blue"  onClick={handleRefesh}>
       <FileText className="mr-2 h-4 w-4" />
       Refesh Contract
     </Button>
@@ -241,7 +267,7 @@ export default function Contract() {
 
 
 
-                  <Button variant="outline" size="icon" >
+                  <Button variant="outline" size="icon" onClick={() => handleDeleteContracts(contracts.id)}>
                     <Trash2 className="h-4 w-4" />
                   </Button>
                 </div>

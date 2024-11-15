@@ -55,7 +55,7 @@ export default function BlogContent() {
     }
     fetchDataBlog();
     // Call the prop to expose fetchData
-  });
+  }, [router]);
 
   // Delete Blog
   const handleDeleteBlog = async (id) => {

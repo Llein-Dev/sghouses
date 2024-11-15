@@ -161,7 +161,7 @@ export default function BlogContent() {
             <TableHead>Image</TableHead>
             <TableHead>Name</TableHead>
             <TableHead>Categories</TableHead>
-            <TableHead>Content</TableHead>
+            <TableHead>Description</TableHead>
             <TableHead>Actions</TableHead>
           </TableRow>
         </TableHeader>
@@ -172,7 +172,7 @@ export default function BlogContent() {
               <TableCell>  <img style={{height:"150px", objectFit:"cover", borderRadius:"10px"}} src={`http://localhost:8000/storage/${blogs.image}`}></img> </TableCell>
               <TableCell>{blogs.title} </TableCell>
               <TableCell>{blogs.name_cate}</TableCell>
-              <TableCell>{blogs.content}</TableCell>
+              <TableCell>{blogs.description}</TableCell>
               <TableCell>
                 <div className="flex space-x-2">
                   {/* Nút Gọi điện */}

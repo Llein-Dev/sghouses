@@ -356,7 +356,7 @@ export default function CategoryBlog() {
                         </div>
                       </div>
                       <DialogFooter>
-                        <Button type="submit" onClick={handleEditUser} >Add User</Button>
+                        <Button type="submit" onClick={handleEditUser} >SửaUser</Button>
                       </DialogFooter>
                     </DialogContent>
                   </Dialog>

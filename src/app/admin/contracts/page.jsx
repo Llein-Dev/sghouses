@@ -29,6 +29,7 @@ import { Label } from "recharts"
 
 export default function Contract() {
   const [Contracts, setContracts] = useState([])
+  const [selectedContracts, setSelectedContract] = useState(null); // State cho user cần chỉnh sửa
   const router = useRouter()
   const [id_room, setIdRoom] = useState("");
   const [id_user, setIdUser] = useState("");
@@ -149,6 +150,50 @@ export default function Contract() {
       toast.error("Có lỗi xảy ra khi kết nối API.");
     }
   };
+
+
+  // Edit user
+  const handleEditContracts = async () => {
+    const adminToken = Cookies.get("token");
+    if (!selectedContracts) return;
+
+    const updatedContracts = {
+      id_room,
+      id_user,
+      status,
+      date_start,
+      date_end,
+    };
+
+    try {
+      const response = await fetch(`http://localhost:8000/api/hop-dong/edit/${selectedContracts.id}`, {
+        method: "PUT", // Sử dụng PUT để cập nhật thông tin người dùng
+        headers: {
+          Authorization: `Bearer ${adminToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedContracts),
+      });
+      if (response.ok) {
+        toast.success("Cập nhật thành công!");
+        setContracts(Contracts.map(contracts => (contracts.id === selectedContracts.id ? updatedContracts : contracts)));
+        setSelectedContract(null);
+        setIdRoom("");
+        setIdUser("");
+        setStatus("");
+        setDateStart("");
+        setDateEnd("");
+        router.refresh();  // Load lại trang sau khi cập nhật thành công
+        alert('Đã cập nhật thành công')
+      } else {
+        const errorData = await response.json();
+        setError(errorData.message || "Lỗi khi cập nhật thông tin");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
 
   const handleRefesh = () => {
     router.push('/admin/contracts/refesh_contracts')
@@ -284,7 +329,14 @@ export default function Contract() {
                   {/* Nút Gọi điện */}
                   <Dialog>
                     <DialogTrigger asChild>
-                      <Button variant="outline" >
+                      <Button variant="outline" onClick={() => {
+                        setSelectedContract(contracts); // Cập nhật contracts cần chỉnh sửa
+                        setIdRoom(contracts.id_room);
+                        setIdUser(contracts.id_user);
+                        setStatus(contracts.status);
+                        setDateStart(contracts.date_start);
+                        setDateEnd(contracts.date_end);
+                      }}>
                         <Pencil className="mr-2 h-4 w-4" />
                       </Button>
                     </DialogTrigger>
@@ -302,8 +354,8 @@ export default function Contract() {
                           </Label>
                           <Input
                             id="name"
-                            // value={name}
-                            // onChange={(e) => setName(e.target.value)}
+                            value={id_room}
+                            onChange={(e) => setIdRoom(e.target.value)}
                             className="col-span-3"
                           />
                         </div>
@@ -314,8 +366,8 @@ export default function Contract() {
                           <Input
                             id="phone"
                             type="phone"
-                            // value={slug}
-                            // onChange={(e) => setSlug(e.target.value)}
+                            value={id_user}
+                            onChange={(e) => setIdUser(e.target.value)}
                             className="col-span-3"
                           />
                         </div>
@@ -326,14 +378,38 @@ export default function Contract() {
                           <Input
                             id="born"
                             type="born"
-                            // value={status}
-                            // onChange={(e) => setStatus(e.target.value)}
+                            value={status}
+                            onChange={(e) => setStatus(e.target.value)}
+                            className="col-span-3"
+                          />
+                        </div>
+                        <div className="grid grid-cols-4 items-center gap-4">
+                          <Label htmlFor="born" className="text-right">
+                            Born
+                          </Label>
+                          <Input
+                            id="born"
+                            type="born"
+                            value={date_start}
+                            onChange={(e) => setDateStart(e.target.value)}
+                            className="col-span-3"
+                          />
+                        </div>
+                        <div className="grid grid-cols-4 items-center gap-4">
+                          <Label htmlFor="born" className="text-right">
+                            Born
+                          </Label>
+                          <Input
+                            id="born"
+                            type="born"
+                            value={date_end}
+                            onChange={(e) => setDateEnd(e.target.value)}
                             className="col-span-3"
                           />
                         </div>
                       </div>
                       <DialogFooter>
-                        <Button type="submit"  >Add User</Button>
+                        <Button type="submit" onClick={handleEditContracts} >Sửa</Button>
                       </DialogFooter>
                     </DialogContent>
                   </Dialog>

@@ -168,6 +168,7 @@ export default function UpdateBuilding() {
                     >
                         Cập nhật Blog
                     </button>
+                    cập nhật nè
                 </form>
             </div>
         </div>

@@ -8,7 +8,6 @@ export default function CreateBlog() {
     const [name, setTen] = useState("");
     const [images, setImages] = useState([]);
     const [utilities, setTienIch] = useState([]); // Mảng tiện ích
-    const [slug, setSlug] = useState("draft");
     const [description, setMoTa] = useState("");
     const [location, setViTri] = useState("");
     const [id_area, setKhuVuc] = useState("");
@@ -47,13 +46,7 @@ export default function CreateBlog() {
       setTienIch(utilities.filter((item) => item !== tag));
     };
   
-    const handleSlugAutoGenerate = (name) => {
-      return name
-        .toLowerCase()
-        .trim()
-        .replace(/[^a-z0-9\s-]/g, "")
-        .replace(/\s+/g, "-");
-    };
+   
   
     const handleImageChange = (e) => {
       const files = Array.from(e.target.files);
@@ -135,7 +128,6 @@ export default function CreateBlog() {
           setTen("");
           setImages([]);
           setTienIch([]); // Reset tiện ích về mảng rỗng
-          setSlug("draft");
           setMoTa("");
           setViTri("");
           setKhuVuc("");
@@ -174,6 +166,16 @@ export default function CreateBlog() {
           )}
   
           <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+              <label className="block text-gray-600">Khu vực</label>
+              <input
+                type="text"
+                value={id_area}
+                onChange={(e) => setKhuVuc(e.target.value)}
+                className="w-full p-2 border border-gray-300 rounded mt-1"
+                placeholder="Nhập khu vực"
+              />
+            </div>
             <div>
               <label className="block text-gray-600">Tên tòa nhà</label>
               <input
@@ -229,7 +231,7 @@ export default function CreateBlog() {
             {/* Các trường khác */}
           {/* Tiện ích */}
         <div>
-          <label className="block text-gray-600">Tiện ích</label>
+          <label className="block text-gray-600">Tiện ích nội thất</label>
           <div className="relative mt-2">
             {/* Hiển thị danh sách tiện ích đã chọn */}
             <div className="bg-gray-100 p-2 flex flex-wrap gap-2 rounded">
@@ -291,15 +293,6 @@ export default function CreateBlog() {
           </div>
         </div>
             <div>
-              <label className="block text-gray-600">Slug</label>
-              <input
-                type="text"
-                value={slug}
-                onChange={(e) => setSlug(e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded mt-1"
-              />
-            </div>
-            <div>
               <label className="block text-gray-600">Mô tả</label>
               <textarea
                 value={description}
@@ -310,7 +303,7 @@ export default function CreateBlog() {
               ></textarea>
             </div>
             <div>
-              <label className="block text-gray-600">Vị trí</label>
+              <label className="block text-gray-600">Tiện ích công cộng</label>
               <input
                 type="text"
                 value={location}
@@ -319,16 +312,7 @@ export default function CreateBlog() {
                 placeholder="Nhập vị trí"
               />
             </div>
-            <div>
-              <label className="block text-gray-600">Khu vực</label>
-              <input
-                type="text"
-                value={id_area}
-                onChange={(e) => setKhuVuc(e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded mt-1"
-                placeholder="Nhập khu vực"
-              />
-            </div>
+         
             <button
               type="submit"
               className={`w-full py-2 px-4 bg-blue-600 text-white rounded mt-4 ${

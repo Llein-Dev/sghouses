@@ -25,7 +25,7 @@ import {
 import { Badge } from "@/components/ui/badge"
 import { useRouter } from "next/navigation"
 import Cookies from "js-cookie"
-import { Label } from "recharts"
+import { Label } from "@/components/ui/label"
 
 
 export default function CategoryBlog() {
@@ -219,15 +219,15 @@ export default function CategoryBlog() {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Add Cate Blog</DialogTitle>
+          <DialogTitle>Thêm danh mục tin tức</DialogTitle>
           <DialogDescription>
-            Add a Cate Blog account.
+            Thêm danh mục tin tức !
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="name" className="text-right">
-              Name
+              Tên
             </Label>
             <Input
               id="name"
@@ -238,7 +238,7 @@ export default function CategoryBlog() {
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="phone" className="text-right">
-              Phone
+              Đường dẫn
             </Label>
             <Input
               id="phone"
@@ -250,7 +250,7 @@ export default function CategoryBlog() {
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="born" className="text-right">
-              Born
+              Trạng thái
             </Label>
             <Input
               id="born"
@@ -313,9 +313,9 @@ export default function CategoryBlog() {
                     </DialogTrigger>
                     <DialogContent className="sm:max-w-[425px]">
                       <DialogHeader>
-                        <DialogTitle>Edit Cate BLog</DialogTitle>
+                        <DialogTitle>Chỉnh sửa danh mục blog</DialogTitle>
                         <DialogDescription>
-                          Edit a Cate Blog account.
+                         chỉnh sửa với danh mục blog !
                         </DialogDescription>
                       </DialogHeader>
                       <div className="grid gap-4 py-4">

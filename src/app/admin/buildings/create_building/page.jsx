@@ -47,44 +47,53 @@ export default function CreateBlog() {
     };
   
    
-  
     const handleImageChange = (e) => {
       const files = Array.from(e.target.files);
       const validImages = files.filter((file) => file.type.startsWith("image/"));
-  
+    
       if (validImages.length > 0) {
-        const imageUrls = validImages.map((image) => ({
+        const imageUrls = validImages.map((image, index) => ({
+          id: crypto.randomUUID(), // Tạo ID duy nhất
           file: image,
-          preview: URL.createObjectURL(image), // Tạo URL tạm thời để hiển thị ảnh
+          preview: URL.createObjectURL(image),
         }));
         setImages((prev) => [...prev, ...imageUrls]);
       } else {
         alert("Vui lòng chọn file ảnh hợp lệ!");
       }
     };
-  
-    const handleRemoveImage = (indexToRemove) => {
-      const updatedImages = images.filter((_, index) => index !== indexToRemove);
-      setImages(updatedImages);
+    const handleRemoveImage = (imageId) => {
+      setImages((prevImages) => {
+        const imageToRemove = prevImages.find((image) => image.id === imageId); // Tìm ảnh cần xóa
+        const updatedImages = prevImages.filter((image) => image.id !== imageId);
+    
+        if (imageToRemove?.preview) {
+          console.log("Thu hồi URL:", imageToRemove.preview);
+          URL.revokeObjectURL(imageToRemove.preview); // Thu hồi URL Blob
+        }
+    
+        return updatedImages;
+      });
     };
-  
+        
+      
     useEffect(() => {
-      if (successMessage || errorMessage) {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      }
-  
-      // Dọn dẹp URL tạm thời
       return () => {
-        images.forEach((image) => URL.revokeObjectURL(image.preview));
+        // Thu hồi tất cả URL Blob khi component bị hủy
+        images.forEach((image) => {
+          if (image.preview) {
+            URL.revokeObjectURL(image.preview);
+          }
+        });
       };
-    }, [successMessage, errorMessage, images]);
+    }, [images]); // Lắng nghe sự thay đổi của `images`
   
     // Chuyển đổi tiện ích từ chuỗi thành mảng khi tải trang (nếu cần)
     useEffect(() => {
       const initialUtilities = "Wifi miễn phí;Hồ bơi;Phòng gym"; // Dữ liệu giả lập từ backend
       setTienIch(initialUtilities.split(";").filter((item) => item.trim())); // Tách chuỗi và loại bỏ phần tử rỗng
     }, []);
-  
+   
     const handleSubmit = async (e) => {
       e.preventDefault();
   
@@ -104,7 +113,6 @@ export default function CreateBlog() {
       const formData = new FormData();
       formData.append("name", name);
       formData.append("utilities", utilities.join(";")); // Chuyển mảng thành chuỗi
-      formData.append("slug", slug);
       formData.append("description", description);
       formData.append("location", location);
       formData.append("id_area", id_area);
@@ -186,6 +194,8 @@ export default function CreateBlog() {
                 placeholder="Nhập tên tòa nhà"
               />
             </div>
+
+           {/* chọn ảnh */}
             <div>
               <label className="block text-gray-600">Ảnh</label>
               <input
@@ -201,9 +211,9 @@ export default function CreateBlog() {
               <h4 className="text-gray-600 mt-4">Ảnh đã chọn:</h4>
               {images.length > 0 ? (
                 <div className="grid grid-cols-4 gap-4">
-                  {images.map((image, index) => (
+                  {images.map((image) => (
                     <div
-                      key={index}
+                    key={image.id} // Sử dụng `image.id` thay vì `index`
                       className="flex flex-col items-center gap-2 bg-gray-20 p-2 rounded shadow"
                     >
                       <img
@@ -216,7 +226,7 @@ export default function CreateBlog() {
                       </span>
                       <button
                         type="button"
-                        onClick={() => handleRemoveImage(index)}
+                        onClick={() => handleRemoveImage(image.id)}
                         className="text-red-500 hover:underline text-sm"
                       >
                         Xóa
@@ -228,7 +238,7 @@ export default function CreateBlog() {
                 <p className="text-gray-500">Chưa chọn ảnh nào.</p>
               )}
             </div>
-            {/* Các trường khác */}
+          
           {/* Tiện ích */}
         <div>
           <label className="block text-gray-600">Tiện ích nội thất</label>

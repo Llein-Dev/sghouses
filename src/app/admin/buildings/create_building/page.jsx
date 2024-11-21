@@ -105,7 +105,6 @@ export default function CreateBlog() {
         router.push("/");
         return;
       }
-  
       setLoading(true);
       setSuccessMessage("");
       setErrorMessage("");
@@ -181,7 +180,7 @@ export default function CreateBlog() {
                 value={id_area}
                 onChange={(e) => setKhuVuc(e.target.value)}
                 className="w-full p-2 border border-gray-300 rounded mt-1"
-                placeholder="Nhập khu vực"
+                placeholder="Nhập (id) khu vực"
               />
             </div>
             <div>
@@ -226,7 +225,7 @@ export default function CreateBlog() {
                       </span>
                       <button
                         type="button"
-                        onClick={() => handleRemoveImage(image.id)}
+                        onClick={() => handleRemoveImage(image.id)} 
                         className="text-red-500 hover:underline text-sm"
                       >
                         Xóa

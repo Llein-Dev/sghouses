@@ -15,11 +15,6 @@ import {
 } from "@/components/ui/table"
 import {
   Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { Badge } from "@/components/ui/badge"
@@ -32,6 +27,7 @@ export default function CategoryBlog() {
   const [buildings, setCatagoryBlog] = useState([])
   const router = useRouter()
   const [error, setError] = useState([])
+
 
 
   useEffect(() => {
@@ -103,6 +99,36 @@ export default function CategoryBlog() {
     }
   };
 
+    const handleToggle = async (id, isHot) => {
+      const adminToken = Cookies.get("token");
+      try {
+        const response = await fetch(`http://localhost:8000/api/toa-nha/editHot/${id}`, {
+          method: 'PATCH',
+          headers: {
+            Authorization: `Bearer ${adminToken}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ hot: !isHot }), // Toggle trạng thái hot
+        });
+
+        if (response.ok) {
+          const result = await response.json();
+          toast.success(result.message || 'Cập nhật thành công');
+          setCatagoryBlog(prevBuildings =>
+            prevBuildings.map(building =>
+              building.id === id ? { ...building, hot: !isHot } : building
+            )
+          );
+        } else {
+          const errorData = await response.json();
+          toast.error(errorData.message || 'Lỗi khi cập nhật');
+        }
+      } catch (error) {
+        toast.error('Lỗi khi gửi yêu cầu');
+      }
+    };
+
+
   const handleRefesh = () => {
     router.push('/admin/buildings/refesh_building')
   }
@@ -112,6 +138,7 @@ export default function CategoryBlog() {
   const handleEditBuilding = (id) => {
     router.push(`/admin/buildings/update/${id}`)
   }
+
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
@@ -152,8 +179,7 @@ export default function CategoryBlog() {
             <TableHead>ID</TableHead>
             <TableHead>Thông tin tòa nhà</TableHead>
             <TableHead>Số phòng</TableHead>
-            <TableHead>Tình trạng</TableHead>
-            <TableHead>View</TableHead>
+            <TableHead>Nổi bật</TableHead>
             <TableHead>Actions</TableHead>
           </TableRow>
         </TableHeader>
@@ -165,8 +191,21 @@ export default function CategoryBlog() {
               </TableCell>
 
               <TableCell>{building.room}</TableCell> {/* số phòng */}
-              <TableCell>{building.hot}</TableCell>   {/* tình trạng */}
-              <TableCell>{building.view}</TableCell>   {/* lượt xem */}
+              <TableCell>
+                <div className="flex items-center space-x-4">
+                  <span className="text-gray-700">{building.hot ? "On" : "Off"}</span>
+                  <label className="relative inline-flex items-center cursor-pointer">
+                    <input
+                      type="checkbox"
+                      className="sr-only peer"
+                      checked={building.hot}
+                      onChange={() => handleToggle(building.id, building.hot)}
+                    />
+                    <div className="w-11 h-6 bg-gray-300 rounded-full peer dark:bg-gray-700 peer-checked:bg-blue-700 peer-focus:ring-4 peer-focus:ring-blue-300 transition-all"></div>
+                    <div className="absolute top-0.5 left-0.5 w-5 h-5 bg-white border rounded-full border-gray-300 peer-checked:translate-x-5 peer-checked:border-white transition-all"></div>
+                  </label>
+                </div>
+              </TableCell>
               <TableCell>
                 <div className="flex space-x-2">
                   {/* Nút Gọi điện */}
@@ -177,8 +216,6 @@ export default function CategoryBlog() {
                       </Button>
                     </DialogTrigger>
                   </Dialog>
-
-
                   <Button variant="outline" size="icon" onClick={() => handleDeleteBuilding(building.id)}>
                     <Trash2 className="h-4 w-4" />
                   </Button>

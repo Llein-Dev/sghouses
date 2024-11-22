@@ -13,7 +13,10 @@ import {
   Bell,
   ChevronDown,
   Image,
-  DoorOpen
+  DoorOpen,
+  Map,
+  Minimize,
+  Newspaper
   
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -34,11 +37,11 @@ const navItems = [
   { href: "/admin", label: "Dashboard", icon: <LayoutDashboard className="p-1 bg-blue-900 rounded text-white" />, key: "dashboard" },
   { href: "/admin/users", label: "Users", icon: <Users className="p-1 bg-blue-900 rounded text-white" />, key: "users" },
   { href: "/admin/contacts", label: "Contacts", icon: <PhoneCall className="p-1 bg-blue-900 rounded text-white" />, key: "contacts" },
-  { href: "/admin/blog", label: "blog", icon: <Bed className="p-1 bg-blue-900 rounded text-white" />, key: "blog" },
-  { href: "/admin/categories_blogs", label: "categories_blogs", icon: <Bed className="p-1 bg-blue-900 rounded text-white" />, key: "categories_blogs" },
-  { href: "/admin/contracts", label: "contracts", icon: <Building className="p-1 bg-blue-900 rounded text-white" />, key: "contracts" },
+  { href: "/admin/blog", label: "blog", icon: <FileText className="p-1 bg-blue-900 rounded text-white" />, key: "blog" },
+  { href: "/admin/categories_blogs", label: "categories_blogs", icon: <Newspaper className="p-1 bg-blue-900 rounded text-white" />, key: "categories_blogs" },
+  { href: "/admin/contracts", label: "contracts", icon: <Minimize  className="p-1 bg-blue-900 rounded text-white" />, key: "contracts" },
   { href: "/admin/buildings", label: "Buildings", icon: <Building className="p-1 bg-blue-900 rounded text-white" />, key: "buildings" },
-  { href: "/admin/area", label: "area", icon: <Building className="p-1 bg-blue-900 rounded text-white" />, key: "area" },
+  { href: "/admin/area", label: "area", icon: <Map className="p-1 bg-blue-900 rounded text-white" />, key: "area" },
   { href: "/admin/banners", label: "Banners", icon: <Image className="p-1 bg-blue-900 rounded text-white" />, key: "banners" },
   { href: "/admin/settings", label: "Settings", icon: <Settings className="p-1 bg-blue-900 rounded text-white" />, key: "settings" },
 ];

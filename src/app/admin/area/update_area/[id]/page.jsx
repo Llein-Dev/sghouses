@@ -3,35 +3,13 @@
 import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import { useParams, useRouter } from "next/navigation";
-import dynamic from "next/dynamic";
 
-// Import React Quill với tính năng hỗ trợ đầy đủ công cụ
-const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
-import "react-quill/dist/quill.snow.css"; // Import CSS mặc định của Quill
-
-// Cấu hình toolbar cho Quill với đầy đủ công cụ
-const modules = {
-    toolbar: [
-        [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }], // Các cấp độ tiêu đề và font
-        [{ 'list': 'ordered' }, { 'list': 'bullet' }], // Danh sách có thứ tự và không có thứ tự
-        ['bold', 'italic', 'underline', 'strike'], // In đậm, in nghiêng, gạch dưới, gạch ngang
-        [{ 'align': [] }], // Căn chỉnh
-        [{ 'color': [] }, { 'background': [] }], // Chọn màu chữ và nền
-        [{ 'script': 'sub' }, { 'script': 'super' }], // Chỉ số trên, chỉ số dưới
-        ['link', 'image'], // Thêm link và ảnh
-        ['blockquote', 'code-block'], // Trích dẫn và khối mã
-        ['clean'], // Xóa định dạng
-    ],
-};
-
-// Hàm chính của component
 export default function UpdateBlog() {
     const router = useRouter();
     const { id } = useParams();
-    const [title, setTitle] = useState("");
-    const [content, setContent] = useState("");
-    const [currentImage, setCurrentImage] = useState("");
-    const [imageBase64, setImageBase64] = useState(""); // Thêm state cho Base64
+    const [name, setTitle] = useState("");
+    const [image, setImage] = useState(null); // Lưu trữ file ảnh
+    const [imagePreview, setImagePreview] = useState(""); // Hiển thị ảnh preview
     const [error, setError] = useState("");
 
     useEffect(() => {
@@ -41,23 +19,23 @@ export default function UpdateBlog() {
             router.push("/");
             return;
         }
-        fetchDataBlog(adminToken);
+        fetchBlogDetails(adminToken);
     }, [id, router]);
 
-    const fetchDataBlog = async (token) => {
+    const fetchBlogDetails = async (token) => {
         try {
-            const response = await fetch(`http://localhost:8000/api/blog/${id}`, {
-                method: 'GET',
+            const response = await fetch(`http://localhost:8000/api/khu-vuc/${id}`, {
+                method: "GET",
                 headers: {
                     "Authorization": `Bearer ${token}`,
                     "Content-Type": "application/json",
                 },
             });
+
             if (response.ok) {
                 const result = await response.json();
-                setTitle(result.title);
-                setContent(result.content);
-                setCurrentImage(result.image);
+                setTitle(result.name); // Set tiêu đề từ API
+                setImagePreview(result.image); // Hiển thị ảnh hiện tại
             } else if (response.status === 401) {
                 setError("Không có quyền truy cập. Vui lòng đăng nhập lại.");
                 router.push("/");
@@ -72,11 +50,8 @@ export default function UpdateBlog() {
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setImageBase64(reader.result);
-            };
-            reader.readAsDataURL(file);
+            setImage(file); // Lưu trữ file ảnh mới
+            setImagePreview(URL.createObjectURL(file)); // Hiển thị preview ảnh mới
         }
     };
 
@@ -90,25 +65,24 @@ export default function UpdateBlog() {
             return;
         }
 
-        const formData = {
-            title,
-            content,
-            image: imageBase64, // Gửi chuỗi Base64 thay vì file gốc
-        };
+        const formData = new FormData();
+        formData.append("name", name);
+        if (image) {
+            formData.append("image", image); // Gửi file ảnh qua FormData
+        }
 
         try {
-            const response = await fetch(`http://localhost:8000/api/blog/edit/${id}`, {
-                method: "PUT",
+            const response = await fetch(`http://localhost:8000/api/khu-vuc/edit/${id}`, {
+                method: "POST",
                 headers: {
                     "Authorization": `Bearer ${adminToken}`,
-                    "Content-Type": "application/json",
                 },
-                body: JSON.stringify(formData),
+                body: formData,
             });
 
             if (response.ok) {
                 alert("Blog đã được cập nhật thành công!");
-                router.push(`/admin/blog`);
+                router.push(`/admin/area`);
             } else {
                 const data = await response.json();
                 setError(data.message || "Có lỗi xảy ra, vui lòng thử lại.");
@@ -130,7 +104,7 @@ export default function UpdateBlog() {
                         <label className="block text-gray-600">Tiêu đề</label>
                         <input
                             type="text"
-                            value={title}
+                            value={name}
                             onChange={(e) => setTitle(e.target.value)}
                             className="w-full p-2 border border-gray-300 rounded mt-1"
                             placeholder="Nhập tiêu đề"
@@ -146,20 +120,19 @@ export default function UpdateBlog() {
                             className="w-full p-2 border border-gray-300 rounded mt-1"
                             accept="image/*"
                         />
-                        {imageBase64 && (
-                            <img  src={imageBase64} alt="Ảnh hiện tại" className="mt-4 w-32 h-32 object-cover" />
+                        {imagePreview && (
+                            <div className="mt-4">
+                                <img
+                                    src={
+                                        imagePreview.startsWith("blob:") 
+                                            ? imagePreview // Hiển thị preview ảnh mới
+                                            : `http://localhost:8000/storage/${imagePreview}` // Hiển thị ảnh hiện tại
+                                    }
+                                    alt="Preview"
+                                    className="w-32 h-32 object-cover rounded"
+                                />
+                            </div>
                         )}
-                    </div>
-
-                    <div>
-                        <label className="block text-gray-600">Nội dung</label>
-                        <ReactQuill
-                            value={content}
-                            onChange={setContent}
-                            modules={modules} // Sử dụng cấu hình module với toolbar đầy đủ
-                            className="w-full p-2 border border-gray-300 rounded mt-1"
-                            placeholder="Nhập nội dung bài viết"
-                        />
                     </div>
 
                     <button

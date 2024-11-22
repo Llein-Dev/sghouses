@@ -1,5 +1,5 @@
 "use client"
-
+import { toast } from 'react-toastify';
 import { useEffect, useState } from "react"
 import { Search, Trash2, BookCopy, Eye,  Plus, RefreshCcwDot,Pen } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -118,6 +118,35 @@ export default function BlogContent() {
       setError("Có lỗi xảy ra khi sao chép người dùng");
     }
   };
+  const handleToggle = async (id, isHot) => {
+    const adminToken = Cookies.get("token");
+    try {
+      const response = await fetch(`http://localhost:8000/api/khu-vuc/editHot/${id}`, {
+        method: 'PATCH',
+        headers: {
+          Authorization: `Bearer ${adminToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ hot: !isHot }), // Toggle trạng thái hot
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        toast.success(result.message || 'Cập nhật thành công');
+        setArea(prevArea =>
+          prevArea.map(area =>
+            area.id === id ? { ...area, hot: !isHot } : area
+          )
+        );
+      } else {
+        const errorData = await response.json();
+        toast.error(errorData.message || 'Lỗi khi cập nhật');
+      }
+    } catch (error) {
+      toast.error('Lỗi khi gửi yêu cầu');
+    }
+  };
+
 
   const handleRefeshArea = () => {
     router.push('/admin/area/refesh_area')
@@ -127,6 +156,9 @@ export default function BlogContent() {
   }
   const handleCreatArea = () => {
     router.push('/admin/area/create_area')
+  }
+  const handleUpdateArea = (id) => {
+    router.push(`/admin/area/update_area/${id}`)
   }
   return (
     <div className="space-y-4">
@@ -141,7 +173,6 @@ export default function BlogContent() {
             className="max-w-sm"
           />
         </div>
-
         {/* Cột buttons */}
         <div className="flex justify-end space-x-2">
           <Button onClick={handleCreatArea}  className="bg-green-700 text-white hover:bg-green-600">
@@ -159,10 +190,10 @@ export default function BlogContent() {
         <TableHeader>
           <TableRow>
             <TableHead>ID</TableHead>
-            <TableHead>Image</TableHead>
-            <TableHead>Name</TableHead>
-            <TableHead>Slug</TableHead>
-            <TableHead>Actions</TableHead>
+            <TableHead>Ảnh</TableHead>
+            <TableHead>Tên</TableHead>
+            <TableHead>Trạng thái</TableHead>
+            <TableHead>Hành động</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -171,88 +202,28 @@ export default function BlogContent() {
               <TableCell>{areas.id}</TableCell>
               <TableCell> <img style={{height:"150px", width:'250px', objectFit:"cover", borderRadius:"10px"}} src={`http://localhost:8000/storage/${areas.image}`}></img> </TableCell>
               <TableCell>{areas.name} </TableCell>
-              <TableCell>{areas.slug}</TableCell>
+              <TableCell>
+                <div className="flex items-center space-x-4">
+                  <span className="text-gray-700">{areas.hot ? "On" : "Off"}</span>
+                  <label className="relative inline-flex items-center cursor-pointer">
+                    <input
+                      type="checkbox"
+                      className="sr-only peer"
+                      checked={areas.hot}
+                      onChange={() => handleToggle(areas.id, areas.hot)}
+                    />
+                    <div className="w-11 h-6 bg-gray-300 rounded-full peer dark:bg-gray-700 peer-checked:bg-blue-700 peer-focus:ring-4 peer-focus:ring-blue-300 transition-all"></div>
+                    <div className="absolute top-0.5 left-0.5 w-5 h-5 bg-white border rounded-full border-gray-300 peer-checked:translate-x-5 peer-checked:border-white transition-all"></div>
+                  </label>
+                </div>
+              </TableCell>
        
               <TableCell>
                 <div className="flex space-x-2">
-                  {/* Nút Gọi điện */}
-                  <Dialog>
-                    <DialogTrigger asChild>
-                      {/* <Button variant="outline" onClick={() => {
-                        setSelectedUser(user); // Cập nhật user cần chỉnh sửa
-                        setName(user.name);
-                        setPhone(user.phone);
-                        setAddress(user.address);
-                        setBorn(user.born);
-                      }}>
-                        <Pencil className="mr-2 h-4 w-4" />
-                      </Button> */}
-                    </DialogTrigger>
-                    <DialogContent className="sm:max-w-[425px]">
-                      <DialogHeader>
-                        <DialogTitle>Edit User</DialogTitle>
-                        <DialogDescription>
-                          Edit a user account.
-                        </DialogDescription>
-                      </DialogHeader>
-                      <div className="grid gap-4 py-4">
-                        <div className="grid grid-cols-4 items-center gap-4">
-                          <Label htmlFor="name" className="text-right">
-                            Name
-                          </Label>
-                          <Input
-                            id="name"
-                            // value={name}
-                            // onChange={(e) => setName(e.target.value)}
-                            className="col-span-3"
-                          />
-                        </div>
-                        <div className="grid grid-cols-4 items-center gap-4">
-                          <Label htmlFor="phone" className="text-right">
-                            Phone
-                          </Label>
-                          <Input
-                            id="phone"
-                            type="phone"
-                            // value={phone}
-                            // onChange={(e) => setPhone(e.target.value)}
-                            className="col-span-3"
-                          />
-                        </div>
-                        <div className="grid grid-cols-4 items-center gap-4">
-                          <Label htmlFor="born" className="text-right">
-                            Born
-                          </Label>
-                          <Input
-                            id="born"
-                            type="born"
-                            // value={born}
-                            // onChange={(e) => setBorn(e.target.value)}
-                            className="col-span-3"
-                          />
-                        </div>
-                        <div className="grid grid-cols-4 items-center gap-4">
-                          <Label htmlFor="address" className="text-right">
-                            Address
-                          </Label>
-                          <Input
-                            id="address"
-                            type="address"
-                            // value={address}
-                            // onChange={(e) => setAddress(e.target.value)}
-                            className="col-span-3"
-                          />
-                        </div>
-                      </div>
-                      <DialogFooter>
-                        <Button type="submit"  >Add User</Button>
-                      </DialogFooter>
-                    </DialogContent>
-                  </Dialog>
                   <Button variant="outline" size="icon" onClick={() => handleDeleteArea(areas.id)} >
                     <Trash2 className="h-4 w-4" />
                   </Button>
-                  <Button variant="outline" size="icon"  >
+                  <Button variant="outline" size="icon" onClick={() => handleUpdateArea(areas.id)}  >
                     <Pen className="h-4 w-4"
                     />
                   </Button>

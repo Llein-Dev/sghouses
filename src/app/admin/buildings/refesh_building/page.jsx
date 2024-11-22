@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
-import { Search, RefreshCcw } from "lucide-react"
+import { Search, RefreshCcw, ListX, List } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
@@ -87,7 +87,7 @@ export default function RefeshBuilding() {
     const adminToken = Cookies.get("token");
     try {
       const response = await fetch(`http://localhost:8000/api/toa-nha/restore/${id}`, {
-        method: "POST",
+        method: "PATCH",
         headers: {
           Authorization: `Bearer ${adminToken}`,
           "Content-Type": "application/json",
@@ -111,6 +111,10 @@ export default function RefeshBuilding() {
       console.log("Lỗi khi thực hiện khôi phục người dùng:", error);
     }
   };
+
+  const handleBuiding = () => {
+    router.push(`/admin/buildings`)
+  }
   return (
 
     <div className="space-y-4">
@@ -124,6 +128,13 @@ export default function RefeshBuilding() {
             className="max-w-sm"
           />
         </div>
+        <div className="flex items-center space-x-4 w-1/2 justify-end">
+       {/* khôi phục Danh Mục tin tức */}
+    <Button  variant="blue" onClick={handleBuiding} className="bg-blue-700 text-white hover:bg-blue-800">
+      <List className="mr-2 h-4 w-4" />
+     Danh sách hoạt động
+    </Button>
+  </div>
       </div>
       <Table>
         <TableHeader>

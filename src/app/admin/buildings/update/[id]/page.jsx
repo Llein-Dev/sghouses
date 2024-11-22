@@ -301,7 +301,7 @@ export default function UpdateBuilding() {
                         type="submit"
                         className="w-full p-2 rounded bg-blue-600 hover:bg-blue-700 text-white transition"
                     >
-                        Cập nhật Blog
+                        Cập nhật tòa nhà
                     </button>
                 </form>
             </div>

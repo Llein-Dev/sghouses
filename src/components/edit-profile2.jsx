@@ -7,12 +7,12 @@ import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { cn } from "@/lib/utils"
-import { Camera, ChevronDown } from 'lucide-react'
+import { Camera, ChevronDown, Eye, EyeClosed } from 'lucide-react'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
-import { updateAvatar, updateProfile } from '@/utils/api/Auth/api'
+import { changePassword, updateAvatar, updateProfile } from '@/utils/api/Auth/api'
 import { Spinner } from './ui/loading'
 import Breadcrumb from './breadcum'
-
+import zxcvbn from 'zxcvbn'
 const genderOptions = [
     { value: 0, label: 'Nam' },
     { value: 1, label: 'Nữ' },
@@ -37,10 +37,68 @@ export default function EditProfile2Component({ user }) {
         phone: '',
         address: '',
     })
-    const [currentPassword, setCurrentPassword] = useState('')
-    const [newPassword, setNewPassword] = useState('')
-    const [confirmPassword, setConfirmPassword] = useState('')
+
     const [loading, setLoading] = useState(true)
+    const [currentPassword, setCurrentPassword] = useState('');
+    const [newPassword, setNewPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [showPassword, setShowPassword] = useState({
+        currentPassword: false,
+        newPassword: false,
+        confirmPassword: false,
+    });
+    const [passwordStrength, setPasswordStrength] = useState(0);
+    const [error, setError] = useState('');
+    const togglePasswordVisibility = (field) => {
+        setShowPassword((prev) => ({
+            ...prev,
+            [field]: !prev[field],
+        }));
+    };
+    const isLengthValid = newPassword.length >= 8;
+    const hasUpperCase = /[A-Z]/.test(newPassword);
+    const hasLowerCase = /[a-z]/.test(newPassword);
+    const hasNumber = /\d/.test(newPassword);
+    const handlePasswordChange = (e) => {
+        const password = e.target.value;
+        setNewPassword(password);
+        const result = zxcvbn(password);  // Use zxcvbn to evaluate password strength
+        setPasswordStrength(result?.score);  // Get score from zxcvbn
+        setStrengthText(result?.feedback.suggestions.join(' '));  // Get suggestions if any
+    };
+
+    const validateForm = () => {
+        if (!currentPassword || !newPassword || !confirmPassword) {
+            return 'Tất cả các trường đều bắt buộc.';
+        }
+        if (newPassword.length < 8) {
+            return 'Mật khẩu mới phải có ít nhất 8 ký tự.';
+        }
+        if (newPassword !== confirmPassword) {
+            return 'Mật khẩu xác nhận không khớp.';
+        }
+        return '';
+    };
+
+    const handleChangePassword = async (e) => {
+        e.preventDefault();
+        const validationError = validateForm();
+        if (validationError) {
+            setError(validationError);
+            return;
+        }
+        setError('');
+
+        try {
+            const response = await changePassword(currentPassword, newPassword);
+            alert('Mật khẩu đã được cập nhật thành công!');
+            setCurrentPassword('');
+            setNewPassword('');
+            setConfirmPassword('');
+        } catch (err) {
+            setError(err.message || 'Đã xảy ra lỗi. Vui lòng thử lại.');
+        }
+    };
 
     useEffect(() => {
         if (user) {
@@ -171,20 +229,150 @@ export default function EditProfile2Component({ user }) {
                 <CardDescription>Cập nhật mật khẩu liên kết với tài khoản của bạn.</CardDescription>
             </CardHeader>
             <CardContent>
-                <form className="space-y-6" onSubmit={handleProfileUpdate}>
+                <form className="space-y-6" onSubmit={handleChangePassword}>
+                    {error && <div className="text-red-500">{error}</div>}
+
+                    {/* Mật khẩu hiện tại */}
                     <div className="space-y-2">
                         <Label htmlFor="currentPassword">Mật khẩu hiện tại</Label>
-                        <Input id="currentPassword" value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} name="currentPassword" type="password" />
+                        <div className="relative">
+                            <Input
+                                id="currentPassword"
+                                value={currentPassword}
+                                onChange={(e) => setCurrentPassword(e.target.value)}
+                                name="currentPassword"
+                                type={showPassword.currentPassword ? 'text' : 'password'}
+                                required
+                            />
+                            <button
+                                type="button"
+                                onClick={() => togglePasswordVisibility('currentPassword')}
+                                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
+                            >
+                                {showPassword.currentPassword ? (
+                                    <EyeClosed />
+                                ) : (
+                                    <Eye />
+                                )}
+                            </button>
+                        </div>
                     </div>
+
+                    {/* Mật khẩu mới */}
                     <div className="space-y-2">
                         <Label htmlFor="newPassword">Mật khẩu mới</Label>
-                        <Input id="newPassword" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} name="newPassword" type="password" />
+                        <div className="relative">
+                            <Input
+                                id="newPassword"
+                                value={newPassword}
+                                onChange={handlePasswordChange}
+                                name="newPassword"
+                                type={showPassword.newPassword ? 'text' : 'password'}
+                                required
+                            />
+                            <button
+                                type="button"
+                                onClick={() => togglePasswordVisibility('newPassword')}
+                                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
+                            >
+                                {showPassword.newPassword ? (
+                                    <EyeClosed />
+                                ) : (
+                                    <Eye />
+                                )}
+                            </button>
+                        </div>
+                        {/* Đo độ mạnh mật khẩu */}
+                        <div className="mt-2">
+                            <div className={`h-2 w-full bg-gray-200 rounded-md`}>
+                                <div
+                                    className={`h-full rounded-md ${passwordStrength === 0
+                                        ? 'bg-gray-300'
+                                        : passwordStrength === 1
+                                            ? 'bg-red-500'
+                                            : passwordStrength === 2
+                                                ? 'bg-yellow-500'
+                                                : passwordStrength === 3
+                                                    ? 'bg-green-500'
+                                                    : 'bg-blue-500'
+                                        }`}
+                                    style={{ width: `${(passwordStrength / 4) * 100}%` }}
+                                />
+                            </div>
+                            <p className="text-sm text-gray-500 mt-1">
+                                {passwordStrength === 0
+                                    ? 'Mật khẩu quá yếu'
+                                    : passwordStrength === 1
+                                        ? 'Mật khẩu yếu'
+                                        : passwordStrength === 2
+                                            ? 'Mật khẩu trung bình'
+                                            : passwordStrength === 3
+                                                ? 'Mật khẩu mạnh'
+                                                : 'Mật khẩu rất mạnh'}
+                            </p>
+                        </div>
                     </div>
+
+                    {/* Xác nhận mật khẩu */}
                     <div className="space-y-2">
                         <Label htmlFor="confirmPassword">Xác nhận mật khẩu</Label>
-                        <Input id="confirmPassword" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} name="confirmPassword" type="password" />
+                        <div className="relative">
+                            <Input
+                                id="confirmPassword"
+                                value={confirmPassword}
+                                onChange={(e) => setConfirmPassword(e.target.value)}
+                                name="confirmPassword"
+                                type={showPassword.confirmPassword ? 'text' : 'password'}
+                                required
+                            />
+                            <button
+                                type="button"
+                                onClick={() => togglePasswordVisibility('confirmPassword')}
+                                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
+                            >
+                                {showPassword.confirmPassword ? (
+                                    <EyeClosed />
+                                ) : (
+                                    <Eye />
+                                )}
+                            </button>
+                        </div>
                     </div>
-                    <Button variant="default" type="submit">Xác nhận</Button>
+
+                    {/* Các luật mật khẩu */}
+                    <div className="text-sm text-gray-500 mt-2">
+
+                        <ul className="list-disc pl-5">
+                            <li
+                                className={`${isLengthValid ? 'text-black' : 'text-gray-400'
+                                    }`}
+                            >
+                                Mật khẩu phải có ít nhất 8 ký tự.
+                            </li>
+                            <li
+                                className={`${hasUpperCase && hasLowerCase && hasNumber
+                                        ? 'text-black'
+                                        : 'text-gray-400'
+                                    }`}
+                            >
+                                Mật khẩu phải bao gồm ít nhất một chữ hoa, một chữ
+                                thường và một số.
+                            </li>
+                            <li
+                                className={`${newPassword !== confirmPassword
+                                        ? 'text-gray-400'
+                                        : 'text-black'
+                                    }`}
+                            >
+                                Mật khẩu không được trùng với mật khẩu trước đó.
+                            </li>
+                        </ul>
+
+                    </div>
+
+                    <Button variant="default" type="submit">
+                        Xác nhận
+                    </Button>
                 </form>
             </CardContent>
         </Card>

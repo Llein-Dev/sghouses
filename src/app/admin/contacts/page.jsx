@@ -23,6 +23,7 @@ import {
 import { Badge } from "@/components/ui/badge"
 import { useRouter } from "next/navigation"
 import Cookies from "js-cookie"
+import { Label } from "@/components/ui/label"
 
 
 export default function ContractContent() {

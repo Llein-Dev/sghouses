@@ -24,7 +24,7 @@ import {
 } from "@/components/ui/dialog"
 import { useRouter } from "next/navigation"
 import Cookies from "js-cookie"
-import { Label } from "recharts"
+import { Label } from "@/components/ui/label"
 
 
 export default function Contract() {
@@ -44,8 +44,7 @@ export default function Contract() {
       router.push('/');
       return;
     }
-    // fetch dữ liệu user
-
+  
     const fetchDataContracts = async () => {
       try {
         const response = await fetch('http://localhost:8000/api/hop-dong/all', {
@@ -54,31 +53,28 @@ export default function Contract() {
             'Content-Type': 'application/json',
           },
         });
-
+  
         if (response.ok) {
           const result = await response.json();
-          // Kiểm tra nếu list_cate_blog là mảng hợp lệ
-          if (result && Array.isArray(result)) {
-            setContracts(result);
-            console.log("Dữ liệu trả về từ API:", result);
+          if (Array.isArray(result)) {
+            setContracts(result); // Đảm bảo chỉ set khi result là mảng
           } else {
-            // Nếu không phải mảng, gán mảng rỗng và log thông báo lỗi
-            setContracts([]);
-            console.error("list_cate_blog không phải là mảng hợp lệ.");
+            setContracts([]); // Nếu không, đặt là mảng rỗng
+            console.error("Dữ liệu trả về không phải mảng:", result);
           }
         } else {
-          // Xử lý khi không có quyền truy cập hoặc response không thành công
-          setError('Không có quyền truy cập');
-          console.error('Không có quyền truy cập API');
+          console.error('Lỗi khi gọi API');
+          setContracts([]); // Đặt Contracts là mảng rỗng nếu có lỗi
         }
       } catch (error) {
-        // Xử lý khi có lỗi trong quá trình fetch
-        setError('Không thể truy cập dữ liệu');
         console.error('Lỗi khi fetch dữ liệu:', error);
+        setContracts([]); // Đặt Contracts là mảng rỗng nếu có lỗi
       }
     };
+  
     fetchDataContracts();
   }, [router]);
+  
 
 
   const handleDeleteContracts = async (id) => {
@@ -254,9 +250,9 @@ export default function Contract() {
                     className="col-span-3"
                   />
                 </div>
-                <div className="grid grid-cols-4 items-center gap-4">
+                {/* <div className="grid grid-cols-4 items-center gap-4">
                   <Label htmlFor="born" className="text-right">
-                    Born
+                    Trạng thái
                   </Label>
                   <Input
                     id="born"
@@ -265,26 +261,26 @@ export default function Contract() {
                     onChange={(e) => setStatus(e.target.value)}
                     className="col-span-3"
                   />
-                </div>
+                </div> */}
                 <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="born" className="text-right">
-                    Born
+                  <Label htmlFor="date-start" className="text-right ml-[-14px]">
+                    Ngày bắt đầu
                   </Label>
                   <Input
-                    id="born"
-                    type="born"
+                    id="date-start"
+                    type="date"
                     value={date_start}
                     onChange={(e) => setDateStart(e.target.value)}
                     className="col-span-3"
                   />
                 </div>
                 <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="born" className="text-right">
-                    Born
+                  <Label htmlFor="date-end" className="text-right ml-[-19px]">
+                    Ngày kết thúc
                   </Label>
                   <Input
-                    id="born"
-                    type="born"
+                    id="date-end"
+                    type="date"
                     value={date_end}
                     onChange={(e) => setDateEnd(e.target.value)}
                     className="col-span-3"

@@ -140,10 +140,12 @@ export default function RefeshBuilding() {
         <TableHeader>
           <TableRow>
           <TableHead>ID Phòng</TableHead>
-            <TableHead>ID người dùng</TableHead>
-            <TableHead>Trạng thái</TableHead>
-            <TableHead>Ngày bắt đầu</TableHead>
-            <TableHead>Ngày kết thúc</TableHead>
+            <TableHead>Ảnh</TableHead>
+            <TableHead>Tên tòa nhà</TableHead>
+            <TableHead>SLug</TableHead>
+            <TableHead>Khu vực</TableHead>
+            <TableHead>view</TableHead>
+            <TableHead>Hành động</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>

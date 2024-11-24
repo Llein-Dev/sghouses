@@ -1,6 +1,5 @@
 "use client";
-
-import { useState, useEffect } from "react";
+    import React, { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import { useParams, useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
@@ -32,7 +31,6 @@ export default function UpdateBuilding() {
     // State lưu thông tin từ API
     const [id_area, setIdArea] = useState("");
     const [name, setName] = useState("");
-    const [hot, setHot] = useState("");
     const [description, setDescription] = useState("");
     const [utilities, setUtilities] = useState("");
     const [location, setLocation] = useState("");
@@ -40,7 +38,9 @@ export default function UpdateBuilding() {
     const [images, setImages] = useState([]); // Danh sách ảnh mới
     const [imageDelete, setImageDelete] = useState(''); // Danh sách ảnh cần xóa
     const [error, setError] = useState("");
-
+    const [showModal, setShowModal] = useState(false);
+    const [showModalFalse, setShowModalFalse] = useState(false);
+    const [option, setOption] = useState([]);
     useEffect(() => {
         const adminToken = Cookies.get("token");
         if (!adminToken) {
@@ -49,7 +49,33 @@ export default function UpdateBuilding() {
             return;
         }
         fetchBuildingData(adminToken);
+        fetchDataOption();
     }, [id, router]);
+
+    // fetch API Option
+    const fetchDataOption = async () => {
+        try {
+            const response = await fetch(`http://localhost:8000/api/khu_vuc/option`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                setOption(result)
+            } else if (response.status === 401) {
+                setError("Không có quyền truy cập. Vui lòng đăng nhập lại.");
+                router.push("/");
+            } else {
+                setError("Lỗi không xác định.");
+            }
+        } catch (err) {
+            setError("Không thể truy cập dữ liệu.");
+        }
+
+    };
 
     // Hàm lấy dữ liệu chi tiết tòa nhà từ API
     const fetchBuildingData = async (token) => {
@@ -74,7 +100,6 @@ export default function UpdateBuilding() {
                 setIdArea(result.id_area || "");
                 setUtilities(result.utilities || "");
                 setLocation(result.location || "");
-                setHot(result.hot || "");
                 setDescription(result.description || "");
                 setImageOld(imagePaths); // Lưu danh sách ảnh cũ
             } else if (response.status === 401) {
@@ -86,7 +111,7 @@ export default function UpdateBuilding() {
         } catch (err) {
             setError("Không thể truy cập dữ liệu.");
         }
-    
+
     };
 
     // Hàm xử lý chọn ảnh mới
@@ -101,9 +126,9 @@ export default function UpdateBuilding() {
     };
 
     // Hàm xóa ảnh mới
-        const handleRemoveImage = (imageId) => {
+    const handleRemoveImage = (imageId) => {
         setImages((prevImages) => prevImages.filter((image) => image.id !== imageId));
-         // Chèn path ảnh cần xóa vào
+        // Chèn path ảnh cần xóa vào
         setImageDelete((prev) => prev + imageOld[imageId] + ';');
     };
 
@@ -117,48 +142,49 @@ export default function UpdateBuilding() {
     // Hàm xử lý khi gửi form
     const handleSubmit = async (e) => {
         e.preventDefault();
-    
+
         const adminToken = Cookies.get("token");
         if (!adminToken) {
             setError("Bạn cần đăng nhập để thực hiện thao tác này.");
             router.push("/");
             return;
         }
-    
+
         const formData = new FormData();
-        formData.append("id", id);
         formData.append("id_area", id_area);
         formData.append("utilities", utilities);
         formData.append("location", location);
-        formData.append("hot", hot);
         formData.append("name", name);
         formData.append("description", description);
         formData.append("image_delete", imageDelete);
-    
+
         // Gửi danh sách ảnh mới
         images.forEach((image) => formData.append("image[]", image.file));
-    
+
         try {
-            const response = await fetch(`http://localhost:8000/api/toa-nha/edit`, {
+            const response = await fetch(`http://localhost:8000/api/toa-nha/edit/${id}`, {
                 method: "POST",
                 headers: {
                     Authorization: `Bearer ${adminToken}`,
                 },
                 body: formData,
             });
-    
+
             if (response.ok) {
-                alert("Tòa nhà đã được cập nhật thành công!");
-                router.push(`/admin/buildings`);
+                setShowModal(true); // Hiện thông báo khi submit
             } else {
                 const data = await response.json();
                 setError(data.message || "Có lỗi xảy ra, vui lòng thử lại.");
             }
         } catch (error) {
-            setError("Không thể kết nối đến server, vui lòng thử lại sau.");
+            setShowModalFalse(true); // Hiện thông báo khi submit
         }
     };
-    
+
+const handleChangeReturn = () =>{
+    router.push('/admin/buildings')
+}
+
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
             <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-screen-lg">
@@ -167,23 +193,33 @@ export default function UpdateBuilding() {
                 {error && <p className="text-red-500 mb-4">{error}</p>}
 
                 <form onSubmit={handleSubmit} className="space-y-4">
-                    <div>
-                        <label className="block text-gray-600">ID Tòa nhà</label>
-                        <input
-                            type="text"
-                            value={id}
-                            onChange={(e) => setId(e.target.value)}
-                            className="w-full p-2 border border-gray-300 rounded mt-1"
-                            placeholder="Nhập tiêu đề"
-                            required
-                        />
-                    </div>
+
                     <div>
                         <label className="block text-gray-600">ID Khu vực</label>
-                        <input
-                            type="text"
+                        <select
                             value={id_area}
                             onChange={(e) => setIdArea(e.target.value)}
+                            className="w-full p-2 border border-gray-300 rounded mt-1"
+                            required
+                        >
+                            {
+                                option.map((options) => (
+                                    <option value={options.id}>{options.name}</option>
+                                )
+                                )
+                            }
+
+
+                            {/* Thêm các option khác tùy ý */}
+                        </select>
+
+                    </div>
+                    <div>
+                        <label className="block text-gray-600">Tên tòa nhà</label>
+                        <input
+                            type="text"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
                             className="w-full p-2 border border-gray-300 rounded mt-1"
                             placeholder="Nhập tiêu đề"
                             required
@@ -211,31 +247,10 @@ export default function UpdateBuilding() {
                             required
                         />
                     </div>
-                    <div>
-                        <label className="block text-gray-600">Hot</label>
-                        <input
-                            type="text"
-                            value={hot}
-                            onChange={(e) => setHot(e.target.value)}
-                            className="w-full p-2 border border-gray-300 rounded mt-1"
-                            placeholder="Nhập Hot (số)"
-                            required
-                        />
-                    </div>
-                    <div>
-                        <label className="block text-gray-600">Tiêu đề</label>
-                        <input
-                            type="text"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            className="w-full p-2 border border-gray-300 rounded mt-1"
-                            placeholder="Nhập tiêu đề"
-                            required
-                        />
-                    </div>
 
-                       {/* Ảnh hiện tại */}
-                       <div>
+
+                    {/* Ảnh hiện tại */}
+                    <div>
                         <h4 className="text-gray-600 mt-4">Ảnh Cũ:</h4>
                         <div className="grid grid-cols-4 gap-4">
                             {imageOld.map((image, index) => (
@@ -299,11 +314,54 @@ export default function UpdateBuilding() {
 
                     <button
                         type="submit"
-                        className="w-full p-2 rounded bg-blue-600 hover:bg-blue-700 text-white transition"
+                        className="w-full p-2 rounded bg-blue-900 hover:bg-blue-700 text-white transition"
                     >
                         Cập nhật tòa nhà
                     </button>
                 </form>
+
+                
+                 {/* Modal thông báo */}
+            {showModal && (
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                    <div className="bg-white p-6 rounded shadow-lg text-center">
+                        <h2 className="text-2xl font-bold text-green-600">Thành công!</h2>
+                        <p className="text-gray-700">Tòa nhà đã được cập nhật thành công.</p>
+                       <div className="flex gap-4 justify-center">
+                       <button
+                            onClick={() => setShowModal(false)}
+                            className="mt-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+                        >
+                            Đóng
+                        </button>
+                        <button
+                            onClick={handleChangeReturn}
+                            className="mt-4 bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600"
+                        >
+                        Quay về tòa nhà
+                        </button>
+                       </div>
+                    </div>
+                </div>
+            )}
+                 {/* Modal thông báo lỗi */}
+            {showModalFalse && (
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                    <div className="bg-white p-6 rounded shadow-lg text-center">
+                        <h2 className="text-lg font-bold text-red-600">Thông báo!</h2>
+                        <p className="text-gray-700">có vấn đề rồi hãy nhập lại !</p>
+                        <button
+                            onClick={() => setShowModalFalse(false)}
+                            className="mt-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+                        >
+                            Đóng
+                        </button>
+                       
+                    </div>
+                </div>
+            )}
+
+
             </div>
         </div>
     );

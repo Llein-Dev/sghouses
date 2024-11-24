@@ -1,7 +1,4 @@
-"use client";
-
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
 import { Search, ChevronDown, MapIcon, Filter, Box } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,33 +12,69 @@ import { Label } from "@/components/ui/label";
 import { RangeBox } from "./range-box";
 import { locations } from "@/utils/data";
 
-export function SearchFilterComponent({ setSearchParams }) {
+export function SearchFilterComponent({ onResultsUpdate, setLoading }) {
   const [keyword, setKeyword] = useState("");
-  const [area, setArea] = useState("khu vực");
-  const [priceRange, setPriceRange] = useState({ min: 0, max: 20000000, [0]: 0, [1]: 20000000 });
-  const [sizeRange, setSizeRange] = useState({ min: 0, max: 100, [0]: 0, [1]: 100 });
-  const router = useRouter();
+  const [area, setArea] = useState("");
+  const [price, setPrice] = useState({ min: 0, max: 20000000 });
+  const [size, setSize] = useState({ min: 0, max: 100 });
+  const [error, setError] = useState("");
 
-  const handleSearch = (e) => {
-    e.preventDefault(); // Prevent the default form submission
+  // Function to perform the search
+  const handleSearch = async (e) => {
+    if (e) e.preventDefault(); // Prevent form submission if e is provided
 
-    const query = new URLSearchParams({
+    setLoading(true);
+    setError(""); // Reset the error
+
+    // Prepare the query parameters
+    const queryParams = new URLSearchParams({
       keyword,
-      area: area !== "khu vực" ? area.toLowerCase().replace(/\s+/g, '-') : '',
-      price: `${priceRange[0]}to${priceRange[1]}`,
-      size: `${sizeRange[0]}to${sizeRange[1]}`,
+      area,
+      price: `${price.min}to${price.max}`,
+      size: `${size.min}to${size.max}`,
     }).toString();
-    setSearchParams(query);
-    router.push(`/filter-room?${query}`);
+
+    try {
+      // Make the GET API request, appending the query parameters to the URL
+      const response = await fetch(`http://localhost:8000/api/filter-room?${queryParams}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch data");
+      }
+
+      const data = await response.json();
+
+      // Check if data has list_room and send the results to the parent component
+      if (data.list_room) {
+        onResultsUpdate(data.list_room); // Call the parent function to update the results
+      } else {
+        onResultsUpdate([]); // Clear results if no list_room is found
+      }
+    } catch (err) {
+      setError(err.message); // Set any error message
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleRangedientich = (newRange) => {
-    setSizeRange(newRange);
+  // Handle range value updates
+  const handleRangeValue = (value) => {
+    setPrice({ ...price, min: value[0], max: value[1] });
   };
 
-  const handleRangeValue = (newRange) => {
-    setPriceRange(newRange);
+  const handleRangedientich = (value) => {
+    setSize({ ...size, min: value[0], max: value[1] });
   };
+
+  // Automatically trigger search when component mounts
+  useEffect(() => {
+    handleSearch(); // Trigger search on initial load
+  }, []); // Empty dependency array ensures this runs only once, on mount
 
   return (
     <div className="w-full bg-white rounded-none md:rounded-xl shadow p-4">
@@ -63,7 +96,7 @@ export function SearchFilterComponent({ setSearchParams }) {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="w-full md:w-auto">
-              <MapIcon /> {area} <ChevronDown className="ml-2 h-4 w-4" />
+              <MapIcon /> {area || "Chọn khu vực"} <ChevronDown className="ml-2 h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
@@ -113,6 +146,8 @@ export function SearchFilterComponent({ setSearchParams }) {
           <Search className="mr-2 h-4 w-4" /> Tìm kiếm
         </Button>
       </form>
+
+      {error && <div className="text-red-500">{error}</div>}
     </div>
   );
 }

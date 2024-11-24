@@ -2,17 +2,19 @@
 
 import { useEffect, useState } from "react";
 import { ProductCardRowComponent } from "@/components/product-card-row";
-import { ProductFilter } from "@/components/product-filter";
 import Breadcrumb from "@/components/breadcum";
 import { Spinner } from "@/components/ui/loading";
-import { SearchFilterComponent } from "@/components/search-bar-filter";
+
+import { useFetchCategories } from "@/utils/api/GET/api";
+import VerticalCategory from "@/components/category-card";
+import { SearchFilterComponent } from "@/components/search-bar-filter copy";
 
 export default function FilterPage() {
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [loading, setLoading] = useState(false);
     const [searchParams, setSearchParams] = useState(new URLSearchParams(window.location.search));
     const productCount = filteredProducts.length;
-
+    const { categories, loading: categoriesLoading, error: categoriesError } = useFetchCategories(); // Sử dụng custom hook
     const fetchFilteredProducts = async () => {
         setLoading(true);
         try {
@@ -67,7 +69,7 @@ export default function FilterPage() {
                     )}
                 </div>
                 <div className="md:w-1/4">
-                    <ProductFilter />
+                    <VerticalCategory categories={categories} />
                 </div>
             </div>
         </div>

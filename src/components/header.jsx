@@ -76,6 +76,9 @@ export function HeaderComponent() {
       <Link href="/filter" className="text-blue-900 font-medium text-sm hover:text-blue-500 transition">
         Nhà Trọ
       </Link>
+      <Link href="/filter-room" className="text-blue-900 font-medium text-sm hover:text-blue-500 transition">
+        Phòng trọ
+      </Link>
       <Link href="/blog" className="text-blue-900 font-medium text-sm hover:text-blue-500 transition">
         Nhật Ký Trọ
       </Link>

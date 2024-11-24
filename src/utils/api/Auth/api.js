@@ -75,6 +75,26 @@ export const updateProfile = async (data) => {
     }
 };
 
+export const changePassword = async (password, new_password) => {
+    const token = Cookies.get('token');
+    try {
+        const response = await axios.post(`${API_BASE_URL}/api/change_password`,
+            {
+                password,
+                new_password,
+            },
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+        return response.data;
+    } catch (error) {
+        handleApiError(error, 'Failed to change password.');
+    }
+};
+
 // Centralized error handling function
 const handleApiError = (error, defaultMessage) => {
     if (error.response) {

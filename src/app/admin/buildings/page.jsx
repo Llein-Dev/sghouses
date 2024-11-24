@@ -28,8 +28,7 @@ export default function CategoryBlog() {
   const router = useRouter()
   const [error, setError] = useState([])
 
-
-
+  
   useEffect(() => {
     const adminToken = Cookies.get('token');
     if (!adminToken) {
@@ -141,36 +140,36 @@ export default function CategoryBlog() {
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-between items-center">
-        {/* Cột chứa thanh tìm kiếm */}
-        <div className="flex items-center space-x-2 w-1/2">
-          <Search className="h-5 w-5 text-gray-500" />
-          <Input
-            placeholder="Search contracts..."
-            className="max-w-sm"
-          // value={searchTerm}
-          // onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </div>
-
-        {/* Cột chứa 2 nút Refesh và Thêm Danh Mục */}
-        <div className="flex items-center space-x-4 w-1/2 justify-end">
-          {/* Nút Thêm Danh Mục và Modal */}
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button onClick={handleCreatPage} variant="blue" className="bg-green-700 text-white hover:bg-green-600">
-                <Plus className="mr-2 h-4 w-4" />
-                Thêm tòa nhà
-              </Button>
-            </DialogTrigger>
-          </Dialog>
-          {/* khôi phục Danh Mục tin tức */}
-          <Button variant="blue" onClick={handleRefesh} className="bg-red-700 text-white hover:bg-red-800">
-            <ListX className="mr-2 h-4 w-4" />
-            Danh sách đã xóa
-          </Button>
-        </div>
-      </div>
+   <div className="flex justify-between items-center">
+  {/* Cột chứa thanh tìm kiếm */}
+  <div className="flex items-center space-x-2 w-1/2">
+    <Search className="h-5 w-5 text-gray-500" />
+    <Input
+      placeholder="Search contracts..."
+      className="max-w-sm"
+      // value={searchTerm}
+      // onChange={(e) => setSearchTerm(e.target.value)}
+    />
+  </div>
+  
+  {/* Cột chứa 2 nút Refesh và Thêm Danh Mục */}
+  <div className="flex items-center space-x-4 w-1/2 justify-end">
+    {/* Nút Thêm Danh Mục và Modal */}
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button onClick={handleCreatPage} variant="blue" className="bg-green-700 text-white hover:bg-green-600">
+          <Plus className="mr-2 h-4 w-4" />
+          Thêm tòa nhà
+        </Button>
+      </DialogTrigger>
+    </Dialog>
+       {/* khôi phục Danh Mục tin tức */}
+    <Button  variant="blue" onClick={handleRefesh}>
+      <FileText className="mr-2 h-4 w-4" />
+      Khôi phục tòa nhà
+    </Button>
+  </div>
+</div>
 
 
       <Table>
@@ -187,25 +186,11 @@ export default function CategoryBlog() {
           {buildings.map((building, index) => (
             <TableRow key={index}>
               <TableCell>{building.id}</TableCell>
-              <TableCell className="flex gap-5">  <img style={{ height: "150px", objectFit: "cover", borderRadius: "10px" }} src={`http://localhost:8000/storage/${building.image}`}></img> <div><div className="p-1 text-xl font-bold  rounded text-black">{building.name}</div>{building.name_area}</div>
-              </TableCell>
-
-              <TableCell>{building.room}</TableCell> {/* số phòng */}
-              <TableCell>
-                <div className="flex items-center space-x-4">
-                  <span className="text-gray-700">{building.hot ? "On" : "Off"}</span>
-                  <label className="relative inline-flex items-center cursor-pointer">
-                    <input
-                      type="checkbox"
-                      className="sr-only peer"
-                      checked={building.hot}
-                      onChange={() => handleToggle(building.id, building.hot)}
-                    />
-                    <div className="w-11 h-6 bg-gray-300 rounded-full peer dark:bg-gray-700 peer-checked:bg-blue-700 peer-focus:ring-4 peer-focus:ring-blue-300 transition-all"></div>
-                    <div className="absolute top-0.5 left-0.5 w-5 h-5 bg-white border rounded-full border-gray-300 peer-checked:translate-x-5 peer-checked:border-white transition-all"></div>
-                  </label>
-                </div>
-              </TableCell>
+              <TableCell>  <img style={{height:"150px", objectFit:"cover", borderRadius:"10px"}} src={`http://localhost:8000/storage/${building.image}`}></img> </TableCell>
+              <TableCell>{building.name}</TableCell>
+              <TableCell>{building.slug}</TableCell>
+              <TableCell>{building.name_area}</TableCell>
+              <TableCell>{building.view}</TableCell>
               <TableCell>
                 <div className="flex space-x-2">
                   {/* Nút Gọi điện */}

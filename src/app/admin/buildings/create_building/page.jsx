@@ -64,6 +64,7 @@ export default function CreateBlog() {
       if (response.ok) {
         const newUtility = await response.json();
         setTienIch((prev) => [...prev, newUtility]); // Thêm tiện ích mới vào danh sách
+        fetchDataUti()
       }
     } catch (error) {
       console.error("Lỗi khi thêm tiện ích:", error);

@@ -16,8 +16,8 @@ import {
   DoorOpen,
   Map,
   Minimize,
-  Newspaper
-  
+  Newspaper,
+  Home
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -42,6 +42,7 @@ const navItems = [
   { href: "/admin/contracts", label: "contracts", icon: <Minimize  className="p-1 bg-blue-900 rounded text-white" />, key: "contracts" },
   { href: "/admin/buildings", label: "Buildings", icon: <Building className="p-1 bg-blue-900 rounded text-white" />, key: "buildings" },
   { href: "/admin/area", label: "area", icon: <Map className="p-1 bg-blue-900 rounded text-white" />, key: "area" },
+  { href: "/admin/room", label: "room", icon: <Home className="p-1 bg-blue-900 rounded text-white" />, key: "room" },
   { href: "/admin/banners", label: "Banners", icon: <Image className="p-1 bg-blue-900 rounded text-white" />, key: "banners" },
   { href: "/admin/settings", label: "Settings", icon: <Settings className="p-1 bg-blue-900 rounded text-white" />, key: "settings" },
 ];

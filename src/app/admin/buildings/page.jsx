@@ -186,11 +186,26 @@ export default function CategoryBlog() {
           {buildings.map((building, index) => (
             <TableRow key={index}>
               <TableCell>{building.id}</TableCell>
-              <TableCell>  <img style={{height:"150px", objectFit:"cover", borderRadius:"10px"}} src={`http://localhost:8000/storage/${building.image}`}></img> </TableCell>
-              <TableCell>{building.name}</TableCell>
-              <TableCell>{building.slug}</TableCell>
-              <TableCell>{building.name_area}</TableCell>
-              <TableCell>{building.view}</TableCell>
+              <TableCell className="flex gap-5">  <img style={{ height: "150px", objectFit: "cover", borderRadius: "10px" }} src={`http://localhost:8000/storage/${building.image}`}></img> <div><div className="p-1 text-xl font-bold  rounded text-black">{building.name}</div>{building.name_area}</div>
+              </TableCell>
+              <TableCell>{building.room}</TableCell> {/* số phòng */}
+              <TableCell>
+                <div className="flex items-center space-x-4">
+                  <span className="text-gray-700">{building.hot ? "On" : "Off"}</span>
+                  <label className="relative inline-flex items-center cursor-pointer">
+                    <input
+                      type="checkbox"
+                      className="sr-only peer"
+                      checked={building.hot}
+                      onChange={() => handleToggle(building.id, building.hot)}
+                    />
+                    <div className="w-11 h-6 bg-gray-300 rounded-full peer dark:bg-gray-700 peer-checked:bg-blue-700 peer-focus:ring-4 peer-focus:ring-blue-300 transition-all"></div>
+                    <div className="absolute top-0.5 left-0.5 w-5 h-5 bg-white border rounded-full border-gray-300 peer-checked:translate-x-5 peer-checked:border-white transition-all"></div>
+                  </label>
+                </div>
+              </TableCell>
+       
+              <TableCell>{building.view}</TableCell>   {/* lượt xem */}
               <TableCell>
                 <div className="flex space-x-2">
                   {/* Nút Gọi điện */}

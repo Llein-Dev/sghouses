@@ -36,60 +36,85 @@ export default function CategoryBlog() {
             return;
         }
         // fetch dữ liệu user
-
-        const fetchDataRoom = async () => {
-            try {
-                const response = await fetch('http://localhost:8000/api/phong', {
-                    headers: {
-                        'Authorization': `Bearer ${adminToken}`,
-                        'Content-Type': 'application/json',
-                    },
-                });
-
-                if (response.ok) {
-                    const result = await response.json();
-                    setRoom(result.list_room || []);
-                } else {
-                    // Xử lý khi không có quyền truy cập hoặc response không thành công
-                    setError('Không có quyền truy cập');
-                    console.error('Không có quyền truy cập API');
-                }
-            } catch (error) {
-                // Xử lý khi có lỗi trong quá trình fetch
-                setError('Không thể truy cập dữ liệu');
-                console.error('Lỗi khi fetch dữ liệu:', error);
-            }
-        };
-
-
         fetchDataRoom();
     }, [router]);
 
-    //   const handleDeleteBuilding = async (id) => {
-    //     const adminToken = Cookies.get("token");
-    //     try {
-    //       const response = await fetch(`http://localhost:8000/api/toa-nha/delete/${id}`, {
-    //         method: "DELETE",
-    //         headers: {
-    //           Authorization: `Bearer ${adminToken}`,
-    //           "Content-Type": "application/json",
-    //         },
-    //       });
+    const fetchDataRoom = async () => {
+        const adminToken = Cookies.get("token");
 
-    //       console.log('Delete response status:', response.status);
+        try {
+            const response = await fetch('http://localhost:8000/api/phong', {
+                headers: {
+                    'Authorization': `Bearer ${adminToken}`,
+                    'Content-Type': 'application/json',
+                },
+            });
 
-    //       if (response.ok) {
-    //         // Cập nhật danh sách người dùng bằng cách loại bỏ người dùng đã xóa
-    //         setCatagoryBlog((prevBuilding) => prevBuilding.filter(building => building.id !== id));
-    //       } else {
-    //         const errorData = await response.json();
-    //         setError(errorData.message || "Lỗi khi xóa người dùng");
-    //       }
-    //     } catch (error) {
-    //       console.error("Error:", error);
-    //     }
-    //   };
+            if (response.ok) {
+                const result = await response.json();
+                setRoom(result.list_room || []);
+            } else {
+                // Xử lý khi không có quyền truy cập hoặc response không thành công
+                setError('Không có quyền truy cập');
+                console.error('Không có quyền truy cập API');
+            }
+        } catch (error) {
+            // Xử lý khi có lỗi trong quá trình fetch
+            setError('Không thể truy cập dữ liệu');
+            console.error('Lỗi khi fetch dữ liệu:', error);
+        }
+    };
 
+    const handleDeleteRoom = async (id) => {
+        const adminToken = Cookies.get("token");
+        try {
+            const response = await fetch(`http://localhost:8000/api/phong/delete/${id}`, {
+                method: "DELETE",
+                headers: {
+                    Authorization: `Bearer ${adminToken}`,
+                    "Content-Type": "application/json",
+                },
+            });
+
+            console.log('Delete response status:', response.status);
+
+            if (response.ok) {
+                // Cập nhật danh sách người dùng bằng cách loại bỏ người dùng đã xóa
+                setRoom((prevRoom) => prevRoom.filter(rooms => rooms.id !== id));
+            } else {
+                const errorData = await response.json();
+                setError(errorData.message || "Lỗi khi xóa người dùng");
+            }
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    };
+
+    // nhân bản blog
+    const handleCoppyRoom = async (id) => {
+        const adminToken = Cookies.get("token");
+        try {
+            const response = await fetch(`http://localhost:8000/api/phong/duplicate/${id}`, {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${adminToken}`,
+                    "Content-Type": "application/json",
+                },
+            });
+            if (response.ok) {
+                const newRoom = await response.json();
+                setRoom((prevRoom) => [...prevRoom, newRoom]); // Cập nhật danh sách user
+                // Hiện thông báo và tải lại danh sách users
+                fetchDataRoom(); // Gọi lại fetchData để tải lại danh sách user mới
+            } else {
+                const errorData = await response.json();
+                setError(errorData.message || "Lỗi lấy thông tin phản hồi");
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            setError("Có lỗi xảy ra khi sao chép người dùng");
+        }
+    };
     //     const handleToggle = async (id, isHot) => {
     //       const adminToken = Cookies.get("token");
     //       try {
@@ -120,15 +145,18 @@ export default function CategoryBlog() {
     //     };
 
 
-    //   const handleRefesh = () => {
-    //     router.push('/admin/room/refesh_building')
-    //   }
-    //   const handleCreatPage = () => {
-    //     router.push('/admin/room/create_building')
-    //   }
+    const handleRefesh = () => {
+        router.push('/admin/room/refesh_room')
+    }
+    const handleCreatPage = () => {
+        router.push('/admin/room/create_room')
+      }
     //   const handleEditBuilding = (id) => {
     //     router.push(`/admin/room/update/${id}`)
     //   }
+    const handleDetailRoom = (id) => {
+        router.push(`/admin/room/detail_room/${id}`)
+    }
 
     return (
         <div className="space-y-4">
@@ -149,17 +177,17 @@ export default function CategoryBlog() {
                     {/* Nút Thêm Danh Mục và Modal */}
                     <Dialog>
                         <DialogTrigger asChild>
-                            {/* <Button onClick={handleCreatPage} variant="blue" className="bg-green-700 text-white hover:bg-green-600">
-          <Plus className="mr-2 h-4 w-4" />
-          Thêm tòa nhà
-        </Button> */}
+                            <Button onClick={handleCreatPage} className="bg-green-700 text-white hover:bg-green-600">
+                                <Plus className="mr-2 h-4 w-4" />
+                                 Tạo Phòng
+                            </Button>
                         </DialogTrigger>
                     </Dialog>
                     {/* khôi phục Danh Mục tin tức */}
-                    {/* <Button  variant="blue" onClick={handleRefesh}>
-      <FileText className="mr-2 h-4 w-4" />
-      Khôi phục tòa nhà
-    </Button> */}
+                    <Button variant="blue" onClick={handleRefesh}>
+                        <FileText className="mr-2 h-4 w-4" />
+                        Khôi phục Phòng
+                    </Button>
                 </div>
             </div>
 
@@ -182,7 +210,7 @@ export default function CategoryBlog() {
                             <TableCell className="flex gap-5">  <img style={{ height: "150px", objectFit: "cover", borderRadius: "10px" }} src={`http://localhost:8000/storage/${rooms.hinh_anh}`}></img> <div><div className="p-1 text-xl font-bold  rounded text-black">{rooms.ten_phong} </div>{rooms.ten_toa_nha} <div>{rooms.ten_khu_vuc}</div> </div>
                             </TableCell>
                             <TableCell>
-                            {rooms.trang_thai}
+                                {rooms.trang_thai}
                             </TableCell>
                             <TableCell>{rooms.dien_tich}</TableCell>
                             <TableCell>{rooms.ngay_tao}</TableCell>
@@ -195,10 +223,18 @@ export default function CategoryBlog() {
                         <Pencil className="mr-2 h-4 w-4" />
                       </Button> */}
                                         </DialogTrigger>
+                                        <Button variant="outline" size="icon" onClick={() => handleCoppyRoom(rooms.id)} >
+                                            <BookCopy className="h-4 w-4"
+                                            />
+                                        </Button>
                                     </Dialog>
-                                    {/* <Button variant="outline" size="icon" onClick={() => handleDeleteBuilding(building.id)}>
-                    <Trash2 className="h-4 w-4" />
-                  </Button> */}
+                                    <Button variant="outline" size="icon" onClick={() => handleDeleteRoom(rooms.id)}>
+                                        <Trash2 className="h-4 w-4" />
+                                    </Button>
+                                    <Button variant="outline" size="icon" onClick={() => handleDetailRoom(rooms.id)}>
+                                        <Eye className="h-4 w-4"
+                                        />
+                                    </Button>
                                 </div>
                             </TableCell>
                         </TableRow>

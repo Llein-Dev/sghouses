@@ -256,10 +256,10 @@ export default function BlogContent() {
                     <Pen className="h-4 w-4"
                     />
                   </Button>
-                  <Button variant="outline" size="icon" onClick={() => handleCoppyBlog(blogs.id)} >
-                    <BookCopy className="h-4 w-4"
-                    />
-                  </Button>
+                    <Button variant="outline" size="icon" onClick={() => handleCoppyBlog(blogs.id)} >
+                      <BookCopy className="h-4 w-4"
+                      />
+                    </Button>
                   <Button variant="outline" size="icon" onClick={() => handleDetailBlog(blogs.id)} >
                     <Eye className="h-4 w-4"
                     />

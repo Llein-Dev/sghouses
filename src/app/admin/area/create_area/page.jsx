@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 export default function CreateArea() {
     const [name, setTitle] = useState("");
     const [image, setImage] = useState(null); // Giữ nguyên file ảnh thay vì mã hóa
+    const [preview, setPreview] = useState(null); // URL ảnh xem trước
     const [successMessage, setSuccessMessage] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
     const [loading, setLoading] = useState(false);
@@ -15,7 +16,13 @@ export default function CreateArea() {
     // Cập nhật hàm handleImageChange để lưu file thay vì mã hóa base64
     const handleImageChange = (e) => {
         const file = e.target.files[0];
-        setImage(file ? file : null);
+        if (file) {
+            setImage(file); // Lưu file ảnh
+            setPreview(URL.createObjectURL(file)); // Tạo URL xem trước
+        } else {
+            setImage(null);
+            setPreview(null);
+        }
     };
 
     // Hàm submit form
@@ -103,6 +110,15 @@ export default function CreateArea() {
                             className="w-full p-2 border border-gray-300 rounded mt-1"
                             accept="image/*"
                         />
+                         {preview && (
+                            <div className="mt-4">
+                                <img
+                                    src={preview}
+                                    alt="Xem trước ảnh"
+                                    className="w-40 h-40 object-cover rounded-lg border"
+                                />
+                            </div>
+                        )}
                     </div>
                     <button
                         type="submit"

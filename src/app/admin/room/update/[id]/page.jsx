@@ -2,45 +2,21 @@
     import React, { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import { useParams, useRouter } from "next/navigation";
-import dynamic from "next/dynamic";
-
-// Import React Quill với tính năng hỗ trợ đầy đủ công cụ
-const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
-import "react-quill/dist/quill.snow.css"; // Import CSS mặc định của Quill
-
-// Cấu hình toolbar cho Quill với đầy đủ công cụ
-const modules = {
-    toolbar: [
-        [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }], // Các cấp độ tiêu đề và font
-        [{ 'list': 'ordered' }, { 'list': 'bullet' }], // Danh sách có thứ tự và không có thứ tự
-        ['bold', 'italic', 'underline', 'strike'], // In đậm, in nghiêng, gạch dưới, gạch ngang
-        [{ 'align': [] }], // Căn chỉnh
-        [{ 'color': [] }, { 'background': [] }], // Chọn màu chữ và nền
-        [{ 'script': 'sub' }, { 'script': 'super' }], // Chỉ số trên, chỉ số dưới
-        ['link', 'image'], // Thêm link và ảnh
-        ['blockquote', 'code-block'], // Trích dẫn và khối mã
-        ['clean'], // Xóa định dạng
-    ],
-};
-
 // Hàm chính của component
-export default function UpdateBuilding() {
+export default function UpdateRoom() {
     const router = useRouter();
     const { id } = useParams();
 
     // State lưu thông tin từ API
-    const [id_area, setIdArea] = useState("");
-    const [name, setName] = useState("");
-    const [description, setDescription] = useState("");
-    const [utilities, setUtilities] = useState("");
-    const [location, setLocation] = useState("");
+    const [name, setName] = useState("");  // cần sửa nhưng không thây đổi
+    const [tien_ich, setUtilities] = useState(""); // cần sửa thành tien_ich
+    const [dien_tich, setDienTich] = useState(""); // cần sửa thành dien_tich
     const [imageOld, setImageOld] = useState([]); // Danh sách ảnh cũ từ API
     const [images, setImages] = useState([]); // Danh sách ảnh mới
     const [imageDelete, setImageDelete] = useState(''); // Danh sách ảnh cần xóa
     const [error, setError] = useState("");
     const [showModal, setShowModal] = useState(false);
     const [showModalFalse, setShowModalFalse] = useState(false);
-    const [option, setOption] = useState([]);
     useEffect(() => {
         const adminToken = Cookies.get("token");
         if (!adminToken) {
@@ -48,39 +24,15 @@ export default function UpdateBuilding() {
             router.push("/");
             return;
         }
-        fetchBuildingData(adminToken);
-        fetchDataOption();
+        fetchRoomData(adminToken);
     }, [id, router]);
 
-    // fetch API Option
-    const fetchDataOption = async () => {
-        try {
-            const response = await fetch(`http://localhost:8000/api/khu_vuc/option`, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            });
-
-            if (response.ok) {
-                const result = await response.json();
-                setOption(result)
-            } else if (response.status === 401) {
-                setError("Không có quyền truy cập. Vui lòng đăng nhập lại.");
-                router.push("/");
-            } else {
-                setError("Lỗi không xác định.");
-            }
-        } catch (err) {
-            setError("Không thể truy cập dữ liệu.");
-        }
-
-    };
+  
 
     // Hàm lấy dữ liệu chi tiết tòa nhà từ API
-    const fetchBuildingData = async (token) => {
+    const fetchRoomData = async (token) => {
         try {
-            const response = await fetch(`http://localhost:8000/api/toa-nha/${id}`, {
+            const response = await fetch(`http://localhost:8000/api/phong/${id}`, {
                 method: "GET",
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -94,13 +46,11 @@ export default function UpdateBuilding() {
                 const imagePaths = result.image.split(";").map(
                     (path) => `${path.trim()}`
                 );
-                console.log(imagePaths); // Kiểm tra dữ liệu ảnh cũ
+                console.log(result); // Kiểm tra dữ liệu ảnh cũ
 
                 setName(result.name || "");
-                setIdArea(result.id_area || "");
-                setUtilities(result.utilities || "");
-                setLocation(result.location || "");
-                setDescription(result.description || "");
+                setUtilities(result.tien_ich || "");
+                setDienTich(result.dien_tich || "");
                 setImageOld(imagePaths); // Lưu danh sách ảnh cũ
             } else if (response.status === 401) {
                 setError("Không có quyền truy cập. Vui lòng đăng nhập lại.");
@@ -151,18 +101,16 @@ export default function UpdateBuilding() {
         }
 
         const formData = new FormData();
-        formData.append("id_area", id_area);
-        formData.append("utilities", utilities);
-        formData.append("location", location);
+        formData.append("tien_ich", tien_ich);
+        formData.append("dien_tich", dien_tich);
         formData.append("name", name);
-        formData.append("description", description);
-        formData.append("image_old", imageDelete);
+        formData.append("image_delete", imageDelete);
 
         // Gửi danh sách ảnh mới
         images.forEach((image) => formData.append("image[]", image.file));
 
         try {
-            const response = await fetch(`http://localhost:8000/api/toa-nha/edit/${id}`, {
+            const response = await fetch(`http://localhost:8000/api/phong/edit/${id}`, {
                 method: "POST",
                 headers: {
                     Authorization: `Bearer ${adminToken}`,
@@ -182,40 +130,21 @@ export default function UpdateBuilding() {
     };
 
 const handleChangeReturn = () =>{
-    router.push('/admin/buildings')
+    router.push('/admin/room')
 }
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
             <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-screen-lg">
-                <h2 className="text-2xl font-semibold text-gray-700 mb-4">Chỉnh sửa Blog</h2>
+                <h2 className="text-2xl font-semibold text-gray-700 mb-4">Chỉnh sửa tòa nhà</h2>
 
                 {error && <p className="text-red-500 mb-4">{error}</p>}
 
                 <form onSubmit={handleSubmit} className="space-y-4">
 
+                 
                     <div>
-                        <label className="block text-gray-600">ID Khu vực</label>
-                        <select
-                            value={id_area}
-                            onChange={(e) => setIdArea(e.target.value)}
-                            className="w-full p-2 border border-gray-300 rounded mt-1"
-                            required
-                        >
-                            {
-                                option.map((options) => (
-                                    <option value={options.id}>{options.name}</option>
-                                )
-                                )
-                            }
-
-
-                            {/* Thêm các option khác tùy ý */}
-                        </select>
-
-                    </div>
-                    <div>
-                        <label className="block text-gray-600">Tên tòa nhà</label>
+                        <label className="block text-gray-600">Tên Phòng</label>
                         <input
                             type="text"
                             value={name}
@@ -229,7 +158,7 @@ const handleChangeReturn = () =>{
                         <label className="block text-gray-600">Tiện ích</label>
                         <input
                             type="text"
-                            value={utilities}
+                            value={tien_ich}
                             onChange={(e) => setUtilities(e.target.value)}
                             className="w-full p-2 border border-gray-300 rounded mt-1"
                             placeholder="Nhập tiêu đề"
@@ -237,11 +166,11 @@ const handleChangeReturn = () =>{
                         />
                     </div>
                     <div>
-                        <label className="block text-gray-600">Vị trí</label>
+                        <label className="block text-gray-600">Diện tích</label>
                         <input
                             type="text"
-                            value={location}
-                            onChange={(e) => setLocation(e.target.value)}
+                            value={dien_tich}
+                            onChange={(e) => setDienTich(e.target.value)}
                             className="w-full p-2 border border-gray-300 rounded mt-1"
                             placeholder="Nhập tiêu đề"
                             required
@@ -301,16 +230,6 @@ const handleChangeReturn = () =>{
                             className="mt-2"
                         />
                     </div>
-                    <div>
-                        <label className="block text-gray-600">Nội dung</label>
-                        <ReactQuill
-                            value={description}
-                            onChange={setDescription}
-                            modules={modules} // Sử dụng cấu hình module với toolbar đầy đủ
-                            className="w-full p-2 border border-gray-300 rounded mt-1"
-                            placeholder="Nhập nội dung bài viết"
-                        />
-                    </div>
 
                     <button
                         type="submit"
@@ -338,7 +257,7 @@ const handleChangeReturn = () =>{
                             onClick={handleChangeReturn}
                             className="mt-4 bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600"
                         >
-                        Quay về tòa nhà
+                        Quay về Phòng
                         </button>
                        </div>
                     </div>

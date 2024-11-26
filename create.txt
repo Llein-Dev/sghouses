@@ -5,7 +5,7 @@ import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import { list } from "postcss";
 
-export default function CreateRoom() {
+export default function CreateBlog() {
   const [name, setTen] = useState("");
   const [images, setImages] = useState([]);
   const [utilities, setTienIch] = useState([]); // Mảng tiện ích
@@ -18,7 +18,10 @@ export default function CreateRoom() {
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const router = useRouter();
+  const [showDropdown, setShowDropdown] = useState(false);
+  const dropdownRef = useRef(null);
 
+  
   const handleRemoveUtility = async (id) => {
     const adminToken = Cookies.get("token");
     try {
@@ -58,7 +61,7 @@ export default function CreateRoom() {
           Authorization: `Bearer ${adminToken}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({  name: newUtilityName }),
+        body: JSON.stringify({ name: newUtilityName }),
       });
 
       if (response.ok) {
@@ -109,7 +112,7 @@ export default function CreateRoom() {
         if (image.preview) {
           URL.revokeObjectURL(image.preview); // revokObject để hiện ảnh ngay lập tức
         }
-      });
+      }) ;
     };
   }, [images]); // Lắng nghe sự thay đổi của `images`
 
@@ -117,7 +120,15 @@ export default function CreateRoom() {
   useEffect(() => {
     fetchDataOption() // gọi lại hàm fetch dữ li
     fetchDataUti()
-    handleAddUtility()
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowDropdown(false); // Ẩn dropdown
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside); // Lắng nghe click toàn cục
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside); // Dọn sự kiện khi component unmount
+    };
   }, []);
 
 
@@ -155,8 +166,7 @@ export default function CreateRoom() {
   };
 
 
-
-  // fetch API Option
+  // fetch API id Option
   const fetchDataOption = async () => {
     try {
       const response = await fetch(`http://localhost:8000/api/khu_vuc/option`, {
@@ -342,7 +352,7 @@ export default function CreateRoom() {
             <div className="relative mt-2">
               {/* Hiển thị danh sách tiện ích đã chọn */}
               <div className="bg-gray-100 p-2 flex flex-wrap gap-2 rounded">
-                {Array.isArray(utilities) && utilities.map((utility, index) => (
+                {utilities.map((utility, index) => (
                   <div key={index} className="bg-blue-900 text-white px-3 py-1 rounded-full flex items-center gap-2">
                     {utility.name}
                     <button type="button" className="text-white hover:text-gray-300" onClick={() => handleRemoveUtility(utility.id)}>✕</button> {/* dấu x để xóa */}
@@ -350,21 +360,41 @@ export default function CreateRoom() {
                 ))}
               </div>
               {/* Input thêm tiện ích */}
-              <div className="flex items-center gap-2 mt-2">
+              <div className="flex items-center gap-2 mt-2" ref={dropdownRef} >
+                {/* Input tiện ích */}
                 <input
                   type="text"
                   value={newUtilityName}
                   onChange={(e) => setNewUtilityName(e.target.value)}
-                  placeholder="Thêm hoặc tìm tiện ích"
-                  className="w-full p-2 border border-gray-300 rounded"
+                  onFocus={() => setShowDropdown(true)} // Hiển thị danh sách khi click vào input
+                  placeholder="Nhập hoặc chọn tiện ích"
+                  className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 <button
                   type="button"
-                  className="text-white bg-green-600 hover:bg-green-700 font-bold py-2 px-4 text-l rounded-sm"
+                  className="text-white bg-green-600 hover:bg-green-700 font-bold py-2 px-4 rounded-sm"
                   onClick={handleAddUtility}
-                > +</button>
-
+                >
+                  +
+                </button>
+                {showDropdown && (
+                  <ul className="absolute top-full left-0 mt-1 w-full bg-white border border-gray-300 rounded shadow-lg z-10">
+                    {utilities.map((utility, index) => (
+                      <li
+                        key={index}
+                        className="p-2 hover:bg-gray-100 cursor-pointer"
+                        onClick={() => {
+                          setNewUtilityName(utility.name); // Gán giá trị vào input
+                          setShowDropdown(false); // Ẩn dropdown
+                        }}
+                      >
+                        {utility.name}
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </div>
+
             </div>
           </div>
 

@@ -1,25 +1,32 @@
 "use client";
 
-import { useState, useEffect ,useRef } from "react";
+import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 
 export default function CreateBlog() {
   const [name, setTen] = useState("");
   const [images, setImages] = useState([]);
-  const [utilities, setTienIch] = useState([]); // Mảng tiện ích
   const [description, setMoTa] = useState("");
-  const [location, setViTri] = useState("");
+  const [locations, setViTriList] = useState([]); // Mảng vị trí
+  const [locationQuery, setLocationQuery] = useState(""); // Từ khóa tìm kiếm vị trí
+  const [locationMenuOpen, setLocationMenuOpen] = useState(false); // Menu gợi ý
   const [id_area, setKhuVuc] = useState("");
   const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const router = useRouter();
 
+  const [utilities, setTienIch] = useState([]); // Mảng tiện ích
   const [query, setQuery] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
-  const inputRef = useRef(null);
 
+  const availableLocations = ["Hà Nội", "TP Hồ Chí Minh", "Đà Nẵng", "Hải Phòng"];
+  const filteredLocations = availableLocations.filter(
+    (loc) =>
+      loc.toLowerCase().includes(locationQuery.toLowerCase().trim()) &&
+      !locations.includes(loc)
+  );
   const tags = [
     "Wifi miễn phí",
     "Bảo vệ 24/7",
@@ -46,11 +53,11 @@ export default function CreateBlog() {
     setTienIch(utilities.filter((item) => item !== tag));
   };
 
- 
+
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
     const validImages = files.filter((file) => file.type.startsWith("image/"));
-  
+
     if (validImages.length > 0) {
       const imageUrls = validImages.map((image, index) => ({
         id: crypto.randomUUID(), // Tạo ID duy nhất
@@ -66,17 +73,17 @@ export default function CreateBlog() {
     setImages((prevImages) => {
       const imageToRemove = prevImages.find((image) => image.id === imageId); // Tìm ảnh cần xóa
       const updatedImages = prevImages.filter((image) => image.id !== imageId);
-  
+
       if (imageToRemove?.preview) {
         console.log("Thu hồi URL:", imageToRemove.preview);
         URL.revokeObjectURL(imageToRemove.preview); // Thu hồi URL Blob
       }
-    
+
       return updatedImages;
     });
   };
-          
-      
+
+
   useEffect(() => {
     return () => {
       // Thu hồi tất cả URL Blob khi component bị hủy
@@ -89,8 +96,8 @@ export default function CreateBlog() {
   }, [images]); // Lắng nghe sự thay đổi của `images`
 
   // Chuyển đổi tiện ích từ chuỗi thành mảng khi tải trang (nếu cần)
- 
- 
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -110,12 +117,12 @@ export default function CreateBlog() {
     formData.append("name", name);
     formData.append("utilities", utilities.join(";")); // Chuyển mảng thành chuỗi
     formData.append("description", description);
-    formData.append("location", location);
+    formData.append("location", locations.join(";"));
     formData.append("id_area", id_area);
     images.forEach((image) => {
       formData.append("images[]", image.file);
     });
-  
+
     try {
       const response = await fetch("http://localhost:8000/api/toa-nha/add", {
         method: "POST",
@@ -133,7 +140,6 @@ export default function CreateBlog() {
         setImages([]);
         setTienIch([]); // Reset tiện ích về mảng rỗng
         setMoTa("");
-        setViTri("");
         setKhuVuc("");
       } else if (response.status === 401) {
         Cookies.remove("token");
@@ -151,7 +157,7 @@ export default function CreateBlog() {
 
 
   return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
       <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-screen-lg">
         <h2 className="text-2xl font-semibold text-gray-700 mb-4">
           Tạo Tòa Nhà Mới
@@ -170,166 +176,231 @@ export default function CreateBlog() {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-              <label className="block text-gray-600">Khu vực</label>
-              <input
-                type="text"
-                value={id_area}
-                onChange={(e) => setKhuVuc(e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded mt-1"
-                placeholder="Nhập (id) khu vực"
-              />
-            </div>
-            <div>
-              <label className="block text-gray-600">Tên tòa nhà</label>
-              <input
-                type="text"
-                value={name}
-                onChange={(e) => setTen(e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded mt-1"
-                placeholder="Nhập tên tòa nhà"
-              />
-            </div>
-            
-           {/* chọn ảnh */}
-           <div>
-              <label className="block text-gray-600">Ảnh</label>
-              <input
-                type="file"
-                onChange={handleImageChange}
-                className="w-full p-2 border border-gray-300 rounded mt-1"
-                accept="image/*"
-                multiple
-              />
-            </div>
-            {/* Hiển thị ảnh */}
-            <div>
-              <h4 className="text-gray-600 mt-4">Ảnh đã chọn:</h4>
-              {images.length > 0 ? (
-                <div className="grid grid-cols-4 gap-4">
-                  {images.map((image) => (
-                    <div
+          <div>
+            <label className="block text-gray-600">Khu vực</label>
+            <input
+              type="text"
+              value={id_area}
+              onChange={(e) => setKhuVuc(e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded mt-1"
+              placeholder="Nhập (id) khu vực"
+            />
+          </div>
+          <div>
+            <label className="block text-gray-600">Tên tòa nhà</label>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setTen(e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded mt-1"
+              placeholder="Nhập tên tòa nhà"
+            />
+          </div>
+
+          {/* chọn ảnh */}
+          <div>
+            <label className="block text-gray-600">Ảnh</label>
+            <input
+              type="file"
+              onChange={handleImageChange}
+              className="w-full p-2 border border-gray-300 rounded mt-1"
+              accept="image/*"
+              multiple
+            />
+          </div>
+          {/* Hiển thị ảnh */}
+          <div>
+            <h4 className="text-gray-600 mt-4">Ảnh đã chọn:</h4>
+            {images.length > 0 ? (
+              <div className="grid grid-cols-4 gap-4">
+                {images.map((image) => (
+                  <div
                     key={image.id} // Sử dụng `image.id` thay vì `index`
-                      className="flex flex-col items-center gap-2 bg-gray-20 p-2 rounded shadow"
+                    className="flex flex-col items-center gap-2 bg-gray-20 p-2 rounded shadow"
+                  >
+                    <img
+                      src={image.preview}
+                      alt={image.file.name}
+                      className="w-full h-32 object-cover rounded shadow"
+                    />
+                    <span className="text-gray-700 text-sm truncate w-full text-center">
+                      {image.file.name}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveImage(image.id)}
+                      className="text-red-500 hover:underline text-sm"
                     >
-                      <img
-                        src={image.preview}
-                        alt={image.file.name}
-                        className="w-full h-32 object-cover rounded shadow"
-                      />
-                      <span className="text-gray-700 text-sm truncate w-full text-center">
-                        {image.file.name}
-                      </span>
-                      <button
-                        type="button"
-                        onClick={() => handleRemoveImage(image.id)} 
-                        className="text-red-500 hover:underline text-sm"
-                      >
-                        Xóa
-                      </button>
+                      Xóa
+                    </button>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-gray-500">Chưa chọn ảnh nào.</p>
+            )}
+          </div>
+
+          {/* Tiện ích */}
+          <div>
+            <label className="block text-gray-600">Tiện ích nội thất</label>
+            <div className="relative mt-2">
+              {/* Hiển thị danh sách tiện ích đã chọn */}
+              <div className="bg-gray-100 p-2 flex flex-wrap gap-2 rounded">
+                {utilities.map((utility, index) => (
+                  <div
+                    key={index}
+                    className="bg-blue-900 text-white px-3 py-1 rounded-full flex items-center gap-2"
+                  >
+                    {utility}
+                    <button
+                      type="button"
+                      className="text-white hover:text-gray-300"
+                      onClick={() => handleRemoveUtility(utility)}
+                    >
+                      ✕
+                    </button>
+                  </div>
+                ))}
+              </div>
+
+              {/* Input thêm tiện ích */}
+              <div className="flex items-center gap-2 mt-2">
+                <input
+                  type="text"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value.trimStart())}
+                  placeholder="Thêm hoặc tìm tiện ích"
+                  className="w-full p-2 border border-gray-300 rounded"
+                  onFocus={() => setMenuOpen(true)}
+                  onBlur={() => setTimeout(() => setMenuOpen(false), 200)}
+                />
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (!isDisable) {
+                      setTienIch((prev) => [...prev, query]);
+                      setQuery("");
+                    }
+                  }}
+                  className="bg-blue-900 text-white px-3 py-2 rounded"
+                  disabled={isDisable}
+                >
+                  Thêm
+                </button>
+              </div>
+
+              {/* Gợi ý tiện ích */}
+              {menuOpen && filteredTags.length > 0 && (
+                <div className="absolute top-full left-0 w-full bg-white shadow rounded mt-1 max-h-48 overflow-y-auto z-10">
+                  {filteredTags.map((tag) => (
+                    <div
+                      key={tag}
+                      className="p-2 cursor-pointer hover:bg-blue-50 hover:text-blue-600"
+                      onMouseDown={(e) => e.preventDefault()}
+                      onClick={() => {
+                        setTienIch((prev) => [...prev, tag]);
+                        setQuery("");
+                      }}
+                    >
+                      {tag}
                     </div>
                   ))}
                 </div>
-              ) : (
-                <p className="text-gray-500">Chưa chọn ảnh nào.</p>
               )}
             </div>
-          
-          {/* Tiện ích */}
-        <div>
-          <label className="block text-gray-600">Tiện ích nội thất</label>
-          <div className="relative mt-2">
-            {/* Hiển thị danh sách tiện ích đã chọn */}
-            <div className="bg-gray-100 p-2 flex flex-wrap gap-2 rounded">
-              {utilities.map((utility, index) => (
-                <div
-                  key={index}
-                  className="bg-blue-500 text-white px-3 py-1 rounded-full flex items-center gap-2"
-                >
-                  {utility}
-                  <button
-                    type="button"
-                    className="text-white hover:text-gray-300"
-                    onClick={() => handleRemoveUtility(utility)}
-                  >
-                    ✕
-                  </button>
-                </div>
-              ))}
-            </div>
+          </div>
 
-            {/* Input thêm tiện ích */}
-            <div className="flex items-center gap-2 mt-2">
-              <input
-                ref={inputRef}
-                type="text"
-                value={query}
-                onChange={(e) => setQuery(e.target.value.trimStart())}
-                placeholder="Thêm hoặc tìm tiện ích"
-                className="w-full p-2 border border-gray-300 rounded"
-                onFocus={() => setMenuOpen(true)}
-                onBlur={() => setTimeout(() => setMenuOpen(false), 200)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" && !isDisable) {
-                    setTienIch((prev) => [...prev, query]);
-                    setQuery("");
-                  }
-                }}
-              />
-            </div>
-            
-            {/* Gợi ý tiện ích */}
-            {menuOpen && filteredTags.length > 0 && (
-              <div className="absolute top-full left-0 w-full bg-white shadow rounded mt-1 max-h-48 overflow-y-auto z-10">
-                {filteredTags.map((tag) => (
-                   <div
-                   key={tag}
-                   className="p-2 cursor-pointer hover:bg-blue-50 hover:text-blue-600"
-                   onMouseDown={(e) => e.preventDefault()}
-                   onClick={() => {
-                     setTienIch((prev) => [...prev, tag]);
-                     setQuery("");
-                   }}
-                   >
-                    {tag}
-                    </div>
+          <div>
+            <label className="block text-gray-600">Mô tả</label>
+            <textarea
+              value={description}
+              onChange={(e) => setMoTa(e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded mt-1"
+              rows="3"
+              placeholder="Nhập mô tả"
+            ></textarea>
+          </div>
+
+
+          <div>
+            <label className="block text-gray-600">Vị trí</label>
+            <div className="relative mt-2">
+              {/* Hiển thị các vị trí đã chọn */}
+              <div className="bg-gray-100 p-2 flex flex-wrap gap-2 rounded">
+                {locations.map((loc, index) => (
+                  <div
+                    key={index}
+                    className="bg-blue-900 text-white px-3 py-1 rounded-full flex items-center gap-2"
+                  >
+                    {loc}
+                    <button
+                      type="button"
+                      className="text-white hover:text-gray-300"
+                      onClick={() => setViTriList(locations.filter((item) => item !== loc))}
+                    >
+                      ✕
+                    </button>
+                  </div>
                 ))}
               </div>
-                  )}
-                  </div>
-                </div>
-                    <div>
-                      <label className="block text-gray-600">Mô tả</label>
-                      <textarea
-                        value={description}
-                        onChange={(e) => setMoTa(e.target.value)}
-                        className="w-full p-2 border border-gray-300 rounded mt-1"
-                        rows="3"
-                        placeholder="Nhập mô tả"
-                      ></textarea>
+
+              {/* Input thêm vị trí */}
+              <div className="flex items-center gap-2 mt-2">
+                <input
+                  type="text"
+                  value={locationQuery}
+                  onChange={(e) => setLocationQuery(e.target.value.trimStart())}
+                  placeholder="Thêm hoặc tìm vị trí"
+                  className="w-full p-2 border border-gray-300 rounded"
+                  onFocus={() => setLocationMenuOpen(true)}
+                  onBlur={() => setTimeout(() => setLocationMenuOpen(false), 200)}
+                />
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (locationQuery && !locations.includes(locationQuery)) {
+                      setViTriList((prev) => [...prev, locationQuery]);
+                      setLocationQuery("");
+                    }
+                  }}
+                  className="bg-blue-900 text-white px-3 py-2 rounded"
+                >
+                  Thêm
+                 </button>
+              </div>
+
+              {/* Gợi ý vị trí */}
+              {locationMenuOpen && filteredLocations.length > 0 && (
+                <div className="absolute top-full left-0 w-full bg-white shadow rounded mt-1 max-h-48 overflow-y-auto z-10">
+                  {filteredLocations.map((loc) => (
+                    <div
+                      key={loc}
+                      className="p-2 cursor-pointer hover:bg-blue-50 hover:text-blue-600"
+                      onMouseDown={(e) => e.preventDefault()}
+                      onClick={() => {
+                        setViTriList((prev) => [...prev, loc]);
+                        setLocationQuery("");
+                      }}
+                    >
+                      {loc}
                     </div>
-                    <div>
-                      <label className="block text-gray-600">Tiện ích công cộng</label>
-                      <input
-                        type="text"
-                        value={location}
-                        onChange={(e) => setViTri(e.target.value)}
-                        className="w-full p-2 border border-gray-300 rounded mt-1"
-                        placeholder="Nhập vị trí"
-                      />
-                       </div>
-         
-         <button
-           type="submit"
-           className={`w-full py-2 px-4 bg-blue-600 text-white rounded mt-4 ${
-             loading ? "opacity-50 cursor-not-allowed" : ""
-            }`}
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            className={`w-full py-2 px-4 bg-blue-600 text-white rounded mt-4 ${loading ? "opacity-50 cursor-not-allowed" : ""
+              }`}
             disabled={loading}
           >
             {loading ? "Đang xử lý..." : "Tạo Tòa Nhà"}
           </button>
         </form>
       </div>
-      </div>
-    );
-  }
+    </div>
+  );
+}

@@ -151,9 +151,9 @@ export default function CategoryBlog() {
     // const handleCreatPage = () => {
     //     router.push('/admin/room/create_room')
     //   }
-    //   const handleEditBuilding = (id) => {
-    //     router.push(`/admin/room/update/${id}`)
-    //   }
+    const handleEditRoom = (id) => {
+        router.push(`/admin/room/update/${id}`)
+    }
     const handleDetailRoom = (id) => {
         router.push(`/admin/room/detail_room/${id}`)
     }
@@ -219,9 +219,9 @@ export default function CategoryBlog() {
                                     {/* Nút Gọi điện */}
                                     <Dialog>
                                         <DialogTrigger asChild>
-                                            {/* <Button variant="outline" onClick={() => handleEditBuilding(building.id)} >
-                        <Pencil className="mr-2 h-4 w-4" />
-                      </Button> */}
+                                            <Button variant="outline" onClick={() => handleEditRoom(rooms.id)} >
+                                                <Pencil className="mr-2 h-4 w-4" />
+                                            </Button>
                                         </DialogTrigger>
                                         <Button variant="outline" size="icon" onClick={() => handleCoppyRoom(rooms.id)} >
                                             <BookCopy className="h-4 w-4"

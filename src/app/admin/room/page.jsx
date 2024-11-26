@@ -148,9 +148,9 @@ export default function CategoryBlog() {
     const handleRefesh = () => {
         router.push('/admin/room/refesh_room')
     }
-    const handleCreatPage = () => {
-        router.push('/admin/room/create_room')
-      }
+    // const handleCreatPage = () => {
+    //     router.push('/admin/room/create_room')
+    //   }
     //   const handleEditBuilding = (id) => {
     //     router.push(`/admin/room/update/${id}`)
     //   }
@@ -177,10 +177,10 @@ export default function CategoryBlog() {
                     {/* Nút Thêm Danh Mục và Modal */}
                     <Dialog>
                         <DialogTrigger asChild>
-                            <Button onClick={handleCreatPage} className="bg-green-700 text-white hover:bg-green-600">
+                            {/* <Button onClick={handleCreatPage} className="bg-green-700 text-white hover:bg-green-600">
                                 <Plus className="mr-2 h-4 w-4" />
                                  Tạo Phòng
-                            </Button>
+                            </Button> */}
                         </DialogTrigger>
                     </Dialog>
                     {/* khôi phục Danh Mục tin tức */}

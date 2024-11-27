@@ -124,14 +124,10 @@ export function RoomManagement({ roomsData }) {
       <Tabs value={activeTab} className='bg-white p-2 shadow space-y-4 rounded' onValueChange={setActiveTab}>
         <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="contacts">Liên hệ</TabsTrigger>
-          <TabsTrigger value="profiles">Hồ sơ</TabsTrigger>
           <TabsTrigger value="current">Hợp đồng</TabsTrigger>
         </TabsList>
         <TabsContent value="contacts">
           <ContactsTab />
-        </TabsContent>
-        <TabsContent value="profiles">
-          <ProfilesTab />
         </TabsContent>
         <TabsContent value="current">
           <CurrentRoomTab />

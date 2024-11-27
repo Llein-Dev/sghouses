@@ -122,7 +122,7 @@ export function RoomManagement({ roomsData }) {
     <div className="container mx-auto px-4 space-y-4 pt-4 pb-16">
       <Breadcrumb />
       <Tabs value={activeTab} className='bg-white p-2 shadow space-y-4 rounded' onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-3">
+        <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="contacts">Liên hệ</TabsTrigger>
           <TabsTrigger value="current">Hợp đồng</TabsTrigger>
         </TabsList>

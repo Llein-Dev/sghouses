@@ -27,7 +27,6 @@ export default function RootLayout({ children }) {
           const profile = await profileAPI();
           if (profile && profile.length > 0) {
             const user = profile[0];
-            console.log(user);
             setIsAdmin(user.role === 0);
           } else {
             setIsAdmin(false);

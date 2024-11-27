@@ -21,7 +21,7 @@ export default function CommentComponent({ comments = [], onCommentAdd, user }) 
     return (
         <Card>
             <CardHeader>
-                <CardTitle>Bình luận</CardTitle>
+                <CardTitle>Bình luận</CardTitle>    
             </CardHeader>
             <CardContent>
                 <div className="flex items-center space-x-2">

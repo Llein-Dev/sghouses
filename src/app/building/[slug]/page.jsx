@@ -23,13 +23,13 @@ export default function BuildingDetailComponent() {
     const dispatch = useDispatch(); // Initialize dispatch
     const user = useSelector((state) => state.auth.user); // Access user from Redux store
     const token = Cookies.get('token');
-
+ 
     useEffect(() => {
         if (user) {
             dispatch(setProfile(user)); // Dispatch action to set user
         }
     }, [user, dispatch]);
-
+    
     const addComment = async (newComment) => {
         if (!user) {
             alert("Bạn chưa đăng nhập"); // Alert if user is not logged in
@@ -68,7 +68,7 @@ export default function BuildingDetailComponent() {
             alert("Có lỗi xảy ra, vui lòng thử lại sau.");
         }
     };
-
+    const [active, setActive] = useState(false);
     return (
         <div className="container mx-auto px-4 space-y-4 py-4">
             <Breadcrumb />
@@ -153,7 +153,7 @@ export default function BuildingDetailComponent() {
                 <CardContent>
                     <div className="space-y-4">
                         {Object.values(building?.phong_tro || []).map((room, index) => (
-                            <RoomComponents key={index} room={room} />
+                            <RoomComponents room={room} />
                         ))}
                     </div>
                 </CardContent>

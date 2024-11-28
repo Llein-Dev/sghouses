@@ -14,8 +14,18 @@ import { RangeBox } from "./range-box";
 export function SearchFilterComponent({ onResultsUpdate, setLoading }) {
   const [keyword, setKeyword] = useState("");
   const [area, setArea] = useState("");
-  const [priceRange, setPriceRange] = useState({ min: 0, max: 20000000, [0]: 0, [1]: 20000000 });
-  const [sizeRange, setSizeRange] = useState({ min: 0, max: 100, [0]: 0, [1]: 100 });
+  const [priceRange, setPriceRange] = useState({
+    min: 0,
+    max: 20000000,
+    [0]: 0,
+    [1]: 20000000,
+  });
+  const [sizeRange, setSizeRange] = useState({
+    min: 0,
+    max: 100,
+    [0]: 0,
+    [1]: 100,
+  });
   const [error, setError] = useState("");
   const [locations, setLocations] = useState([]);
 
@@ -30,7 +40,9 @@ export function SearchFilterComponent({ onResultsUpdate, setLoading }) {
   useEffect(() => {
     const fetchLocations = async () => {
       try {
-        const response = await fetch('http://localhost:8000/api/khu_vuc/option');
+        const response = await fetch(
+          "http://localhost:8000/api/khu_vuc/option"
+        );
         if (!response.ok) {
           throw new Error("Không thể lấy dữ liệu từ API");
         }
@@ -51,19 +63,29 @@ export function SearchFilterComponent({ onResultsUpdate, setLoading }) {
     if (searchParams) {
       const { keyword, area, price, size } = searchParams;
       console.log(searchParams);
-      
+
       // Set state based on localStorage values
       setKeyword(keyword || "");
       setArea(area || "");
 
       if (price) {
-        const [minPrice, maxPrice] = price.split('to').map(Number);
-        setPriceRange({ min: minPrice || 0, max: maxPrice || 20000000, [0]: minPrice || 0, [1]: maxPrice || 20000000 });
+        const [minPrice, maxPrice] = price.split("to").map(Number);
+        setPriceRange({
+          min: minPrice || 0,
+          max: maxPrice || 20000000,
+          [0]: minPrice || 0,
+          [1]: maxPrice || 20000000,
+        });
       }
 
       if (size) {
-        const [minSize, maxSize] = size.split('to').map(Number);
-        setSizeRange({ min: minSize || 0, max: maxSize || 100, [0]: minSize || 0, [1]: maxSize || 100 });
+        const [minSize, maxSize] = size.split("to").map(Number);
+        setSizeRange({
+          min: minSize || 0,
+          max: maxSize || 100,
+          [0]: minSize || 0,
+          [1]: maxSize || 100,
+        });
       }
     }
   }, []);
@@ -73,27 +95,26 @@ export function SearchFilterComponent({ onResultsUpdate, setLoading }) {
     setLoading(true);
     setError("");
 
-    // Check if there's at least one search parameter to execute the search
-    if (!keyword && !area && (priceRange[0] === 0 && priceRange[1] === 20000000) && (sizeRange[0] === 0 && sizeRange[1] === 100)) {
-      setLoading(false);
-      return; // Don't proceed with the search
-    }
-    const areaParam = typeof area === "object" && area !== null ? area.slug : area || ""; // Use area.slug if area is an object, otherwise use area directly
+    const areaParam =
+      typeof area === "object" && area !== null ? area.slug : area || "";
 
     const queryParams = new URLSearchParams({
-      keyword: keyword,
-      area: areaParam,
+      keyword: keyword || "",
+      area: areaParam || "",
       price: `${priceRange[0]}to${priceRange[1]}`,
       size: `${sizeRange[0]}to${sizeRange[1]}`,
     }).toString();
 
     try {
-      const response = await fetch(`http://localhost:8000/api/filter-room?${queryParams}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        `http://localhost:8000/api/filter-room?${queryParams}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       if (!response.ok) {
         onResultsUpdate([]);
@@ -111,8 +132,17 @@ export function SearchFilterComponent({ onResultsUpdate, setLoading }) {
 
   useEffect(() => {
     // Call handleSearch when the relevant state changes
-    if (keyword || area || (priceRange[0] !== 0 || priceRange[1] !== 20000000) || (sizeRange[0] !== 0 || sizeRange[1] !== 100)) {
-      handleSearch(); 
+    if (
+      keyword ||
+      area ||
+      priceRange[0] !== 0 ||
+      priceRange[1] !== 20000000 ||
+      sizeRange[0] !== 0 ||
+      sizeRange[1] !== 100
+    ) {
+      handleSearch();
+    } else {
+      handleSearch();
     }
   }, [keyword, area, priceRange, sizeRange]); // Call search when these values change
 
@@ -120,7 +150,9 @@ export function SearchFilterComponent({ onResultsUpdate, setLoading }) {
     <div className="w-full bg-white rounded-none md:rounded-xl shadow p-4">
       <form onSubmit={handleSearch} className="flex flex-col md:flex-row gap-4">
         <div className="flex-grow">
-          <Label htmlFor="keyword" className="sr-only">Từ khóa</Label>
+          <Label htmlFor="keyword" className="sr-only">
+            Từ khóa
+          </Label>
           <Input
             id="keyword"
             type="text"
@@ -135,7 +167,8 @@ export function SearchFilterComponent({ onResultsUpdate, setLoading }) {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="w-full md:w-auto">
-              <MapIcon /> {area?.name || "Chọn khu vực"} <ChevronDown className="ml-2 h-4 w-4" />
+              <MapIcon /> {area?.name || "Chọn khu vực"}{" "}
+              <ChevronDown className="ml-2 h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>

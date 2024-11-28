@@ -15,6 +15,7 @@ import {
 } from "@/utils/data";
 import Breadcrumb from "@/components/breadcum";
 import { useFetchBlogHouse } from "@/utils/api/GET/api";
+import { Spinner } from "./ui/loading";
 function NewsCard({ id, title, excerpt, image, date }) {
   return (
     <Card className="h-full flex  overflow-hidden flex-col">
@@ -80,7 +81,7 @@ export default function NewsHomepage() {
   // Use the custom hook to fetch data
   const { BlogHouse, loading, error } = useFetchBlogHouse();
 
-  if (loading) return <p>Loading...</p>; // Handle loading state
+  if (loading) return <div className="container"><Spinner/></div>; // Handle loading state
   if (error) return <p>Error fetching news: {error.message}</p>; // Handle error state
 
   const featuredNews = BlogHouse[0]; // Assuming the first item is featured

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation"; // Sử dụng useParams thay vì useRouter
 import Cookies from "js-cookie";
+import { Spinner } from "@/components/ui/loading";
 
 export default function DetailBlog() {
   const { id } = useParams(); // Lấy 'id' từ URL động
@@ -38,7 +39,7 @@ export default function DetailBlog() {
   });
 
   if (!blog) {
-    return <div>Loading...</div>;
+    return <div className="container"><Spinner/></div>;
   }
 
   return (

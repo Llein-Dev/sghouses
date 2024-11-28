@@ -35,8 +35,7 @@ export function HeaderComponent() {
 
   // Get user from Redux store
   const user = useSelector((state) => state.auth.user);
-  console.log(user);
-  
+
   const clearNotifications = () => {
     setNotificationCount(0);
   };
@@ -60,7 +59,6 @@ export function HeaderComponent() {
           if (profile && profile.length > 0) {
             const userdata = profile[0];
             dispatch(setProfile(userdata)); // Update Redux state with user data
-            console.log(userdata); // Log the user data to check
           }
         } catch (error) {
           console.error("Failed to fetch user profile:", error);
@@ -70,25 +68,38 @@ export function HeaderComponent() {
 
     fetchUserProfile();
   }, [dispatch]); // Adding dispatch in dependency array
+  console.log(user);
 
   const NavItems = () => (
     <>
-      <Link href="/filter" className="text-blue-900 font-medium text-sm hover:text-blue-500 transition">
-        Nhà Trọ
-      </Link>
-      <Link href="/filter-room" className="text-blue-900 font-medium text-sm hover:text-blue-500 transition">
+      <Link
+        href="/filter-room"
+        className="text-blue-900 font-medium text-sm hover:text-blue-500 transition"
+      >
         Phòng trọ
       </Link>
-      <Link href="/blog" className="text-blue-900 font-medium text-sm hover:text-blue-500 transition">
+      <Link
+        href="/blog"
+        className="text-blue-900 font-medium text-sm hover:text-blue-500 transition"
+      >
         Nhật Ký Trọ
       </Link>
-      <Link href="/about" className="text-blue-900 font-medium text-sm hover:text-blue-500 transition">
+      <Link
+        href="/about"
+        className="text-blue-900 font-medium text-sm hover:text-blue-500 transition"
+      >
         Giới Thiệu
       </Link>
-      <Link href="/contact" className="text-blue-900 font-medium text-sm hover:text-blue-500 transition">
+      <Link
+        href="/contact"
+        className="text-blue-900 font-medium text-sm hover:text-blue-500 transition"
+      >
         Liên Hệ
       </Link>
-      <Link href="/support" className="text-blue-900 font-medium text-sm hover:text-blue-500 transition">
+      <Link
+        href="/support"
+        className="text-blue-900 font-medium text-sm hover:text-blue-500 transition"
+      >
         Hỗ trợ
       </Link>
     </>
@@ -99,7 +110,11 @@ export function HeaderComponent() {
       <div className="container mx-auto px-4 py-3 flex items-center justify-between">
         <div className="flex items-center space-x-8">
           <Link href="/">
-            <img className="h-12 w-auto object-cover mr-8" src="/favicon.ico" alt="Logo" />
+            <img
+              className="h-12 w-auto object-cover mr-8"
+              src="/favicon.ico"
+              alt="Logo"
+            />
           </Link>
           <div className="hidden md:flex gap-8">
             <NavItems />
@@ -112,7 +127,10 @@ export function HeaderComponent() {
               <Button variant="outline" size="lg" className="relative p-3">
                 <Bell className="h-4 w-4" />
                 {notificationCount > 0 && (
-                  <Badge variant="destructive" className="absolute -top-1 -right-1 px-1 min-w-[1rem] h-5">
+                  <Badge
+                    variant="destructive"
+                    className="absolute -top-1 -right-1 px-1 min-w-[1rem] h-5"
+                  >
                     {notificationCount}
                   </Badge>
                 )}
@@ -128,13 +146,19 @@ export function HeaderComponent() {
                     <div className="flex items-start space-x-2">
                       <Bell className="h-5 w-5 mt-0.5 text-blue-500" />
                       <div>
-                        <p className="font-medium">Bạn có {notificationCount} thông báo mới</p>
-                        <p className="text-sm text-gray-500">Nhấp để xem chi tiết</p>
+                        <p className="font-medium">
+                          Bạn có {notificationCount} thông báo mới
+                        </p>
+                        <p className="text-sm text-gray-500">
+                          Nhấp để xem chi tiết
+                        </p>
                       </div>
                     </div>
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={clearNotifications}>
-                    <Button variant="ghost" className="w-full justify-start">Xóa tất cả</Button>
+                    <Button variant="ghost" className="w-full justify-start">
+                      Xóa tất cả
+                    </Button>
                   </DropdownMenuItem>
                 </>
               ) : (
@@ -148,8 +172,13 @@ export function HeaderComponent() {
                 <Button variant="ghost" className="relative p-0">
                   <div className="flex items-center space-x-2 p-2">
                     <Avatar className="h-10 w-10">
-                      <AvatarImage alt={user?.name || "User"} src={`http://localhost:8000/storage/${user?.avatar}`} />
-                      <AvatarFallback>{user?.name.charAt(0) || "User"}</AvatarFallback>
+                      <AvatarImage
+                        alt={user?.name || "User"}
+                        src={`http://localhost:8000/storage/${user?.avatar}`}
+                      />
+                      <AvatarFallback>
+                        {user?.name.charAt(0) || "User"}
+                      </AvatarFallback>
                     </Avatar>
                   </div>
                 </Button>
@@ -157,19 +186,58 @@ export function HeaderComponent() {
               <DropdownMenuContent className="w-full" align="end" forceMount>
                 <div className="flex items-center space-x-2 p-2">
                   <Avatar className="h-10 w-10">
-                    <AvatarImage alt={user?.name || "User"} src={`http://localhost:8000/storage/${user?.avatar}`} />
-                    <AvatarFallback>{user?.name.charAt(0) || "User"}</AvatarFallback>
+                    <AvatarImage
+                      alt={user?.name || "User"}
+                      src={`http://localhost:8000/storage/${user?.avatar}`}
+                    />
+                    <AvatarFallback>
+                      {user?.name.charAt(0) || "User"}
+                    </AvatarFallback>
                   </Avatar>
                   <div className="flex flex-col space-y-1">
-                    <p className="text-sm font-medium leading-none">{user?.name || "User"}</p>
-                    <p className="text-xs leading-none text-muted-foreground">{user?.email || "Email"}</p>
+                    <p className="text-sm font-medium leading-none">
+                      {user?.name || "User"}
+                    </p>
+                    <p className="text-xs leading-none text-muted-foreground">
+                      {user?.email || "Email"}
+                    </p>
                   </div>
                 </div>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem><Link className="w-full" href="/profile">Hồ sơ</Link></DropdownMenuItem>
-                <DropdownMenuItem><Link className="w-full" href="/profile/history">Lịch sử</Link></DropdownMenuItem>
-                <DropdownMenuItem><Link className="w-full" href="/profile/edit">Cài đặt</Link></DropdownMenuItem>
                 <DropdownMenuSeparator />
+                <DropdownMenuItem>
+                  <Link className="w-full" href="/profile">
+                    Hồ sơ
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link className="w-full" href="/profile/favourite">
+                    Yêu thích
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link className="w-full" href="/profile/history">
+                    Lịch sử
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link className="w-full" href="/profile/edit">
+                    Cài đặt
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+
+                {/* Additional options for admins */}
+                {user && user.role === 0 && (
+                  <>
+                    <DropdownMenuItem className="bg-red-500 text-white">
+                      <Link className="w-full " href="/admin">
+                        Sang trang Admin
+                      </Link>
+                    </DropdownMenuItem>
+                  </>
+                )}
+
                 <DropdownMenuItem onClick={handleLogout}>
                   <LogOut className="mr-2 h-4 w-4" />
                   <span>Đăng xuất</span>
@@ -200,11 +268,18 @@ export function HeaderComponent() {
               <NavItems />
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="lg" className="relative p-3 w-full justify-start">
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    className="relative p-3 w-full justify-start"
+                  >
                     <Bell className="h-4 w-4 mr-2" />
                     Thông báo
                     {notificationCount > 0 && (
-                      <Badge variant="destructive" className="ml-2 px-1 min-w-[1rem] h-5">
+                      <Badge
+                        variant="destructive"
+                        className="ml-2 px-1 min-w-[1rem] h-5"
+                      >
                         {notificationCount}
                       </Badge>
                     )}
@@ -219,13 +294,22 @@ export function HeaderComponent() {
                         <div className="flex items-start space-x-2">
                           <Bell className="h-5 w-5 mt-0.5 text-blue-500" />
                           <div>
-                            <p className="font-medium">Bạn có {notificationCount} thông báo mới</p>
-                            <p className="text-sm text-gray-500">Nhấp để xem chi tiết</p>
+                            <p className="font-medium">
+                              Bạn có {notificationCount} thông báo mới
+                            </p>
+                            <p className="text-sm text-gray-500">
+                              Nhấp để xem chi tiết
+                            </p>
                           </div>
                         </div>
                       </DropdownMenuItem>
                       <DropdownMenuItem onClick={clearNotifications}>
-                        <Button variant="ghost" className="w-full justify-start">Xóa tất cả</Button>
+                        <Button
+                          variant="ghost"
+                          className="w-full justify-start"
+                        >
+                          Xóa tất cả
+                        </Button>
                       </DropdownMenuItem>
                     </>
                   ) : (
@@ -237,27 +321,64 @@ export function HeaderComponent() {
                 <>
                   <div className="flex items-center space-x-2 p-2">
                     <Avatar className="h-10 w-10">
-                      <AvatarImage alt={user?.name || "User"} src={`http://localhost:8000/storage/${user?.avatar}`} />
-                      <AvatarFallback>{user?.name.charAt(0) || "User"}</AvatarFallback>
+                      <AvatarImage
+                        alt={user?.name || "User"}
+                        src={`http://localhost:8000/storage/${user?.avatar}`}
+                      />
+                      <AvatarFallback>
+                        {user?.name.charAt(0) || "User"}
+                      </AvatarFallback>
                     </Avatar>
                     <div className="flex flex-col space-y-1">
-                      <p className="text-sm font-medium leading-none">{user?.name || "User"}</p>
-                      <p className="text-xs leading-none text-muted-foreground">{user?.email || "Email"}</p>
+                      <p className="text-sm font-medium leading-none">
+                        {user?.name || "User"}
+                      </p>
+                      <p className="text-xs leading-none text-muted-foreground">
+                        {user?.email || "Email"}
+                      </p>
                     </div>
                   </div>
-                  <Button variant="ghost" className="justify-start" onClick={() => router.push("/profile")}>
+                  <Button
+                    variant="ghost"
+                    className="justify-start"
+                    onClick={() => router.push("/profile")}
+                  >
                     Hồ sơ
                   </Button>
-                  <Button variant="ghost" className="justify-start" onClick={() => router.push("/profile/edit")}>
+                  <Button
+                    variant="ghost"
+                    className="justify-start"
+                    onClick={() => router.push("/profile/edit")}
+                  >
                     Cài đặt
                   </Button>
-                  <Button variant="ghost" className="justify-start" onClick={handleLogout}>
+                  {user && user.role === 0 && (
+                    <>
+                      <Button
+                        variant="ghost"
+                        className="justify-start"
+                        onClick={() => router.push("/admin")}
+                      >
+                        Sang trang Admin
+                      </Button>
+                    </>
+                  )}
+                  <Button
+                    variant="ghost"
+                    className="justify-start"
+                    onClick={handleLogout}
+                  >
                     <LogOut className="mr-2 h-4 w-4" />
                     Đăng xuất
                   </Button>
                 </>
               ) : (
-                <Button onClick={handleLoginToggle} variant="orange" size="lg" className="w-full">
+                <Button
+                  onClick={handleLoginToggle}
+                  variant="orange"
+                  size="lg"
+                  className="w-full"
+                >
                   <DoorOpen className="mr-2 h-4 w-4" />
                   Đăng nhập
                 </Button>

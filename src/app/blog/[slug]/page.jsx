@@ -6,54 +6,111 @@ import { Card, CardContent } from "@/components/ui/card"
 import Breadcrumb from '@/components/breadcum'
 import { useParams } from 'next/navigation'
 import { useFetchBlogHouse, useFetchDetailBlog } from '@/utils/api/GET/api'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Cookies from 'js-cookie'
 import axios from 'axios'
 import Link from 'next/link'
+import CommentComponent from '@/components/Comment'
+import { useDispatch, useSelector } from 'react-redux'
+import { setProfile } from '@/redux/authSlice'
 
 export default function ArticleDetail() {
     const { slug } = useParams();
     const { detailBlog } = useFetchDetailBlog(slug);
-    const [newComment, setNewComment] = useState('');
-    const [comments, setComments] = useState(detailBlog?.list_cmt || []);
-    console.log(detailBlog);
+    const [comments, setComments] = useState(detailBlog?.list_cmt || []);    
+    const user = useSelector((state) => state.auth.user); // Access user from Redux store
+    const dispatch = useDispatch(); // Initialize dispatch
+    const token = Cookies.get('token');
+    useEffect(() => {
+        if (detailBlog) {
+            setComments(detailBlog.list_cmt || []);
+        }
+    }, [detailBlog]);
+    
+    useEffect(() => {
+        if (user) {
+            dispatch(setProfile(user)); // Dispatch action to set user
+        }
+    }, [user, dispatch]);
     const { BlogHouse } = useFetchBlogHouse();
-    const handleCommentSubmit = async () => {
+    const addComment = async (newComment) => {
+        if (!user) {
+            alert("Bạn chưa đăng nhập");
+            return;
+        }
+    
+        // Tạo một comment tạm thời
+        const tempComment = {
+            id: comments?.length + 1, // Tạo id giả lập
+            name: user?.name || "Người dùng",
+            content: newComment,
+            avatar: user?.avatar ? `http://localhost:8000/storage/${user.avatar}` : "",
+            likes: 0,
+            replies: 0,
+            date: "Vừa xong", // Hiển thị thời gian tạm thời
+        };
+    
+        // Hiển thị bình luận tạm thời
+        setComments((prevComments) => [...prevComments, tempComment]);
+    
         try {
-            const authToken = Cookies.get('token');
-            const response = await axios.post('http://localhost:8000/api/blog/comment',
-                { slug, message: newComment },
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${authToken}`,
-                    },
-                    withCredentials: true
-                }
-            );
-            if (response.status === 200) {
-                const result = response.data;
-                setComments([...comments, result.newComment]);
-                setNewComment('');
+            // Gửi bình luận tới API
+            const response = await fetch(`http://localhost:8000/api/blog/comment`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({
+                    slug,
+                    message: newComment,
+                }),
+            });
+    
+            const data = await response.json();
+    
+            if (response.ok) {
+                console.log("Bình luận thành công:", data);
+    
+                // Thay thế comment tạm thời bằng comment từ server (nếu cần thiết)
+                const updatedComment = {
+                    id: data.id, // ID thực từ server
+                    name: user?.name,
+                    content: newComment,
+                    avatar: user?.avatar ? `http://localhost:8000/storage/${user.avatar}` : "",
+                    likes: 0,
+                    replies: 0,
+                    date: data.date || "Vừa xong",
+                };
+    
+                setComments((prevComments) =>
+                    prevComments.map((comment) =>
+                        comment === tempComment ? updatedComment : comment
+                    )
+                );
             } else {
-                console.error('Failed to submit comment', response);
+                throw new Error(data.message || "Thêm bình luận thất bại");
             }
         } catch (error) {
-            if (error.response) {
-                console.error('Error response:', error.response.data);
-                console.error('Error status:', error.response.status);
-            } else {
-                console.error('Error submitting comment:', error.message);
-            }
+            console.error("Có lỗi xảy ra khi thêm bình luận:", error);
+            alert("Có lỗi xảy ra, vui lòng thử lại.");
+            
+            // Xóa comment tạm thời nếu gửi không thành công
+            setComments((prevComments) =>
+                prevComments.filter((comment) => comment !== tempComment)
+            );
         }
     };
+    
+    
 
     return (
         <div className="container mx-auto px-4 space-y-4 pt-4">
             <Breadcrumb />
             <main className="">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-                    <div className="lg:col-span-2 bg-white p-8 ">
+                  <div className="lg:col-span-2 mb-4">
+                  <div className=' bg-white p-8 shadow rounded-md mb-4'>
                         <div className="mb-8 space-y-4">
                             <h1 className="text-4xl text-blue-900 font-bold mb-4">{detailBlog.title}</h1>
                             <div className="flex items-center space-x-4 text-sm text-muted-foreground">
@@ -104,40 +161,15 @@ export default function ArticleDetail() {
                         </div>
 
                         {/* Comment Section */}
-                        <div className="mt-8">
-                            <h2 className="text-xl font-bold">Bình luận</h2>
-                            <textarea
-                                className="w-full border rounded-lg p-2 mt-2"
-                                rows="4"
-                                placeholder="Nhập bình luận của bạn..."
-                                value={newComment}
-                                onChange={(e) => setNewComment(e.target.value)}
-                            />
-                            <Button
-                                variant="blue"
-                                className="mt-2"
-                                onClick={handleCommentSubmit}
-                                disabled={!newComment}
-                            >
-                                Gửi bình luận
-                            </Button>
-
-                            <div className="mt-4 space-y-4">
-                                {detailBlog.list_cmt?.length > 0 ? (
-                                    detailBlog.list_cmt.map((comment, index) => (
-                                        <div key={comment.id || index} className="p-4 border rounded-lg bg-gray-50">
-                                            <p>{comment.content}</p>
-                                            <p className="text-sm text-muted-foreground">
-                                                {comment.name} - {comment.date}
-                                            </p>
-                                        </div>
-                                    ))
-                                ) : (
-                                    <p className="text-center text-gray-500">No comments available.</p>
-                                )}
-                            </div>
-                        </div>
+                     
                     </div>
+                    <CommentComponent 
+    comments={comments} // Truyền state comments
+    onCommentAdd={addComment} 
+    user={user} 
+/>
+
+                  </div>
                     {/* Related Articles */}
                     <div className="lg:col-span-1 bg-gray-100">
                         <div className="space-y-4">

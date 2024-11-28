@@ -25,6 +25,8 @@ import {
 import { useRouter } from "next/navigation"
 import Cookies from "js-cookie"
 import { Label } from "@/components/ui/label"
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { EnhancedPreviewCards } from '@/components/PreviewCards';
 
 
 export default function Contract() {
@@ -36,10 +38,61 @@ export default function Contract() {
   const [status, setStatus] = useState("");
   const [date_start, setDateStart] = useState("");
   const [date_end, setDateEnd] = useState("");
+  const adminToken = Cookies.get('token');
+  const [rooms, setRooms] = useState(null)
+  const [users, setUsers] = useState(null)
+  console.log(users);
+  console.log(rooms);
+  
+  useEffect(() => {
+    const fetchRoomsAndUsers = async () => {
+      try {
+        // Fetch rooms
+        const roomsResponse = await fetch('http://localhost:8000/api/phong', {
+          headers: {
+            Authorization: `Bearer ${adminToken}`,
+            'Content-Type': 'application/json',
+          },
+        });
+        const roomsData = await roomsResponse.json();
+        setRooms(roomsData.list_room);
 
+        // Fetch users
+        const usersResponse = await fetch('http://localhost:8000/api/user', {
+          headers: {
+            Authorization: `Bearer ${adminToken}`,
+            'Content-Type': 'application/json',
+          },
+        });
+        const usersData = await usersResponse.json();
+        setUsers(usersData.list);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+    fetchRoomsAndUsers();
+  }, []);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+
+        const roomRes = await fetch(`http://localhost:8000/api/rooms/${selectedContracts.id}`)
+        const roomData = await roomRes.json()
+        setRoom(roomData)
+
+        const userRes = await fetch(`http://localhost:8000/api/users/${selectedContracts.id_user}`)
+        const userData = await userRes.json()
+        setUser(userData)
+      } catch (error) {
+        console.error('Error fetching data:', error)
+      }
+    }
+
+    fetchData()
+  }, [selectedContracts])
 
   useEffect(() => {
-    const adminToken = Cookies.get('token');
+  
     if (!adminToken) {
       router.push('/');
       return;
@@ -190,7 +243,20 @@ export default function Contract() {
       console.error("Error:", error);
     }
   };
+  const [selectedRoom, setSelectedRoom] = useState(null);
+  const [selectedUser, setSelectedUser] = useState(null);
+  
+  const handleRoomChange = (e) => {
+    const selectedRoomId = e.target.value;
+    const room = rooms.find((room) => room.id === parseInt(selectedRoomId));
+    setSelectedRoom(room || null); // Set selected room or null if not found
+  };
 
+  const handleUserChange = (e) => {
+    const selectedUserId = e.target.value;
+    const user = users.find((user) => user.id === parseInt(selectedUserId));
+    setSelectedUser(user || null); // Set selected user or null if not found
+  };
 
   const handleRefesh = () => {
     router.push('/admin/contracts/refesh_contracts')
@@ -308,13 +374,13 @@ export default function Contract() {
       <TableHead>Mã hợp đồng</TableHead>
       <TableHead>Tên phòng - Tòa nhà</TableHead>
       <TableHead>Tên Người Dùng</TableHead>
-      <TableHead>Thời Hạn Thuê</TableHead>
       <TableHead>Ngày lập</TableHead>
+      <TableHead>Tình trạng </TableHead>
       <TableHead>Chức Năng</TableHead>
     </TableRow>
   </TableHeader>
   <TableBody>
-    {Contracts.map((contract, index)  => (
+    {Contracts?.map((contract, index)  => (
       <TableRow key={index}>
         <TableCell>{index + 1}</TableCell> {/* STT */}
         <TableCell>{contract.id}</TableCell> {/* Mã hợp đồng */}
@@ -322,13 +388,10 @@ export default function Contract() {
         <TableCell>{contract.userName}</TableCell> {/* Tên Người Dùng */}
         <TableCell>
           {contract.date_start}
-        </TableCell> {/* Thời Hạn Thuê */}
+        </TableCell>
         <TableCell>
-          {contract.status === "active" ? (
-            <span className="text-green-500">Đang thuê</span>
-          ) : (
-            <span className="text-red-500">Hết hạn</span>
-          )}
+          {contract.status }
+    
         </TableCell> {/* Trạng Thái */}
         <TableCell>
           <div className="flex space-x-2">
@@ -336,6 +399,7 @@ export default function Contract() {
             <Dialog>
               <DialogTrigger asChild>
                 <Button
+                size="icon"
                   variant="outline"
                   onClick={() => {
                     setSelectedContract(contract);
@@ -344,78 +408,138 @@ export default function Contract() {
                     setStatus(contract.status);
                     setDateStart(contract.date_start);
                     setDateEnd(contract.date_end);
+                          // Gọi trực tiếp các hàm xử lý
+      handleRoomChange({ target: { value: contract.id_room } });
+      handleUserChange({ target: { value: contract.id_user } });
                   }}
                 >
-                  <Pencil className="mr-2 h-4 w-4" />
+                  <Pencil className="h-4 w-4" />
                 </Button>
               </DialogTrigger>
-              <DialogContent className="sm:max-w-[425px]">
+              <DialogContent className="sm:max-w-[80vw]">
                 <DialogHeader>
                   <DialogTitle>Sửa Thông Tin Hợp Đồng</DialogTitle>
                   <DialogDescription>
                     Chỉnh sửa thông tin hợp đồng thuê phòng.
                   </DialogDescription>
                 </DialogHeader>
-                <div className="grid gap-4 py-4">
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="roomName" className="text-right">
-                      Tên Phòng
-                    </Label>
-                    <Input
-                      id="roomName"
-                      value={id_room}
-                      onChange={(e) => setIdRoom(e.target.value)}
-                      className="col-span-3"
-                    />
-                  </div>
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="userName" className="text-right">
-                      Người Dùng
-                    </Label>
-                    <Input
-                      id="userName"
-                      value={id_user}
-                      onChange={(e) => setIdUser(e.target.value)}
-                      className="col-span-3"
-                    />
-                  </div>
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="status" className="text-right">
-                      Trạng Thái
-                    </Label>
-                    <Input
-                      id="status"
-                      value={status}
-                      onChange={(e) => setStatus(e.target.value)}
-                      className="col-span-3"
-                    />
-                  </div>
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="date_start" className="text-right">
-                      Ngày Bắt Đầu
-                    </Label>
-                    <Input
-                      id="date_start"
-                      value={date_start}
-                      onChange={(e) => setDateStart(e.target.value)}
-                      className="col-span-3"
-                    />
-                  </div>
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="date_end" className="text-right">
-                      Ngày Kết Thúc
-                    </Label>
-                    <Input
-                      id="date_end"
-                      value={date_end}
-                      onChange={(e) => setDateEnd(e.target.value)}
-                      className="col-span-3"
-                    />
-                  </div>
-                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <Card>
+          <CardHeader>
+            <CardTitle>Thông tin</CardTitle>
+          </CardHeader>
+          <CardContent>
+          <form onSubmit={handleEditContracts}>
+  <div className="space-y-4">
+    <div className="flex flex-col items-start gap-4">
+      <Label htmlFor="roomName" className="text-start">
+        Tên Phòng
+      </Label>
+      <select
+        id="roomName"
+        value={contract.id_room || ""} // Ensure it is controlled
+        onChange={handleRoomChange}
+        className="border rounded px-3 py-2 w-full"
+        required // Add required for validation
+      >
+        <option value="">Chọn Phòng</option>
+        {rooms?.map((room) => (
+          <option key={room.id} value={room.id}>
+            {room.ten_phong}
+          </option>
+        ))}
+      </select>
+    </div>
+
+    <div className="flex flex-col items-start gap-4">
+      <Label htmlFor="userName" className="text-start">
+        Tên khách hàng
+      </Label>
+      <select
+        id="userName"
+        value={contract.id_user || ""} // Ensure it is controlled
+        onChange={handleUserChange}
+        className="border rounded px-3 py-2 w-full"
+        required // Add required for validation
+      >
+        <option value="">Chọn khách hàng</option>
+        {users?.map((user) => (
+          <option key={user.id} value={user.id}>
+            {user.name}
+          </option>
+        ))}
+      </select>
+    </div>
+
+    <div className="flex flex-col items-start gap-4">
+      <Label htmlFor="status" className="text-start">
+        Trạng thái
+      </Label>
+      <Input
+        id="status"
+        type="text" // Specify the type
+        value={contract.status}
+        onChange={(e) => setContracts({...contract, status: e.target.value})}
+        required // Add required for validation
+      />
+    </div>
+
+    <div className="flex flex-col items-start gap-4">
+      <Label htmlFor="date_start" className="text-start">
+        Ngày bắt đầu
+      </Label>
+      <Input
+        id="date_start"
+        type="date"
+        value={contract.date_start}
+        onChange={(e) => setContracts({...contract, date_start: e.target.value})}
+        required // Add required for validation
+      />
+    </div>
+
+    <div className="flex flex-col items-start gap-4">
+      <Label htmlFor="date_end" className="text-start">
+        Ngày kết thúc
+      </Label>
+      <Input
+        id="date_end"
+        type="date"
+        value={contract.date_end}
+        onChange={(e) => setContracts({...contract, date_end: e.target.value})}
+        required // Add required for validation
+      />
+    </div>
+
+    <div className="flex flex-col items-start gap-4">
+      <Label htmlFor="pdfUpload" className="text-start">
+        File scan hồ sơ
+      </Label>
+      <Input
+        id="pdfUpload"
+        type="file"
+        accept=".pdf"
+        onChange={(e) => handleFileChange(e)}
+        required // Add required for validation
+      />
+    </div>
+
+    <button type="submit" className="mt-4 bg-blue-500 text-white rounded px-4 py-2">
+      Cập nhật hợp đồng
+    </button>
+  </div>
+</form>
+
+          </CardContent>
+        </Card>
+
+        <div className="space-y-4 col-span-2">
+        <EnhancedPreviewCards selectedRoom={selectedRoom} selectedUser={selectedUser} />
+       
+        </div>
+      </div>
                 <DialogFooter>
-                  <Button type="submit" onClick={handleEditContracts}>
-                    Sửa
+                  <Button type="submit" variant="orange" onClick={handleEditContracts}>
+                   Cập nhật
                   </Button>
                 </DialogFooter>
               </DialogContent>

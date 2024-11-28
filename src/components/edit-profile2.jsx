@@ -216,7 +216,7 @@ export default function EditProfile2Component({ user }) {
                         <Label htmlFor="created_at">Ngày tạo tài khoản</Label>
                         <Input disabled id="created_at" value={formatDate(user?.created_at || '')} name="created_at" type="date" />
                     </div>
-                    <Button variant="default" type="submit">Xác nhận</Button>
+                    <Button variant="blue"  type="submit">Xác nhận</Button>
                 </form>
             </CardContent>
         </Card>
@@ -339,38 +339,9 @@ export default function EditProfile2Component({ user }) {
                         </div>
                     </div>
 
-                    {/* Các luật mật khẩu */}
-                    <div className="text-sm text-gray-500 mt-2">
+                  
 
-                        <ul className="list-disc pl-5">
-                            <li
-                                className={`${isLengthValid ? 'text-black' : 'text-gray-400'
-                                    }`}
-                            >
-                                Mật khẩu phải có ít nhất 8 ký tự.
-                            </li>
-                            <li
-                                className={`${hasUpperCase && hasLowerCase && hasNumber
-                                        ? 'text-black'
-                                        : 'text-gray-400'
-                                    }`}
-                            >
-                                Mật khẩu phải bao gồm ít nhất một chữ hoa, một chữ
-                                thường và một số.
-                            </li>
-                            <li
-                                className={`${newPassword !== confirmPassword
-                                        ? 'text-gray-400'
-                                        : 'text-black'
-                                    }`}
-                            >
-                                Mật khẩu không được trùng với mật khẩu trước đó.
-                            </li>
-                        </ul>
-
-                    </div>
-
-                    <Button variant="default" type="submit">
+                    <Button variant="blue" type="submit">
                         Xác nhận
                     </Button>
                 </form>
@@ -398,7 +369,7 @@ export default function EditProfile2Component({ user }) {
                         <Label htmlFor="address">Địa chỉ</Label>
                         <Input id="address" value={formData.address} onChange={handleInputChange} name="address" type="text" />
                     </div>
-                    <Button variant="default" type="submit">Lưu thông tin liên hệ</Button>
+                    <Button variant="blue"  type="submit">Lưu thông tin liên hệ</Button>
                 </form>
             </CardContent>
         </Card>

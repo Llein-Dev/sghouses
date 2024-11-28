@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 
-export default function CommentComponent({ comments = [], onCommentAdd, user }) {
+export default function CommentComponent({ comments , onCommentAdd, user }) {
     const [newComment, setNewComment] = useState("");
 
     const handleCommentSubmit = () => {
@@ -41,25 +41,22 @@ export default function CommentComponent({ comments = [], onCommentAdd, user }) 
                 </div>
                 <Separator className="my-4" />
                 <div className="space-y-4">
-                    {comments.map((comment) => (
+                    {comments?.map((comment) => (
                         <div key={comment.id} className="flex items-start space-x-4">
                             <Avatar>
-                                <AvatarImage src={comment.avatar} alt={comment.author} />
-                                <AvatarFallback>{comment.author[0]}</AvatarFallback>
+                                <AvatarImage src={comment.avatar} alt={comment.name} />
+                                <AvatarFallback>{comment?.name}</AvatarFallback>
                             </Avatar>
                             <div className="flex-1 space-y-2">
-                                <p className="font-semibold">{comment.author}</p>
+                                <p className="font-semibold">{comment.name}</p>
                                 <p>{comment.content}</p>
                                 <div className="flex items-center space-x-4 text-sm text-gray-500">
                                     <button className="flex items-center space-x-1">
-                                        <ThumbsUp className="w-4 h-4" />
-                                        <span>{comment.likes} Thích</span>
+                                
+                                        <span>{comment.date} </span>
                                     </button>
 
-                                    <button className="flex items-center space-x-1">
-                                        <MessageCircle className="w-4 h-4" />
-                                        <span>{comment.replies} Trả lời</span>
-                                    </button>
+                           
                                 </div>
                             </div>
                         </div>

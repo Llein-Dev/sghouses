@@ -68,7 +68,7 @@ export default function BuildingDetailComponent() {
             alert("Có lỗi xảy ra, vui lòng thử lại sau.");
         }
     };
-    const [active, setActive] = useState(false);
+   
     return (
         <div className="container mx-auto px-4 space-y-4 py-4">
             <Breadcrumb />

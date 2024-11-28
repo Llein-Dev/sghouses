@@ -21,12 +21,13 @@ export default function CreateBlog() {
   const [query, setQuery] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const availableLocations = ["Hà Nội", "TP Hồ Chí Minh", "Đà Nẵng", "Hải Phòng"];
+  const availableLocations = ["Hà Nội","Bình Thuận","Quãng Ngãi", "Bình Dương" ,"TP Hồ Chí Minh", "Đà Nẵng", "Hải Phòng"];
   const filteredLocations = availableLocations.filter(
     (loc) =>
       loc.toLowerCase().includes(locationQuery.toLowerCase().trim()) &&
       !locations.includes(loc)
   );
+
   const tags = [
     "Wifi miễn phí",
     "Bảo vệ 24/7",
@@ -367,23 +368,23 @@ export default function CreateBlog() {
                   className="bg-blue-900 text-white px-3 py-2 rounded"
                 >
                   Thêm
-                 </button>
+                </button>
               </div>
 
               {/* Gợi ý vị trí */}
               {locationMenuOpen && filteredLocations.length > 0 && (
                 <div className="absolute top-full left-0 w-full bg-white shadow rounded mt-1 max-h-48 overflow-y-auto z-10">
-                  {filteredLocations.map((loc) => (
+                  {filteredLocations.map((location) => (
                     <div
-                      key={loc}
+                      key={location}
                       className="p-2 cursor-pointer hover:bg-blue-50 hover:text-blue-600"
                       onMouseDown={(e) => e.preventDefault()}
                       onClick={() => {
-                        setViTriList((prev) => [...prev, loc]);
+                        setViTriList((prev) => [...prev, location]);
                         setLocationQuery("");
                       }}
                     >
-                      {loc}
+                      {location}
                     </div>
                   ))}
                 </div>

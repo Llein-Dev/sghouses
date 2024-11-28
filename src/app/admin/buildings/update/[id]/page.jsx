@@ -94,8 +94,6 @@ export default function UpdateBuilding() {
                 const imagePaths = result.image.split(";").map(
                     (path) => `${path.trim()}`
                 );
-                console.log(imagePaths); // Kiểm tra dữ liệu ảnh cũ
-
                 setName(result.name || "");
                 setIdArea(result.id_area || "");
                 setUtilities(result.utilities || "");

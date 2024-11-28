@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
-import { Search, RefreshCcw } from "lucide-react"
+import { Search, RefreshCcw, FileText } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
@@ -112,6 +112,12 @@ export default function KhoiPhucUsers() {
       console.log("Lỗi khi thực hiện khôi phục người dùng:", error);
     }
   };
+
+
+  
+  const handleReturn = () =>{
+    router.push('/admin/users')
+  }
   return (
 
     <div className="space-y-4">
@@ -125,14 +131,19 @@ export default function KhoiPhucUsers() {
             className="max-w-sm"
           />
         </div>
+        <Button  onClick={handleReturn} variant="blue">
+          <FileText className="mr-2 h-4 w-4" />
+         Quay lại trang người dùng
+        </Button>
       </div>
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Name</TableHead>
+            <TableHead>STT</TableHead>
+            <TableHead>Tên</TableHead>
             <TableHead>Email</TableHead>
-            <TableHead>Role</TableHead>
-            <TableHead>Actions</TableHead>
+            <TableHead>Quyền</TableHead>
+            <TableHead>Hành động</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>

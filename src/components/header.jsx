@@ -68,7 +68,6 @@ export function HeaderComponent() {
 
     fetchUserProfile();
   }, [dispatch]); // Adding dispatch in dependency array
-  console.log(user);
 
   const NavItems = () => (
     <>

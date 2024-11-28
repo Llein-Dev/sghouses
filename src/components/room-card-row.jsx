@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardFooter, CardTitle } from "@/components/ui/card";
 
 export function RoomCardRowComponent({ product }) {
-  console.log(product);
+
 
   // Split the image string and get the first image URL
   const images = product?.hinh_anh ? product.hinh_anh.split(";") : [];

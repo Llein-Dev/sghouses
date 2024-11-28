@@ -46,10 +46,10 @@ export default function FilterPage() {
                         )
                     )}
                 </div>
-                <div className="md:w-1/4 my-4">
+                <div className="md:w-1/4 space-y-6">
                     {categories.map((category, index) => (
                         <Link key={index} href={`/filter?area=${category.slug}`} className="flex w-full overflow-hidden rounded-lg shadow flex-col items-center group">
-                            <div className="relative w-full aspect-[4/3] mb-2 overflow-hidden">
+                            <div className="relative w-full aspect-[16/9] mb-2 overflow-hidden">
                                 <img
                                     src={`http://localhost:8000/storage/${category?.image}`}
                                     alt={category.name}

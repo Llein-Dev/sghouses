@@ -18,6 +18,7 @@ export function SearchFilterComponent({ onResultsUpdate, setLoading }) {
   const [sizeRange, setSizeRange] = useState({ min: 0, max: 100, [0]: 0, [1]: 100 });
   const [error, setError] = useState("");
   const [locations, setLocations] = useState([]);
+
   const handleRangedientich = (newRange) => {
     setSizeRange(newRange);
   };
@@ -25,6 +26,7 @@ export function SearchFilterComponent({ onResultsUpdate, setLoading }) {
   const handleRangeValue = (newRange) => {
     setPriceRange(newRange);
   };
+
   useEffect(() => {
     const fetchLocations = async () => {
       try {
@@ -43,14 +45,44 @@ export function SearchFilterComponent({ onResultsUpdate, setLoading }) {
     fetchLocations();
   }, []);
 
+  useEffect(() => {
+    // Fetch search params from localStorage
+    const searchParams = JSON.parse(localStorage.getItem("searchParams"));
+    if (searchParams) {
+      const { keyword, area, price, size } = searchParams;
+      console.log(searchParams);
+      
+      // Set state based on localStorage values
+      setKeyword(keyword || "");
+      setArea(area || "");
+
+      if (price) {
+        const [minPrice, maxPrice] = price.split('to').map(Number);
+        setPriceRange({ min: minPrice || 0, max: maxPrice || 20000000, [0]: minPrice || 0, [1]: maxPrice || 20000000 });
+      }
+
+      if (size) {
+        const [minSize, maxSize] = size.split('to').map(Number);
+        setSizeRange({ min: minSize || 0, max: maxSize || 100, [0]: minSize || 0, [1]: maxSize || 100 });
+      }
+    }
+  }, []);
+
   const handleSearch = async (e) => {
     if (e) e.preventDefault();
     setLoading(true);
     setError("");
 
+    // Check if there's at least one search parameter to execute the search
+    if (!keyword && !area && (priceRange[0] === 0 && priceRange[1] === 20000000) && (sizeRange[0] === 0 && sizeRange[1] === 100)) {
+      setLoading(false);
+      return; // Don't proceed with the search
+    }
+    const areaParam = typeof area === "object" && area !== null ? area.slug : area || ""; // Use area.slug if area is an object, otherwise use area directly
+
     const queryParams = new URLSearchParams({
       keyword: keyword,
-      area: area ? area.slug : "",
+      area: areaParam,
       price: `${priceRange[0]}to${priceRange[1]}`,
       size: `${sizeRange[0]}to${sizeRange[1]}`,
     }).toString();
@@ -78,8 +110,11 @@ export function SearchFilterComponent({ onResultsUpdate, setLoading }) {
   };
 
   useEffect(() => {
-    handleSearch(); // Gọi tìm kiếm khi giá trị thay đổi
-  }, [keyword, area, priceRange, sizeRange]); // Gọi tìm kiếm khi những giá trị này thay đổi
+    // Call handleSearch when the relevant state changes
+    if (keyword || area || (priceRange[0] !== 0 || priceRange[1] !== 20000000) || (sizeRange[0] !== 0 || sizeRange[1] !== 100)) {
+      handleSearch(); 
+    }
+  }, [keyword, area, priceRange, sizeRange]); // Call search when these values change
 
   return (
     <div className="w-full bg-white rounded-none md:rounded-xl shadow p-4">

@@ -101,7 +101,8 @@ export default function Contract() {
       console.error("Error:", error);
     }
   };
-
+ console.log(Contracts);
+ 
   const handleAddContracts = async (e) => {
     e.preventDefault();
 
@@ -300,128 +301,141 @@ export default function Contract() {
           </Button>
         </div>
       </div>
-
-
       <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>ID Phòng</TableHead>
-            <TableHead>Id người sử dụng</TableHead>
-            <TableHead>Trạng thái</TableHead>
-            <TableHead>Ngày bắt đầu</TableHead>
-            <TableHead>Ngày kết thúc</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {Contracts.map((contracts, index) => (
-            <TableRow key={index}>
-              <TableCell>{contracts.id_room}</TableCell>
-              <TableCell>{contracts.id_user}</TableCell>
-              <TableCell>{contracts.status}</TableCell>
-              <TableCell>{contracts.date_start}</TableCell>
-              <TableCell>{contracts.date_end}</TableCell>
-              <TableCell>
-                <div className="flex space-x-2">
-                  {/* Nút Gọi điện */}
-                  <Dialog>
-                    <DialogTrigger asChild>
-                      <Button variant="outline" onClick={() => {
-                        setSelectedContract(contracts); // Cập nhật contracts cần chỉnh sửa
-                        setIdRoom(contracts.id_room);
-                        setIdUser(contracts.id_user);
-                        setStatus(contracts.status);
-                        setDateStart(contracts.date_start);
-                        setDateEnd(contracts.date_end);
-                      }}>
-                        <Pencil className="mr-2 h-4 w-4" />
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent className="sm:max-w-[425px]">
-                      <DialogHeader>
-                        <DialogTitle>Edit Cate BLog</DialogTitle>
-                        <DialogDescription>
-                          Edit a Cate Blog account.
-                        </DialogDescription>
-                      </DialogHeader>
-                      <div className="grid gap-4 py-4">
-                        <div className="grid grid-cols-4 items-center gap-4">
-                          <Label htmlFor="name" className="text-right">
-                            Name
-                          </Label>
-                          <Input
-                            id="name"
-                            value={id_room}
-                            onChange={(e) => setIdRoom(e.target.value)}
-                            className="col-span-3"
-                          />
-                        </div>
-                        <div className="grid grid-cols-4 items-center gap-4">
-                          <Label htmlFor="phone" className="text-right">
-                            Phone
-                          </Label>
-                          <Input
-                            id="phone"
-                            type="phone"
-                            value={id_user}
-                            onChange={(e) => setIdUser(e.target.value)}
-                            className="col-span-3"
-                          />
-                        </div>
-                        <div className="grid grid-cols-4 items-center gap-4">
-                          <Label htmlFor="born" className="text-right">
-                            Born
-                          </Label>
-                          <Input
-                            id="born"
-                            type="born"
-                            value={status}
-                            onChange={(e) => setStatus(e.target.value)}
-                            className="col-span-3"
-                          />
-                        </div>
-                        <div className="grid grid-cols-4 items-center gap-4">
-                          <Label htmlFor="born" className="text-right">
-                            Born
-                          </Label>
-                          <Input
-                            id="born"
-                            type="born"
-                            value={date_start}
-                            onChange={(e) => setDateStart(e.target.value)}
-                            className="col-span-3"
-                          />
-                        </div>
-                        <div className="grid grid-cols-4 items-center gap-4">
-                          <Label htmlFor="born" className="text-right">
-                            Born
-                          </Label>
-                          <Input
-                            id="born"
-                            type="born"
-                            value={date_end}
-                            onChange={(e) => setDateEnd(e.target.value)}
-                            className="col-span-3"
-                          />
-                        </div>
-                      </div>
-                      <DialogFooter>
-                        <Button type="submit" onClick={handleEditContracts} >Sửa</Button>
-                      </DialogFooter>
-                    </DialogContent>
-                  </Dialog>
-
-
-
-
-                  <Button variant="outline" size="icon" onClick={() => handleDeleteContracts(contracts.id)}>
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
+  <TableHeader>
+    <TableRow>
+      <TableHead>STT</TableHead>
+      <TableHead>Mã hợp đồng</TableHead>
+      <TableHead>Tên phòng - Tòa nhà</TableHead>
+      <TableHead>Tên Người Dùng</TableHead>
+      <TableHead>Thời Hạn Thuê</TableHead>
+      <TableHead>Ngày lập</TableHead>
+      <TableHead>Chức Năng</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    {Contracts.map((contract, index)  => (
+      <TableRow key={index}>
+        <TableCell>{index + 1}</TableCell> {/* STT */}
+        <TableCell>{contract.id}</TableCell> {/* Mã hợp đồng */}
+        <TableCell>{`${contract.roomName} - ${contract.buildingName}`}</TableCell> {/* Tên phòng - Tòa nhà */}
+        <TableCell>{contract.userName}</TableCell> {/* Tên Người Dùng */}
+        <TableCell>
+          {contract.date_start}
+        </TableCell> {/* Thời Hạn Thuê */}
+        <TableCell>
+          {contract.status === "active" ? (
+            <span className="text-green-500">Đang thuê</span>
+          ) : (
+            <span className="text-red-500">Hết hạn</span>
+          )}
+        </TableCell> {/* Trạng Thái */}
+        <TableCell>
+          <div className="flex space-x-2">
+            {/* Nút Chỉnh Sửa */}
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setSelectedContract(contract);
+                    setIdRoom(contract.roomName);
+                    setIdUser(contract.userName);
+                    setStatus(contract.status);
+                    setDateStart(contract.date_start);
+                    setDateEnd(contract.date_end);
+                  }}
+                >
+                  <Pencil className="mr-2 h-4 w-4" />
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[425px]">
+                <DialogHeader>
+                  <DialogTitle>Sửa Thông Tin Hợp Đồng</DialogTitle>
+                  <DialogDescription>
+                    Chỉnh sửa thông tin hợp đồng thuê phòng.
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="grid gap-4 py-4">
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="roomName" className="text-right">
+                      Tên Phòng
+                    </Label>
+                    <Input
+                      id="roomName"
+                      value={id_room}
+                      onChange={(e) => setIdRoom(e.target.value)}
+                      className="col-span-3"
+                    />
+                  </div>
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="userName" className="text-right">
+                      Người Dùng
+                    </Label>
+                    <Input
+                      id="userName"
+                      value={id_user}
+                      onChange={(e) => setIdUser(e.target.value)}
+                      className="col-span-3"
+                    />
+                  </div>
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="status" className="text-right">
+                      Trạng Thái
+                    </Label>
+                    <Input
+                      id="status"
+                      value={status}
+                      onChange={(e) => setStatus(e.target.value)}
+                      className="col-span-3"
+                    />
+                  </div>
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="date_start" className="text-right">
+                      Ngày Bắt Đầu
+                    </Label>
+                    <Input
+                      id="date_start"
+                      value={date_start}
+                      onChange={(e) => setDateStart(e.target.value)}
+                      className="col-span-3"
+                    />
+                  </div>
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="date_end" className="text-right">
+                      Ngày Kết Thúc
+                    </Label>
+                    <Input
+                      id="date_end"
+                      value={date_end}
+                      onChange={(e) => setDateEnd(e.target.value)}
+                      className="col-span-3"
+                    />
+                  </div>
                 </div>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+                <DialogFooter>
+                  <Button type="submit" onClick={handleEditContracts}>
+                    Sửa
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+
+            {/* Nút Xóa */}
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={() => handleDeleteContracts(contract.id)}
+            >
+              <Trash2 className="h-4 w-4" />
+            </Button>
+          </div>
+        </TableCell>
+      </TableRow>
+    ))}
+  </TableBody>
+</Table>
+
     </div>
   )
 }

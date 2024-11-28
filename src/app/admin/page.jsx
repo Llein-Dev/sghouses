@@ -77,9 +77,9 @@ export default function Home() {
     } else {
       router.push('/login');
     }
+    
   }, [router]);
-  if (error) return <p>Lỗi: {error}</p>;
-  if (!data) return <p>Đang tải dữ liệu...</p>;
+
   return (
     <>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 w-full">
@@ -99,7 +99,13 @@ export default function Home() {
             </svg>
           </CardHeader>
           <CardContent>
+          {error ? (
+            <p className="text-red-500 "> {error}</p>
+          ) : !data ? (
+            <p>Đang tải dữ liệu...</p>
+          ) : (
             <div className="text-2xl font-bold">{data.total_user}</div>
+          )}
           </CardContent>
         </Card>
         <Card>
@@ -120,7 +126,13 @@ export default function Home() {
             </svg>
           </CardHeader>
           <CardContent>
+          {error ? (
+            <p className="text-red-500">{error}</p>
+          ) : !data ? (
+            <p>Đang tải dữ liệu...</p>
+          ) : (
             <div className="text-2xl font-bold">{data.total_contract}</div>
+          )}
           </CardContent>
         </Card>
         <Card>
@@ -140,7 +152,13 @@ export default function Home() {
             </svg>
           </CardHeader>
           <CardContent>
+            {error? (
+            <p className="text-red-500">{error}</p>
+          ) : !data ? (
+            <p>Đang tải dữ liệu...</p>
+          ) : (
             <div className="text-2xl font-bold">{data.total_contact_room}</div>
+          )}
           </CardContent>
         </Card>
       </div>

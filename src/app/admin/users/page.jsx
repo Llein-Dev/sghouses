@@ -1,9 +1,12 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { Search, UserPlus, Pencil, Trash2, BookCopy, Phone } from "lucide-react"
+import { Search, UserPlus, Pencil, Trash2, BookCopy, Phone, FileText } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import {
   Table,
   TableBody,
@@ -99,6 +102,10 @@ export default function UsersContent() {
   // Nhân bản user
   const handleCopyUser = async (id) => {
     const adminToken = Cookies.get("token");
+    const userToDelete = filteredUsers.find((user) => user.id == id);
+    if(userToDelete?.role == 0){
+      toast.error("Không thể nhân bản admin!"); // Thông báo lỗi
+     }
     try {
       const response = await fetch(`http://localhost:8000/api/user/duplicate/${id}`, {
         method: "GET",
@@ -109,6 +116,7 @@ export default function UsersContent() {
       });
       if (response.ok) {
         const newUser = await response.json();
+        toast.success("nhân bản thành công !"); // Thông báo lỗi
         setUsers((prevUsers) => [...prevUsers, newUser]); // Cập nhật danh sách user
         // Hiện thông báo và tải lại danh sách users
         fetchData(); // Gọi lại fetchData để tải lại danh sách user mới
@@ -126,6 +134,12 @@ export default function UsersContent() {
   // Delete user
   const handleDeleteUser = async (id) => {
     const adminToken = Cookies.get("token");
+     // Tìm user theo ID
+  const userToDelete = filteredUsers.find((user) => user.id === id);
+  // Kiểm tra nếu role là 
+  if (userToDelete?.role === 0) {
+    toast.error("Không thể xóa admin!"); // Thông báo lỗi    
+  }
     try {
       const response = await fetch(`http://localhost:8000/api/user/delete/${id}`, {
         method: "DELETE",
@@ -138,14 +152,10 @@ export default function UsersContent() {
       console.log('Delete response status:', response.status);
 
       if (response.ok) {
-        // Cập nhật danh sách người dùng bằng cách loại bỏ người dùng đã xóa
+        toast.success("Xóa người dùng thành công !"); // Thông báo lỗi        // Cập nhật danh sách người dùng bằng cách loại bỏ người dùng đã xóa
         setUsers((prevUsers) => prevUsers.filter(user => user.id !== id));
-        const shouldGoToRecovery = window.confirm("Xóa người dùng thành công! Bạn có muốn đến trang khôi phục không?");
-        if (shouldGoToRecovery) {
-          router.push("/admin/users/KhoiPhucUsers"); // Chuyển đến trang khôi phục
-        } else {
           fetchData(); // Cập nhật danh sách người dùng nếu không chuyển trang
-        }
+          
       } else {
         const errorData = await response.json();
         setError(errorData.message || "Lỗi khi xóa người dùng");
@@ -197,7 +207,10 @@ export default function UsersContent() {
     }
   };
 
-
+  const handleRefesh = () =>{
+    router.push('/admin/users/KhoiPhucUsers')
+  }
+    
 
   return (
     <div className="space-y-4">
@@ -211,14 +224,20 @@ export default function UsersContent() {
             className="max-w-sm"
           />
         </div>
+        <Button  onClick={handleRefesh} variant="blue">
+          <FileText className="mr-2 h-4 w-4" />
+          Khôi phục người dùng
+        </Button>
       </div>
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Name</TableHead>
+            <TableHead>STT</TableHead>
+            <TableHead>Tên</TableHead>
             <TableHead>Email</TableHead>
-            <TableHead>Role</TableHead>
-            <TableHead>Actions</TableHead>
+            <TableHead>Số điện thoại</TableHead>
+            <TableHead>Quyền</TableHead>
+            <TableHead>Hành động</TableHead>
           </TableRow>
         </TableHeader>
           <TableBody>
@@ -228,6 +247,7 @@ export default function UsersContent() {
                 <TableCell>{user.name}</TableCell>
                 <TableCell>{user.email}</TableCell>
                 <TableCell>{user.phone}</TableCell>
+                <TableCell>{user.role}</TableCell>
                 <TableCell>
                   <div className="flex space-x-2">
                     {/* Nút Gọi điện */}
@@ -317,6 +337,14 @@ export default function UsersContent() {
             ))}
           </TableBody>
       </Table>
+      <ToastContainer 
+  position="top-center" // Hiển thị ở giữa ngang màn hình, trên cùng
+  autoClose={1500}      // Tự động tắt sau 3 giây
+  hideProgressBar={false} 
+  closeOnClick 
+  pauseOnHover 
+  draggable 
+/>
     </div>
   )
 }

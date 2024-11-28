@@ -8,7 +8,9 @@ export default function UpdateRoom() {
     const { id } = useParams();
 
     // State lưu thông tin từ API
+    const [id_building, setIDToaNha] = useState("")
     const [name, setName] = useState("");  // cần sửa nhưng không thây đổi
+    const [gac_lung, setGacLung] = useState([])
     const [tien_ich, setUtilities] = useState(""); // cần sửa thành tien_ich
     const [dien_tich, setDienTich] = useState(""); // cần sửa thành dien_tich
     const [imageOld, setImageOld] = useState([]); // Danh sách ảnh cũ từ API
@@ -24,13 +26,13 @@ export default function UpdateRoom() {
             router.push("/");
             return;
         }
-        fetchRoomData(adminToken);
+        fetchRoomDetail(adminToken);
     }, [id, router]);
 
   
 
     // Hàm lấy dữ liệu chi tiết tòa nhà từ API
-    const fetchRoomData = async (token) => {
+    const fetchRoomDetail = async (token) => {
         try {
             const response = await fetch(`http://localhost:8000/api/phong/${id}`, {
                 method: "GET",
@@ -39,19 +41,18 @@ export default function UpdateRoom() {
                     "Content-Type": "application/json",
                 },
             });
-
+    
+            console.log("Response status:", response.status);
+    
             if (response.ok) {
                 const result = await response.json();
-                // Tách danh sách ảnh từ chuỗi `image`
-                const imagePaths = result.image.split(";").map(
-                    (path) => `${path.trim()}`
-                );
-                console.log(result); // Kiểm tra dữ liệu ảnh cũ
-
+                console.log(result)
+                setImageOld(result.hinh_anh ? result.hinh_anh.split(";") : []);
+                setIDToaNha(result.id_building || "");
                 setName(result.name || "");
+                setGacLung(result.gac_lung || "");
                 setUtilities(result.tien_ich || "");
                 setDienTich(result.dien_tich || "");
-                setImageOld(imagePaths); // Lưu danh sách ảnh cũ
             } else if (response.status === 401) {
                 setError("Không có quyền truy cập. Vui lòng đăng nhập lại.");
                 router.push("/");
@@ -59,11 +60,11 @@ export default function UpdateRoom() {
                 setError("Lỗi không xác định.");
             }
         } catch (err) {
-            setError("Không thể truy cập dữ liệu.");
+            console.error("Fetch error:", err);
         }
-
     };
-
+    
+    
     // Hàm xử lý chọn ảnh mới
     const handleImageChange = (e) => {
         const files = Array.from(e.target.files);
@@ -92,7 +93,14 @@ export default function UpdateRoom() {
     // Hàm xử lý khi gửi form
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+        console.log("Data being submitted:", {
+            name, 
+            id_building, 
+            gac_lung, 
+            tien_ich, 
+            dien_tich, 
+            imageDelete
+        });
         const adminToken = Cookies.get("token");
         if (!adminToken) {
             setError("Bạn cần đăng nhập để thực hiện thao tác này.");
@@ -101,9 +109,11 @@ export default function UpdateRoom() {
         }
 
         const formData = new FormData();
+        formData.append("id_building", id_building);
+        formData.append("name", name);
+        formData.append("gac_lung", gac_lung);
         formData.append("tien_ich", tien_ich);
         formData.append("dien_tich", dien_tich);
-        formData.append("name", name);
         formData.append("image_delete", imageDelete);
 
         // Gửi danh sách ảnh mới
@@ -141,8 +151,18 @@ const handleChangeReturn = () =>{
                 {error && <p className="text-red-500 mb-4">{error}</p>}
 
                 <form onSubmit={handleSubmit} className="space-y-4">
-
-                 
+                <div>
+                        <label className="block text-gray-600">ID tòa nhà</label>
+                        <input
+                            type="text"
+                            value={id_building}
+                            onChange={(e) => setIDToaNha(e.target.value)}
+                            className="w-full p-2 border border-gray-300 rounded mt-1"
+                            placeholder="Nhập tiêu đề"
+                            required
+                        />
+                    </div>
+                    
                     <div>
                         <label className="block text-gray-600">Tên Phòng</label>
                         <input
@@ -154,6 +174,18 @@ const handleChangeReturn = () =>{
                             required
                         />
                     </div>
+                    <div>
+                        <label className="block text-gray-600">Gác Lửng</label>
+                        <input
+                            type="text"
+                            value={gac_lung}
+                            onChange={(e) => setGacLung(e.target.value)}
+                            className="w-full p-2 border border-gray-300 rounded mt-1"
+                            placeholder="Nhập tiêu đề"
+                            required
+                        />
+                    </div>
+                 
                     <div>
                         <label className="block text-gray-600">Tiện ích</label>
                         <input

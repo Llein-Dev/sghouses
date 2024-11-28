@@ -16,7 +16,7 @@ import zxcvbn from 'zxcvbn'
 const genderOptions = [
     { value: 0, label: 'Nam' },
     { value: 1, label: 'Nữ' },
-    { value: '', label: 'Khác' },
+    { value: 2, label: 'Khác' },
 ]
 
 const formatDate = (isoDateString) => {

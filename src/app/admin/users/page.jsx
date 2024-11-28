@@ -34,14 +34,14 @@ export default function UsersContent() {
   const [error, setError] = useState(null);
   const [selectedUser, setSelectedUser] = useState(null); // State cho user cần chỉnh sửa
   const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
-  const [born, setBorn] = useState("");
   const router = useRouter()
 
   // search State dựa trên state users đã render dữ liệu
   const [searchTerm, setSearchTerm] = useState(""); // State lưu giá trị tìm kiếm
   const [filteredUsers, setFilteredUsers] = useState([]); // Danh sách user sau khi lọc
+  const [currentPage, setCurrentPage] = useState(1); // Trang hiện tại
+  const [usersPerPage] = useState(5); // Số lượng người dùng hiển thị mỗi trang
 
 
 
@@ -93,10 +93,15 @@ export default function UsersContent() {
     // Call the prop to expose fetchData
   }, [router]);
 
-
   useEffect(() => {
-    setFilteredUsers(users); // Cập nhật filteredUsers mỗi khi users thay đổi
-  }, [users]);
+    const filtered = users.filter((user) => {
+      const name = user.name ? user.name.toLowerCase() : '';
+      const email = user.email ? user.email.toLowerCase() : '';
+      return `${name} ${email}`.includes(searchTerm.toLowerCase());
+    });
+    setFilteredUsers(filtered);
+    setCurrentPage(1); // Reset về trang đầu tiên khi tìm kiếm
+  }, [searchTerm, users]);
 
 
   // Nhân bản user
@@ -173,9 +178,7 @@ export default function UsersContent() {
 
     const updatedUser = {
       name,
-      phone,
       address,
-      born
     };
 
     try {
@@ -193,9 +196,7 @@ export default function UsersContent() {
         setUsers(users.map(user => (user.id === selectedUser.id ? updatedData : user))); // Cập nhật danh sách người dùng
         setSelectedUser(null); // Đặt lại user đã chọn
         setName("");
-        setPhone("");
         setAddress("");
-        setBorn("");
         fetchData();
       } else {
         const errorData = await response.json();
@@ -211,6 +212,12 @@ export default function UsersContent() {
     router.push('/admin/users/KhoiPhucUsers')
   }
     
+  // Phân trang
+  const indexOfLastUser = currentPage * usersPerPage;
+  const indexOfFirstUser = indexOfLastUser - usersPerPage;
+  const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
     <div className="space-y-4">
@@ -241,7 +248,7 @@ export default function UsersContent() {
           </TableRow>
         </TableHeader>
           <TableBody>
-            {filteredUsers.map((user, index) => (
+            {currentUsers.map((user, index) => (
               <TableRow key={index}>
                 <TableCell>{user.id}</TableCell>
                 <TableCell>{user.name}</TableCell>
@@ -256,9 +263,7 @@ export default function UsersContent() {
                         <Button variant="outline" onClick={() => {
                           setSelectedUser(user); // Cập nhật user cần chỉnh sửa
                           setName(user.name);
-                          setPhone(user.phone);
                           setAddress(user.address);
-                          setBorn(user.born);
                         }}>
                           <Pencil className="mr-2 h-4 w-4" />
                         </Button>
@@ -282,37 +287,13 @@ export default function UsersContent() {
                               className="col-span-3"
                             />
                           </div>
-                          <div className="grid grid-cols-4 items-center gap-4">
-                            <Label htmlFor="phone" className="text-right">
-                              Phone
-                            </Label>
-                            <Input
-                              id="phone"
-                              type="phone"
-                              value={phone}
-                              onChange={(e) => setPhone(e.target.value)}
-                              className="col-span-3"
-                            />
-                          </div>
-                          <div className="grid grid-cols-4 items-center gap-4">
-                            <Label htmlFor="born" className="text-right">
-                              Born
-                            </Label>
-                            <Input
-                              id="born"
-                              type="born"
-                              value={born}
-                              onChange={(e) => setBorn(e.target.value)}
-                              className="col-span-3"
-                            />
-                          </div>
+                      
                           <div className="grid grid-cols-4 items-center gap-4">
                             <Label htmlFor="address" className="text-right">
                               Address
                             </Label>
                             <Input
                               id="address"
-                              type="address"
                               value={address}
                               onChange={(e) => setAddress(e.target.value)}
                               className="col-span-3"
@@ -327,7 +308,7 @@ export default function UsersContent() {
                     <Button variant="outline" size="icon" onClick={() => handleDeleteUser(user.id)}>
                       <Trash2 className="h-4 w-4" />
                     </Button>
-                    <Button variant="outline" size="icon" onClick={() => handleCopyUser(user.id)} >
+                    <Button variant="outline" size="icon" onClick={() =>  handleCopyUser(user.id)} >
                       <BookCopy className="h-4 w-4"
                       />
                     </Button>
@@ -337,6 +318,18 @@ export default function UsersContent() {
             ))}
           </TableBody>
       </Table>
+       {/* Pagination */}
+       <div className="flex justify-center mt-4">
+        {[...Array(Math.ceil(filteredUsers.length / usersPerPage))].map((_, index) => (
+          <Button
+            key={index}
+            onClick={() => paginate(index + 1)}
+            variant={currentPage === index + 1 ? "blue" : "outline"}
+          >
+            {index + 1}
+          </Button>
+        ))}
+      </div>
       <ToastContainer 
   position="top-center" // Hiển thị ở giữa ngang màn hình, trên cùng
   autoClose={1500}      // Tự động tắt sau 3 giây

@@ -71,7 +71,7 @@ export default function Contract() {
           },
         });
         const usersData = await usersResponse.json();
-        setUserss(usersData.list);
+        setUsers(usersData.list);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -584,11 +584,6 @@ export default function Contract() {
                       </form>
 
 
-                      <DialogFooter>
-                        <Button type="submit" variant="orange" onClick={() => handleEditContracts(contract.id)}>
-                          Cập nhật
-                        </Button>
-                      </DialogFooter>
 
                     </DialogContent>
                   </Dialog>

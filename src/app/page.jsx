@@ -40,7 +40,7 @@ export default function Home() {
         </div>
         {/* Featured Products */}
         <div className="px-4 space-y-8 flex flex-col justify-center items-center container mx-auto">
-          <h2 className="text-start w-full font-bold text-2xl text-[#00008B]">Phòng trọ <span className="text-[#FF5C00]">nổi bật</span></h2>
+          <h2 className="text-start w-full font-bold text-2xl text-[#00008B]">Tòa nhà <span className="text-[#FF5C00]">nổi bật</span></h2>
           {featuredLoading && <p className="text-center"> <Spinner /> </p>} {/* Hiển thị loading */}
           {featuredError && <ErrorComponent message={featuredError} />} {/* Hiển thị lỗi */}
           {!featuredError && ( // Ẩn phần dữ liệu và nút nếu có lỗi
@@ -55,7 +55,7 @@ export default function Home() {
 
         {/*View House Products */}
         <div className="px-4 space-y-8 flex flex-col justify-center items-center container mx-auto">
-          <h2 className="text-start w-full font-bold text-2xl text-[#00008B]">Phòng trọ <span className="text-[#FF5C00]">lượt xem nhiều nhất</span></h2>
+          <h2 className="text-start w-full font-bold text-2xl text-[#00008B]">Tòa nhà <span className="text-[#FF5C00]">lượt xem nhiều nhất</span></h2>
 
           {ViewLoading && <p className="text-center"> <Spinner /> </p>} {/* Hiển thị loading */}
           {ViewError && <ErrorComponent message={ViewError} />} {/* Hiển thị lỗi */}
@@ -72,7 +72,7 @@ export default function Home() {
 
         {/* Cheap House Products */}
         <div className="px-4 space-y-8 flex flex-col justify-center items-center container mx-auto">
-          <h2 className="text-start w-full font-bold text-2xl text-[#00008B]">Phòng trọ <span className="text-[#FF5C00]">giá rẻ nhất</span></h2>
+          <h2 className="text-start w-full font-bold text-2xl text-[#00008B]">Tòa nhà <span className="text-[#FF5C00]">mới cập nhật</span></h2>
 
           {CheapLoading && <p className="text-center"> <Spinner /> </p>} {/* Hiển thị loading */}
           {CheapError && <ErrorComponent message={CheapError} />} {/* Hiển thị lỗi */}

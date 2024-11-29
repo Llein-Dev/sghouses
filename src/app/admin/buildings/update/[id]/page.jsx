@@ -1,5 +1,5 @@
 "use client";
-    import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import { useParams, useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
@@ -34,6 +34,7 @@ export default function UpdateBuilding() {
     const [description, setDescription] = useState("");
     const [utilities, setUtilities] = useState("");
     const [location, setLocation] = useState("");
+    const [locations, setLocations] = useState("");
     const [imageOld, setImageOld] = useState([]); // Danh sách ảnh cũ từ API
     const [images, setImages] = useState([]); // Danh sách ảnh mới
     const [imageDelete, setImageDelete] = useState(''); // Danh sách ảnh cần xóa
@@ -41,6 +42,7 @@ export default function UpdateBuilding() {
     const [showModal, setShowModal] = useState(false);
     const [showModalFalse, setShowModalFalse] = useState(false);
     const [option, setOption] = useState([]);
+    const [query, setQuery] = useState(""); // Initialize query state
     useEffect(() => {
         const adminToken = Cookies.get("token");
         if (!adminToken) {
@@ -76,6 +78,7 @@ export default function UpdateBuilding() {
         }
 
     };
+
 
     // Hàm lấy dữ liệu chi tiết tòa nhà từ API
     const fetchBuildingData = async (token) => {
@@ -179,9 +182,47 @@ export default function UpdateBuilding() {
         }
     };
 
-const handleChangeReturn = () =>{
-    router.push('/admin/buildings')
-}
+    const handleRemoveUtility = (utilityToRemove) => {
+        setUtilities(
+            utilities
+                .split(";") // Tách chuỗi thành mảng
+                .filter((utility) => utility.trim() !== utilityToRemove.trim()) // Loại bỏ phần tử muốn xóa
+                .join(";") // Chuyển lại thành chuỗi
+        );
+    };
+    // Handle adding a utility
+    const handleAddUtility = () => {
+        if (query.trim() !== "") {
+            // Add the new utility, ensuring utilities is always a string
+            setUtilities((prev) => {
+                const updatedUtilities = prev ? `${prev};${query.trim()}` : query.trim(); // Concatenate with semicolon if there's already a value
+                return updatedUtilities;
+            });
+            setQuery(""); // Reset input field after adding the utility
+        }
+    };
+
+    const handleAddLocation = () => {
+        if (locations.trim() !== "") {
+            setLocation((prev) => {
+                const updatedLocation = prev ? `${prev};${locations.trim()}` : locations.trim(); // Concatenate with semicolon if there's already a value
+                return updatedLocation;
+            });
+            setLocations(""); // Reset input field after adding the utility
+        }
+    };
+    const handleRemoveLocation = (locationToRemove) => {
+        setLocation(
+            location
+                .split(";") // Tách chuỗi thành mảng
+                .filter((loc) => loc.trim() !== locationToRemove.trim()) // Loại bỏ phần tử muốn xóa
+                .join(";") // Chuyển lại thành chuỗi
+        );
+    };
+
+    const handleChangeReturn = () => {
+        router.push('/admin/buildings')
+    }
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
@@ -223,28 +264,81 @@ const handleChangeReturn = () =>{
                             required
                         />
                     </div>
-                    <div>
-                        <label className="block text-gray-600">Tiện ích</label>
+                    <div className="bg-gray-100 p-2 flex flex-wrap gap-2 rounded">
+                        {utilities.split(";").map((utility, index) => (
+                            <div
+                                key={index}
+                                className="bg-blue-900 text-white px-3 py-1 rounded-full flex items-center gap-2"
+                            >
+                                {utility.trim()}
+                                <button
+                                    type="button"
+                                    className="text-white hover:text-gray-300"
+                                    onClick={() => handleRemoveUtility(utility)}
+                                >
+                                    ✕
+                                </button>
+                            </div>
+                        ))}
+                    </div>
+                    <div className="flex items-center gap-2 mt-2">
                         <input
                             type="text"
-                            value={utilities}
-                            onChange={(e) => setUtilities(e.target.value)}
-                            className="w-full p-2 border border-gray-300 rounded mt-1"
-                            placeholder="Nhập tiêu đề"
-                            required
+                            value={query}
+                            onChange={(e) => setQuery(e.target.value)} // Cập nhật query khi người dùng nhập
+                            placeholder="Thêm hoặc tìm tiện ích"
+                            className="w-full p-2 border border-gray-300 rounded"
+                        // onFocus={() => setMenuOpen(true)}
+                        // onBlur={() => setTimeout(() => setMenuOpen(false), 200)}
                         />
+                        <button
+                            type="button"
+                            onClick={handleAddUtility} // Thêm tiện ích khi nhấn nút
+                            className="bg-blue-900 text-white px-3 py-2 rounded"
+                            disabled={query.trim() === ""}
+                        >
+                            Thêm
+                        </button>
                     </div>
-                    <div>
-                        <label className="block text-gray-600">Vị trí</label>
+
+
+                    <div className="bg-gray-100 p-2 flex flex-wrap gap-2 rounded">
+                        {location.split(";").map((loc, index) => (
+                            <div
+                                key={index}
+                                className="bg-blue-900 text-white px-3 py-1 rounded-full flex items-center gap-2"
+                            >
+                                {loc}
+                                <button
+                                    type="button"
+                                    className="text-white hover:text-gray-300"
+                                    onClick={() => handleRemoveLocation(loc)}
+                                >
+                                    ✕
+                                </button>
+                            </div>
+                        ))}
+                    </div>
+                    <div className="flex items-center gap-2 mt-2">
                         <input
                             type="text"
-                            value={location}
-                            onChange={(e) => setLocation(e.target.value)}
-                            className="w-full p-2 border border-gray-300 rounded mt-1"
-                            placeholder="Nhập tiêu đề"
-                            required
+                            value={locations}
+                            onChange={(e) => setLocations(e.target.value)} // Cập nhật query khi người dùng nhập
+                            placeholder="Thêm hoặc tìm tiện ích"
+                            className="w-full p-2 border border-gray-300 rounded"
+                        // onFocus={() => setMenuOpen(true)}
+                        // onBlur={() => setTimeout(() => setMenuOpen(false), 200)}
                         />
+                        <button
+                            type="button"
+                            onClick={handleAddLocation} // Thêm tiện ích khi nhấn nút
+                            className="bg-blue-900 text-white px-3 py-2 rounded"
+                            disabled={locations.trim() === ""}
+                        >
+                            Thêm
+                        </button>
                     </div>
+
 
 
                     {/* Ảnh hiện tại */}
@@ -318,46 +412,46 @@ const handleChangeReturn = () =>{
                     </button>
                 </form>
 
-                
-                 {/* Modal thông báo */}
-            {showModal && (
-                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                    <div className="bg-white p-6 rounded shadow-lg text-center">
-                        <h2 className="text-2xl font-bold text-green-600">Thành công!</h2>
-                        <p className="text-gray-700">Tòa nhà đã được cập nhật thành công.</p>
-                       <div className="flex gap-4 justify-center">
-                       <button
-                            onClick={() => setShowModal(false)}
-                            className="mt-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-                        >
-                            Đóng
-                        </button>
-                        <button
-                            onClick={handleChangeReturn}
-                            className="mt-4 bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600"
-                        >
-                        Quay về tòa nhà
-                        </button>
-                       </div>
+
+                {/* Modal thông báo */}
+                {showModal && (
+                    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                        <div className="bg-white p-6 rounded shadow-lg text-center">
+                            <h2 className="text-2xl font-bold text-green-600">Thành công!</h2>
+                            <p className="text-gray-700">Tòa nhà đã được cập nhật thành công.</p>
+                            <div className="flex gap-4 justify-center">
+                                <button
+                                    onClick={() => setShowModal(false)}
+                                    className="mt-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+                                >
+                                    Đóng
+                                </button>
+                                <button
+                                    onClick={handleChangeReturn}
+                                    className="mt-4 bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600"
+                                >
+                                    Quay về tòa nhà
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            )}
-                 {/* Modal thông báo lỗi */}
-            {showModalFalse && (
-                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                    <div className="bg-white p-6 rounded shadow-lg text-center">
-                        <h2 className="text-lg font-bold text-red-600">Thông báo!</h2>
-                        <p className="text-gray-700">có vấn đề rồi hãy nhập lại !</p>
-                        <button
-                            onClick={() => setShowModalFalse(false)}
-                            className="mt-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-                        >
-                            Đóng
-                        </button>
-                       
+                )}
+                {/* Modal thông báo lỗi */}
+                {showModalFalse && (
+                    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                        <div className="bg-white p-6 rounded shadow-lg text-center">
+                            <h2 className="text-lg font-bold text-red-600">Thông báo!</h2>
+                            <p className="text-gray-700">có vấn đề rồi hãy nhập lại !</p>
+                            <button
+                                onClick={() => setShowModalFalse(false)}
+                                className="mt-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+                            >
+                                Đóng
+                            </button>
+
+                        </div>
                     </div>
-                </div>
-            )}
+                )}
 
 
             </div>

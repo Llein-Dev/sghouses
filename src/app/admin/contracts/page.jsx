@@ -48,8 +48,7 @@ export default function Contract() {
   const adminToken = Cookies.get('token');
   const [rooms, setRooms] = useState(null)
   const [users, setUsers] = useState(null)
-  console.log(users);
-  console.log(rooms);
+
 
   useEffect(() => {
     const fetchRoomsAndUsers = async () => {
@@ -574,13 +573,23 @@ export default function Contract() {
                           <div className="space-y-4 col-span-2">
                             <EnhancedPreviewCards selectedRoom={selectedRoom} selectedUser={selectedUser} />
 
+                          </div>
                         </div>
+
+                        <DialogFooter>
+                          <Button type="submit" variant="orange">
+                            Cập nhật
+                          </Button>
+                        </DialogFooter>
+                      </form>
+
                       </div>
                       <DialogFooter>
-                        <Button type="submit" variant="orange" onClick={handleEditContracts}>
+                        <Button type="submit" variant="orange" onClick={() => handleEditContracts(contract.id)}>
                           Cập nhật
                         </Button>
                       </DialogFooter>
+
                     </DialogContent>
                   </Dialog>
 

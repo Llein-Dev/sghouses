@@ -132,8 +132,7 @@ export default function Contract() {
       }
     };
 
-    fetchDataContracts();
-  }, [router]);
+  }
 
 
 

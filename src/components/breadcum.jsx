@@ -15,8 +15,14 @@ const pathNameMap = {
   about: "Giới thiệu",
   contact: "Liên hệ",
   support: "Hỗ trợ",
-  building: "Tòa nhà"
+  building: "Tòa nhà",
+  "filter-room": "Lọc phòng",
+  profile: "Hồ sơ cá nhân",
+  history: "Lịch sử",
+  edit: "Chỉnh sửa",
+  favourite: "Yêu thích"
 };
+
 
 const Breadcrumb = () => {
   const pathname = usePathname();

@@ -1,6 +1,6 @@
 "use client"
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { useEffect, useState } from "react"
 import { Search, FileText, Eye, Download, Trash2, BookCopy, Link, Pencil, Book, Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -114,27 +114,23 @@ export default function Contract() {
         },
       });
 
-        if (response.ok) {
-          const result = await response.json();
-          if (Array.isArray(result)) {
-            setContracts(result); // Đảm bảo chỉ set khi result là mảng
-          } else {
-            setContracts([]); // Nếu không, đặt là mảng rỗng
-            console.error("Dữ liệu trả về không phải mảng:", result);
-          }
+      if (response.ok) {
+        const result = await response.json();
+        if (Array.isArray(result)) {
+          setContracts(result); // Đảm bảo chỉ set khi result là mảng
         } else {
-          console.error('Lỗi khi gọi API');
-          setContracts([]); // Đặt Contracts là mảng rỗng nếu có lỗi
+          setContracts([]); // Nếu không, đặt là mảng rỗng
+          console.error("Dữ liệu trả về không phải mảng:", result);
         }
-      } catch (error) {
-        console.error('Lỗi khi fetch dữ liệu:', error);
+      } else {
+        console.error('Lỗi khi gọi API');
         setContracts([]); // Đặt Contracts là mảng rỗng nếu có lỗi
       }
-    };
-
-  }
-
-
+    } catch (error) {
+      console.error('Lỗi khi fetch dữ liệu:', error);
+      setContracts([]); // Đặt Contracts là mảng rỗng nếu có lỗi
+    }
+  };
 
   const handleDeleteContracts = async (id) => {
     const adminToken = Cookies.get("token");
@@ -292,7 +288,7 @@ export default function Contract() {
                 handleUserChange({ target: { value: id_user } });
               }} variant="blue" className="bg-green-700 text-white hover:bg-green-600">
                 <Plus className="mr-2 h-4 w-4" />
-                Thêm hợp đồng
+                Thêm Danh Mục
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[80vw]">
@@ -411,7 +407,7 @@ export default function Contract() {
           {/* khôi phục Danh Mục tin tức */}
           <Button variant="blue" onClick={handleRefesh}>
             <FileText className="mr-2 h-4 w-4" />
-            Khôi phục
+            Refesh Contract
           </Button>
         </div >
       </div >
@@ -601,7 +597,7 @@ export default function Contract() {
           ))}
         </TableBody>
       </Table>
-      <ToastContainer />
+
     </div >
   )
 }

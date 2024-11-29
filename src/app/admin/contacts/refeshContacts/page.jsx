@@ -19,6 +19,9 @@ import {
 export default function KhoiPhucUsers() {
   const [deletedContacts, setDeletedContacts] = useState([]);
   const [error, setError] = useState(null);
+  const [searchTerm, setSearchTerm] = useState(""); // Từ khóa tìm kiếm
+  const [currentPage, setCurrentPage] = useState(1); // Trang hiện tại
+  const [itemsPerPage] = useState(5); // Số lượng mục mỗi trang
   const router = useRouter();
 
   const fetchDeletedContacts = async () => {
@@ -65,7 +68,7 @@ export default function KhoiPhucUsers() {
       if (response.ok) {
         toast.success("Khôi phục thành công!");
         setDeletedContacts((prevContacts) => prevContacts.filter(contact => contact.id !== id));
-        } else {
+      } else {
         const errorData = await response.json();
         setError(errorData.message || "Lỗi khi khôi phục liên hệ");
       }
@@ -73,9 +76,24 @@ export default function KhoiPhucUsers() {
       console.error("Lỗi khi thực hiện khôi phục liên hệ:", error);
     }
   };
+
   const handleReturn = () => {
-    router.push("/admin/contact");
+    router.push("/admin/contacts");
   };
+
+  // Phân trang
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const filteredContacts = deletedContacts.filter((contact) =>
+    `${contact.name} ${contact.phone} ${contact.id_room} ${contact.content}`
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase())
+  );
+  const currentItems = filteredContacts.slice(indexOfFirstItem, indexOfLastItem);
+
+  const totalPages = Math.ceil(filteredContacts.length / itemsPerPage);
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
@@ -83,13 +101,17 @@ export default function KhoiPhucUsers() {
           <Search className="h-5 w-5 text-gray-500" />
           <Input
             placeholder="Tìm kiếm..."
-            value={""}
+            value={searchTerm}
+            onChange={(e) => {
+              setSearchTerm(e.target.value);
+              setCurrentPage(1); // Reset về trang đầu khi tìm kiếm
+            }}
             className="max-w-sm"
           />
         </div>
-        <Button  onClick={handleReturn} variant="blue">
+        <Button onClick={handleReturn} variant="blue">
           <FileText className="mr-2 h-4 w-4" />
-         Quay lại trang liên hệ
+          Quay lại trang liên hệ
         </Button>
       </div>
       <Table>
@@ -100,30 +122,53 @@ export default function KhoiPhucUsers() {
             <TableHead>Điện thoại</TableHead>
             <TableHead>Số phòng</TableHead>
             <TableHead>Nội dung</TableHead>
+            <TableHead>Hành động</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {
-            deletedContacts.map((contacts, index) => (
-              <TableRow key={index}>
-                <TableCell>{contacts.id}</TableCell>
-                <TableCell>{contacts.name}</TableCell>
-                <TableCell>{contacts.phone}</TableCell>
-                <TableCell>{contacts.id_room}</TableCell>
-                <TableCell>{contacts.content}</TableCell>
-                <TableCell>
-                  <div className="flex space-x-2">
-                    <Button variant="outline" size="icon" onClick={() => handleRefesh(contacts.id)}>
-                      <RefreshCcw className="h-4 w-4" />
-                    </Button>
-                  </div>
+            currentItems.length > 0 ? (
+              currentItems.map((contacts, index) => (
+                <TableRow key={index}>
+                  <TableCell>{contacts.id}</TableCell>
+                  <TableCell>{contacts.name}</TableCell>
+                  <TableCell>{contacts.phone}</TableCell>
+                  <TableCell>{contacts.id_room}</TableCell>
+                  <TableCell>{contacts.content}</TableCell>
+                  <TableCell>
+                    <div className="flex space-x-2">
+                      <Button variant="outline" size="icon" onClick={() => handleRefesh(contacts.id)}>
+                        <RefreshCcw className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={6} className="text-center text-gray-500">
+                  Không có dữ liệu.
                 </TableCell>
               </TableRow>
-            ))
+            )
           }
         </TableBody>
       </Table>
+      {/* Nút phân trang */}
+      <div className="flex justify-center mt-4">
+        {Array.from({ length: totalPages }, (_, index) => (
+          <Button
+            key={index}
+            onClick={() => paginate(index + 1)}
+            variant={currentPage === index + 1 ? "blue" : "outline"}
+          >
+            {index + 1}
+          </Button>
+        ))}
+      </div>
       <ToastContainer />
+      {/* Hiển thị lỗi nếu có */}
+      {error && <p className="text-red-500">{error}</p>}
     </div>
   );
 }

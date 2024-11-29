@@ -3,6 +3,8 @@
 import { useState } from "react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
 
 export default function CreateBlog() {
     const [title, setTitle] = useState("");
@@ -125,13 +127,13 @@ export default function CreateBlog() {
                     </div>
 
                     <div>
-                        <label className="block text-gray-600">Slug</label>
+                        <label className="block text-gray-600">Đường dẫn</label>
                         <input
                             type="text"
                             value={slug}
                             onChange={(e) => setSlug(e.target.value)}
                             className="w-full p-2 border border-gray-300 rounded mt-1"
-                            placeholder="Nhập slug"
+                            placeholder="Nhập đường dẫn"
                             required
                         />
                     </div>

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Search, Plus, RefreshCcw } from "lucide-react";
+import { Search, Plus, RefreshCcw, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -83,6 +83,11 @@ export default function RefeshBlog() {
       console.log("Lỗi khi thực hiện khôi phục người dùng:", error);
     }
   };
+
+  const handleReturn = () =>{
+    router.push('/admin/blog')
+  }
+
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
@@ -96,11 +101,11 @@ export default function RefeshBlog() {
         </div>
         <div className="flex justify-end space-x-2">
           <Button
-            onClick={() => {}}
-            className="bg-green-700 text-white hover:bg-green-600"
+            onClick={handleReturn}
+            className="bg-blue-900 text-white hover:bg-blue-800"
           >
-            <Plus className="mr-2 h-4 w-4" />
-            Create Blog
+            <FileText className="mr-2 h-4 w-4" />
+            Trang tin tức
           </Button>
         </div>
       </div>
@@ -111,11 +116,11 @@ export default function RefeshBlog() {
         <TableHeader>
           <TableRow>
             <TableHead>ID</TableHead>
-            <TableHead>Image</TableHead>
-            <TableHead>Name</TableHead>
-            <TableHead>Categories</TableHead>
-            <TableHead>description</TableHead>
-            <TableHead>Actions</TableHead>
+            <TableHead>Ảnh</TableHead>
+            <TableHead>Tên bài viết</TableHead>
+            <TableHead>Mục</TableHead>
+            <TableHead>Mô tả</TableHead>
+            <TableHead>Hành động</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>

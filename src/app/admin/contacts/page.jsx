@@ -18,7 +18,7 @@ import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 
 export default function ContractContent() {
-  const [contracts, setContracts] = useState([]);
+  const [contacts, setContracts] = useState([]);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1); // Trang hiện tại
   const [itemsPerPage] = useState(5); // Số lượng mục mỗi trang
@@ -87,7 +87,7 @@ export default function ContractContent() {
   // Phân trang
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const filteredContracts = contracts.filter((contract) =>
+  const filteredContracts = contacts.filter((contract) =>
     `${contract.name} ${contract.id_room} ${contract.phone}`
       .toLowerCase()
       .includes(searchTerm.toLowerCase())
@@ -145,8 +145,7 @@ export default function ContractContent() {
                         <Button
                           variant="outline"
                           size="icon"
-                          onClick={() => handleDeleteContactRoom(contract.id)}
-                        >
+                          onClick={() => handleDeleteContactRoom(contract.id)}>
                           <Trash2 className="h-4 w-4 text-red-500" />
                         </Button>
                       </DialogTrigger>

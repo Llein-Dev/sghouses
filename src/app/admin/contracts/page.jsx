@@ -1,10 +1,10 @@
 "use client"
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import { useEffect, useState } from "react"
 import { Search, FileText, Eye, Download, Trash2, BookCopy, Link, Pencil, Book, Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import {
   Table,
   TableBody,
@@ -217,7 +217,7 @@ export default function Contract() {
       });
 
       if (response.ok) {
-        toast.success("Cập nhật thành công!");
+        toast.success("Xóa thành công!");
 
         // Fetch updated contracts list after successful edit
         await fetchDataContracts();
@@ -407,7 +407,7 @@ export default function Contract() {
           {/* khôi phục Danh Mục tin tức */}
           <Button variant="blue" onClick={handleRefesh}>
             <FileText className="mr-2 h-4 w-4" />
-            Refesh Contract
+            Khôi phục
           </Button>
         </div >
       </div >
@@ -597,7 +597,7 @@ export default function Contract() {
           ))}
         </TableBody>
       </Table>
-
+      <ToastContainer />
     </div >
   )
 }

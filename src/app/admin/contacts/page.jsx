@@ -16,6 +16,7 @@ import {
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
+import ExpandableTable from "@/components/expandTable";
 
 export default function ContractContent() {
   const [contacts, setContracts] = useState([]);
@@ -96,6 +97,7 @@ export default function ContractContent() {
 
   const totalPages = Math.ceil(filteredContracts.length / itemsPerPage);
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  console.log(currentItems);
 
   return (
     <div className="space-y-4 p-4 bg-gray-50 min-h-screen">
@@ -114,55 +116,13 @@ export default function ContractContent() {
           />
         </div>
         <Button onClick={handleRefresh} variant="blue">
-          <FileText className="mr-2 h-4 w-4" />
-          Khôi phục liên hệ
+          <FileText className="m-0 md:mr-2 h-4 w-4" />
+          <span className="hidden md:block">       Khôi phục liên hệ</span>
         </Button>
       </div>
 
       {/* Bảng dữ liệu */}
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Tên</TableHead>
-            <TableHead>Mã phòng</TableHead>
-            <TableHead>Điện thoại</TableHead>
-            <TableHead>Tình trạng</TableHead>
-            <TableHead>Hành động</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {currentItems.length > 0 ? (
-            currentItems.map((contract, index) => (
-              <TableRow key={index}>
-                <TableCell>{contract.name}</TableCell>
-                <TableCell>{contract.id_room}</TableCell>
-                <TableCell>{contract.phone}</TableCell>
-                <TableCell>{contract.state}</TableCell>
-                <TableCell>
-                  <div className="flex space-x-2">
-                    <Dialog>
-                      <DialogTrigger asChild>
-                        <Button
-                          variant="outline"
-                          size="icon"
-                          onClick={() => handleDeleteContactRoom(contract.id)}>
-                          <Trash2 className="h-4 w-4 text-red-500" />
-                        </Button>
-                      </DialogTrigger>
-                    </Dialog>
-                  </div>
-                </TableCell>
-              </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={5} className="text-center text-gray-500">
-                Không có dữ liệu liên hệ.
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
+      <ExpandableTable items={currentItems} handleDeleteContactRoom={handleDeleteContactRoom} />
       {/* Nút phân trang */}
       <div className="flex justify-center mt-4">
         {Array.from({ length: totalPages }, (_, index) => (

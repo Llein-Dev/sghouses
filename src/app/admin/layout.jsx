@@ -18,6 +18,7 @@ import {
   Minimize,
   Newspaper,
   Home,
+  Receipt 
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -87,6 +88,12 @@ const navItems = [
     label: "Phòng", // Room
     icon: <Home className="p-1 bg-blue-900 rounded text-white" />,
     key: "room",
+  },
+  {
+    href: "/admin/orders",
+    label: "Hóa đơn", // Room
+    icon: <Receipt  className="p-1 bg-blue-900 rounded text-white" />,
+    key: "orders",
   },
   {
     href: "/admin/banners",

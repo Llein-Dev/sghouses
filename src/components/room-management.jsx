@@ -10,6 +10,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import { EnhancedPreviewCards } from './PreviewCards';
 import { Spinner } from './ui/loading';
+import ContractPaymentSection from './ContractsSection';
 
 export function RoomManagement({ contactsData, contractsData }) {
   const [activeTab, setActiveTab] = useState("contacts");
@@ -133,50 +134,37 @@ export function RoomManagement({ contactsData, contractsData }) {
     );
   }
 
-
   const CurrentRoomTab = () => {
+    console.log("contractsData:", contractsData); // In ra contractsData để kiểm tra
+
+    let contractsArray = [];
+
+    // Kiểm tra xem contractsData có phải là mảng hay không
+    if (Array.isArray(contractsData)) {
+      contractsArray = contractsData;
+    } else if (typeof contractsData === 'object' && contractsData !== null) {
+      // Nếu contractsData là một đối tượng, cần kiểm tra xem nó có chứa thông tin hợp đồng hay không
+      if (Object.keys(contractsData).length > 0) {
+        contractsArray = [contractsData]; // Chuyển đối tượng thành mảng có một phần tử
+      }
+    }
+
+    console.log("contractsArray:", contractsArray); // In ra contractsArray để kiểm tra
 
     return (
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 px-4 pb-4">
-        {contractsData.length > 0 ? (
-          contractsData.map((contract) => (
-            <Card key={contract.id}>
-              <CardHeader className="bg-secondary/10">
-                <CardTitle className="flex justify-between items-center">
-                  <span>{contract.name_room}</span>
-                  <Badge variant={contract.status === 'Hết hạn' ? 'destructive' : 'success'}>
-                    {contract.status}
-                  </Badge>
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="p-6">
-                <div className="flex items-center space-x-2">
-                  <User className="h-4 w-4" />
-                  <span>{contract.name_user}</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Calendar className="h-4 w-4" />
-                  <span>Thời gian: {new Date(contract.date_start).toLocaleDateString()} - {new Date(contract.date_end).toLocaleDateString()}</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <MapPin className="h-4 w-4" />
-                  <span>{contract.name_building}</span>
-                </div>
-                {contract.image_room && (
-                  <div className="mt-4 rounded-lg overflow-hidden">
-                    <img src={`http://localhost:8000/storage/${contract.image_room}`} alt={contract.name_room} className="w-full h-48 object-cover" />
-                  </div>
-                )}
-              </CardContent>
-            </Card>
+      <div className="grid grid-cols-1 lg:grid-cols-1 gap-4 px-4 pb-4">
+        {contractsArray.length > 0 ? (
+          contractsArray.map((contract) => (
+            <ContractPaymentSection contractData={contract} />
           ))
         ) : (
           <div className="text-center col-span-full">Không có hợp đồng nào để hiển thị.</div>
         )}
       </div>
-
     );
   };
+
+
 
   return (
     <div className="container mx-auto px-4 space-y-4 pt-4 pb-16">

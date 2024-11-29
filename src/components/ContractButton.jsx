@@ -3,11 +3,12 @@
 import { useState } from 'react'
 import { Button } from "@/components/ui/button"
 import { Loader2 } from 'lucide-react'
+import Cookies from 'js-cookie'
 
-
-export default function PaymentButton({ token, apiUrl }) {
+export default function PaymentButton({ token }) {
     const [isLoading, setIsLoading] = useState(false)
- 
+    const apiUrl = "http://localhost:8000/api"
+    const userToken = Cookies.get("token") // Lấy token từ cookies
 
     const handlePayment = async () => {
         setIsLoading(true)
@@ -16,6 +17,7 @@ export default function PaymentButton({ token, apiUrl }) {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${userToken}`, 
                 },
             })
 
@@ -26,14 +28,12 @@ export default function PaymentButton({ token, apiUrl }) {
             const data = await response.json()
 
             if (data.url) {
-                // Redirect to VNPay page
                 window.location.href = data.url
             } else {
                 throw new Error('VNPay URL not received')
             }
         } catch (error) {
             console.error('Error:', error)
-
         } finally {
             setIsLoading(false)
         }
@@ -52,4 +52,3 @@ export default function PaymentButton({ token, apiUrl }) {
         </Button>
     )
 }
-

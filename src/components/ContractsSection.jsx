@@ -2,16 +2,15 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
 import { CalendarIcon } from 'lucide-react'
-import PaymentButton from './payment-button'
+import PaymentButton from "./ContractButton"
 
 
 
-export default function ContractPaymentSection({ apiUrl }) {
+export default function ContractPaymentSection({ contractData }) {
     return (
-        <div className="container mx-auto p-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Contract Information */}
-                <Card>
+        <>
+            < Card className="md:grid-cols-2 grid-cols-1 grid p-6" >
+                <div>
                     <CardHeader>
                         <CardTitle>Thông tin hợp đồng</CardTitle>
                     </CardHeader>
@@ -30,10 +29,10 @@ export default function ContractPaymentSection({ apiUrl }) {
                             <p><strong>File đính kèm:</strong> {contractData.file ? 'Có file' : 'Không có file'}</p>
                         </div>
                     </CardContent>
-                </Card>
+                </div>
 
                 {/* Payment Information */}
-                <Card>
+                <div>
                     <CardHeader>
                         <CardTitle>Thông tin thanh toán</CardTitle>
                     </CardHeader>
@@ -75,7 +74,7 @@ export default function ContractPaymentSection({ apiUrl }) {
                                         </TableCell>
                                         <TableCell>
                                             {payment.trang_thai !== "Đã thanh toán" && (
-                                                <PaymentButton token={payment.token} apiUrl={apiUrl} />
+                                                <PaymentButton token={payment.token}/>
                                             )}
                                         </TableCell>
                                     </TableRow>
@@ -83,9 +82,10 @@ export default function ContractPaymentSection({ apiUrl }) {
                             </TableBody>
                         </Table>
                     </CardContent>
-                </Card>
-            </div>
-        </div>
+                </div>
+            </Card >
+        </>
+
     )
 }
 

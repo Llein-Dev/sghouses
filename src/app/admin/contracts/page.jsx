@@ -583,7 +583,7 @@ export default function Contract() {
                         </DialogFooter>
                       </form>
 
-                      </div>
+
                       <DialogFooter>
                         <Button type="submit" variant="orange" onClick={() => handleEditContracts(contract.id)}>
                           Cập nhật

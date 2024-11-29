@@ -6,9 +6,11 @@ import { Badge } from "@/components/ui/badge"
 import { Home, User, Square, MapPin, Building, Calendar, Phone, Mail } from 'lucide-react'
 
 
-export function EnhancedPreviewCards({ selectedRoom, selectedUser }) {
+export function EnhancedPreviewCards({ selectedRoom, selectedUser, col = 1 }) {
+  // Tạo lớp CSS cho grid cols
+  const gridColsClass = `grid grid-cols-1 md:grid-cols-${col} gap-6`;
   return (
-    <div className="grid grid-cols-1 gap-6">
+    <div className={gridColsClass}>
       <Card className="overflow-hidden">
         <CardHeader className="">
           <CardTitle className="flex items-center space-x-2">
@@ -45,7 +47,7 @@ export function EnhancedPreviewCards({ selectedRoom, selectedUser }) {
               </div>
               {selectedRoom.hinh_anh && (
                 <div className="mt-4 rounded-lg overflow-hidden">
-         <img src={`http://localhost:8000/storage/${selectedRoom.hinh_anh}`} alt={selectedRoom.ten_phong} 
+                  <img src={`http://localhost:8000/storage/${selectedRoom.hinh_anh}`} alt={selectedRoom.ten_phong}
 
                     className="w-full h-48 object-cover"
                   />
@@ -95,7 +97,7 @@ export function EnhancedPreviewCards({ selectedRoom, selectedUser }) {
               </div>
             </div>
           ) : (
-           <> </>
+            <> </>
           )}
         </CardContent>
       </Card>

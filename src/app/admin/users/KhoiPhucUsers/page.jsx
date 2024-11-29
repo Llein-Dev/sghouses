@@ -23,7 +23,8 @@ export default function KhoiPhucUsers() {
   // search với fetchdata base
   const [searchTerm, setSearchTerm] = useState(""); // State lưu giá trị tìm kiếm
   const [filteredUsers, setFilteredUsers] = useState([]); // Danh sách user sau khi lọc
-
+  const [currentPage, setCurrentPage] = useState(1); // Trang hiện tại
+  const [usersPerPage] = useState(5); // Số lượng người dùng hiển thị mỗi trang
 
   // hàm tiềm kiếm dựa trên dữ liệu được fetch
   const handleSearchChange = (event) => {
@@ -77,12 +78,19 @@ export default function KhoiPhucUsers() {
     fetchDeletedUsers(); // Gọi hàm fetchDeletedUsers
   }, [router]);
 
-  useEffect(() => {
-    setFilteredUsers(deletedUsers); // Cập nhật  mỗi khi users thay đổi
-  }, [deletedUsers]);
+useEffect(() => {
+    const filtered = deletedUsers.filter((user) => {
+      const name = user.name ? user.name.toLowerCase() : '';
+      const email = user.email ? user.email.toLowerCase() : '';
+      return `${name} ${email}`.includes(searchTerm.toLowerCase());
+    });
+    setFilteredUsers(filtered);
+    setCurrentPage(1); // Reset về trang đầu tiên khi tìm kiếm
+  }, [searchTerm, deletedUsers]);
 
 
 
+  
   const handleRefesh = async (id) => {
     const adminToken = Cookies.get("token");
     try {
@@ -118,6 +126,13 @@ export default function KhoiPhucUsers() {
   const handleReturn = () =>{
     router.push('/admin/users')
   }
+
+  // Phân trang
+  const indexOfLastUser = currentPage * usersPerPage;
+  const indexOfFirstUser = indexOfLastUser - usersPerPage;
+  const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
   return (
 
     <div className="space-y-4">
@@ -148,7 +163,7 @@ export default function KhoiPhucUsers() {
         </TableHeader>
         <TableBody>
           {
-            filteredUsers.map((user, index) => (
+            currentUsers.map((user, index) => (
               <TableRow key={index}>
                 <TableCell>{user.id}</TableCell>
                 <TableCell>{user.name}</TableCell>
@@ -169,6 +184,18 @@ export default function KhoiPhucUsers() {
           }
         </TableBody>
       </Table>
+       {/* Pagination */}
+       <div className="flex justify-center mt-4">
+        {[...Array(Math.ceil(filteredUsers.length / usersPerPage))].map((_, index) => (
+          <Button
+            key={index}
+            onClick={() => paginate(index + 1)}
+            variant={currentPage === index + 1 ? "blue" : "outline"}
+          >
+            {index + 1}
+          </Button>
+        ))}
+      </div>  
     </div>
 
   );

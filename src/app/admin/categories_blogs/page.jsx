@@ -200,7 +200,7 @@ export default function CategoryBlog() {
   <div className="flex items-center space-x-2 w-1/2">
     <Search className="h-5 w-5 text-gray-500" />
     <Input
-      placeholder="Search contracts..."
+      placeholder="Tìm kiếm..."
       className="max-w-sm"
       // value={searchTerm}
       // onChange={(e) => setSearchTerm(e.target.value)}
@@ -270,7 +270,7 @@ export default function CategoryBlog() {
        {/* khôi phục Danh Mục tin tức */}
     <Button onClick={handleRefesh} variant="blue">
       <FileText className="mr-2 h-4 w-4" />
-      Refesh Contract
+      Khôi phục
     </Button>
   </div>
 </div>
@@ -281,10 +281,10 @@ export default function CategoryBlog() {
           <TableRow>
             <TableHead>ID</TableHead>
             <TableHead>Tên Danh Mục Tin Tức</TableHead>
-            <TableHead>SLug</TableHead>
+            <TableHead>Dường dẫn</TableHead>
             <TableHead>Tình trạng</TableHead>
-            <TableHead>Actions</TableHead>
-            <TableHead>Order</TableHead>
+            <TableHead>Khác</TableHead>
+            <TableHead>Hành động</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>

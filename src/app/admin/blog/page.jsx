@@ -134,7 +134,7 @@ export default function BlogContent() {
         <div className="flex items-center space-x-2">
           <Search className="h-5 w-5 text-gray-500" />
           <Input
-            placeholder="Search users..."
+            placeholder="Tiềm kiếm..."
             value={""}
             // onChange={handleSearchChange}
             className="max-w-sm"
@@ -145,11 +145,11 @@ export default function BlogContent() {
         <div className="flex justify-end space-x-2">
           <Button onClick={handleCreatPage} className="bg-green-700 text-white hover:bg-green-600">
             <Plus className="mr-2 h-4 w-4" />
-            create blog
+            Tạo tin tức
           </Button>
           <Button onClick={handleRefeshBlog} variant="blue">
             <RefreshCcwDot className="mr-2 h-4 w-4" />
-            Refresh Contract
+            Khôi phục tin tức
           </Button>
         </div>
       </div>
@@ -158,11 +158,11 @@ export default function BlogContent() {
         <TableHeader>
           <TableRow>
             <TableHead>ID</TableHead>
-            <TableHead>Image</TableHead>
-            <TableHead>Name</TableHead>
-            <TableHead>Categories</TableHead>
-            <TableHead>Description</TableHead>
-            <TableHead>Actions</TableHead>
+            <TableHead>Ảnh</TableHead>
+            <TableHead>Tên tin tức</TableHead>
+            <TableHead>Danh mục tin tức</TableHead>
+            <TableHead>Mô tả</TableHead>
+            <TableHead>Hành động</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>

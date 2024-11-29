@@ -1,11 +1,12 @@
 "use client";
-
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; 
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
-import { Search, RefreshCcw } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import { Search, RefreshCcw, FileText } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
@@ -13,18 +14,17 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
+} from "@/components/ui/table";
 
 export default function KhoiPhucUsers() {
-  const [deletedUsers, setDeletedUsers] = useState([]);
+  const [deletedContacts, setDeletedContacts] = useState([]);
   const [error, setError] = useState(null);
   const router = useRouter();
 
-  // Định nghĩa hàm fetchDeletedUsers
-  const fetchDeletedUsers = async () => {
+  const fetchDeletedContacts = async () => {
     try {
       const adminToken = Cookies.get("token");
-      const response = await fetch('http://localhost:8000/api/user/list_delete', {
+      const response = await fetch('http://localhost:8000/api/contact_room/list_delete', {
         headers: {
           'Authorization': `Bearer ${adminToken}`,
           'Content-Type': 'application/json',
@@ -33,11 +33,7 @@ export default function KhoiPhucUsers() {
 
       if (response.ok) {
         const result = await response.json();
-        setDeletedUsers(result.deleted_users || []);
-        console.log(result);
-        console.log(deletedUsers); // Kiểm tra dữ liệu
-
-
+        setDeletedContacts(result.list || []);
       } else {
         setError('Không có quyền truy cập');
       }
@@ -46,21 +42,19 @@ export default function KhoiPhucUsers() {
     }
   };
 
-  // Gọi fetchDeletedUsers trong useEffect khi trang load lần đầu
   useEffect(() => {
     const adminToken = Cookies.get('token');
     if (!adminToken) {
       router.push('/');
       return;
     }
-    fetchDeletedUsers(); // Gọi hàm fetchDeletedUsers
+    fetchDeletedContacts();
   }, [router]);
-
 
   const handleRefesh = async (id) => {
     const adminToken = Cookies.get("token");
     try {
-      const response = await fetch(`http://localhost:8000/api/user/restore/${id}`, {
+      const response = await fetch(`http://localhost:8000/api/contact_room/restore/${id}`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${adminToken}`,
@@ -69,59 +63,57 @@ export default function KhoiPhucUsers() {
       });
 
       if (response.ok) {
-        await response.json(); // Đợi dữ liệu trả về
-        const shouldGoToRecovery = window.confirm(
-          "Đã khôi phục thành công, bạn có muốn quay về trang users không?"
-        );
-        if (shouldGoToRecovery) {
-          router.push("/admin/users"); // Chuyển đến trang users
+        toast.success("Khôi phục thành công!");
+        setDeletedContacts((prevContacts) => prevContacts.filter(contact => contact.id !== id));
         } else {
-          fetchDeletedUsers(); // Cập nhật danh sách người dùng đã xóa nếu không chuyển trang
-        }
-      } else {
         const errorData = await response.json();
-        setError(errorData.message || "Lỗi khi khôi phục người dùng");
+        setError(errorData.message || "Lỗi khi khôi phục liên hệ");
       }
     } catch (error) {
-      console.log("Lỗi khi thực hiện khôi phục người dùng:", error);
+      console.error("Lỗi khi thực hiện khôi phục liên hệ:", error);
     }
   };
+  const handleReturn = () => {
+    router.push("/admin/contact");
+  };
   return (
-
     <div className="space-y-4">
       <div className="flex justify-between items-center">
         <div className="flex items-center space-x-2">
           <Search className="h-5 w-5 text-gray-500" />
           <Input
-            placeholder="Search users..."
+            placeholder="Tìm kiếm..."
             value={""}
-            // onChange={(e) => setSearchTerm(e.target.value)}
             className="max-w-sm"
           />
         </div>
+        <Button  onClick={handleReturn} variant="blue">
+          <FileText className="mr-2 h-4 w-4" />
+         Quay lại trang liên hệ
+        </Button>
       </div>
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Name</TableHead>
-            <TableHead>Email</TableHead>
-            <TableHead>Role</TableHead>
-            <TableHead>Actions</TableHead>
+            <TableHead>STT</TableHead>
+            <TableHead>Tên</TableHead>
+            <TableHead>Điện thoại</TableHead>
+            <TableHead>Số phòng</TableHead>
+            <TableHead>Nội dung</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {
-            deletedUsers.map((user, index) => (
+            deletedContacts.map((contacts, index) => (
               <TableRow key={index}>
-                <TableCell>{user.id}</TableCell>
-                <TableCell>{user.name}</TableCell>
-                <TableCell>{user.email}</TableCell>
-                <TableCell>{user.born}</TableCell>
+                <TableCell>{contacts.id}</TableCell>
+                <TableCell>{contacts.name}</TableCell>
+                <TableCell>{contacts.phone}</TableCell>
+                <TableCell>{contacts.id_room}</TableCell>
+                <TableCell>{contacts.content}</TableCell>
                 <TableCell>
                   <div className="flex space-x-2">
-
-                  
-                    <Button variant="outline" size="icon" onClick={() => handleRefesh(user.id)}>
+                    <Button variant="outline" size="icon" onClick={() => handleRefesh(contacts.id)}>
                       <RefreshCcw className="h-4 w-4" />
                     </Button>
                   </div>
@@ -131,7 +123,7 @@ export default function KhoiPhucUsers() {
           }
         </TableBody>
       </Table>
+      <ToastContainer />
     </div>
-
   );
 }

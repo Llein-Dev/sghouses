@@ -215,16 +215,16 @@ export default function RootLayout({ children }) {
                         variant="secondary"
                         className="flex items-center bg-white text-blue-950"
                       >
-                        Admin User
+                        Quản trị
                         <ChevronDown className="ml-2 h-4 w-4" />
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
-                      <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                      <DropdownMenuLabel>Tài khoản</DropdownMenuLabel>
                       <DropdownMenuSeparator />
-                      <DropdownMenuItem>Profile</DropdownMenuItem>
-                      <DropdownMenuItem>Settings</DropdownMenuItem>
-                      <DropdownMenuItem>Logout</DropdownMenuItem>
+                      <DropdownMenuItem>Trang cá nhân</DropdownMenuItem>
+                      <DropdownMenuItem>Cài đặt</DropdownMenuItem>
+                      <DropdownMenuItem>Đăng xuất</DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </div>

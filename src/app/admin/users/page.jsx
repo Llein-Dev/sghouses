@@ -226,7 +226,6 @@ export default function UsersContent() {
   const indexOfLastUser = currentPage * usersPerPage;
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
   const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
-
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
@@ -235,7 +234,7 @@ export default function UsersContent() {
         <div className="flex items-center space-x-2">
           <Search className="h-5 w-5 text-gray-500" />
           <Input
-            placeholder="Search users..."
+            placeholder="Tìm kiếm..."
             value={searchTerm}
             onChange={handleSearchChange}
             className="max-w-sm"

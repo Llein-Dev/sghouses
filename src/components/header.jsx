@@ -216,7 +216,7 @@ export function HeaderComponent() {
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                   <Link className="w-full" href="/profile/history">
-                    Lịch sử
+                    Thuê trọ
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem>

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Home, User, Phone, Calendar, FileText, Command } from "lucide-react";
+import { Home, User, Phone, Calendar, FileText, Command, MapPin } from "lucide-react";
 import Breadcrumb from './breadcum';
 import axios from 'axios';
 import Cookies from 'js-cookie';
@@ -135,48 +135,46 @@ export function RoomManagement({ contactsData, contractsData }) {
 
 
   const CurrentRoomTab = () => {
-    const contracts = contractsData?.contacts || [];
-    return (
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 px-4 pb-4 ">
-        {contracts.length > 0 ? (
-          contracts.map((contact) => (
 
-            <Card key={contact.id}>
-              <EnhancedPreviewCards selectedRoom={null} col={2} selectedUser={null} />
-              <CardHeader>
-                <CardTitle className="flex justify-between item
-                s-center">
-                  <span>ID Phòng: {contact.phong_id}</span>
-                  <Badge variant={contact.trang_thai === 1 ? 'secondary' : 'primary'}>
-                    {contact.trang_thai === 1 ? 'Trống' : 'Có người'}
+    return (
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 px-4 pb-4">
+        {contractsData.length > 0 ? (
+          contractsData.map((contract) => (
+            <Card key={contract.id}>
+              <CardHeader className="bg-secondary/10">
+                <CardTitle className="flex justify-between items-center">
+                  <span>{contract.name_room}</span>
+                  <Badge variant={contract.status === 'Hết hạn' ? 'destructive' : 'success'}>
+                    {contract.status}
                   </Badge>
                 </CardTitle>
               </CardHeader>
-              <CardContent className="grid grid-cols-1 gap-2">
-                <div>
-                  <span className='flex items-center gap-2'><User className="h-4 w-4" /><strong>Tên:</strong></span>
-                  <div className='ml-6 text-sm mt-1'>{contact.ho_ten}</div>
+              <CardContent className="p-6">
+                <div className="flex items-center space-x-2">
+                  <User className="h-4 w-4" />
+                  <span>{contract.name_user}</span>
                 </div>
-                <div>
-                  <span className='flex items-center gap-2'><Phone className="h-4 w-4" /><strong>Điện thoại:</strong></span>
-                  <div className='ml-6 text-sm mt-1'>{contact.so_dien_thoai}</div>
+                <div className="flex items-center space-x-2">
+                  <Calendar className="h-4 w-4" />
+                  <span>Thời gian: {new Date(contract.date_start).toLocaleDateString()} - {new Date(contract.date_end).toLocaleDateString()}</span>
                 </div>
-                <div>
-                  <span className='flex items-center gap-2'><Calendar className="h-4 w-4" /><strong>Ngày gửi:</strong></span>
-                  <div className='ml-6 text-sm mt-1'>{new Date(contact.created_at).toLocaleDateString()}</div>
+                <div className="flex items-center space-x-2">
+                  <MapPin className="h-4 w-4" />
+                  <span>{contract.name_building}</span>
                 </div>
-                <div>
-                  <span className='flex items-center gap-2'><Home className="h-4 w-4" /><strong>Nội dung:</strong></span>
-                  <div className='ml-6 text-sm mt-1'>{contact.noi_dung}</div>
-                </div>
+                {contract.image_room && (
+                  <div className="mt-4 rounded-lg overflow-hidden">
+                    <img src={`http://localhost:8000/storage/${contract.image_room}`} alt={contract.name_room} className="w-full h-48 object-cover" />
+                  </div>
+                )}
               </CardContent>
-              <CardFooter />
             </Card>
           ))
         ) : (
           <div className="text-center col-span-full">Không có hợp đồng nào để hiển thị.</div>
         )}
       </div>
+
     );
   };
 

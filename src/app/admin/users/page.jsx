@@ -221,6 +221,7 @@ export default function UsersContent() {
   const handleRefesh = () => {
     router.push('/admin/users/KhoiPhucUsers')
   }
+  console.log(users);
 
   // Phân trang
   const indexOfLastUser = currentPage * usersPerPage;
@@ -245,51 +246,62 @@ export default function UsersContent() {
           Khôi phục người dùng
         </Button>
       </div>
+
       <Table>
         <TableHeader>
           <TableRow>
             <TableHead>STT</TableHead>
+            <TableHead>Avatar</TableHead> {/* New column for Avatar */}
             <TableHead>Tên</TableHead>
             <TableHead>Email</TableHead>
             <TableHead>Số điện thoại</TableHead>
+            <TableHead>Địa chỉ</TableHead> {/* New column for Address */}
+            <TableHead>Ngày sinh</TableHead> {/* New column for Birth Date */}
+            <TableHead>Giới tính</TableHead> {/* New column for Gender */}
+            <TableHead>Ngày đăng ký</TableHead> {/* New column for Registration Date */}
             <TableHead>Quyền</TableHead>
             <TableHead>Hành động</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {currentUsers.map((user, index) => (
-
-            <TableRow key={index}>
-              <TableCell>{user.id}</TableCell>
+            <TableRow key={user.id}> {/* Use user.id for the key */}
+              <TableCell>{index + 1}</TableCell> {/* STT */}
+              <TableCell>
+                <img src={user.avatar} alt={`${user.name}'s avatar`} className="w-10 h-10 rounded-full" />
+              </TableCell> {/* Avatar display */}
               <TableCell>{user.name}</TableCell>
               <TableCell>{user.email}</TableCell>
               <TableCell>{user.phone}</TableCell>
+              <TableCell>{user.address || 'Chưa có địa chỉ'}</TableCell> {/* Display address, handle null */}
+              <TableCell>{new Date(user.born).toLocaleDateString()}</TableCell> {/* Display birth date */}
+              <TableCell>{user.gender === 1 ? 'Nam' : 'Nữ'}</TableCell> {/* Display gender */}
+              <TableCell>{user.date_create}</TableCell> {/* Display registration date */}
               <TableCell>{user.role === 0 ? 'Admin' : 'User'}</TableCell>
               <TableCell>
                 <div className="flex space-x-2">
-                  {/* Nút Gọi điện */}
+                  {/* Edit Button */}
                   <Dialog>
                     <DialogTrigger asChild>
-                      <Button variant="outline" onClick={() => {
-                        setSelectedUser(user); // Cập nhật user cần chỉnh sửa
+                      <Button variant="orange" size="icon"  onClick={() => {
+                        setSelectedUser(user);
                         setName(user.name);
-                        setAddress(user.address);
+                        setAddress(user.address || ''); // Set address if available
+                        setRole(user.role.toString()); // Ensure role is a string for the select
                       }}>
-                        <Pencil className="mr-2 h-4 w-4" />
+                        <Pencil className=" h-4 w-4" />
                       </Button>
                     </DialogTrigger>
                     <DialogContent className="sm:max-w-[425px]">
                       <DialogHeader>
                         <DialogTitle>Chỉnh sửa người dùng</DialogTitle>
                         <DialogDescription>
-                          chỉnh sửa tài khoản !
+                          Chỉnh sửa tài khoản!
                         </DialogDescription>
                       </DialogHeader>
                       <div className="grid gap-4 py-4">
                         <div className="grid grid-cols-4 items-center gap-4">
-                          <Label htmlFor="name" className="text-right">
-                            Tên
-                          </Label>
+                          <Label htmlFor="name" className="text-right">Tên</Label>
                           <Input
                             id="name"
                             value={name}
@@ -299,9 +311,7 @@ export default function UsersContent() {
                         </div>
 
                         <div className="grid grid-cols-4 items-center gap-4">
-                          <Label htmlFor="address" className="text-right">
-                            Địa chỉ
-                          </Label>
+                          <Label htmlFor="address" className="text-right">Địa chỉ</Label>
                           <Input
                             id="address"
                             value={address}
@@ -309,33 +319,34 @@ export default function UsersContent() {
                             className="col-span-3"
                           />
                         </div>
+
                         <div className="grid grid-cols-4 items-center gap-4">
-                          <Label htmlFor="role" className="text-right">
-                            Quyền
-                          </Label>
+                          <Label htmlFor="role" className="text-right">Quyền</Label>
                           <select
                             id="role"
-                            value={role} // giá trị của select là address (hoặc tùy thuộc vào biến bạn muốn lưu giá trị)
-                            onChange={(e) => setRole(e.target.value)} // hàm xử lý khi thay đổi lựa chọn
+                            value={role}
+                            onChange={(e) => setRole(e.target.value)}
                             className="col-span-3 h-30"
                           >
-                            <option value="0">Admin</option>  {/* Quyền = 0 -> Admin */}
-                            <option value="1">User</option>   {/* Quyền = 1 -> User */}
+                            <option value="0">Admin</option>
+                            <option value="1">User</option>
                           </select>
                         </div>
-
                       </div>
                       <DialogFooter>
-                        <Button type="submit" onClick={handleEditUser} >Xác nhận !</Button>
+                        <Button  type="submit" onClick={handleEditUser}>Xác nhận!</Button>
                       </DialogFooter>
                     </DialogContent>
                   </Dialog>
-                  <Button variant="outline" size="icon" onClick={() => handleDeleteUser(user.id)}>
+
+                  {/* Delete Button */}
+                  <Button variant="danger" size="icon" onClick={() => handleDeleteUser(user.id)}>
                     <Trash2 className="h-4 w-4" />
                   </Button>
-                  <Button variant="outline" size="icon" onClick={() => handleCopyUser(user.id)} >
-                    <BookCopy className="h-4 w-4"
-                    />
+
+                  {/* Copy Button */}
+                  <Button variant="outline" size="icon" onClick={() => handleCopyUser(user.id)}>
+                    <BookCopy className="h-4 w-4" />
                   </Button>
                 </div>
               </TableCell>

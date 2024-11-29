@@ -4,11 +4,12 @@ import { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Home, User, Phone, Calendar, FileText } from "lucide-react";
+import { Home, User, Phone, Calendar, FileText, Command } from "lucide-react";
 import Breadcrumb from './breadcum';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import { EnhancedPreviewCards } from './PreviewCards';
+import { Spinner } from './ui/loading';
 
 export function RoomManagement({ contactsData, contractsData }) {
   const [activeTab, setActiveTab] = useState("contacts");
@@ -52,32 +53,30 @@ export function RoomManagement({ contactsData, contractsData }) {
     return (
       <TabsContent value="contacts">
         <div className="grid grid-cols-1 gap-4 px-4 pb-4">
-          {contacts.length > 0 ? (
+          {loading ? ( // Check if loading
+            <div className="text-center col-span-full"><Spinner /></div> // Display loading message
+          ) : contacts.length > 0 ? (
             contacts.map((contact) => (
-              <Card key={contact.id}>
-                <CardHeader>
-                  <CardTitle className="flex justify-between items-center">
-                    <span>
-                      {contact?.roomDetails?.name}
-                    </span>
-                    <Badge variant={contact.trang_thai === 0 ? "secondary" : "primary"}>
-                      {contact.trang_thai === 0 ? "Trống" : "Có người"}
-                    </Badge>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="grid grid-cols-2 gap-4">
-                  {/* Hiển thị hình ảnh phòng */}
-                  {contact.roomDetails && (
+              contact.roomDetails && (
+                <Card key={contact.id}>
+                  <CardHeader>
+                    <CardTitle className="flex justify-between items-center">
+                      <span>{contact?.roomDetails?.name}</span>
+                      <Badge variant={contact.trang_thai === 0 ? "secondary" : "primary"}>
+                        {contact.trang_thai === 0 ? "Trống" : "Có người"}
+                      </Badge>
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="grid md:grid-cols-2 grid-cols-1 gap-4">
+                    {/* Hiển thị hình ảnh phòng */}
                     <div className="flex flex-col items-center mb-4">
                       <img
                         src={`http://localhost:8000/storage/${contact.roomDetails.image.split(';')[0]}`} // Thêm đường dẫn
                         alt={contact.roomDetails.name}
-
                         className="w-full h-40 object-cover rounded-lg" // Điều chỉnh kích thước hình ảnh
                       />
                     </div>
-                  )}
-                  {contact.roomDetails && (
+
                     <div>
                       <div className="text-sm gap-2 flex flex-col">
                         <p>Tòa nhà: {contact.roomDetails.ten_toa_nha}</p>
@@ -88,50 +87,45 @@ export function RoomManagement({ contactsData, contractsData }) {
                         <p>Nội thất: {contact.roomDetails.noi_that}</p>
                       </div>
                     </div>
-                  )}
 
-                  <div>
                     <div>
-                      <span className="flex items-center gap-2">
-                        <User className="h-4 w-4" />
-                        <strong>Tên:</strong>
-                      </span>
-                      <div className="text-sm mt-1">{contact.ho_ten}</div>
-                    </div>
-                    <div>
-                      <span className="flex items-center gap-2">
-                        <Phone className="h-4 w-4" />
-                        <strong>Điện thoại:</strong>
-                      </span>
-                      <div className="text-sm mt-1">{contact.so_dien_thoai}</div>
-                    </div>
-                    <div>
-                      <span className="flex items-center gap-2">
-                        <Calendar className="h-4 w-4" />
-                        <strong>Ngày gửi:</strong>
-                      </span>
-                      <div className="text-sm mt-1">{new Date(contact.created_at).toLocaleDateString()}</div>
+                      <div>
+                        <span className="flex items-center gap-2">
+                          <User className="h-4 w-4" />
+                          <strong>Tên:</strong>
+                        </span>
+                        <div className="text-sm mt-1">{contact.ho_ten}</div>
+                      </div>
+                      <div>
+                        <span className="flex items-center gap-2">
+                          <Phone className="h-4 w-4" />
+                          <strong>Điện thoại:</strong>
+                        </span>
+                        <div className="text-sm mt-1">{contact.so_dien_thoai}</div>
+                      </div>
+                      <div>
+                        <span className="flex items-center gap-2">
+                          <Calendar className="h-4 w-4" />
+                          <strong>Ngày gửi:</strong>
+                        </span>
+                        <div className="text-sm mt-1">{new Date(contact.created_at).toLocaleDateString()}</div>
+                      </div>
                     </div>
 
-                  </div>
-                  <div className='md:p-4 p-2 bg-gray-500 text-white rounded-lg'>
-                  
-                    <div className="text-sm">"{contact.noi_dung}".</div>
-                  </div>
-
-                  {/* Hiển thị thông tin chi tiết phòng */}
-
-                  {loading[contact.phong_id] && (
-                    <div className="text-sm mt-1 text-gray-500">Đang tải...</div>
-                  )}
-                </CardContent>
-                <CardFooter />
-              </Card>
+                    <div className='md:p-4 p-2 bg-gray-500 relative text-white rounded-lg'>
+                      <User className='absolute top-4 right-4 hidden md:block' />
+                      <div className="text-sm pr-4">"{contact.noi_dung}".</div>
+                    </div>
+                  </CardContent>
+                  <CardFooter />
+                </Card>
+              )
             ))
           ) : (
             <div className="text-center col-span-full">Không có phòng nào để hiển thị.</div>
           )}
         </div>
+
       </TabsContent>
 
 
@@ -142,7 +136,6 @@ export function RoomManagement({ contactsData, contractsData }) {
 
   const CurrentRoomTab = () => {
     const contracts = contractsData?.contacts || [];
-
     return (
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 px-4 pb-4 ">
         {contracts.length > 0 ? (

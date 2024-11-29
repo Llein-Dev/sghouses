@@ -2,7 +2,7 @@
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useEffect, useState } from "react";
-import { Search, Trash2, FileText } from "lucide-react";
+import { Search, Trash2, FileText, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -79,10 +79,11 @@ export default function Order() {
     }
   }, [filteredContracts.length, totalPages]);
 
-  const handleRefresh = () => {
-    setSearchTerm("");
-    setCurrentPage(1);
-  };
+
+  
+  const handleAdd = () => {
+    router.push('/admin/orders/create_order')
+  }
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
@@ -102,9 +103,9 @@ export default function Order() {
             }}
           />
         </div>
-        <Button onClick={handleRefresh} className="bg-blue-500 text-white">
-          <FileText className="mr-2 h-4 w-4" />
-          Khôi phục liên hệ
+        <Button onClick={handleAdd} className="bg-green-700 text-white">
+          <Plus className="mr-2 h-4 w-4" />
+          Tạo hóa đơn
         </Button>
       </div>
 

@@ -18,7 +18,7 @@ const pathNameMap = {
   building: "Tòa nhà",
   "filter-room": "Lọc phòng",
   profile: "Hồ sơ cá nhân",
-  history: "Lịch sử",
+  history: "Thuê trọ",
   edit: "Chỉnh sửa",
   favourite: "Yêu thích"
 };

@@ -42,7 +42,7 @@ export default function RoomManagementPage() {
     useEffect(() => {
         const fetchcontacts = async () => {
             try {
-                const response = await axios.get('http://localhost:8000/api/hop-dong', {
+                const response = await axios.get('http://localhost:8000/api/hop-dong/show', {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token}`, // Add token to headers

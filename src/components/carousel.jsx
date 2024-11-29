@@ -33,7 +33,7 @@ export function CarouselComponent({ images = [], autoPlayInterval = 5000 }) {
         {images.map((image, index) => (
           <img
             key={index}
-            src={`http://localhost:8000/storage/${image}`}
+            src={`https://sghouses.vercel.app${image}`}
             alt={`Slide ${index + 1}`}
             className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${index === currentIndex ? "opacity-100" : "opacity-0"}`}
           />

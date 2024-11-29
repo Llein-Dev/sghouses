@@ -4,12 +4,13 @@ import { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Home, User, Phone, Calendar, FileText, Command } from "lucide-react";
+import { Home, User, Phone, Calendar, FileText, Command, MapPin } from "lucide-react";
 import Breadcrumb from './breadcum';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import { EnhancedPreviewCards } from './PreviewCards';
 import { Spinner } from './ui/loading';
+import ContractPaymentSection from './ContractsSection';
 
 export function RoomManagement({ contactsData, contractsData }) {
   const [activeTab, setActiveTab] = useState("contacts");
@@ -133,45 +134,28 @@ export function RoomManagement({ contactsData, contractsData }) {
     );
   }
 
-
   const CurrentRoomTab = () => {
-    const contracts = contractsData?.contacts || [];
-    return (
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 px-4 pb-4 ">
-        {contracts.length > 0 ? (
-          contracts.map((contact) => (
+    console.log("contractsData:", contractsData); // In ra contractsData để kiểm tra
 
-            <Card key={contact.id}>
-              <EnhancedPreviewCards selectedRoom={null} col={2} selectedUser={null} />
-              <CardHeader>
-                <CardTitle className="flex justify-between item
-                s-center">
-                  <span>ID Phòng: {contact.phong_id}</span>
-                  <Badge variant={contact.trang_thai === 1 ? 'secondary' : 'primary'}>
-                    {contact.trang_thai === 1 ? 'Trống' : 'Có người'}
-                  </Badge>
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="grid grid-cols-1 gap-2">
-                <div>
-                  <span className='flex items-center gap-2'><User className="h-4 w-4" /><strong>Tên:</strong></span>
-                  <div className='ml-6 text-sm mt-1'>{contact.ho_ten}</div>
-                </div>
-                <div>
-                  <span className='flex items-center gap-2'><Phone className="h-4 w-4" /><strong>Điện thoại:</strong></span>
-                  <div className='ml-6 text-sm mt-1'>{contact.so_dien_thoai}</div>
-                </div>
-                <div>
-                  <span className='flex items-center gap-2'><Calendar className="h-4 w-4" /><strong>Ngày gửi:</strong></span>
-                  <div className='ml-6 text-sm mt-1'>{new Date(contact.created_at).toLocaleDateString()}</div>
-                </div>
-                <div>
-                  <span className='flex items-center gap-2'><Home className="h-4 w-4" /><strong>Nội dung:</strong></span>
-                  <div className='ml-6 text-sm mt-1'>{contact.noi_dung}</div>
-                </div>
-              </CardContent>
-              <CardFooter />
-            </Card>
+    let contractsArray = [];
+
+    // Kiểm tra xem contractsData có phải là mảng hay không
+    if (Array.isArray(contractsData)) {
+      contractsArray = contractsData;
+    } else if (typeof contractsData === 'object' && contractsData !== null) {
+      // Nếu contractsData là một đối tượng, cần kiểm tra xem nó có chứa thông tin hợp đồng hay không
+      if (Object.keys(contractsData).length > 0) {
+        contractsArray = [contractsData]; // Chuyển đối tượng thành mảng có một phần tử
+      }
+    }
+
+    console.log("contractsArray:", contractsArray); // In ra contractsArray để kiểm tra
+
+    return (
+      <div className="grid grid-cols-1 lg:grid-cols-1 gap-4 px-4 pb-4">
+        {contractsArray.length > 0 ? (
+          contractsArray.map((contract) => (
+            <ContractPaymentSection contractData={contract} />
           ))
         ) : (
           <div className="text-center col-span-full">Không có hợp đồng nào để hiển thị.</div>
@@ -179,6 +163,8 @@ export function RoomManagement({ contactsData, contractsData }) {
       </div>
     );
   };
+
+
 
   return (
     <div className="container mx-auto px-4 space-y-4 pt-4 pb-16">

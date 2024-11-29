@@ -119,7 +119,7 @@ export default function RefeshCataBlog() {
         <div className="flex items-center space-x-2">
           <Search className="h-5 w-5 text-gray-500" />
           <Input
-            placeholder="Search users..."
+            placeholder="Tìm kiếm..."
             value={searchTerm}
             onChange={handleSearchChange}
             className="max-w-sm"
@@ -133,7 +133,7 @@ export default function RefeshCataBlog() {
             <TableHead>Tên Danh Mục Tin Tức</TableHead>
             <TableHead>Điện thoại</TableHead>
             <TableHead>Tình trạng</TableHead>
-            <TableHead>Actions</TableHead>
+            <TableHead>Hành động</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>

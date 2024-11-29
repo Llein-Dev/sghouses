@@ -16,7 +16,7 @@ const pathNameMap = {
   contact: "Liên hệ",
   support: "Hỗ trợ",
   building: "Tòa nhà",
-  filterRoom: "Lọc phòng",
+  "filter-room": "Lọc phòng",
   profile: "Hồ sơ cá nhân",
   history: "Lịch sử",
   edit: "Chỉnh sửa",

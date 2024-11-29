@@ -54,8 +54,8 @@ export default function FilterPage() {
                                     src={`http://localhost:8000/storage/${category?.image}`}
                                     alt={category.name}
                                     fill
-                                    style={{ objectFit: 'cover' }} // Sử dụng style thay cho objectFit
-                                    className="transition-transform duration-300 h-full group-hover:scale-110"
+    
+                                    className="transition-transform duration-300 w-full object-cover h-full group-hover:scale-110"
                                 />
                             </div>
                             <p className="pb-2 pt-1">{category.name}</p>

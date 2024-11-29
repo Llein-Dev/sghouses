@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { LogOut, Bell, DoorOpen, Menu } from "lucide-react";
+import { LogOut, Bell, DoorOpen, Menu, Accessibility, UsersRoundIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -229,15 +229,15 @@ export function HeaderComponent() {
                 {/* Additional options for admins */}
                 {user && user.role === 0 && (
                   <>
-                    <DropdownMenuItem className="bg-red-500 text-white">
-                      <Link className="w-full " href="/admin">
-                        Sang trang Admin
+                    <DropdownMenuItem className="border border-red-500 text-red-500  mb-2 ">
+                      <Link className="w-full flex items-center " href="/admin">
+                        <UsersRoundIcon className="w-4 mr-2" /> Trang quản trị
                       </Link>
                     </DropdownMenuItem>
                   </>
                 )}
 
-                <DropdownMenuItem onClick={handleLogout}>
+                <DropdownMenuItem className="border-t pt-4" onClick={handleLogout}>
                   <LogOut className="mr-2 h-4 w-4" />
                   <span>Đăng xuất</span>
                 </DropdownMenuItem>

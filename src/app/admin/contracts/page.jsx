@@ -98,43 +98,39 @@ export default function Contract() {
   }, [])
 
   useEffect(() => {
-
     if (!adminToken) {
       router.push('/');
       return;
     }
+    fetchDataContracts();
+  }, []);
 
-    const fetchDataContracts = async () => {
-      try {
-        const response = await fetch('http://localhost:8000/api/hop-dong/all', {
-          headers: {
-            'Authorization': `Bearer ${adminToken}`,
-            'Content-Type': 'application/json',
-          },
-        });
+  const fetchDataContracts = async () => {
+    try {
+      const response = await fetch('http://localhost:8000/api/hop-dong/all', {
+        headers: {
+          'Authorization': `Bearer ${adminToken}`,
+          'Content-Type': 'application/json',
+        },
+      });
 
-        if (response.ok) {
-          const result = await response.json();
-          if (Array.isArray(result)) {
-            setContracts(result); // Đảm bảo chỉ set khi result là mảng
-          } else {
-            setContracts([]); // Nếu không, đặt là mảng rỗng
-            console.error("Dữ liệu trả về không phải mảng:", result);
-          }
+      if (response.ok) {
+        const result = await response.json();
+        if (Array.isArray(result)) {
+          setContracts(result); // Đảm bảo chỉ set khi result là mảng
         } else {
-          console.error('Lỗi khi gọi API');
-          setContracts([]); // Đặt Contracts là mảng rỗng nếu có lỗi
+          setContracts([]); // Nếu không, đặt là mảng rỗng
+          console.error("Dữ liệu trả về không phải mảng:", result);
         }
-      } catch (error) {
-        console.error('Lỗi khi fetch dữ liệu:', error);
+      } else {
+        console.error('Lỗi khi gọi API');
         setContracts([]); // Đặt Contracts là mảng rỗng nếu có lỗi
       }
-    };
-
-    fetchDataContracts();
-  }, [router]);
-
-
+    } catch (error) {
+      console.error('Lỗi khi fetch dữ liệu:', error);
+      setContracts([]); // Đặt Contracts là mảng rỗng nếu có lỗi
+    }
+  };
 
   const handleDeleteContracts = async (id) => {
     const adminToken = Cookies.get("token");
@@ -221,25 +217,11 @@ export default function Contract() {
       });
 
       if (response.ok) {
-        const updatedContract = await response.json();
         toast.success("Cập nhật thành công!");
 
-        // Update contracts list
-        setContracts((prevContracts) =>
-          prevContracts.map((contract) =>
-            contract.id === updatedContract.id ? updatedContract : contract
-          )
-        );
+        // Fetch updated contracts list after successful edit
+        await fetchDataContracts();
 
-        // Reset form and close dialog
-        setSelectedContract({
-          id: "",
-          id_room: "",
-          id_user: "",
-          status: "",
-          date_start: "",
-          date_end: "",
-        });
       } else {
         const errorData = await response.json();
         toast.error(errorData.message || "Lỗi khi cập nhật hợp đồng");
@@ -247,8 +229,20 @@ export default function Contract() {
     } catch (error) {
       console.error("Error:", error);
       toast.error("Lỗi không xác định");
+    } finally {
+      // Always reset form after attempt to edit, regardless of success or failure
+      setSelectedContract({
+        id: "",
+        id_room: "",
+        id_user: "",
+        status: "",
+        date_start: "",
+        date_end: "",
+      });
     }
   };
+
+
 
 
   const [selectedRoom, setSelectedRoom] = useState(null);

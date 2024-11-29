@@ -178,7 +178,7 @@ export default function CategoryBlog() {
                     {room.map((rooms, index) => (
                         <TableRow key={index}>
                             <TableCell>{rooms.id}</TableCell>
-                            <TableCell className="flex gap-5">  <img style={{ height: "150px", objectFit: "cover", borderRadius: "10px" }} src={`http://localhost:8000/storage/${rooms.hinh_anh}`}></img> <div><div className="p-1 text-xl font-bold  rounded text-black">{rooms.ten_phong} </div>{rooms.ten_toa_nha} <div>{rooms.ten_khu_vuc}</div> </div>
+                            <TableCell className="flex gap-5">  <img  className="object-cover h-[180px] rounded-lg aspect-video" src={`http://localhost:8000/storage/${rooms.hinh_anh}`}></img> <div><div className="p-1 text-xl font-bold  rounded text-black">{rooms.ten_phong} </div>{rooms.ten_toa_nha} <div>{rooms.ten_khu_vuc}</div> </div>
                             </TableCell>
                             <TableCell>
                                 {rooms.trang_thai}

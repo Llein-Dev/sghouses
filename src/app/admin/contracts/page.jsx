@@ -48,7 +48,8 @@ export default function Contract() {
   const adminToken = Cookies.get('token');
   const [rooms, setRooms] = useState(null)
   const [users, setUsers] = useState(null)
-
+  console.log(users);
+  console.log(rooms);
 
   useEffect(() => {
     const fetchRoomsAndUsers = async () => {
@@ -71,7 +72,7 @@ export default function Contract() {
           },
         });
         const usersData = await usersResponse.json();
-        setUsers(usersData.list);
+        setUserss(usersData.list);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -84,11 +85,11 @@ export default function Contract() {
 
         const roomRes = await fetch(`http://localhost:8000/api/rooms/${selectedContracts.id}`)
         const roomData = await roomRes.json()
-        setRoom(roomData)
+        setRooms(roomData)
 
         const userRes = await fetch(`http://localhost:8000/api/users/${selectedContracts.id_user}`)
         const userData = await userRes.json()
-        setUser(userData)
+        setUserss(userData)
       } catch (error) {
         console.error('Error fetching data:', error)
       }
@@ -434,8 +435,8 @@ export default function Contract() {
             <TableRow key={index}>
               <TableCell>{index + 1}</TableCell> {/* STT */}
               <TableCell>{contract.id}</TableCell> {/* Mã hợp đồng */}
-              <TableCell>{`${contract.roomName} - ${contract.buildingName}`}</TableCell> {/* Tên phòng - Tòa nhà */}
-              <TableCell>{contract.userName}</TableCell> {/* Tên Người Dùng */}
+              <TableCell>{`${contract.name_room} - ${contract.name_building}`}</TableCell> {/* Tên phòng - Tòa nhà */}
+              <TableCell>{contract.name_user}</TableCell> {/* Tên Người Dùng */}
               <TableCell>
                 {contract.date_start}
               </TableCell>
@@ -573,14 +574,13 @@ export default function Contract() {
                           <div className="space-y-4 col-span-2">
                             <EnhancedPreviewCards selectedRoom={selectedRoom} selectedUser={selectedUser} />
 
-                          </div>
                         </div>
-                        <DialogFooter>
-                          <Button type="submit" variant="orange">
-                            Cập nhật
-                          </Button>
-                        </DialogFooter>
-                      </form>
+                      </div>
+                      <DialogFooter>
+                        <Button type="submit" variant="orange" onClick={handleEditContracts}>
+                          Cập nhật
+                        </Button>
+                      </DialogFooter>
                     </DialogContent>
                   </Dialog>
 

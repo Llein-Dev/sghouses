@@ -18,7 +18,7 @@ import {
   Minimize,
   Newspaper,
   Home,
-  Receipt 
+  Receipt
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -92,7 +92,7 @@ const navItems = [
   {
     href: "/admin/orders",
     label: "Hóa đơn", // Room
-    icon: <Receipt  className="p-1 bg-blue-900 rounded text-white" />,
+    icon: <Receipt className="p-1 bg-blue-900 rounded text-white" />,
     key: "orders",
   },
   {
@@ -161,7 +161,7 @@ export default function RootLayout({ children }) {
           <aside className="w-18 md:w-64 h-full shadow-md flex flex-col justify-between bg-white">
             <div>
               <img
-                src="/logo.svg"
+                src="/logo.svg" // Path relative to the 'public' folder
                 alt="Logo"
                 className="w-full p-2 hidden md:block"
               />
@@ -177,11 +177,10 @@ export default function RootLayout({ children }) {
                     key={key}
                     href={href}
                     onClick={() => setActiveTab(key)}
-                    className={`flex items-center space-x-0 lg:space-x-3  px-4 py-3 transition-colors duration-200 ${
-                      activeTab === key
+                    className={`flex items-center space-x-0 lg:space-x-3  px-4 py-3 transition-colors duration-200 ${activeTab === key
                         ? "bg-blue-900 text-white"
                         : "bg-gray-100 text-gray-700 hover:bg-blue-100 hover:text-blue-900"
-                    }`}
+                      }`}
                   >
                     {icon}
                     <span className="hidden md:block">{label}</span>

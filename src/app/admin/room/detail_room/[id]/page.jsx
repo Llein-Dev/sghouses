@@ -58,7 +58,7 @@ export default function DetailRoom() {
           <section className="bg-white p-6 rounded-lg shadow-lg">
             <h2 className="text-2xl font-semibold text-gray-800 mb-4">Hình ảnh</h2>
             <div className="flex gap-4 overflow-x-auto">
-              {room.hinh_anh.split(";").map((img, index) => (
+              {room.image.split(";").map((img, index) => (
                 <img
                   key={index}
                   src={`http://localhost:8000/storage/${img}`}

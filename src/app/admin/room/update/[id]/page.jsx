@@ -1,5 +1,5 @@
 "use client";
-    import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import { useParams, useRouter } from "next/navigation";
 // Hàm chính của component
@@ -29,7 +29,7 @@ export default function UpdateRoom() {
         fetchRoomDetail(adminToken);
     }, [id, router]);
 
-  
+
 
     // Hàm lấy dữ liệu chi tiết tòa nhà từ API
     const fetchRoomDetail = async (token) => {
@@ -41,9 +41,9 @@ export default function UpdateRoom() {
                     "Content-Type": "application/json",
                 },
             });
-    
+
             console.log("Response status:", response.status);
-    
+
             if (response.ok) {
                 const result = await response.json();
                 console.log(result)
@@ -63,8 +63,8 @@ export default function UpdateRoom() {
             console.error("Fetch error:", err);
         }
     };
-    
-    
+
+
     // Hàm xử lý chọn ảnh mới
     const handleImageChange = (e) => {
         const files = Array.from(e.target.files);
@@ -94,11 +94,11 @@ export default function UpdateRoom() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log("Data being submitted:", {
-            name, 
-            id_building, 
-            gac_lung, 
-            tien_ich, 
-            dien_tich, 
+            name,
+            id_building,
+            gac_lung,
+            tien_ich,
+            dien_tich,
             imageDelete
         });
         const adminToken = Cookies.get("token");
@@ -139,9 +139,9 @@ export default function UpdateRoom() {
         }
     };
 
-const handleChangeReturn = () =>{
-    router.push('/admin/room')
-}
+    const handleChangeReturn = () => {
+        router.push('/admin/room')
+    }
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
@@ -151,7 +151,7 @@ const handleChangeReturn = () =>{
                 {error && <p className="text-red-500 mb-4">{error}</p>}
 
                 <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
+                    <div>
                         <label className="block text-gray-600">ID tòa nhà</label>
                         <input
                             type="text"
@@ -162,7 +162,7 @@ const handleChangeReturn = () =>{
                             required
                         />
                     </div>
-                    
+
                     <div>
                         <label className="block text-gray-600">Tên Phòng</label>
                         <input
@@ -176,16 +176,39 @@ const handleChangeReturn = () =>{
                     </div>
                     <div>
                         <label className="block text-gray-600">Gác Lửng</label>
-                        <input
-                            type="text"
-                            value={gac_lung}
-                            onChange={(e) => setGacLung(e.target.value)}
-                            className="w-full p-2 border border-gray-300 rounded mt-1"
-                            placeholder="Nhập tiêu đề"
-                            required
-                        />
+                        <div className="flex items-center space-x-4 mt-2">
+                            <label
+                                className={`flex items-center space-x-2 p-2 rounded ${gac_lung === "1" ? "bg-green-200 text-green-800" : "bg-gray-100"
+                                    }`}
+                            >
+                                <input
+                                    type="radio"
+                                    name="gac_lung"
+                                    value="1"
+                                    checked={gac_lung === "1"}
+                                    onChange={(e) => setGacLung(e.target.value)}
+                                    className="form-radio h-4 w-4 text-blue-600"
+                                />
+                                <span>Có</span>
+                            </label>
+                            <label
+                                className={`flex items-center space-x-2 p-2 rounded ${gac_lung === "0" ? "bg-red-200 text-red-800" : "bg-gray-100"
+                                    }`}
+                            >
+                                <input
+                                    type="radio"
+                                    name="gac_lung"
+                                    value="0"
+                                    checked={gac_lung === "0"}
+                                    onChange={(e) => setGacLung(e.target.value)}
+                                    className="form-radio h-4 w-4 text-blue-600"
+                                />
+                                <span>Không</span>
+                            </label>
+                        </div>
                     </div>
-                 
+
+
                     <div>
                         <label className="block text-gray-600">Tiện ích</label>
                         <input
@@ -271,46 +294,46 @@ const handleChangeReturn = () =>{
                     </button>
                 </form>
 
-                
-                 {/* Modal thông báo */}
-            {showModal && (
-                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                    <div className="bg-white p-6 rounded shadow-lg text-center">
-                        <h2 className="text-2xl font-bold text-green-600">Thành công!</h2>
-                        <p className="text-gray-700">Tòa nhà đã được cập nhật thành công.</p>
-                       <div className="flex gap-4 justify-center">
-                       <button
-                            onClick={() => setShowModal(false)}
-                            className="mt-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-                        >
-                            Đóng
-                        </button>
-                        <button
-                            onClick={handleChangeReturn}
-                            className="mt-4 bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600"
-                        >
-                        Quay về Phòng
-                        </button>
-                       </div>
+
+                {/* Modal thông báo */}
+                {showModal && (
+                    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                        <div className="bg-white p-6 rounded shadow-lg text-center">
+                            <h2 className="text-2xl font-bold text-green-600">Thành công!</h2>
+                            <p className="text-gray-700">Tòa nhà đã được cập nhật thành công.</p>
+                            <div className="flex gap-4 justify-center">
+                                <button
+                                    onClick={() => setShowModal(false)}
+                                    className="mt-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+                                >
+                                    Đóng
+                                </button>
+                                <button
+                                    onClick={handleChangeReturn}
+                                    className="mt-4 bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600"
+                                >
+                                    Quay về Phòng
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            )}
-                 {/* Modal thông báo lỗi */}
-            {showModalFalse && (
-                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                    <div className="bg-white p-6 rounded shadow-lg text-center">
-                        <h2 className="text-lg font-bold text-red-600">Thông báo!</h2>
-                        <p className="text-gray-700">có vấn đề rồi hãy nhập lại !</p>
-                        <button
-                            onClick={() => setShowModalFalse(false)}
-                            className="mt-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-                        >
-                            Đóng
-                        </button>
-                       
+                )}
+                {/* Modal thông báo lỗi */}
+                {showModalFalse && (
+                    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                        <div className="bg-white p-6 rounded shadow-lg text-center">
+                            <h2 className="text-lg font-bold text-red-600">Thông báo!</h2>
+                            <p className="text-gray-700">có vấn đề rồi hãy nhập lại !</p>
+                            <button
+                                onClick={() => setShowModalFalse(false)}
+                                className="mt-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+                            >
+                                Đóng
+                            </button>
+
+                        </div>
                     </div>
-                </div>
-            )}
+                )}
 
 
             </div>

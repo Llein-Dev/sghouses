@@ -1,10 +1,10 @@
 "use client"
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import { useEffect, useState } from "react"
 import { Search, FileText, Eye, Download, Trash2, BookCopy, Link, Pencil, Book, Plus, RefreshCcw, ListX } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import {
     Table,
     TableBody,
@@ -77,6 +77,7 @@ export default function CategoryBlog() {
             console.log('Delete response status:', response.status);
 
             if (response.ok) {
+                toast.success("xóa thành công !"); // Thông báo lỗi
                 // Cập nhật danh sách người dùng bằng cách loại bỏ người dùng đã xóa
                 setRoom((prevRoom) => prevRoom.filter(rooms => rooms.id !== id));
             } else {
@@ -100,6 +101,7 @@ export default function CategoryBlog() {
                 },
             });
             if (response.ok) {
+                toast.success("nhân bản thành công !"); // Thông báo lỗi
                 const newRoom = await response.json();
                 setRoom((prevRoom) => [...prevRoom, newRoom]); // Cập nhật danh sách user
                 // Hiện thông báo và tải lại danh sách users
@@ -113,35 +115,6 @@ export default function CategoryBlog() {
             setError("Có lỗi xảy ra khi sao chép người dùng");
         }
     };
-    //     const handleToggle = async (id, isHot) => {
-    //       const adminToken = Cookies.get("token");
-    //       try {
-    //         const response = await fetch(`http://localhost:8000/api/toa-nha/editHot/${id}`, {
-    //           method: 'PATCH',
-    //           headers: {
-    //             Authorization: `Bearer ${adminToken}`,
-    //             'Content-Type': 'application/json',
-    //           },
-    //           body: JSON.stringify({ hot: !isHot }), // Toggle trạng thái hot
-    //         });
-
-    //         if (response.ok) {
-    //           const result = await response.json();
-    //           toast.success(result.message || 'Cập nhật thành công');
-    //           setCatagoryBlog(prevBuildings =>
-    //             prevBuildings.map(building =>
-    //               building.id === id ? { ...building, hot: !isHot } : building
-    //             )
-    //           );
-    //         } else {
-    //           const errorData = await response.json();
-    //           toast.error(errorData.message || 'Lỗi khi cập nhật');
-    //         }
-    //       } catch (error) {
-    //         toast.error('Lỗi khi gửi yêu cầu');
-    //       }
-    //     };
-
 
     const handleRefesh = () => {
         router.push('/admin/room/refesh_room')
@@ -239,6 +212,7 @@ export default function CategoryBlog() {
                     ))}
                 </TableBody>
             </Table>
+            <ToastContainer />
         </div>
     )
 }

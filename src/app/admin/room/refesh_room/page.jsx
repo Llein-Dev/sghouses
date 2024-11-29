@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 import { Search, RefreshCcw, ListX, List } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import {
   Table,
   TableBody,
@@ -72,14 +74,8 @@ export default function RefeshBuilding() {
 
       if (response.ok) {
         await response.json(); // Đợi dữ liệu trả về
-        const shouldGoToRecovery = window.confirm(
-          "Đã khôi phục thành công, bạn có muốn quay về trang Tòa nhà không?"
-        );
-        if (shouldGoToRecovery) {
-          router.push("/admin/room"); // Chuyển đến trang users
-        } else {
+        toast.success("Khôi phục thành công !"); // Thông báo lỗi
           fetchDeletedRoom(); // Cập nhật danh sách người dùng đã xóa nếu không chuyển trang
-        }
       } else {
         setError(errorData.message || "Lỗi khi khôi phục người dùng");
       }
@@ -145,6 +141,7 @@ export default function RefeshBuilding() {
           }
         </TableBody>
       </Table>
+      <ToastContainer />
     </div>
 
   );

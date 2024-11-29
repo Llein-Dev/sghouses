@@ -423,7 +423,7 @@ export default function Contract() {
                           Chỉnh sửa thông tin hợp đồng thuê phòng.
                         </DialogDescription>
                       </DialogHeader>
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <div className="grid grid-cols-1 h-[70vh] overflow-y-auto md:grid-cols-3 gap-4">
                         <Card>
                           <CardHeader>
                             <CardTitle>Thông tin</CardTitle>

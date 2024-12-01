@@ -24,6 +24,8 @@ import {
 import { Label } from "@/components/ui/label"
 import Cookies from "js-cookie"
 import { useRouter } from "next/navigation"
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 // import { useRouter } from "next/navigation"
 
 
@@ -72,12 +74,10 @@ export default function BlogContent() {
       if (response.ok) {
         // Cập nhật danh sách người dùng bằng cách loại bỏ người dùng đã xóa
         setBlog((prevBlog) => prevBlog.filter(blogs => blogs.id !== id));
-        const shouldGoToRecovery = window.confirm("Xóa blog thành công! Bạn có muốn đến trang khôi phục không?");
-        if (shouldGoToRecovery) {
-          router.push("/admin/blog"); // Chuyển đến trang khôi phục
-        } else {
+        toast.success("Xóa thành công!");
+
           fetchDataBlog(); // Cập nhật danh sách người dùng nếu không chuyển trang
-        }
+       
       } else {
         const errorData = await response.json();
         setError(errorData.message || "Lỗi khi xóa blog");
@@ -103,6 +103,7 @@ export default function BlogContent() {
         const newBlog = await response.json();
         setBlog((prevBlog) => [...prevBlog, newBlog]); // Cập nhật danh sách user
         // Hiện thông báo và tải lại danh sách users
+        toast.success("nhân bản thành công!");
         fetchDataBlog(); // Gọi lại fetchData để tải lại danh sách user mới
 
       } else {
@@ -270,6 +271,7 @@ export default function BlogContent() {
           ))}
         </TableBody>
       </Table>
+      <ToastContainer />
     </div>
   )
 }

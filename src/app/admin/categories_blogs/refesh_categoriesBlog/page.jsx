@@ -14,7 +14,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 export default function RefeshCataBlog() {
   const [deletedCataBlog, setDeletedCataBlog] = useState([]);
   const [error, setError] = useState(null);
@@ -60,9 +61,11 @@ export default function RefeshCataBlog() {
 
 
       } else {
+        setDeletedCataBlog([])
         setError('Không có quyền truy cập');
       }
     } catch (error) {
+      setDeletedCataBlog([])
       setError('Không thể truy cập dữ liệu');
     }
   };
@@ -96,15 +99,11 @@ export default function RefeshCataBlog() {
 
       if (response.ok) {
         await response.json(); // Đợi dữ liệu trả về
-        const shouldGoToRecovery = window.confirm(
-          "Đã khôi phục thành công, bạn có muốn quay về trang users không?"
-        );
-        if (shouldGoToRecovery) {
-          router.push("/admin/categories_blogs"); // Chuyển đến trang users
-        } else {
-          fetchDeletedCataBlog(); // Cập nhật danh sách người dùng đã xóa nếu không chuyển trang
-        }
+        toast.success('Cập nhật thành công')
+        fetchDeletedCataBlog(); // Cập nhật danh sách người dùng đã xóa nếu không chuyển trang
+
       } else {
+        fetchDeletedCataBlog()
         const errorData = await response.json();
         setError(errorData.message || "Lỗi khi khôi phục người dùng");
       }
@@ -129,7 +128,7 @@ export default function RefeshCataBlog() {
       <Table>
         <TableHeader>
           <TableRow>
-          <TableHead>ID</TableHead>
+            <TableHead>ID</TableHead>
             <TableHead>Tên Danh Mục Tin Tức</TableHead>
             <TableHead>Điện thoại</TableHead>
             <TableHead>Tình trạng</TableHead>
@@ -138,27 +137,33 @@ export default function RefeshCataBlog() {
         </TableHeader>
         <TableBody>
           {
-            filteredUsers.map((cateBlog, index) => (
-              <TableRow key={index}>
-                <TableCell>{cateBlog.id}</TableCell>
-                <TableCell>{cateBlog.name}</TableCell>
-                <TableCell>{cateBlog.slug}</TableCell>
-                <TableCell>{cateBlog.status}</TableCell>
-                <TableCell>
-                  <div className="flex space-x-2">
-
-
-                    <Button variant="outline" size="icon" onClick={() => handleRefesh(cateBlog.id)}>
-                      <RefreshCcw className="h-4 w-4" />
-                    </Button>
-                  
-                  </div>
+            filteredUsers.length > 0 ? (
+              filteredUsers.map((cateBlog, index) => (
+                <TableRow key={index}>
+                  <TableCell>{cateBlog.id}</TableCell>
+                  <TableCell>{cateBlog.name}</TableCell>
+                  <TableCell>{cateBlog.slug}</TableCell>
+                  <TableCell>{cateBlog.status}</TableCell>
+                  <TableCell>
+                    <div className="flex space-x-2">
+                      <Button variant="outline" size="icon" onClick={() => handleRefesh(cateBlog.id)}>
+                        <RefreshCcw className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={5} className="text-center text-gray-500">
+                  Danh sách trống
                 </TableCell>
               </TableRow>
-            ))
+            )
           }
         </TableBody>
       </Table>
+      <ToastContainer />
     </div>
 
   );

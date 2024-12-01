@@ -98,6 +98,7 @@ export default function CategoryBlog() {
       console.log('Delete response status:', response.status);
 
       if (response.ok) {
+        toast.success('Xóa thành công')
         // Cập nhật danh sách người dùng bằng cách loại bỏ người dùng đã xóa
         setCatagoryBlog((prevCategoriesBlog) => prevCategoriesBlog.filter(blogs => blogs.id !== id));
       } else {

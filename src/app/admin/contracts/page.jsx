@@ -27,6 +27,7 @@ import Cookies from "js-cookie"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { EnhancedPreviewCards } from '@/components/PreviewCards';
+import { Badge } from "@/components/ui/badge"
 
 
 export default function Contract() {
@@ -43,8 +44,41 @@ export default function Contract() {
   const [id_room, setIdRoom] = useState("");
   const [id_user, setIdUser] = useState("");
   const [status, setStatus] = useState("");
-  const [date_start, setDateStart] = useState("");
-  const [date_end, setDateEnd] = useState("");
+  const [date_start, setDateStart] = useState(""); // Ngày bắt đầu
+  const [date_end, setDateEnd] = useState(""); // Ngày kết thúc
+  const [date_end_option, setDateEndOption] = useState("default"); // Lựa chọn hạn hợp đồng
+  const [custom_date_end, setCustomDateEnd] = useState(""); // Ngày tự chọn
+  const calculateEndDate = (startDate, monthsToAdd) => {
+    if (!startDate) return ""; // Nếu chưa chọn ngày bắt đầu, không tính
+    const date = new Date(startDate);
+    date.setMonth(date.getMonth() + monthsToAdd);
+    return date.toISOString().split("T")[0]; // Trả về định dạng YYYY-MM-DD
+  };
+  function formatDateToDDMMYYYY(dateString) {
+    if (!dateString) return "";
+    const [year, month, day] = dateString.split("-");
+    return `${day}-${month}-${year}`;
+  }
+  const handleDateEndOptionChange = (e) => {
+    const option = e.target.value;
+    setDateEndOption(option);
+
+    if (option === "1month") {
+      setDateEnd(calculateEndDate(date_start, 1)); // Thêm 1 tháng
+    } else if (option === "6months") {
+      setDateEnd(calculateEndDate(date_start, 6)); // Thêm 6 tháng
+    } else if (option === "1year") {
+      setDateEnd(calculateEndDate(date_start, 12)); // Thêm 12 tháng
+    } else if (option === "2years") {
+      setDateEnd(calculateEndDate(date_start, 24)); // Thêm 24 tháng
+    } else if (option === "3years") {
+      setDateEnd(calculateEndDate(date_start, 36)); // Thêm 36 tháng
+    } else if (option === "5years") {
+      setDateEnd(calculateEndDate(date_start, 60)); // Thêm 60 tháng
+    } else if (option === "custom") {
+      setDateEnd(""); // Reset nếu là tùy chọn
+    }
+  };
   const adminToken = Cookies.get('token');
   const [rooms, setRooms] = useState(null)
   const [users, setUsers] = useState(null)
@@ -295,7 +329,7 @@ export default function Contract() {
               <DialogHeader>
                 <DialogTitle>Thêm hợp đồng</DialogTitle>
                 <DialogDescription>
-                  hãy thêm hợp đồng vào nhé !
+                  Thêm hợp đồng vào với đủ các thông tin để quản lý cụ thể!
                 </DialogDescription>
               </DialogHeader>
               <div className="grid grid-cols-1 h-[70vh] overflow-y-auto md:grid-cols-3 gap-4">
@@ -307,7 +341,7 @@ export default function Contract() {
                     <div className="space-y-4">
                       <div className="flex flex-col items-start gap-4">
                         <Label htmlFor="roomName" className="text-right">
-                          ID Room
+                          Chọn phòng
                         </Label>
                         <select
                           id="roomName"
@@ -321,16 +355,22 @@ export default function Contract() {
                         >
                           <option value="">Chọn Phòng</option>
                           {rooms?.map((room) => (
-                            <option key={room.id} value={room.id}>
-                              {room.ten_phong}
+                            <option
+                              key={room.id}
+                              value={room.id}
+                              className={room.trang_thai === "Đang cho thuê" ? "bg-red-600 text-white" : ""}
+                            >
+                              {room.ten_phong} - {room.trang_thai}
                             </option>
+
+
                           ))}
                         </select>
 
                       </div>
                       <div className="flex flex-col items-start gap-4">
                         <Label htmlFor="userName" className="text-right">
-                          ID User
+                          Tên người dùng
                         </Label>
                         <select
                           id="userName"
@@ -374,18 +414,54 @@ export default function Contract() {
                           className="col-span-3"
                         />
                       </div>
+                      {/* Hạn hợp đồng */}
                       <div className="flex flex-col items-start gap-4">
                         <Label htmlFor="date-end" className="">
+                          Hạn hợp đồng
+                        </Label>
+                        <select
+                          id="date-end-select"
+                          value={date_end_option}
+                          onChange={handleDateEndOptionChange}
+                          className="border rounded px-3 py-2 w-full"
+                        >
+                          <option value="default" disabled>
+                            Chọn hạn hợp đồng
+                          </option>
+                          <option value="1month">1 tháng</option>
+                          <option value="6months">6 tháng</option>
+                          <option value="1year">1 năm</option>
+                          <option value="2years">2 năm</option>
+                          <option value="3years">3 năm</option>
+                          <option value="5years">5 năm</option>
+                          <option value="custom">Tự chọn</option>
+                        </select>
+
+                        {date_end_option === "custom" && (
+                          <Input
+                            id="date-end-custom"
+                            type="date"
+                            value={custom_date_end}
+                            onChange={(e) => setCustomDateEnd(e.target.value)}
+                            className="col-span-3"
+                          />
+                        )}
+                      </div>
+
+                      {/* Hiển thị ngày kết thúc */}
+                      <div className="flex flex-col items-start gap-4">
+                        <Label htmlFor="date-display" className="">
                           Ngày kết thúc
                         </Label>
                         <Input
-                          id="date-end"
-                          type="date"
-                          value={date_end}
-                          onChange={(e) => setDateEnd(e.target.value)}
-                          className="col-span-3"
+                          id="date-display"
+                          type="text"
+                          value={formatDateToDDMMYYYY(date_end_option === "custom" ? custom_date_end : date_end)}
+                          readOnly
+                          className="col-span-3 bg-gray-200"
                         />
                       </div>
+
                     </div>
 
                   </CardContent>
@@ -434,7 +510,11 @@ export default function Contract() {
                 {contract.date_start}
               </TableCell>
               <TableCell>
-                {contract.status}
+                <Badge
+                  variant={contract.status === 'Hết hạn' ? 'success' : 'destructive'}
+                >
+                  {contract.status}
+                </Badge>
 
               </TableCell> {/* Trạng Thái */}
               <TableCell>

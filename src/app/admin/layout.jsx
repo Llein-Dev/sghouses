@@ -33,6 +33,7 @@ import Cookies from "js-cookie";
 import { profileAPI } from "@/utils/api/Auth/api";
 import { useRouter } from "next/navigation";
 import { Spinner } from "@/components/ui/loading";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const navItems = [
   {
@@ -178,8 +179,8 @@ export default function RootLayout({ children }) {
                     href={href}
                     onClick={() => setActiveTab(key)}
                     className={`flex items-center space-x-0 lg:space-x-3  px-4 py-3 transition-colors duration-200 ${activeTab === key
-                        ? "bg-blue-900 text-white"
-                        : "bg-gray-100 text-gray-700 hover:bg-blue-100 hover:text-blue-900"
+                      ? "bg-blue-900 text-white"
+                      : "bg-gray-100 text-gray-700 hover:bg-blue-100 hover:text-blue-900"
                       }`}
                   >
                     {icon}
@@ -208,18 +209,16 @@ export default function RootLayout({ children }) {
               <div className="p-4 flex justify-between items-center">
                 <h2 className="font-semibold text-xl">{activeTabLabel}</h2>
                 <div className="flex items-center">
-                  <Button
-                    variant="secondary"
-                    size="icon"
-                    className="mr-2 bg-white text-blue-950"
-                  >
-                    <Bell className="h-5 w-5" />
-                  </Button>
+
                   <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
+                    <DropdownMenuTrigger className="flex rounded-lg items-center p-1 bg-white text-blue-950 ml-2">
+                      <Avatar>
+                        <AvatarImage src="/placeholder.svg?height=40&width=40" alt="Tác giả" />
+                        <AvatarFallback>QT</AvatarFallback>
+                      </Avatar>
                       <Button
                         variant="secondary"
-                        className="flex items-center bg-white text-blue-950"
+                        className=""
                       >
                         Quản trị
                         <ChevronDown className="ml-2 h-4 w-4" />

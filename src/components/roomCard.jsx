@@ -28,7 +28,8 @@ import { setProfile } from "@/redux/authSlice";
 import { Input } from "./ui/input";
 import Cookies from "js-cookie";
 import FavoriteButton from "./favourite";
-
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 export default function RoomComponents({ room }) {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
@@ -98,7 +99,7 @@ export default function RoomComponents({ room }) {
       console.log("API response status:", response.status);
 
       if (response.status === 200 || response.status === 201) {
-        alert("Gửi liên hệ thành công: " + response.data.message);
+        toast.success("Cập nhật hồ sơ thành công!"+ response.data.message);
         setIsDialogOpen(false); // Close the dialog on success
       } else {
         console.error("Unexpected API response details:", response.data);
@@ -108,12 +109,13 @@ export default function RoomComponents({ room }) {
       console.error("Catch block error:", error);
       if (error.response) {
         console.error("Error response data:", error.response.data); // Log the detailed error response
-        alert(
-          "Error: " + error.response.data.message ||
+       
+        toast.warning
+        ("Error: " + error.response.data.message ||
             "Có lỗi xảy ra. Vui lòng thử lại."
         );
       } else {
-        alert("Có lỗi xảy ra. Vui lòng thử lại.");
+        toast.warning('có lỗi xảy ra vui lòng thử lại!')
       }
     }
   };

@@ -5,7 +5,8 @@ import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
-
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 export default function CreateBlog() {
     const [title, setTitle] = useState("");
     const [image, setImage] = useState(null); // Giữ nguyên file ảnh thay vì mã hóa
@@ -30,7 +31,7 @@ export default function CreateBlog() {
 
         const adminToken = Cookies.get("token");
         if (!adminToken) {
-            alert("Vui lòng đăng nhập trước khi tạo blog!");
+            toast.warning('vui lòng đăng nhập trước khi tạo blog !')
             router.push("/");
             return;
         }
@@ -75,6 +76,7 @@ export default function CreateBlog() {
     };
 
     return (
+        <>
         <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
             <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-screen-lg">
                 <h2 className="text-2xl font-semibold text-gray-700 mb-4">Tạo Blog Mới</h2>
@@ -172,5 +174,7 @@ export default function CreateBlog() {
                 </form>
             </div>
         </div>
+             <ToastContainer />
+             </>
     );
 }

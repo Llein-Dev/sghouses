@@ -15,7 +15,8 @@ import { useEffect, useState } from "react"; // Don't forget to import useState
 import { useDispatch, useSelector } from "react-redux";
 import { setProfile } from "@/redux/authSlice";
 import Cookies from "js-cookie";
-
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 export default function BuildingDetailComponent() {
     const { slug } = useParams(); // Lấy slug từ URL
     const { building, loading, error } = useBuildingDetails(slug);
@@ -32,7 +33,8 @@ export default function BuildingDetailComponent() {
     
     const addComment = async (newComment) => {
         if (!user) {
-            alert("Bạn chưa đăng nhập"); // Alert if user is not logged in
+            toast.warning("bạn chưa đăng nhập !");
+
             return;
         }
 
@@ -65,7 +67,8 @@ export default function BuildingDetailComponent() {
         if (data.message !== "Bạn chưa đăng nhập") {
             console.log("Comment added successfully:", data);
         } else {
-            alert("Có lỗi xảy ra, vui lòng thử lại sau.");
+            toast.warning("Có lỗi xảy ra vui lòng thử lại sau!");
+
         }
     };
    

@@ -13,7 +13,8 @@ import Link from 'next/link'
 import CommentComponent from '@/components/Comment'
 import { useDispatch, useSelector } from 'react-redux'
 import { setProfile } from '@/redux/authSlice'
-
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 export default function ArticleDetail() {
     const { slug } = useParams();
     const { detailBlog } = useFetchDetailBlog(slug);
@@ -35,7 +36,8 @@ export default function ArticleDetail() {
     const { BlogHouse } = useFetchBlogHouse();
     const addComment = async (newComment) => {
         if (!user) {
-            alert("Bạn chưa đăng nhập");
+            toast.warning("bạn chưa đăng nhập!");
+
             return;
         }
     
@@ -93,8 +95,7 @@ export default function ArticleDetail() {
             }
         } catch (error) {
             console.error("Có lỗi xảy ra khi thêm bình luận:", error);
-            alert("Có lỗi xảy ra, vui lòng thử lại.");
-            
+            toast.warning('Có lỗi xảy ra, vui lòng thử lại.')
             // Xóa comment tạm thời nếu gửi không thành công
             setComments((prevComments) =>
                 prevComments.filter((comment) => comment !== tempComment)
@@ -105,6 +106,7 @@ export default function ArticleDetail() {
     
 
     return (
+        <>
         <div className="container mx-auto px-4 space-y-4 pt-4">
             <Breadcrumb />
             <main className="">
@@ -202,5 +204,7 @@ export default function ArticleDetail() {
                 </div>
             </main>
         </div>
+              <ToastContainer />
+              </>
     )
 }

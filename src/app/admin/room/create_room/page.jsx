@@ -4,7 +4,8 @@ import { useState, useEffect, useRef } from "react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import { list } from "postcss";
-
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 export default function CreateRoom() {
   const [name, setTen] = useState("");
   const [images, setImages] = useState([]);
@@ -48,7 +49,7 @@ export default function CreateRoom() {
   const handleAddUtility = async () => {
     const adminToken = Cookies.get("token");
     if (!adminToken) {
-      alert("Vui lòng đăng nhập!");
+      toast.warning("vui lòng đăng nhập!");
       return;
     }
     try {
@@ -84,7 +85,7 @@ export default function CreateRoom() {
       }));
       setImages((prev) => [...prev, ...imageUrls]);
     } else {
-      alert("Vui lòng chọn file ảnh hợp lệ!");
+      toast.warning("vui lòng chọn file ảnh hợp lệ!");
     }
   };
   const handleRemoveImage = (imageId) => {
@@ -189,7 +190,7 @@ export default function CreateRoom() {
 
     const adminToken = Cookies.get("token");
     if (!adminToken) {
-      alert("Vui lòng đăng nhập trước khi tạo blog!");
+      toast.warning("vui lòng đăng nhập!");
       router.push("/");
       return;
     }
@@ -228,7 +229,7 @@ export default function CreateRoom() {
         setKhuVuc("");
       } else if (response.status === 401) {
         Cookies.remove("token");
-        alert("Phiên làm việc của bạn đã hết hạn, vui lòng đăng nhập lại.");
+        toast.warning("phiên làm việc hết hạn, vui lòng đăng nhập lại!");
         router.push("/");
       } else {
         setErrorMessage(data.message || "Đã có lỗi xảy ra, vui lòng thử lại.");
@@ -242,6 +243,7 @@ export default function CreateRoom() {
 
 
   return (
+    <>
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
       <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-screen-lg">
         <h2 className="text-2xl font-semibold text-gray-700 mb-4">
@@ -401,5 +403,7 @@ export default function CreateRoom() {
         </form>
       </div>
     </div>
+          <ToastContainer />
+</>
   );
 }

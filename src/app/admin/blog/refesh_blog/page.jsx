@@ -14,6 +14,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import Cookies from "js-cookie";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 export default function RefeshBlog() {
   const [blogDeleted, setBlogDeleted] = useState([]);
   const [error, setError] = useState(null);
@@ -68,14 +70,9 @@ export default function RefeshBlog() {
 
       if (response.ok) {
         await response.json(); // Đợi dữ liệu trả về
-        const shouldGoToRecovery = window.confirm(
-          "Đã khôi phục thành công, bạn có muốn quay về trang users không?"
-        );
-        if (shouldGoToRecovery) {
-          router.push("/admin/blog"); // Chuyển đến trang users
-        } else {
-            fetchDataBlogDeleted(); // Cập nhật danh sách người dùng đã xóa nếu không chuyển trang
-        }
+        toast.success('khôi phục bài viết thành công !')
+        fetchDataBlogDeleted(); // Cập nhật danh sách người dùng đã xóa nếu không chuyển trang
+
       } else {
         const errorData = await response.json();
         setError(errorData.message || "Lỗi khi khôi phục người dùng");
@@ -85,7 +82,7 @@ export default function RefeshBlog() {
     }
   };
 
-  const handleReturn = () =>{
+  const handleReturn = () => {
     router.push('/admin/blog')
   }
 
@@ -111,8 +108,6 @@ export default function RefeshBlog() {
         </div>
       </div>
 
-      {error && <p className="text-red-500">{error}</p>}
-
       <Table>
         <TableHeader>
           <TableRow>
@@ -125,26 +120,36 @@ export default function RefeshBlog() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {blogDeleted.map((blogsDeleted, index) => (
-            <TableRow key={index}>
-              <TableCell>{blogsDeleted.id}</TableCell>
-              <TableCell>
-                <img src={`http://localhost:8000/storage/${blogsDeleted.image}`} alt="Blog" />
-              </TableCell>
-              <TableCell>{blogsDeleted.title}</TableCell>
-              <TableCell>{blogsDeleted.name_cate}</TableCell>
-              <TableCell>{blogsDeleted.description}</TableCell>
-              <TableCell>
-                <div className="flex space-x-2">
-                  <Button variant="outline" size="icon"  onClick={() => handleRefeshBlog(blogsDeleted.id)}>
-                    <RefreshCcw className="h-4 w-4" />
-                  </Button>
-                </div>
+          {blogDeleted.length === 0 ? (
+            <TableRow>
+              <TableCell colSpan={6} className="text-center">
+                Danh sách xóa bài viết trống
               </TableCell>
             </TableRow>
-          ))}
+          ) : (
+            blogDeleted.map((blogsDeleted, index) => (
+              <TableRow key={index}>
+                <TableCell>{blogsDeleted.id}</TableCell>
+                <TableCell>
+                  <img src={`http://localhost:8000/storage/${blogsDeleted.image}`} alt="Blog" />
+                </TableCell>
+                <TableCell>{blogsDeleted.title}</TableCell>
+                <TableCell>{blogsDeleted.name_cate}</TableCell>
+                <TableCell>{blogsDeleted.description}</TableCell>
+                <TableCell>
+                  <div className="flex space-x-2">
+                    <Button variant="outline" size="icon" onClick={() => handleRefeshBlog(blogsDeleted.id)}>
+                      <RefreshCcw className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))
+          )}
         </TableBody>
+
       </Table>
+      <ToastContainer />
     </div>
   );
 }

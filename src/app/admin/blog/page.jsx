@@ -122,9 +122,6 @@ export default function BlogContent() {
   const handleRefeshBlog = () => {
     router.push('/admin/blog/refesh_blog')
   }
-  const handleDetailBlog = (id) => {
-    router.push(`/admin/detail_blog/${id}`)
-  }
   const handleUpdateBlog = (id) => {
     router.push(`/admin/update_blog/${id}`)
   }
@@ -261,10 +258,6 @@ export default function BlogContent() {
                       <BookCopy className="h-4 w-4"
                       />
                     </Button>
-                  <Button variant="outline" size="icon" onClick={() => handleDetailBlog(blogs.id)} >
-                    <Eye className="h-4 w-4"
-                    />
-                  </Button>
                 </div>
               </TableCell>
             </TableRow>

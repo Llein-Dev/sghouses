@@ -126,14 +126,14 @@ export default function UpdateBlog() {
     return (
         <>
         <div className="flex justify-end p-6">
-        <Button onClick={handleCreatPage} className="bg-green-700 text-white hover:bg-green-600">
+        <Button onClick={handleCreatPage} className="bg-blue-900 text-white hover:bg-blue-600">
             <FileText className="mr-2 h-4 w-4" />
             Trang tin tức
           </Button>
           </div>
-            <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
+            <div className="flex items-center justify-center bg-gray-100 p-6">
                 <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-screen-lg">
-                    <h2 className="text-2xl font-semibold text-gray-700 mb-4">Chỉnh sửa Blog</h2>
+                    <h2 className="text-2xl font-semibold text-gray-700 mb-4">Chỉnh sửa bài viết</h2>
 
                     {error && <p className="text-red-500 mb-4">{error}</p>}
 
@@ -176,9 +176,9 @@ export default function UpdateBlog() {
 
                         <button
                             type="submit"
-                            className="w-full p-2 rounded bg-blue-600 hover:bg-blue-700 text-white transition"
+                            className="w-full p-2 rounded bg-blue-900 hover:bg-blue-900 text-white transition"
                         >
-                            Cập nhật Blog
+                            Cập nhật 
                         </button>
                     </form>
                 </div>

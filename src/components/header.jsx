@@ -105,7 +105,7 @@ export function HeaderComponent() {
   );
 
   return (
-    <header className="bg-background border-b fixed w-full top-0 z-40 px-4">
+    <header className="bg-background border-b fixed w-full top-0 px-4 z-40"> 
       <div className="container mx-auto px-4 py-3 flex items-center justify-between">
         <div className="flex items-center space-x-8">
           <Link href="/">

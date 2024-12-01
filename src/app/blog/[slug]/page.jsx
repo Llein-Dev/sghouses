@@ -18,7 +18,7 @@ import 'react-toastify/dist/ReactToastify.css';
 export default function ArticleDetail() {
     const { slug } = useParams();
     const { detailBlog } = useFetchDetailBlog(slug);
-    const [comments, setComments] = useState(detailBlog?.list_cmt || []);    
+    const [comments, setComments] = useState(detailBlog?.list_cmt || []);
     const user = useSelector((state) => state.auth.user); // Access user from Redux store
     const dispatch = useDispatch(); // Initialize dispatch
     const token = Cookies.get('token');
@@ -27,7 +27,7 @@ export default function ArticleDetail() {
             setComments(detailBlog.list_cmt || []);
         }
     }, [detailBlog]);
-    
+
     useEffect(() => {
         if (user) {
             dispatch(setProfile(user)); // Dispatch action to set user
@@ -40,7 +40,7 @@ export default function ArticleDetail() {
 
             return;
         }
-    
+
         // Tạo một comment tạm thời
         const tempComment = {
             id: comments?.length + 1, // Tạo id giả lập
@@ -51,10 +51,10 @@ export default function ArticleDetail() {
             replies: 0,
             date: "Vừa xong", // Hiển thị thời gian tạm thời
         };
-    
+
         // Hiển thị bình luận tạm thời
         setComments((prevComments) => [...prevComments, tempComment]);
-    
+
         try {
             // Gửi bình luận tới API
             const response = await fetch(`http://localhost:8000/api/blog/comment`, {
@@ -68,12 +68,12 @@ export default function ArticleDetail() {
                     message: newComment,
                 }),
             });
-    
+
             const data = await response.json();
-    
+
             if (response.ok) {
                 console.log("Bình luận thành công:", data);
-    
+
                 // Thay thế comment tạm thời bằng comment từ server (nếu cần thiết)
                 const updatedComment = {
                     id: data.id, // ID thực từ server
@@ -84,7 +84,7 @@ export default function ArticleDetail() {
                     replies: 0,
                     date: data.date || "Vừa xong",
                 };
-    
+
                 setComments((prevComments) =>
                     prevComments.map((comment) =>
                         comment === tempComment ? updatedComment : comment
@@ -102,109 +102,109 @@ export default function ArticleDetail() {
             );
         }
     };
-    
-    
+
+
 
     return (
         <>
-        <div className="container mx-auto px-4 space-y-4 pt-4">
-            <Breadcrumb />
-            <main className="">
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-                  <div className="lg:col-span-2 mb-4">
-                  <div className=' bg-white p-8 shadow rounded-md mb-4'>
-                        <div className="mb-8 space-y-4">
-                            <h1 className="text-4xl text-blue-900 font-bold mb-4">{detailBlog.title}</h1>
-                            <div className="flex items-center space-x-4 text-sm text-muted-foreground">
-                                <span>Ngày tải: Ngày 24 tháng 10, 2024</span>
-                            </div>
-                            <p>
-                                {detailBlog.description}
-                            </p>
-                        </div>
-                        <img
-                            src={`http://localhost:8000/storage/${detailBlog.image}`}
-                            alt="SGhouses Việt Nam"
-                            className="w-full h-[400px] object-cover rounded-lg mb-6"
+            <div className="container mx-auto px-4 space-y-4 pt-4">
+                <Breadcrumb />
+                <main className="">
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                        <div className="lg:col-span-2 mb-4">
+                            <div className=' bg-white p-8 shadow rounded-md mb-4'>
+                                <div className="mb-8 space-y-4">
+                                    <h1 className="text-4xl text-blue-900 font-bold mb-4">{detailBlog.title}</h1>
+                                    <div className="flex items-center space-x-4 text-sm text-muted-foreground">
+                                        <span>Ngày tải: Ngày 24 tháng 10, 2024</span>
+                                    </div>
+                                    <p>
+                                        {detailBlog.description}
+                                    </p>
+                                </div>
+                                <img
+                                    src={`http://localhost:8000/storage/${detailBlog.image}`}
+                                    alt="SGhouses Việt Nam"
+                                    className="w-full h-[400px] object-cover rounded-lg mb-6"
 
-                        />
-                        <div className="prose lg:prose-xl max-w-none space-y-4">
-                            {detailBlog?.body
-                                ?.split('\n')
-                                .filter(paragraph => paragraph.trim() !== '')
-                                .map((paragraph, index) => (
-                                    <p key={index}>{paragraph}</p>
+                                />
+                                <div className="prose lg:prose-xl max-w-none space-y-4">
+                                    {detailBlog?.body
+                                        ?.split('\n')
+                                        .filter(paragraph => paragraph.trim() !== '')
+                                        .map((paragraph, index) => (
+                                            <p key={index}>{paragraph}</p>
+                                        ))}
+                                </div>
+
+                                {/* Author Info */}
+                                <div className="flex items-center space-x-4 mt-8 p-4 bg-muted rounded-lg">
+                                    <Avatar>
+                                        <AvatarImage src="/placeholder.svg?height=40&width=40" alt="Tác giả" />
+                                        <AvatarFallback>TG</AvatarFallback>
+                                    </Avatar>
+                                    <div>
+                                        <h3 className="font-semibold">Nguyễn Văn A</h3>
+                                        <p className="text-sm text-muted-foreground">Nhà báo chuyên về văn hóa và ẩm thực</p>
+                                    </div>
+                                </div>
+
+                                {/* Share Buttons */}
+                                <div className="flex space-x-4 mt-8">
+                                    <Button variant="orange" size="icon">
+                                        <Facebook className="h-4 w-4" />
+                                    </Button>
+                                    <Button variant="orange" size="icon">
+                                        <Twitter className="h-4 w-4" />
+                                    </Button>
+                                    <Button variant="orange" size="icon">
+                                        <Linkedin className="h-4 w-4" />
+                                    </Button>
+                                </div>
+
+                                {/* Comment Section */}
+
+                            </div>
+                            <CommentComponent
+                                comments={comments} // Truyền state comments
+                                onCommentAdd={addComment}
+                                user={user}
+                            />
+
+                        </div>
+                        {/* Related Articles */}
+                        <div className="lg:col-span-1 bg-gray-100">
+                            <div className="space-y-4">
+                                {BlogHouse.map((i) => (
+                                    <Card key={i.id}>
+                                        <CardContent className="grid p-0 overflow-hidden grid-cols-3">
+                                            {/* Image Section */}
+                                            <img
+                                                src={`http://localhost:8000/storage/${i.image}`}
+                                                alt={`Related Article ${i.title}`}
+                                                className="col-span-1 aspect-square object-cover"
+                                            />
+
+                                            {/* Text Content Section */}
+                                            <div className="p-5 col-span-2">
+                                                <Link href={`/blog/${i.slug}`}>
+                                                    <h3 className="font-semibold mb-2">{i.title || 'Tiêu đề bài viết liên quan'}</h3>
+                                                </Link>
+                                                {/* Limited Description */}
+                                                <p className="text-sm text-muted-foreground line-clamp-2">
+                                                    {i.description || 'Mô tả ngắn về bài viết liên quan...'}
+                                                </p>
+                                            </div>
+                                        </CardContent>
+                                    </Card>
                                 ))}
-                        </div>
-
-                        {/* Author Info */}
-                        <div className="flex items-center space-x-4 mt-8 p-4 bg-muted rounded-lg">
-                            <Avatar>
-                                <AvatarImage src="/placeholder.svg?height=40&width=40" alt="Tác giả" />
-                                <AvatarFallback>TG</AvatarFallback>
-                            </Avatar>
-                            <div>
-                                <h3 className="font-semibold">Nguyễn Văn A</h3>
-                                <p className="text-sm text-muted-foreground">Nhà báo chuyên về văn hóa và ẩm thực</p>
                             </div>
                         </div>
 
-                        {/* Share Buttons */}
-                        <div className="flex space-x-4 mt-8">
-                            <Button variant="orange" size="icon">
-                                <Facebook className="h-4 w-4" />
-                            </Button>
-                            <Button variant="orange" size="icon">
-                                <Twitter className="h-4 w-4" />
-                            </Button>
-                            <Button variant="orange" size="icon">
-                                <Linkedin className="h-4 w-4" />
-                            </Button>
-                        </div>
-
-                        {/* Comment Section */}
-                     
                     </div>
-                    <CommentComponent 
-    comments={comments} // Truyền state comments
-    onCommentAdd={addComment} 
-    user={user} 
-/>
-
-                  </div>
-                    {/* Related Articles */}
-                    <div className="lg:col-span-1 bg-gray-100">
-                        <div className="space-y-4">
-                            {BlogHouse.map((i) => (
-                                <Card key={i.id}>
-                                    <CardContent className="grid p-0 overflow-hidden grid-cols-3">
-                                        {/* Image Section */}
-                                        <img
-                                            src={`http://localhost:8000/storage/${i.image}`}
-                                            alt={`Related Article ${i.title}`}
-                                            className="col-span-1 aspect-square object-cover"
-                                        />
-
-                                        {/* Text Content Section */}
-                                        <div className="p-5 col-span-2">
-                                            <Link href={`/blog/${i.slug}`}>
-                                                <h3 className="font-semibold mb-2">{i.title || 'Tiêu đề bài viết liên quan'}</h3>
-                                            </Link>
-                                            {/* Limited Description */}
-                                            <p className="text-sm text-muted-foreground line-clamp-2">
-                                                {i.description || 'Mô tả ngắn về bài viết liên quan...'}
-                                            </p>
-                                        </div>
-                                    </CardContent>
-                                </Card>
-                            ))}
-                        </div>
-                    </div>
-
-                </div>
-            </main>
-        </div>
-              <ToastContainer />
-              </>
+                </main>
+            </div>
+            <ToastContainer className="z-50"  />
+        </>
     )
 }

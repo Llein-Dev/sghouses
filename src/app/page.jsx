@@ -7,7 +7,7 @@ import { ProductCardColComponent } from "@/components/product-card";
 import { SearchBarComponent } from "@/components/search-bar";
 import { Button } from "@/components/ui/button";
 import UserGuidance from "@/components/userguide";
-import { blogs, images, keywords, products, steps } from "@/utils/data";
+import { blogs, keywords, products, steps } from "@/utils/data";
 import { ArrowRight } from "lucide-react";
 import { useFetchBlogHouse, useFetchCategories, useFetchCheapHouse, useFetchFeaturedHouse, useFetchViewHouse } from '../utils/api/GET/api'; // Import custom hook
 import { ProductCardColCheapComponent } from "@/components/product-card-cheap";
@@ -27,7 +27,7 @@ export default function Home() {
       <div className="space-y-24 pb-24">
         {/* Carousel and Search Bar */}
         <div className="relative">
-          <CarouselComponent images={images} autoPlayInterval={5000} />
+          <CarouselComponent autoPlayInterval={5000} />
           <SearchBarComponent />
         </div>
         <WhyUs />

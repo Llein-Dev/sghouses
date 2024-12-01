@@ -2,9 +2,27 @@
 import { useState, useEffect, useCallback } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { banners } from "@/utils/data";
 
-export function CarouselComponent({ images = [], autoPlayInterval = 5000 }) {
+export function CarouselComponent({ autoPlayInterval = 5000 }) {
+  const [images, setImages] = useState(banners);
   const [currentIndex, setCurrentIndex] = useState(0);
+
+  // Fetch the banners from the API
+  useEffect(() => {
+    const fetchBanners = async () => {
+      try {
+        const response = await fetch("http://localhost:8000/api/banner"); // Replace with your API endpoint
+        if (!response.ok) throw new Error("Network response was not ok");
+        const data = await response.json();
+        setImages(data); // Assuming the API returns an array of image URLs
+      } catch (error) {
+        console.error("Failed to fetch banners:", error);
+      }
+    };
+
+    fetchBanners();
+  }, []);
 
   const nextSlide = useCallback(() => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
@@ -33,12 +51,11 @@ export function CarouselComponent({ images = [], autoPlayInterval = 5000 }) {
         {images.map((image, index) => (
           <img
             key={index}
-            src={`https://sghouses.vercel.app${image}`}
+            src={`https://sghouses.vercel.app${image}`} // Assuming images are relative URLs
             alt={`Slide ${index + 1}`}
             className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${index === currentIndex ? "opacity-100" : "opacity-0"}`}
           />
         ))}
-        {/* Overlay div */}
         <div className="absolute inset-0 bg-black opacity-30" />
       </div>
       <Button

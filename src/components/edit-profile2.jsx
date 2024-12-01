@@ -133,7 +133,7 @@ export default function EditProfile2Component({ user }) {
             const data = await updateAvatar(formData)
             setFormData(prev => ({ ...prev, avatar: data.avatarUrl }))
             toast.success("Cập nhật ảnh thành công!");
-            } catch (error) {
+        } catch (error) {
             console.error('Error updating avatar:', error)
         }
     }
@@ -218,7 +218,7 @@ export default function EditProfile2Component({ user }) {
                         <Label htmlFor="created_at">Ngày tạo tài khoản</Label>
                         <Input disabled id="created_at" value={formatDate(user?.created_at || '')} name="created_at" type="date" />
                     </div>
-                    <Button variant="blue"  type="submit">Xác nhận</Button>
+                    <Button variant="blue" type="submit">Xác nhận</Button>
                 </form>
             </CardContent>
         </Card>
@@ -341,7 +341,7 @@ export default function EditProfile2Component({ user }) {
                         </div>
                     </div>
 
-                  
+
 
                     <Button variant="blue" type="submit">
                         Xác nhận
@@ -371,7 +371,7 @@ export default function EditProfile2Component({ user }) {
                         <Label htmlFor="address">Địa chỉ</Label>
                         <Input id="address" value={formData.address} onChange={handleInputChange} name="address" type="text" />
                     </div>
-                    <Button variant="blue"  type="submit">Lưu thông tin liên hệ</Button>
+                    <Button variant="blue" type="submit">Lưu thông tin liên hệ</Button>
                 </form>
             </CardContent>
         </Card>
@@ -379,43 +379,43 @@ export default function EditProfile2Component({ user }) {
 
     return (
         <>
-        <div className="container mx-auto px-4 py-4 flex flex-wrap gap-4">
-            <Breadcrumb />
-            {loading ? (
-                <div className='flex justify-center w-full h-64'><Spinner /></div>
-            ) : (
-                <>
-                    <Card className="w-full md:w-1/5 border-r">
-                        <nav className="space-y-2 p-4">
-                            {[
-                                { id: "canhan", label: "Thông tin cá nhân" },
-                                { id: "lienhe", label: "Thông tin liên hệ" },
-                                { id: "doiMatKhau", label: "Đổi mật khẩu" }
-                            ].map(({ id, label }) => (
-                                <button
-                                    key={id}
-                                    onClick={() => setActiveTab(id)}
-                                    className={cn(
-                                        "w-full text-left px-4 py-2 rounded-lg transition-colors",
-                                        activeTab === id
-                                            ? "bg-orange-500 text-primary-foreground"
-                                            : "hover:bg-muted"
-                                    )}
-                                >
-                                    {label}
-                                </button>
-                            ))}
-                        </nav>
-                    </Card>
-                    <div className="flex-1">
-                        {activeTab === "canhan" && renderPersonalInfo()}
-                        {activeTab === "doiMatKhau" && renderPasswordChange()}
-                        {activeTab === "lienhe" && renderContactInfo()}
-                    </div>
-                </>
-            )}
-        </div>
-              <ToastContainer />
-              </>
+            <div className="container mx-auto px-4 py-4 flex flex-wrap gap-4">
+                <Breadcrumb />
+                {loading ? (
+                    <div className='flex justify-center w-full h-64'><Spinner /></div>
+                ) : (
+                    <>
+                        <Card className="w-full md:w-1/5 border-r">
+                            <nav className="space-y-2 p-4">
+                                {[
+                                    { id: "canhan", label: "Thông tin cá nhân" },
+                                    { id: "lienhe", label: "Thông tin liên hệ" },
+                                    { id: "doiMatKhau", label: "Đổi mật khẩu" }
+                                ].map(({ id, label }) => (
+                                    <button
+                                        key={id}
+                                        onClick={() => setActiveTab(id)}
+                                        className={cn(
+                                            "w-full text-left px-4 py-2 rounded-lg transition-colors",
+                                            activeTab === id
+                                                ? "bg-orange-500 text-primary-foreground"
+                                                : "hover:bg-muted"
+                                        )}
+                                    >
+                                        {label}
+                                    </button>
+                                ))}
+                            </nav>
+                        </Card>
+                        <div className="flex-1">
+                            {activeTab === "canhan" && renderPersonalInfo()}
+                            {activeTab === "doiMatKhau" && renderPasswordChange()}
+                            {activeTab === "lienhe" && renderContactInfo()}
+                        </div>
+                    </>
+                )}
+            </div>
+            <ToastContainer  className="z-50"  />
+        </>
     )
 }

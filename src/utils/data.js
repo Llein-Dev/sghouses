@@ -1,5 +1,5 @@
 import { Search, Home, FileText, Phone } from 'lucide-react'
-export const images = [
+export const banners = [
     "/pexels-photo-106399.jpeg?height=400&width=800&text=Slide+1",
     "/background-phong-khach-dep-3.jpg?height=400&width=800&text=Slide+2",
     "/mau-sac-hai-hoa-mang-den-Background-dep.jpg?height=400&width=800&text=Slide+3",

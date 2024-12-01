@@ -99,7 +99,7 @@ export default function RoomComponents({ room }) {
       console.log("API response status:", response.status);
 
       if (response.status === 200 || response.status === 201) {
-        toast.success("Cập nhật hồ sơ thành công!"+ response.data.message);
+        toast.success("Cập nhật hồ sơ thành công!" + response.data.message);
         setIsDialogOpen(false); // Close the dialog on success
       } else {
         console.error("Unexpected API response details:", response.data);
@@ -108,20 +108,15 @@ export default function RoomComponents({ room }) {
     } catch (error) {
       console.error("Catch block error:", error);
       if (error.response) {
+        toast.warning('Bạn có thể đã gửi liên hệ rồi!')
+        setIsDialogOpen(false); // Close the dialog on success
         console.error("Error response data:", error.response.data); // Log the detailed error response
-       
-        toast.warning
-        ("Error: " + error.response.data.message ||
-            "Có lỗi xảy ra. Vui lòng thử lại."
-        );
-      } else {
-        toast.warning('có lỗi xảy ra vui lòng thử lại!')
       }
     }
   };
   const [active, setActive] = useState(false);
   return (
-    <Card className="w-full border-none shadow-md">
+    <><Card className="w-full border-none shadow-md">
       <CardContent className="p-4 sm:p-6">
         <div className="flex flex-col lg:flex-row gap-6">
           {/* Image Column */}
@@ -246,7 +241,7 @@ export default function RoomComponents({ room }) {
                 </ul>
               </div>
               <div className="flex justify-between items-center mt-6 pt-4 border-t border-gray-200">
-              <FavoriteButton idRoom={room.id} active={active} setActive={setActive} />
+                <FavoriteButton idRoom={room.id} active={active} setActive={setActive} />
 
                 <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                   <DialogTrigger asChild>
@@ -321,5 +316,7 @@ export default function RoomComponents({ room }) {
         </div>
       </CardContent>
     </Card>
+      <ToastContainer  className="z-50" />
+    </>
   );
 }

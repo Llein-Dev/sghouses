@@ -86,6 +86,7 @@ export function SearchFilterComponent({ onResultsUpdate, setLoading }) {
         });
       }
     }
+    handleSearch();
   }, []);
 
   const fetchRooms = async (keyword, areaParam, priceRange, sizeRange) => {
@@ -124,6 +125,8 @@ export function SearchFilterComponent({ onResultsUpdate, setLoading }) {
       setLoading(false);
     }
   };
+
+
 
   return (
     <div className="w-full bg-white rounded-none md:rounded-xl shadow p-4">

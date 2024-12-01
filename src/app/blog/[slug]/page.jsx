@@ -13,7 +13,7 @@ import Link from 'next/link'
 import CommentComponent from '@/components/Comment'
 import { useDispatch, useSelector } from 'react-redux'
 import { setProfile } from '@/redux/authSlice'
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 export default function ArticleDetail() {
     const { slug } = useParams();

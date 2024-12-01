@@ -4,9 +4,90 @@ import Link from "next/link";
 import { Eye, MapPin } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardFooter, CardTitle } from "@/components/ui/card";
-
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog";
+import FavoriteButton from "./favourite";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import Cookies from "js-cookie";
+import { Button } from "./ui/button";
+import { Label } from "recharts";
+import { Input } from "./ui/input";
+import { Textarea } from "./ui/textarea";
+import { setProfile } from "@/redux/authSlice";
+import axios from "axios";
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 export function RoomCardRowComponent({ product }) {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.user);
 
+  useEffect(() => {
+    if (user) {
+      dispatch(setProfile(user)); // Dispatch action to set user profile
+      // Update id_user in formData when user changes
+      setFormData((prevData) => ({
+        ...prevData,
+        id_user: user.id, // Update id_user when user is available
+      }));
+    }
+  }, [user, dispatch]);
+
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    phone: "",
+    content: "",
+    id_room: product.id,
+    id_user: user ? user.id : "", // Initialize id_user from user state
+  });
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+  const token = Cookies.get("token"); // Get the token from cookies
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log(formData);
+
+    const dataToSubmit = {
+      ...formData,
+      id_user: formData.id_user || null,
+    };
+
+    try {
+      const response = await axios.post(
+        "http://localhost:8000/api/contact_room/add",
+        dataToSubmit,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (response.status === 200 || response.status === 201) {
+        toast.success("Cập nhật hồ sơ thành công!" + response.data.message);
+        setIsDialogOpen(false);
+      } else {
+        throw new Error("Failed to submit rental request");
+      }
+    } catch (error) {
+      if (error.response) {
+        // Log chi tiết lỗi từ API
+        console.error("Error response data:", error.response.data);
+        setIsDialogOpen(false);
+        toast.warning(error.response.data.message || 'Bạn có thể đã gửi liên hệ rồi!');
+      } else {
+        // Nếu không có phản hồi từ API, hiển thị thông báo chung
+        console.error("Error:", error.message);
+        setIsDialogOpen(false);
+        toast.error('Đã xảy ra lỗi. Vui lòng thử lại.');
+      }
+    } 
+  };
 
   // Split the image string and get the first image URL
   const images = product?.hinh_anh ? product.hinh_anh.split(";") : [];
@@ -138,10 +219,80 @@ export function RoomCardRowComponent({ product }) {
           <CardFooter className="p-4 pt-0">
             <Link
               href={product?.mapLink || "#"} // Use a placeholder or handle undefined
-              className="text-sm text-primary hover:underline flex items-center"
+              className="text-sm mr-auto text-primary hover:underline flex items-center"
             >
               <MapPin className="w-4 h-4 mr-1" /> Xem bản đồ
             </Link>
+
+
+            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+              <DialogTrigger asChild>
+                <Button variant="orange">Thuê ngay</Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[425px]">
+                <DialogHeader>
+                  <DialogTitle>Đăng ký thuê phòng</DialogTitle>
+                </DialogHeader>
+                <form
+                  onSubmit={handleSubmit}
+                  className="grid space-y-4 py-4"
+                >
+                  <div className="grid grid-cols-1 items-center gap-4">
+                    <Label htmlFor="fullname">Họ tên</Label>
+                    <Input
+                      id="name"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleInputChange}
+                      className="col-span-3"
+                      required
+                    />
+                  </div>
+                  <div className="grid grid-cols-1 items-center gap-4">
+                    <Label htmlFor="phonenumber">Số điện thoại</Label>
+                    <Input
+                      id="phone"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleInputChange}
+                      className="col-span-3"
+                      required
+                    />
+                  </div>
+                  <div className="grid grid-cols-1 items-center gap-4">
+                    <Label htmlFor="content">Nội dung</Label>
+                    <Textarea
+                      id="content"
+                      name="content"
+                      value={formData.content}
+                      onChange={handleInputChange}
+                      className="w-full"
+                      required
+                    />
+                  </div>
+                  <input
+                    type="hidden"
+                    name="id_user"
+                    value={formData.id_user}
+                  />
+                  <input
+                    type="hidden"
+                    name="id_room"
+                    value={formData.id_room}
+                  />
+                  <div className="flex justify-end mt-4">
+                    <Button
+                      className="w-full"
+                      variant="orange"
+                      type="submit"
+                    >
+                      Gửi yêu cầu
+                    </Button>
+                  </div>
+                </form>
+              </DialogContent>
+            </Dialog>
+
           </CardFooter>
         </div>
       </div>

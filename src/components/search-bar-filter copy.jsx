@@ -53,12 +53,10 @@ export function SearchFilterComponent({ onResultsUpdate, setLoading }) {
         setError("Không thể lấy dữ liệu từ API");
       }
     };
-
     fetchLocations();
   }, []);
 
   useEffect(() => {
-    // Fetch search params from localStorage
     const searchParams = JSON.parse(localStorage.getItem("searchParams"));
     if (searchParams) {
       const { keyword, area, price, size } = searchParams;
@@ -90,38 +88,35 @@ export function SearchFilterComponent({ onResultsUpdate, setLoading }) {
     }
   }, []);
 
-  const handleSearch = async (e) => {
-    if (e) e.preventDefault();
-    setLoading(true);
-    setError("");
-
-    const areaParam =
-      typeof area === "object" && area !== null ? area.slug : area || "";
-
+  const fetchRooms = async (keyword, areaParam, priceRange, sizeRange) => {
     const queryParams = new URLSearchParams({
       keyword: keyword || "",
       area: areaParam || "",
       price: `${priceRange[0]}to${priceRange[1]}`,
       size: `${sizeRange[0]}to${sizeRange[1]}`,
     }).toString();
+    const response = await fetch(`http://localhost:8000/api/filter-room?${queryParams}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (!response.ok) {
+      throw new Error("Failed to fetch rooms");
+    }
+    const data = await response.json();
+    return data.list_room || [];
+  };
+
+  const handleSearch = async (e) => {
+    if (e) e.preventDefault();
+    setLoading(true);
+    setError("");
+    const areaParam = typeof area === "object" && area !== null ? area.slug : area || "";
 
     try {
-      const response = await fetch(
-        `http://localhost:8000/api/filter-room?${queryParams}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      if (!response.ok) {
-        onResultsUpdate([]);
-      }
-
-      const data = await response.json();
-      onResultsUpdate(data.list_room || []);
+      const rooms = await fetchRooms(keyword, areaParam, priceRange, sizeRange);
+      onResultsUpdate(rooms);
     } catch (err) {
       console.error("Error fetching data:", err);
       onResultsUpdate([]);
@@ -129,22 +124,6 @@ export function SearchFilterComponent({ onResultsUpdate, setLoading }) {
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    // Call handleSearch when the relevant state changes
-    if (
-      keyword ||
-      area ||
-      priceRange[0] !== 0 ||
-      priceRange[1] !== 20000000 ||
-      sizeRange[0] !== 0 ||
-      sizeRange[1] !== 100
-    ) {
-      handleSearch();
-    } else {
-      handleSearch();
-    }
-  }, [keyword, area, priceRange, sizeRange]); // Call search when these values change
 
   return (
     <div className="w-full bg-white rounded-none md:rounded-xl shadow p-4">

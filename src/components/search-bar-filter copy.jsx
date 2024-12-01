@@ -44,80 +44,42 @@ export function SearchFilterComponent({ onResultsUpdate, setLoading }) {
           "http://localhost:8000/api/khu_vuc/option"
         );
         if (!response.ok) {
-          throw new Error("Không thể lấy dữ liệu từ API");
+          throw new Error("Cannot fetch data from API");
         }
         const data = await response.json();
         setLocations(data);
       } catch (error) {
-        console.error("Lỗi khi lấy dữ liệu:", error);
-        setError("Không thể lấy dữ liệu từ API");
+        console.error("Error fetching data:", error);
+        setError("Cannot fetch data from API");
       }
     };
+
     fetchLocations();
   }, []);
 
-  useEffect(() => {
-    const searchParams = JSON.parse(localStorage.getItem("searchParams"));
-    if (searchParams) {
-      const { keyword, area, price, size } = searchParams;
-      console.log(searchParams);
-
-      // Set state based on localStorage values
-      setKeyword(keyword || "");
-      setArea(area || "");
-
-      if (price) {
-        const [minPrice, maxPrice] = price.split("to").map(Number);
-        setPriceRange({
-          min: minPrice || 0,
-          max: maxPrice || 20000000,
-          [0]: minPrice || 0,
-          [1]: maxPrice || 20000000,
-        });
-      }
-
-      if (size) {
-        const [minSize, maxSize] = size.split("to").map(Number);
-        setSizeRange({
-          min: minSize || 0,
-          max: maxSize || 100,
-          [0]: minSize || 0,
-          [1]: maxSize || 100,
-        });
-      }
-    }
-    handleSearch();
-  }, []);
-
-  const fetchRooms = async (keyword, areaParam, priceRange, sizeRange) => {
+  // Function to fetch room data
+  const fetchRooms = async (keyword, area, priceRange, sizeRange) => {
+    const areaParam = typeof area === "object" && area !== null ? area.slug : area || "";
     const queryParams = new URLSearchParams({
       keyword: keyword || "",
       area: areaParam || "",
-      price: `${priceRange[0]}to${priceRange[1]}`,
-      size: `${sizeRange[0]}to${sizeRange[1]}`,
+      price: `${priceRange.min || 0}to${priceRange.max || 20000000}`,
+      size: `${sizeRange.min || 0}to${sizeRange.max || 100}`,
     }).toString();
-    const response = await fetch(`http://localhost:8000/api/filter-room?${queryParams}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    if (!response.ok) {
-      throw new Error("Failed to fetch rooms");
-    }
-    const data = await response.json();
-    return data.list_room || [];
-  };
-
-  const handleSearch = async (e) => {
-    if (e) e.preventDefault();
-    setLoading(true);
-    setError("");
-    const areaParam = typeof area === "object" && area !== null ? area.slug : area || "";
 
     try {
-      const rooms = await fetchRooms(keyword, areaParam, priceRange, sizeRange);
-      onResultsUpdate(rooms);
+      const response = await fetch(`http://localhost:8000/api/filter-room?${queryParams}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+
+      if (!response.ok) {
+        onResultsUpdate([]); // Return early if response not ok
+        return;
+      }
+
+      const data = await response.json();
+      onResultsUpdate(data.list_room || []);
     } catch (err) {
       console.error("Error fetching data:", err);
       onResultsUpdate([]);
@@ -126,7 +88,45 @@ export function SearchFilterComponent({ onResultsUpdate, setLoading }) {
     }
   };
 
+  const handleSearch = async (e) => {
+    if (e) e.preventDefault();
+    setLoading(true);
+    setError("");
 
+    // Fetch search params from localStorage
+    const searchParams = JSON.parse(localStorage.getItem("searchParams")) || {};
+
+    // Update state based on localStorage or initial props
+    const { keyword: savedKeyword, area: savedArea, price: savedPrice, size: savedSize } = searchParams;
+  
+    setKeyword(savedKeyword || keyword);
+    setArea(savedArea || area);
+
+    if (savedPrice) {
+      const [minPrice, maxPrice] = savedPrice.split("to").map(Number);
+      setPriceRange({ min: minPrice || 0, max: maxPrice || 20000000 });
+    }
+
+    if (savedSize) {
+      const [minSize, maxSize] = savedSize.split("to").map(Number);
+      setSizeRange({ min: minSize || 0, max: maxSize || 100 });
+    }
+
+    // Call the fetchRooms function with parameters from localStorage or component state
+    await fetchRooms(
+      savedKeyword || keyword,
+      savedArea || area,
+      priceRange,
+      sizeRange
+      
+    );
+    localStorage.removeItem("searchParams");
+  };
+
+  useEffect(() => {
+    handleSearch();
+
+  }, []);
 
   return (
     <div className="w-full bg-white rounded-none md:rounded-xl shadow p-4">

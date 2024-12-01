@@ -2,6 +2,8 @@
 import { useEffect, useState } from "react";
 import jwtDecode from "jwt-decode"; // Make sure to import jwtDecode
 import Link from "next/link";
+import { ToastContainer } from "react-toastify";
+
 import {
   LayoutDashboard,
   Users,
@@ -235,10 +237,10 @@ export default function RootLayout({ children }) {
                 </div>
               </div>
             </header>
-
             {/* Scrollable content area */}
             <div className="flex-1 overflow-y-auto p-4">{children}</div>
           </main>
+          <ToastContainer />
         </>
       ) : (
         <div className="h-screen w-full flex justify-center items-center">

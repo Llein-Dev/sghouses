@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { Search, UserPlus, Pencil, Trash2, BookCopy, Phone, FileText } from "lucide-react"
+import { Search, UserPlus, Pencil, Trash2, BookCopy, Phone, FileText, UserIcon, Ban } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { toast, ToastContainer } from 'react-toastify';
@@ -111,37 +111,7 @@ export default function UsersContent() {
   }, [searchTerm, users]);
 
 
-  // Nhân bản user
-  const handleCopyUser = async (id) => {
-    const adminToken = Cookies.get("token");
-    const userToDelete = filteredUsers.find((user) => user.id == id);
-    if (userToDelete?.role == 0) {
-      toast.error("Không thể nhân bản admin!"); // Thông báo lỗi
-    }
-    try {
-      const response = await fetch(`http://localhost:8000/api/user/duplicate/${id}`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${adminToken}`,
-          "Content-Type": "application/json",
-        },
-      });
-      if (response.ok) {
-        const newUser = await response.json();
-        toast.success("nhân bản thành công !"); // Thông báo lỗi
-        setUsers((prevUsers) => [...prevUsers, newUser]); // Cập nhật danh sách user
-        // Hiện thông báo và tải lại danh sách users
-        fetchData(); // Gọi lại fetchData để tải lại danh sách user mới
-
-      } else {
-        const errorData = await response.json();
-        setError(errorData.message || "Lỗi lấy thông tin phản hồi");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-      setError("Có lỗi xảy ra khi sao chép người dùng");
-    }
-  };
+  
 
   // Delete user
   const handleDeleteUser = async (id) => {
@@ -258,7 +228,7 @@ export default function UsersContent() {
             <TableHead>Địa chỉ</TableHead> {/* New column for Address */}
             <TableHead>Ngày sinh</TableHead> {/* New column for Birth Date */}
             <TableHead>Giới tính</TableHead> {/* New column for Gender */}
-            <TableHead>Ngày đăng ký</TableHead> {/* New column for Registration Date */}
+            {/* <TableHead>Ngày đăng ký</TableHead> New column for Registration Date */}
             <TableHead>Quyền</TableHead>
             <TableHead>Hành động</TableHead>
           </TableRow>
@@ -268,7 +238,17 @@ export default function UsersContent() {
             <TableRow key={user.id}> {/* Use user.id for the key */}
               <TableCell>{index + 1}</TableCell> {/* STT */}
               <TableCell>
-                <img src={user.avatar} alt={`${user.name}'s avatar`} className="w-10 h-10 rounded-full" />
+                {user.avatar ? (
+                  <img
+                    src={`http://localhost:8000/storage/${user.avatar}`}
+                    alt={`${user.name}'s avatar`}
+                    className="w-10 h-10 rounded-full"
+                  />
+                ) : (
+                  <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-500">
+                    <UserIcon className="h-6 w-6" /> {/* Biểu tượng người dùng */}
+                  </div>
+                )}
               </TableCell> {/* Avatar display */}
               <TableCell>{user.name}</TableCell>
               <TableCell>{user.email}</TableCell>
@@ -276,14 +256,14 @@ export default function UsersContent() {
               <TableCell>{user.address || 'Chưa có địa chỉ'}</TableCell> {/* Display address, handle null */}
               <TableCell>{new Date(user.born).toLocaleDateString()}</TableCell> {/* Display birth date */}
               <TableCell>{user.gender === 1 ? 'Nam' : 'Nữ'}</TableCell> {/* Display gender */}
-              <TableCell>{user.date_create}</TableCell> {/* Display registration date */}
+              {/* <TableCell>{user.date_create}</TableCell> Display registration date */}
               <TableCell>{user.role === 0 ? 'Admin' : 'User'}</TableCell>
               <TableCell>
                 <div className="flex space-x-2">
                   {/* Edit Button */}
                   <Dialog>
                     <DialogTrigger asChild>
-                      <Button variant="orange" size="icon"  onClick={() => {
+                      <Button variant="orange" size="icon" onClick={() => {
                         setSelectedUser(user);
                         setName(user.name);
                         setAddress(user.address || ''); // Set address if available
@@ -300,17 +280,18 @@ export default function UsersContent() {
                         </DialogDescription>
                       </DialogHeader>
                       <div className="grid gap-4 py-4">
-                        <div className="grid grid-cols-4 items-center gap-4">
-                          <Label htmlFor="name" className="text-right">Tên</Label>
+                        <div className="grid grid-cols-1 items-center gap-4">
+                          <Label htmlFor="name" className="text-start">Tên</Label>
                           <Input
                             id="name"
                             value={name}
+                            disabled
                             onChange={(e) => setName(e.target.value)}
                             className="col-span-3"
                           />
                         </div>
 
-                        <div className="grid grid-cols-4 items-center gap-4">
+                        <div className="grid hidden grid-cols-4 items-center gap-4">
                           <Label htmlFor="address" className="text-right">Địa chỉ</Label>
                           <Input
                             id="address"
@@ -320,13 +301,13 @@ export default function UsersContent() {
                           />
                         </div>
 
-                        <div className="grid grid-cols-4 items-center gap-4">
-                          <Label htmlFor="role" className="text-right">Quyền</Label>
+                        <div className="grid grid-cols-1 items-center gap-4">
+                        <Label htmlFor="name" className="text-start">Quyền</Label>
                           <select
                             id="role"
                             value={role}
                             onChange={(e) => setRole(e.target.value)}
-                            className="col-span-3 h-30"
+                            className="col-span-3 p-2 rounded-lg border"
                           >
                             <option value="0">Admin</option>
                             <option value="1">User</option>
@@ -334,19 +315,14 @@ export default function UsersContent() {
                         </div>
                       </div>
                       <DialogFooter>
-                        <Button  type="submit" onClick={handleEditUser}>Xác nhận!</Button>
+                        <Button type="submit" onClick={handleEditUser}>Xác nhận!</Button>
                       </DialogFooter>
                     </DialogContent>
                   </Dialog>
 
                   {/* Delete Button */}
                   <Button variant="danger" size="icon" onClick={() => handleDeleteUser(user.id)}>
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-
-                  {/* Copy Button */}
-                  <Button variant="outline" size="icon" onClick={() => handleCopyUser(user.id)}>
-                    <BookCopy className="h-4 w-4" />
+                    <Ban className="h-4 w-4" />
                   </Button>
                 </div>
               </TableCell>

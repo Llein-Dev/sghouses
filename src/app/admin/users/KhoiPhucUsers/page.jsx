@@ -14,6 +14,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { toast, ToastContainer } from "react-toastify";
 
 export default function KhoiPhucUsers() {
   const [deletedUsers, setDeletedUsers] = useState([]);
@@ -108,7 +109,7 @@ export default function KhoiPhucUsers() {
       if (response.ok) {
         await response.json(); // Đợi dữ liệu trả về
         fetchDeletedUsers(); // Cập nhật danh sách người dùng đã xóa nếu không chuyển trang
-
+        toast.success("khôi phục người dùng thành công !");
       } else {
         const errorData = await response.json();
         setError(errorData.message || "Lỗi khi khôi phục người dùng");
@@ -131,6 +132,7 @@ export default function KhoiPhucUsers() {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
+    <>
 
     <div className="space-y-4">
       <div className="flex justify-between items-center">
@@ -199,7 +201,9 @@ export default function KhoiPhucUsers() {
           </Button>
         ))}
       </div>
+      
     </div>
-
+ <ToastContainer />
+ </>
   );
 }

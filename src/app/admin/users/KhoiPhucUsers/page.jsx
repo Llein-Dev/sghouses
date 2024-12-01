@@ -109,7 +109,7 @@ export default function KhoiPhucUsers() {
       if (response.ok) {
         await response.json(); // Đợi dữ liệu trả về
         fetchDeletedUsers(); // Cập nhật danh sách người dùng đã xóa nếu không chuyển trang
-        toast.success("khôi phục người dùng thành công !");
+        toast.success("khôi phục người dùng thành công!");
       } else {
         const errorData = await response.json();
         setError(errorData.message || "Lỗi khi khôi phục người dùng");

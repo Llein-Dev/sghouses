@@ -1,6 +1,7 @@
 // LoginPage.js
 "use client";
-
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; 
 import { AuthForm } from "@/components/auth-form";
 import Breadcrumb from "@/components/breadcum";
 import { useState } from "react";
@@ -45,7 +46,7 @@ export default function LoginPage() {
       let response;
       if (isLogin) {
         response = await loginAPI(formData.email, formData.password);
-        alert("Đăng nhập thành công!");
+        toast.success("đăng nhập thành công!");
         router.push("/");
         if (response) {
           try {
@@ -61,7 +62,7 @@ export default function LoginPage() {
         }
       } else {
         response = await signupAPI(formData.name, formData.email, formData.password);
-        alert("Đăng ký thành công!");
+        toast.success("đăng nhập thành công!");
         toggleForm();
       }
     } catch (err) {
@@ -72,6 +73,7 @@ export default function LoginPage() {
   };
 
   return (
+    <>
     <div className="container mx-auto px-4 space-y-4 pt-4">
       <Breadcrumb />
       <AuthForm
@@ -85,5 +87,7 @@ export default function LoginPage() {
         handleToForgot={handleToForgot}
       />
     </div>
+          <ToastContainer />
+       </>
   );
 }

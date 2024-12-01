@@ -13,6 +13,8 @@ import { changePassword, updateAvatar, updateProfile } from '@/utils/api/Auth/ap
 import { Spinner } from './ui/loading'
 import Breadcrumb from './breadcum'
 import zxcvbn from 'zxcvbn'
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const genderOptions = [
     { value: 0, label: 'Nam' },
     { value: 1, label: 'Nữ' },
@@ -91,7 +93,7 @@ export default function EditProfile2Component({ user }) {
 
         try {
             const response = await changePassword(currentPassword, newPassword);
-            alert('Mật khẩu đã được cập nhật thành công!');
+            toast.success("Mật khẩu đã được cập nhật thành công!");
             setCurrentPassword('');
             setNewPassword('');
             setConfirmPassword('');
@@ -130,8 +132,8 @@ export default function EditProfile2Component({ user }) {
         try {
             const data = await updateAvatar(formData)
             setFormData(prev => ({ ...prev, avatar: data.avatarUrl }))
-            alert('Avatar updated successfully!')
-        } catch (error) {
+            toast.success("Cập nhật ảnh thành công!");
+            } catch (error) {
             console.error('Error updating avatar:', error)
         }
     }
@@ -148,7 +150,7 @@ export default function EditProfile2Component({ user }) {
 
         try {
             await updateProfile(profileData)
-            alert('Profile updated successfully!')
+            toast.success("Cập nhật hồ sơ thành công!");
         } catch (error) {
             console.error('Error updating profile:', error)
         }
@@ -376,6 +378,7 @@ export default function EditProfile2Component({ user }) {
     )
 
     return (
+        <>
         <div className="container mx-auto px-4 py-4 flex flex-wrap gap-4">
             <Breadcrumb />
             {loading ? (
@@ -412,5 +415,7 @@ export default function EditProfile2Component({ user }) {
                 </>
             )}
         </div>
+              <ToastContainer />
+              </>
     )
 }

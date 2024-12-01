@@ -197,7 +197,7 @@ export default function Contract() {
 
     const adminToken = Cookies.get("token");
     if (!adminToken) {
-      alert("Vui lòng đăng nhập trước khi tạo blog!");
+      toast.warning("vui lòng đăng nhập trước khi tạo blog !");
       router.push("/");
       return;
     }

@@ -1,6 +1,4 @@
 "use client"
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import { useEffect, useState } from "react"
 import { Search, FileText, Eye, Download, Trash2, BookCopy, Link, Pencil, Book, Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -26,7 +24,8 @@ import { Badge } from "@/components/ui/badge"
 import { useRouter } from "next/navigation"
 import Cookies from "js-cookie"
 import { Label } from "@/components/ui/label"
-
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function CategoryBlog() {
   const [categoryBlog, setCatagoryBlog] = useState([])
@@ -141,7 +140,7 @@ export default function CategoryBlog() {
         setSlug("");
         setStatus("");
         router.refresh();  // Load lại trang sau khi cập nhật thành công
-        alert('Đã cập nhật thành công')
+        toast.success('đã cập nhật thành công !')
       } else {
         const errorData = await response.json();
         setError(errorData.message || "Lỗi khi cập nhật thông tin");
@@ -156,7 +155,7 @@ export default function CategoryBlog() {
 
     const adminToken = Cookies.get("token");
     if (!adminToken) {
-      alert("Vui lòng đăng nhập trước khi tạo blog!");
+      toast.warning('vui lòng đăng nhập trước khi tạo blog !')
       router.push("/");
       return;
     }
@@ -216,194 +215,195 @@ export default function CategoryBlog() {
 
 
   return (
-    <div className="space-y-4">
-      <div className="flex justify-between items-center">
-        {/* Cột chứa thanh tìm kiếm */}
-        <div className="flex items-center space-x-2 w-1/2">
-          <Search className="h-5 w-5 text-gray-500" />
-          <Input
-            placeholder="Tìm kiếm..."
-            className="max-w-sm"
-          // value={searchTerm}
-          // onChange={(e) => setSearchTerm(e.target.value)}
-          />
+    <>
+      <div className="space-y-4">
+        <div className="flex justify-between items-center">
+          {/* Cột chứa thanh tìm kiếm */}
+          <div className="flex items-center space-x-2 w-1/2">
+            <Search className="h-5 w-5 text-gray-500" />
+            <Input
+              placeholder="Tìm kiếm..."
+              className="max-w-sm"
+            // value={searchTerm}
+            // onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+
+          {/* Cột chứa 2 nút Refesh và Thêm Danh Mục */}
+          <div className="flex items-center space-x-4 w-1/2 justify-end">
+            {/* Nút Thêm Danh Mục và Modal */}
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="blue" className="bg-green-700 text-white hover:bg-green-600">
+                  <Plus className="mr-2 h-4 w-4" />
+                  Thêm Danh Mục
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[425px]">
+                <DialogHeader>
+                  <DialogTitle>Thêm danh mục tin tức</DialogTitle>
+                  <DialogDescription>
+                    Thêm danh mục tin tức !
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="grid gap-4 py-4">
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="name" className="text-right">
+                      Tên
+                    </Label>
+                    <Input
+                      id="name"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      className="col-span-3"
+                    />
+                  </div>
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="phone" className="text-right">
+                      Đường dẫn
+                    </Label>
+                    <Input
+                      id="phone"
+                      type="phone"
+                      value={slug}
+                      onChange={(e) => setSlug(e.target.value)}
+                      className="col-span-3"
+                    />
+                  </div>
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="born" className="text-right">
+                      Trạng thái
+                    </Label>
+                    <Input
+                      id="born"
+                      type="born"
+                      value={status}
+                      onChange={(e) => setStatus(e.target.value)}
+                      className="col-span-3"
+                    />
+                  </div>
+                </div>
+                <DialogFooter>
+                  <Button type="button" onClick={handleAddCateBlog}>Thêm</Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+
+            {/* khôi phục Danh Mục tin tức */}
+            <Button onClick={handleRefesh} variant="blue">
+              <FileText className="mr-2 h-4 w-4" />
+              Khôi phục
+            </Button>
+          </div>
         </div>
 
-        {/* Cột chứa 2 nút Refesh và Thêm Danh Mục */}
-        <div className="flex items-center space-x-4 w-1/2 justify-end">
-          {/* Nút Thêm Danh Mục và Modal */}
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button variant="blue" className="bg-green-700 text-white hover:bg-green-600">
-                <Plus className="mr-2 h-4 w-4" />
-                Thêm Danh Mục
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
-              <DialogHeader>
-                <DialogTitle>Thêm danh mục tin tức</DialogTitle>
-                <DialogDescription>
-                  Thêm danh mục tin tức !
-                </DialogDescription>
-              </DialogHeader>
-              <div className="grid gap-4 py-4">
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="name" className="text-right">
-                    Tên
-                  </Label>
-                  <Input
-                    id="name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    className="col-span-3"
-                  />
-                </div>
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="phone" className="text-right">
-                    Đường dẫn
-                  </Label>
-                  <Input
-                    id="phone"
-                    type="phone"
-                    value={slug}
-                    onChange={(e) => setSlug(e.target.value)}
-                    className="col-span-3"
-                  />
-                </div>
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="born" className="text-right">
-                    Trạng thái
-                  </Label>
-                  <Input
-                    id="born"
-                    type="born"
-                    value={status}
-                    onChange={(e) => setStatus(e.target.value)}
-                    className="col-span-3"
-                  />
-                </div>
-              </div>
-              <DialogFooter>
-                <Button type="button" onClick={handleAddCateBlog}>Thêm</Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
 
-          {/* khôi phục Danh Mục tin tức */}
-          <Button onClick={handleRefesh} variant="blue">
-            <FileText className="mr-2 h-4 w-4" />
-            Khôi phục
-          </Button>
-        </div>
-      </div>
-
-
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>ID</TableHead>
-            <TableHead>Tên Danh Mục Tin Tức</TableHead>
-            <TableHead>Dường dẫn</TableHead>
-            <TableHead>Tình trạng</TableHead>
-            <TableHead>Khác</TableHead>
-            <TableHead>Hành động</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {Array.isArray(currentItems
-
-          ) && currentItems
-            .length > 0 ? (
-            currentItems
-              .map((blogs, index) => (
-                <TableRow key={index}>
-                  <TableCell>{blogs.id}</TableCell>
-                  <TableCell>{blogs.name}</TableCell>
-                  <TableCell>{blogs.slug}</TableCell>
-                  <TableCell>{blogs.status}</TableCell>
-                  <TableCell>{blogs.Order}</TableCell>
-                  <TableCell>
-                    <div className="flex space-x-2">
-                      {/* Nút Gọi điện */}
-                      <Dialog>
-                        <DialogTrigger asChild>
-                          <Button variant="outline" onClick={() => {
-                            setSelectedCateBlog(blogs); // Cập nhật blogs cần chỉnh sửa
-                            setId(blogs.id);
-                            setName(blogs.name);
-                            setSlug(blogs.slug);
-                            setStatus(blogs.status);
-                          }}>
-                            <Pencil className="mr-2 h-4 w-4" />
-                          </Button>
-                        </DialogTrigger>
-                        <DialogContent className="sm:max-w-[425px]">
-                          <DialogHeader>
-                            <DialogTitle>Chỉnh sửa danh mục blog</DialogTitle>
-                            <DialogDescription>
-                              chỉnh sửa với danh mục blog !
-                            </DialogDescription>
-                          </DialogHeader>
-                          <div className="grid gap-4 py-4">
-                            <div className="grid grid-cols-4 items-center gap-4">
-                              <Label htmlFor="name" className="text-right">
-                                Name
-                              </Label>
-                              <Input
-                                id="name"
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
-                                className="col-span-3"
-                              />
-                            </div>
-                            <div className="grid grid-cols-4 items-center gap-4">
-                              <Label htmlFor="phone" className="text-right">
-                                Phone
-                              </Label>
-                              <Input
-                                id="phone"
-                                type="phone"
-                                value={slug}
-                                onChange={(e) => setSlug(e.target.value)}
-                                className="col-span-3"
-                              />
-                            </div>
-                            <div className="grid grid-cols-4 items-center gap-4">
-                              <Label htmlFor="born" className="text-right">
-                                Born
-                              </Label>
-                              <Input
-                                id="born"
-                                type="born"
-                                value={status}
-                                onChange={(e) => setStatus(e.target.value)}
-                                className="col-span-3"
-                              />
-                            </div>
-                          </div>
-                          <DialogFooter>
-                            <Button type="submit" onClick={handleEditUser} >SửaUser</Button>
-                          </DialogFooter>
-                        </DialogContent>
-                      </Dialog>
-
-
-
-
-                      <Button variant="outline" size="icon" onClick={() => handleDeleteCategoryBlog(blogs.id)}>
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))
-          ) : (
+        <Table>
+          <TableHeader>
             <TableRow>
+              <TableHead>ID</TableHead>
+              <TableHead>Tên Danh Mục Tin Tức</TableHead>
+              <TableHead>Dường dẫn</TableHead>
+              <TableHead>Tình trạng</TableHead>
+              <TableHead>Khác</TableHead>
+              <TableHead>Hành động</TableHead>
             </TableRow>
-          )}
-        </TableBody>
-      </Table>
-      <div className="flex justify-center  mt-4">
+          </TableHeader>
+          <TableBody>
+            {Array.isArray(currentItems
+
+            ) && currentItems
+              .length > 0 ? (
+              currentItems
+                .map((blogs, index) => (
+                  <TableRow key={index}>
+                    <TableCell>{blogs.id}</TableCell>
+                    <TableCell>{blogs.name}</TableCell>
+                    <TableCell>{blogs.slug}</TableCell>
+                    <TableCell>{blogs.status}</TableCell>
+                    <TableCell>{blogs.Order}</TableCell>
+                    <TableCell>
+                      <div className="flex space-x-2">
+                        {/* Nút Gọi điện */}
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <Button variant="outline" onClick={() => {
+                              setSelectedCateBlog(blogs); // Cập nhật blogs cần chỉnh sửa
+                              setId(blogs.id);
+                              setName(blogs.name);
+                              setSlug(blogs.slug);
+                              setStatus(blogs.status);
+                            }}>
+                              <Pencil className="mr-2 h-4 w-4" />
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent className="sm:max-w-[425px]">
+                            <DialogHeader>
+                              <DialogTitle>Chỉnh sửa danh mục blog</DialogTitle>
+                              <DialogDescription>
+                                chỉnh sửa với danh mục blog !
+                              </DialogDescription>
+                            </DialogHeader>
+                            <div className="grid gap-4 py-4">
+                              <div className="grid grid-cols-4 items-center gap-4">
+                                <Label htmlFor="name" className="text-right">
+                                  Name
+                                </Label>
+                                <Input
+                                  id="name"
+                                  value={name}
+                                  onChange={(e) => setName(e.target.value)}
+                                  className="col-span-3"
+                                />
+                              </div>
+                              <div className="grid grid-cols-4 items-center gap-4">
+                                <Label htmlFor="phone" className="text-right">
+                                  Phone
+                                </Label>
+                                <Input
+                                  id="phone"
+                                  type="phone"
+                                  value={slug}
+                                  onChange={(e) => setSlug(e.target.value)}
+                                  className="col-span-3"
+                                />
+                              </div>
+                              <div className="grid grid-cols-4 items-center gap-4">
+                                <Label htmlFor="born" className="text-right">
+                                  Born
+                                </Label>
+                                <Input
+                                  id="born"
+                                  type="born"
+                                  value={status}
+                                  onChange={(e) => setStatus(e.target.value)}
+                                  className="col-span-3"
+                                />
+                              </div>
+                            </div>
+                            <DialogFooter>
+                              <Button type="submit" onClick={handleEditUser} >SửaUser</Button>
+                            </DialogFooter>
+                          </DialogContent>
+                        </Dialog>
+
+
+
+
+                        <Button variant="outline" size="icon" onClick={() => handleDeleteCategoryBlog(blogs.id)}>
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))
+            ) : (
+              <TableRow>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+        <div className="flex justify-center  mt-4">
           {Array.from({ length: totalPages }, (_, index) => (
             <Button
               key={index}
@@ -414,6 +414,8 @@ export default function CategoryBlog() {
             </Button>
           ))}
         </div>
-    </div>
+      </div>
+      <ToastContainer />
+    </>
   )
 }

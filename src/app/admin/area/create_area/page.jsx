@@ -3,7 +3,8 @@
 import { useState } from "react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
-
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 export default function CreateArea() {
     const [name, setTitle] = useState("");
     const [image, setImage] = useState(null); // Giữ nguyên file ảnh thay vì mã hóa
@@ -31,7 +32,7 @@ export default function CreateArea() {
 
         const adminToken = Cookies.get("token");
         if (!adminToken) {
-            alert("Vui lòng đăng nhập trước khi tạo blog!");
+            toast.error("vui lòng đăng nhập trước khi tạo blog !"); // Thông báo lỗi    
             router.push("/");
             return;
         }
@@ -73,62 +74,66 @@ export default function CreateArea() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
-            <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-screen-lg">
-                <h2 className="text-2xl font-semibold text-gray-700 mb-4">Tạo Khu Vực Mới</h2>
+        <>
 
-                {successMessage && (
-                    <div className="bg-green-100 text-green-800 p-4 rounded mb-4">
-                        {successMessage}
-                    </div>
-                )}
+            <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
+                <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-screen-lg">
+                    <h2 className="text-2xl font-semibold text-gray-700 mb-4">Tạo Khu Vực Mới</h2>
 
-                {errorMessage && (
-                    <div className="bg-red-100 text-red-800 p-4 rounded mb-4">
-                        {errorMessage}
-                    </div>
-                )}
+                    {successMessage && (
+                        <div className="bg-green-100 text-green-800 p-4 rounded mb-4">
+                            {successMessage}
+                        </div>
+                    )}
 
-                <form onSubmit={handleSubmit} className="space-y-4">
-                    <div>
-                        <label className="block text-gray-600">Tiêu đề</label>
-                        <input
-                            type="text"
-                            value={name}
-                            onChange={(e) => setTitle(e.target.value)}
-                            className="w-full p-2 border border-gray-300 rounded mt-1"
-                            placeholder="Nhập tiêu đề"
-                            required
-                        />
-                    </div>
+                    {errorMessage && (
+                        <div className="bg-red-100 text-red-800 p-4 rounded mb-4">
+                            {errorMessage}
+                        </div>
+                    )}
 
-                    <div>
-                        <label className="block text-gray-600">Ảnh</label>
-                        <input
-                            type="file"
-                            onChange={handleImageChange}
-                            className="w-full p-2 border border-gray-300 rounded mt-1"
-                            accept="image/*"
-                        />
-                         {preview && (
-                            <div className="mt-4">
-                                <img
-                                    src={preview}
-                                    alt="Xem trước ảnh"
-                                    className="w-40 h-40 object-cover rounded-lg border"
-                                />
-                            </div>
-                        )}
-                    </div>
-                    <button
-                        type="submit"
-                        disabled={loading}
-                        className={`w-full p-2 rounded ${loading ? "bg-gray-400" : "bg-blue-600 hover:bg-blue-700"} text-white transition`}
-                    >
-                        {loading ? "Đang tạo..." : "Thêm Blog"}
-                    </button>
-                </form>
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                        <div>
+                            <label className="block text-gray-600">Tiêu đề</label>
+                            <input
+                                type="text"
+                                value={name}
+                                onChange={(e) => setTitle(e.target.value)}
+                                className="w-full p-2 border border-gray-300 rounded mt-1"
+                                placeholder="Nhập tiêu đề"
+                                required
+                            />
+                        </div>
+
+                        <div>
+                            <label className="block text-gray-600">Ảnh</label>
+                            <input
+                                type="file"
+                                onChange={handleImageChange}
+                                className="w-full p-2 border border-gray-300 rounded mt-1"
+                                accept="image/*"
+                            />
+                            {preview && (
+                                <div className="mt-4">
+                                    <img
+                                        src={preview}
+                                        alt="Xem trước ảnh"
+                                        className="w-40 h-40 object-cover rounded-lg border"
+                                    />
+                                </div>
+                            )}
+                        </div>
+                        <button
+                            type="submit"
+                            disabled={loading}
+                            className={`w-full p-2 rounded ${loading ? "bg-gray-400" : "bg-blue-600 hover:bg-blue-700"} text-white transition`}
+                        >
+                            {loading ? "Đang tạo..." : "Thêm Blog"}
+                        </button>
+                    </form>
+                </div>
             </div>
-        </div>
+            <ToastContainer />
+        </>
     );
 }

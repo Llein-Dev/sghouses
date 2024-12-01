@@ -4,7 +4,8 @@ import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import { useParams, useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
-
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 // Import React Quill với tính năng hỗ trợ đầy đủ công cụ
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 import "react-quill/dist/quill.snow.css"; // Import CSS mặc định của Quill
@@ -107,8 +108,8 @@ export default function UpdateBlog() {
             });
 
             if (response.ok) {
-                alert("Blog đã được cập nhật thành công!");
-                router.push(`/admin/blog`);
+               toast.success('đã cập nhật blog thành công !')
+                 router.push(`/admin/blog`);
             } else {
                 const data = await response.json();
                 setError(data.message || "Có lỗi xảy ra, vui lòng thử lại.");
@@ -119,57 +120,60 @@ export default function UpdateBlog() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
-            <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-screen-lg">
-                <h2 className="text-2xl font-semibold text-gray-700 mb-4">Chỉnh sửa Blog</h2>
+        <>
+            <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
+                <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-screen-lg">
+                    <h2 className="text-2xl font-semibold text-gray-700 mb-4">Chỉnh sửa Blog</h2>
 
-                {error && <p className="text-red-500 mb-4">{error}</p>}
+                    {error && <p className="text-red-500 mb-4">{error}</p>}
 
-                <form onSubmit={handleSubmit} className="space-y-4">
-                    <div>
-                        <label className="block text-gray-600">Tiêu đề</label>
-                        <input
-                            type="text"
-                            value={title}
-                            onChange={(e) => setTitle(e.target.value)}
-                            className="w-full p-2 border border-gray-300 rounded mt-1"
-                            placeholder="Nhập tiêu đề"
-                            required
-                        />
-                    </div>
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                        <div>
+                            <label className="block text-gray-600">Tiêu đề</label>
+                            <input
+                                type="text"
+                                value={title}
+                                onChange={(e) => setTitle(e.target.value)}
+                                className="w-full p-2 border border-gray-300 rounded mt-1"
+                                placeholder="Nhập tiêu đề"
+                                required
+                            />
+                        </div>
 
-                    <div>
-                        <label className="block text-gray-600">Ảnh</label>
-                        <input
-                            type="file"
-                            onChange={handleImageChange}
-                            className="w-full p-2 border border-gray-300 rounded mt-1"
-                            accept="image/*"
-                        />
-                        {imageBase64 && (
-                            <img  src={imageBase64} alt="Ảnh hiện tại" className="mt-4 w-32 h-32 object-cover" />
-                        )}
-                    </div>
+                        <div>
+                            <label className="block text-gray-600">Ảnh</label>
+                            <input
+                                type="file"
+                                onChange={handleImageChange}
+                                className="w-full p-2 border border-gray-300 rounded mt-1"
+                                accept="image/*"
+                            />
+                            {imageBase64 && (
+                                <img src={imageBase64} alt="Ảnh hiện tại" className="mt-4 w-32 h-32 object-cover" />
+                            )}
+                        </div>
 
-                    <div>
-                        <label className="block text-gray-600">Nội dung</label>
-                        <ReactQuill
-                            value={content}
-                            onChange={setContent}
-                            modules={modules} // Sử dụng cấu hình module với toolbar đầy đủ
-                            className="w-full p-2 border border-gray-300 rounded mt-1"
-                            placeholder="Nhập nội dung bài viết"
-                        />
-                    </div>
+                        <div>
+                            <label className="block text-gray-600">Nội dung</label>
+                            <ReactQuill
+                                value={content}
+                                onChange={setContent}
+                                modules={modules} // Sử dụng cấu hình module với toolbar đầy đủ
+                                className="w-full p-2 border border-gray-300 rounded mt-1"
+                                placeholder="Nhập nội dung bài viết"
+                            />
+                        </div>
 
-                    <button
-                        type="submit"
-                        className="w-full p-2 rounded bg-blue-600 hover:bg-blue-700 text-white transition"
-                    >
-                        Cập nhật Blog
-                    </button>
-                </form>
+                        <button
+                            type="submit"
+                            className="w-full p-2 rounded bg-blue-600 hover:bg-blue-700 text-white transition"
+                        >
+                            Cập nhật Blog
+                        </button>
+                    </form>
+                </div>
             </div>
-        </div>
+            <ToastContainer />
+        </>
     );
 }

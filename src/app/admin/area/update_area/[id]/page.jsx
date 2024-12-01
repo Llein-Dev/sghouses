@@ -3,7 +3,8 @@
 import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import { useParams, useRouter } from "next/navigation";
-
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 export default function UpdateBlog() {
     const router = useRouter();
     const { id } = useParams();
@@ -81,7 +82,7 @@ export default function UpdateBlog() {
             });
 
             if (response.ok) {
-                alert("Blog đã được cập nhật thành công!");
+                toast.success('blog đã cập nhật thành công !')
                 router.push(`/admin/area`);
             } else {
                 const data = await response.json();
@@ -93,6 +94,7 @@ export default function UpdateBlog() {
     };
 
     return (
+        <>
         <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
             <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-screen-lg">
                 <h2 className="text-2xl font-semibold text-gray-700 mb-4">Chỉnh sửa Blog</h2>
@@ -144,5 +146,7 @@ export default function UpdateBlog() {
                 </form>
             </div>
         </div>
+     <ToastContainer />
+     </>
     );
 }

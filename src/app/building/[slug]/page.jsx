@@ -175,9 +175,9 @@ export default function BuildingDetailComponent() {
                     </Button>
                 </div>
             </div>
-            <ToastContainer
+
             
-            />
+         
         </>
     );
 }

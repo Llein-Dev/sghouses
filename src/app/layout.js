@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { Spinner } from "@/components/ui/loading";
 import { profileAPI } from "@/utils/api/Auth/api";
+import { ToastContainer } from "react-toastify";
 
 export default function RootLayout({ children }) {
   const pathname = usePathname();
@@ -91,6 +92,7 @@ export default function RootLayout({ children }) {
                     </MotionWrapper>
                   </div>
                   <FooterComponent />
+                  <ToastContainer />
                 </>
               ))}
               {/* Render children for the Not Found page */}

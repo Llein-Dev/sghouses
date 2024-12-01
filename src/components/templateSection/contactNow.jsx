@@ -1,8 +1,35 @@
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import Link from "next/link"
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import Link from "next/link";
+import { useState } from "react";
 
 export default function ContactNow() {
+    const [email, setEmail] = useState("");
+    const [message, setMessage] = useState("");
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+
+        // Create a FormData object
+        const formData = new FormData();
+        formData.append("email", email);
+
+        // Send the FormData to the API route
+        const response = await fetch("http://localhost:8000/api/dang-ky-nhan-tin", {
+            method: "POST",
+            body: formData,
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            setMessage("Email sent successfully!");
+            setEmail(""); // Clear the input field
+        } else {
+            setMessage(`Error: ${data.message}`);
+        }
+    };
+
     return (
         <section className="w-full bg-white py-12 md:py-24 lg:py-32 bg-gray-100">
             <div className="container mx-auto px-4 md:px-6">
@@ -14,10 +41,18 @@ export default function ContactNow() {
                         </p>
                     </div>
                     <div className="w-full max-w-sm space-y-2">
-                        <form className="flex space-x-2">
-                            <Input className="max-w-lg flex-1" placeholder="Nhập email của bạn" type="email" />
+                        <form className="flex space-x-2" onSubmit={handleSubmit}>
+                            <Input
+                                className="max-w-lg flex-1"
+                                placeholder="Nhập email của bạn"
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
+                            />
                             <Button variant="orange" type="submit">Đăng ký</Button>
                         </form>
+                        {message && <p className="text-xs text-gray-500">{message}</p>}
                         <p className="text-xs text-gray-500">
                             Bằng cách đăng ký, bạn đồng ý với{" "}
                             <Link className="underline underline-offset-2" href="#">
@@ -33,6 +68,5 @@ export default function ContactNow() {
                 </div>
             </div>
         </section>
-
-    )
+    );
 }

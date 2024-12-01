@@ -87,7 +87,7 @@ export default function LoginPage() {
         handleToForgot={handleToForgot}
       />
     </div>
-          <ToastContainer />
+
        </>
   );
 }

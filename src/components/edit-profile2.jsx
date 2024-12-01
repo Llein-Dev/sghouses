@@ -415,7 +415,7 @@ export default function EditProfile2Component({ user }) {
                     </>
                 )}
             </div>
-            <ToastContainer  className="z-50"  />
+
         </>
     )
 }

@@ -204,7 +204,7 @@ export default function ArticleDetail() {
                     </div>
                 </main>
             </div>
-            <ToastContainer className="z-50"  />
+
         </>
     )
 }

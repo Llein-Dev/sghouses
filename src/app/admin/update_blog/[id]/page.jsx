@@ -9,6 +9,8 @@ import 'react-toastify/dist/ReactToastify.css';
 // Import React Quill với tính năng hỗ trợ đầy đủ công cụ
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 import "react-quill/dist/quill.snow.css"; // Import CSS mặc định của Quill
+import { Button } from "@/components/ui/button";
+import { FileText, Plus } from "lucide-react";
 
 // Cấu hình toolbar cho Quill với đầy đủ công cụ
 const modules = {
@@ -108,8 +110,7 @@ export default function UpdateBlog() {
             });
 
             if (response.ok) {
-               toast.success('đã cập nhật blog thành công !')
-                 router.push(`/admin/blog`);
+                toast.success('đã cập nhật blog thành công !')
             } else {
                 const data = await response.json();
                 setError(data.message || "Có lỗi xảy ra, vui lòng thử lại.");
@@ -119,8 +120,17 @@ export default function UpdateBlog() {
         }
     };
 
+    const handleCreatPage = () => {
+        router.push('/admin/blog')
+      }
     return (
         <>
+        <div className="flex justify-end p-6">
+        <Button onClick={handleCreatPage} className="bg-green-700 text-white hover:bg-green-600">
+            <FileText className="mr-2 h-4 w-4" />
+            Trang tin tức
+          </Button>
+          </div>
             <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
                 <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-screen-lg">
                     <h2 className="text-2xl font-semibold text-gray-700 mb-4">Chỉnh sửa Blog</h2>

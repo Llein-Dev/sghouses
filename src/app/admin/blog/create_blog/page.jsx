@@ -18,7 +18,7 @@ export default function CreateBlog() {
     const [successMessage, setSuccessMessage] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
     const router = useRouter();
-    
+
     // Cập nhật hàm handleImageChange để lưu file thay vì mã hóa base64
     const handleImageChange = (e) => {
         const file = e.target.files[0];
@@ -77,104 +77,108 @@ export default function CreateBlog() {
 
     return (
         <>
-        <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
-            <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-screen-lg">
-                <h2 className="text-2xl font-semibold text-gray-700 mb-4">Tạo Blog Mới</h2>
+            <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
+                <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-screen-lg">
+                    <h2 className="text-2xl font-semibold text-gray-700 mb-4">Tạo Blog Mới</h2>
 
-                {successMessage && (
-                    <div className="bg-green-100 text-green-800 p-4 rounded mb-4">
-                        {successMessage}
-                    </div>
-                )}
+                    {successMessage && (
+                        <div className="bg-green-100 text-green-800 p-4 rounded mb-4">
+                            {successMessage}
+                        </div>
+                    )}
 
-                {errorMessage && (
-                    <div className="bg-red-100 text-red-800 p-4 rounded mb-4">
-                        {errorMessage}
-                    </div>
-                )}
+                    {errorMessage && (
+                        <div className="bg-red-100 text-red-800 p-4 rounded mb-4">
+                            {errorMessage}
+                        </div>
+                    )}
 
-                <form onSubmit={handleSubmit} className="space-y-4">
-                    <div>
-                        <label className="block text-gray-600">Tiêu đề</label>
-                        <input
-                            type="text"
-                            value={title}
-                            onChange={(e) => setTitle(e.target.value)}
-                            className="w-full p-2 border border-gray-300 rounded mt-1"
-                            placeholder="Nhập tiêu đề"
-                            required
-                        />
-                    </div>
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                        <div>
+                            <label className="block text-gray-600">Tiêu đề</label>
+                            <input
+                                type="text"
+                                value={title}
+                                onChange={(e) => setTitle(e.target.value)}
+                                className="w-full p-2 border border-gray-300 rounded mt-1"
+                                placeholder="Nhập tiêu đề"
+                                required
+                            />
+                        </div>
 
-                    <div>
-                        <label className="block text-gray-600">Ảnh</label>
-                        <input
-                            type="file"
-                            onChange={handleImageChange}
-                            className="w-full p-2 border border-gray-300 rounded mt-1"
-                            accept="image/*"
-                        />
-                    </div>
+                        <div>
+                            <label className="block text-gray-600">Ảnh</label>
+                            <input
+                                type="file"
+                                onChange={handleImageChange}
+                                className="w-full p-2 border border-gray-300 rounded mt-1"
+                                accept="image/*"
+                            />
+                        </div>
 
-                    <div>
-                        <label className="block text-gray-600">Nội dung</label>
-                        <textarea
-                            value={content}
-                            onChange={(e) => setContent(e.target.value)}
-                            className="w-full p-2 border border-gray-300 rounded mt-1"
-                            rows="5"
-                            placeholder="Nhập nội dung bài viết"
-                            required
-                        ></textarea>
-                    </div>
+                        <div>
+                            <label className="block text-gray-600">Nội dung</label>
+                            <textarea
+                                value={content}
+                                onChange={(e) => setContent(e.target.value)}
+                                className="w-full p-2 border border-gray-300 rounded mt-1"
+                                rows="5"
+                                placeholder="Nhập nội dung bài viết"
+                                required
+                            ></textarea>
+                        </div>
 
-                    <div>
-                        <label className="block text-gray-600">Đường dẫn</label>
-                        <input
-                            type="text"
-                            value={slug}
-                            onChange={(e) => setSlug(e.target.value)}
-                            className="w-full p-2 border border-gray-300 rounded mt-1"
-                            placeholder="Nhập đường dẫn"
-                            required
-                        />
-                    </div>
+                        <div>
+                            <label className="block text-gray-600">Đường dẫn</label>
+                            <input
+                                type="text"
+                                value={slug}
+                                onChange={(e) => setSlug(e.target.value)}
+                                className="w-full p-2 border border-gray-300 rounded mt-1"
+                                placeholder="Nhập đường dẫn"
+                                required
+                            />
+                        </div>
 
-                    <div>
-                        <label className="block text-gray-600">Mô tả</label>
-                        <textarea
-                            value={description}
-                            onChange={(e) => setDescription(e.target.value)}
-                            className="w-full p-2 border border-gray-300 rounded mt-1"
-                            rows="3"
-                            placeholder="Nhập mô tả ngắn"
-                            required
-                        ></textarea>
-                    </div>
+                        <div>
+                            <label className="block text-gray-600">Mô tả</label>
+                            <textarea
+                                value={description}
+                                onChange={(e) => setDescription(e.target.value)}
+                                className="w-full p-2 border border-gray-300 rounded mt-1"
+                                rows="3"
+                                placeholder="Nhập mô tả ngắn"
+                                required
+                            ></textarea>
+                        </div>
 
-                    <div>
-                        <label className="block text-gray-600">Danh mục</label>
-                        <input
-                            type="text"
-                            value={cate_id}
-                            onChange={(e) => setCategory(e.target.value)}
-                            className="w-full p-2 border border-gray-300 rounded mt-1"
-                            placeholder="Nhập danh mục"
-                            required
-                        />
-                    </div>
+                        <div>
+                            <label className="block text-gray-600">Danh mục</label>
+                            <select
+                                value={cate_id}
+                                onChange={(e) => setCategory(e.target.value)}
+                                className="w-full p-2 border border-gray-300 rounded mt-1"
+                                required
+                            >
+                                <option value="" disabled>
+                                    Chọn danh mục
+                                </option>
+                                <option value="1">Danh mục 1</option>
+                                {/* Thêm các danh mục khác tại đây */}
+                            </select>
+                        </div>
 
-                    <button
-                        type="submit"
-                        disabled={loading}
-                        className={`w-full p-2 rounded ${loading ? "bg-gray-400" : "bg-blue-600 hover:bg-blue-700"} text-white transition`}
-                    >
-                        {loading ? "Đang tạo..." : "Thêm Blog"}
-                    </button>
-                </form>
+                        <button
+                            type="submit"
+                            disabled={loading}
+                            className={`w-full p-2 rounded ${loading ? "bg-gray-400" : "bg-blue-600 hover:bg-blue-700"} text-white transition`}
+                        >
+                            {loading ? "Đang tạo..." : "Thêm Blog"}
+                        </button>
+                    </form>
+                </div>
             </div>
-        </div>
-             <ToastContainer />
-             </>
+            <ToastContainer />
+        </>
     );
 }

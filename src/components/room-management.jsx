@@ -53,7 +53,7 @@ export function RoomManagement({ contactsData, contractsData }) {
 
     return (
       <TabsContent value="contacts">
-        <div className="grid grid-cols-1 gap-4 px-4 pb-4">
+        <div className="grid grid-cols-1 grid-cols-2 gap-4 px-4 pb-4">
           {loading ? ( // Check if loading
             <div className="text-center col-span-full"><Spinner /></div> // Display loading message
           ) : contacts.length > 0 ? (
@@ -88,34 +88,11 @@ export function RoomManagement({ contactsData, contractsData }) {
                         <p>Nội thất: {contact.roomDetails.noi_that}</p>
                       </div>
                     </div>
-
-                    <div>
-                      <div>
-                        <span className="flex items-center gap-2">
-                          <User className="h-4 w-4" />
-                          <strong>Tên:</strong>
-                        </span>
-                        <div className="text-sm mt-1">{contact.ho_ten}</div>
+                    <div className='col-span-2'>
+                      <div className="text-sm my-2 flex "> <Calendar className="h-4 w-4 mr-2" />{contact.created_at}</div>
+                      <div className='md:p-4 p-2 bg-gray-500 relative text-white rounded-lg'>
+                        <div className="text-sm pr-4">"{contact.noi_dung}"</div>
                       </div>
-                      <div>
-                        <span className="flex items-center gap-2">
-                          <Phone className="h-4 w-4" />
-                          <strong>Điện thoại:</strong>
-                        </span>
-                        <div className="text-sm mt-1">{contact.so_dien_thoai}</div>
-                      </div>
-                      <div>
-                        <span className="flex items-center gap-2">
-                          <Calendar className="h-4 w-4" />
-                          <strong>Ngày gửi:</strong>
-                        </span>
-                        <div className="text-sm mt-1">{new Date(contact.created_at).toLocaleDateString()}</div>
-                      </div>
-                    </div>
-
-                    <div className='md:p-4 p-2 bg-gray-500 relative text-white rounded-lg'>
-                      <User className='absolute top-4 right-4 hidden md:block' />
-                      <div className="text-sm pr-4">"{contact.noi_dung}".</div>
                     </div>
                   </CardContent>
                   <CardFooter />

@@ -164,7 +164,7 @@ export default function UsersContent() {
       console.log('Delete response status:', response.status);
 
       if (response.ok) {
-        toast.success("Xóa người dùng thành công !"); // Thông báo lỗi        // Cập nhật danh sách người dùng bằng cách loại bỏ người dùng đã xóa
+        toast.success("Cấm người dùng thành công !"); // Thông báo lỗi        // Cập nhật danh sách người dùng bằng cách loại bỏ người dùng đã xóa
         setUsers((prevUsers) => prevUsers.filter(user => user.id !== id));
         fetchData(); // Cập nhật danh sách người dùng nếu không chuyển trang
 

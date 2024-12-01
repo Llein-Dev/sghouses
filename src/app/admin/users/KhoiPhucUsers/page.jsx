@@ -58,12 +58,15 @@ export default function KhoiPhucUsers() {
         setDeletedUsers(result.deleted_users || []);
         console.log(result);
         console.log(deletedUsers); // Kiểm tra dữ liệu
-
+        // TOAST MENTION
 
       } else {
+        setDeletedUsers([]);
         setError('Không có quyền truy cập');
       }
     } catch (error) {
+      setDeletedUsers([]);
+      // TOAST MENTION
       setError('Không thể truy cập dữ liệu');
     }
   };
@@ -78,7 +81,7 @@ export default function KhoiPhucUsers() {
     fetchDeletedUsers(); // Gọi hàm fetchDeletedUsers
   }, [router]);
 
-useEffect(() => {
+  useEffect(() => {
     const filtered = deletedUsers.filter((user) => {
       const name = user.name ? user.name.toLowerCase() : '';
       const email = user.email ? user.email.toLowerCase() : '';
@@ -90,7 +93,7 @@ useEffect(() => {
 
 
 
-  
+
   const handleRefesh = async (id) => {
     const adminToken = Cookies.get("token");
     try {
@@ -104,14 +107,8 @@ useEffect(() => {
 
       if (response.ok) {
         await response.json(); // Đợi dữ liệu trả về
-        const shouldGoToRecovery = window.confirm(
-          "Đã khôi phục thành công, bạn có muốn quay về trang users không?"
-        );
-        if (shouldGoToRecovery) {
-          router.push("/admin/users"); // Chuyển đến trang users
-        } else {
-          fetchDeletedUsers(); // Cập nhật danh sách người dùng đã xóa nếu không chuyển trang
-        }
+        fetchDeletedUsers(); // Cập nhật danh sách người dùng đã xóa nếu không chuyển trang
+
       } else {
         const errorData = await response.json();
         setError(errorData.message || "Lỗi khi khôi phục người dùng");
@@ -122,8 +119,8 @@ useEffect(() => {
   };
 
 
-  
-  const handleReturn = () =>{
+
+  const handleReturn = () => {
     router.push('/admin/users')
   }
 
@@ -146,9 +143,9 @@ useEffect(() => {
             className="max-w-sm"
           />
         </div>
-        <Button  onClick={handleReturn} variant="blue">
+        <Button onClick={handleReturn} variant="blue">
           <FileText className="mr-2 h-4 w-4" />
-         Quay lại trang người dùng
+          Quay lại trang người dùng
         </Button>
       </div>
       <Table>
@@ -163,29 +160,35 @@ useEffect(() => {
         </TableHeader>
         <TableBody>
           {
-            currentUsers.map((user, index) => (
-              <TableRow key={index}>
-                <TableCell>{user.id}</TableCell>
-                <TableCell>{user.name}</TableCell>
-                <TableCell>{user.email}</TableCell>
-                <TableCell>{user.born}</TableCell>
-                <TableCell>
-                  <div className="flex space-x-2">
-
-
-                    <Button variant="outline" size="icon" onClick={() => handleRefesh(user.id)}>
-                      <RefreshCcw className="h-4 w-4" />
-                    </Button>
-                  
-                  </div>
+            currentUsers.length > 0 ? (
+              currentUsers.map((user, index) => (
+                <TableRow key={index}>
+                  <TableCell>{user.id}</TableCell>
+                  <TableCell>{user.name}</TableCell>
+                  <TableCell>{user.email}</TableCell>
+                  <TableCell>{user.born}</TableCell>
+                  <TableCell>
+                    <div className="flex space-x-2">
+                      <Button variant="outline" size="icon" onClick={() => handleRefesh(user.id)}>
+                        <RefreshCcw className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={5} className="text-center text-gray-500">
+                  Không có người dùng nào bị cấm.
                 </TableCell>
               </TableRow>
-            ))
+            )
           }
         </TableBody>
+
       </Table>
-       {/* Pagination */}
-       <div className="flex justify-center mt-4">
+      {/* Pagination */}
+      <div className="flex justify-center mt-4">
         {[...Array(Math.ceil(filteredUsers.length / usersPerPage))].map((_, index) => (
           <Button
             key={index}
@@ -195,7 +198,7 @@ useEffect(() => {
             {index + 1}
           </Button>
         ))}
-      </div>  
+      </div>
     </div>
 
   );

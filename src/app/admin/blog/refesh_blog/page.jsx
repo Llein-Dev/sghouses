@@ -38,6 +38,7 @@ export default function RefeshBlog() {
         const result = await response.json();
         setBlogDeleted(result);
       } else {
+        setBlogDeleted([])
         setError("Không có quyền truy cập");
       }
     } catch (error) {

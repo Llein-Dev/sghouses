@@ -38,12 +38,10 @@ export default function KhoiPhucUsers() {
         const result = await response.json();
         setDeletedContacts(result.list || []);
       } else {
-              setDeletedContacts( []);
-
-        setError('Không có quyền truy cập');
+        setDeletedContacts([]);
       }
     } catch (error) {
-      setDeletedContacts( []);
+      setDeletedContacts([]);
     }
   };
 

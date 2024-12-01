@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -14,10 +14,42 @@ export default function CreateBlog() {
     const [slug, setSlug] = useState("draft");
     const [description, setDescription] = useState("");
     const [cate_id, setCategory] = useState("");
+    const [cataBlog, setCataBlog] = useState([])
     const [loading, setLoading] = useState(false);
     const [successMessage, setSuccessMessage] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
     const router = useRouter();
+
+    const fetchOptionBlog = async () => { // fetch danh mục trong bài viết
+        const adminToken = Cookies.get('token');
+        try {
+            const response = await fetch(`http://localhost:8000/api/cate_blog`, {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${adminToken}`,
+                },
+            });
+            if (response.ok) {
+                const result = await response.json();
+                setCataBlog(result.list_cate_blog || []);
+            } else {
+                setError('Không có quyền truy cập');
+            }
+        } catch (error) {
+            setError('Không thể truy cập dữ liệu');
+        }
+    }
+    // Gọi fetchData trong useEffect khi trang load lần đầu
+    useEffect(() => {
+        const adminToken = Cookies.get('token');
+        if (!adminToken) {
+            router.push('/');
+            return;
+        }
+        fetchOptionBlog();
+        // Call the prop to expose fetchData
+    }, [router]);
+
 
     // Cập nhật hàm handleImageChange để lưu file thay vì mã hóa base64
     const handleImageChange = (e) => {
@@ -153,18 +185,22 @@ export default function CreateBlog() {
                         </div>
 
                         <div>
-                            <label className="block text-gray-600">Danh mục</label>
+                            <label className="block text-blue-900">Danh mục</label>
                             <select
                                 value={cate_id}
                                 onChange={(e) => setCategory(e.target.value)}
-                                className="w-full p-2 border border-gray-300 rounded mt-1"
+                                className="w-full p-2 border border-blue-900 rounded mt-1"
                                 required
                             >
                                 <option value="" disabled>
                                     Chọn danh mục
                                 </option>
-                                <option value="1">Danh mục 1</option>
-                                {/* Thêm các danh mục khác tại đây */}
+                                {/* Sắp xếp và hiển thị các danh mục */}
+                                {cataBlog.map((cateblog, index) => (
+                                        <option key={index} value={cateblog.id}>
+                                            {cateblog.name}
+                                        </option>
+                                    ))}
                             </select>
                         </div>
 

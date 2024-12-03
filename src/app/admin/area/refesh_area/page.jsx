@@ -79,6 +79,10 @@ export default function RefeshArea() {
       console.log("Lỗi khi thực hiện khôi phục người dùng:", error);
     }
   };
+
+  const handleRefesh = () => {
+    router.push('/admin/area')
+  }
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
@@ -91,12 +95,9 @@ export default function RefeshArea() {
           />
         </div>
         <div className="flex justify-end space-x-2">
-          <Button
-            onClick={() => { }}
-            className="bg-green-700 text-white hover:bg-green-600"
-          >
+          <Button variant="blue" onClick={handleRefesh}>
             <FileText className="mr-2 h-4 w-4" />
-            Danh sách khu vực
+             Danh sách khôi phục
           </Button>
         </div>
       </div>

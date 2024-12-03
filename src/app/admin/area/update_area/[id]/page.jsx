@@ -82,11 +82,14 @@ export default function UpdateBlog() {
             });
 
             if (response.ok) {
-                toast.success('blog đã cập nhật thành công !')
-                router.push(`/admin/area`);
+                toast.success('Blog đã cập nhật thành công!', {
+                    onClose: () => {
+                        router.push(`/admin/area`);
+                    },
+                });
             } else {
                 const data = await response.json();
-                setError(data.message || "Có lỗi xảy ra, vui lòng thử lại.");
+                toast.warning(data.message || "Có lỗi xảy ra, vui lòng thử lại.");
             }
         } catch (error) {
             setError("Không thể kết nối đến server, vui lòng thử lại sau.");
@@ -97,7 +100,7 @@ export default function UpdateBlog() {
         <>
         <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
             <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-screen-lg">
-                <h2 className="text-2xl font-semibold text-gray-700 mb-4">Chỉnh sửa Blog</h2>
+                <h2 className="text-2xl font-semibold text-gray-700 mb-4">Chỉnh sửa khu vực</h2>
 
                 {error && <p className="text-red-500 mb-4">{error}</p>}
 
@@ -146,7 +149,7 @@ export default function UpdateBlog() {
                 </form>
             </div>
         </div>
-     <ToastContainer />
+     <ToastContainer autoClose={2000} />
      </>
     );
 }

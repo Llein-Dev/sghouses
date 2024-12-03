@@ -36,12 +36,11 @@ export default function RefeshBuilding() {
       if (response.ok) {
         const result = await response.json();
         setDeletedRoom(result.list_room || []);
-        console.log(result);
-        console.log(deletedRoom); // Kiểm tra dữ liệu
+        toast.success('Khôi phục phòng thành công !')
 
 
       } else {
-        setError('Không có quyền truy cập');
+        setDeletedRoom([])
       }
     } catch (error) {
       setError('Không thể truy cập dữ liệu');
@@ -75,7 +74,7 @@ export default function RefeshBuilding() {
       if (response.ok) {
         await response.json(); // Đợi dữ liệu trả về
         toast.success("Khôi phục thành công !"); // Thông báo lỗi
-          fetchDeletedRoom(); // Cập nhật danh sách người dùng đã xóa nếu không chuyển trang
+        fetchDeletedRoom(); // Cập nhật danh sách người dùng đã xóa nếu không chuyển trang
       } else {
         setError(errorData.message || "Lỗi khi khôi phục người dùng");
       }
@@ -119,27 +118,52 @@ export default function RefeshBuilding() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {
+          {deletedRoom.length > 0 ? (
             deletedRoom.map((rooms, index) => (
               <TableRow key={index}>
                 <TableCell>{rooms.id}</TableCell>
-                <TableCell className="flex gap-5">  <img style={{ height: "150px", objectFit: "cover", borderRadius: "10px" }} src={`http://localhost:8000/storage/${rooms.hinh_anh}`}></img> <div><div className="p-1 text-xl font-bold  rounded text-black">{rooms.ten_phong} </div>{rooms.ten_toa_nha} <div>{rooms.ten_khu_vuc}</div> </div>
+                <TableCell className="flex gap-5">
+                  <img
+                    style={{
+                      height: "150px",
+                      objectFit: "cover",
+                      borderRadius: "10px",
+                    }}
+                    src={`http://localhost:8000/storage/${rooms.hinh_anh}`}
+                    alt="Room"
+                  />
+                  <div>
+                    <div className="p-1 text-xl font-bold rounded text-black">
+                      {rooms.ten_phong}
+                    </div>
+                    {rooms.ten_toa_nha}
+                    <div>{rooms.ten_khu_vuc}</div>
+                  </div>
                 </TableCell>
-                <TableCell>
-                  {rooms.gac_lung}
-                </TableCell>
+                <TableCell>{rooms.gac_lung}</TableCell>
                 <TableCell>{rooms.dien_tich}</TableCell>
                 <TableCell>
                   <div className="flex space-x-2">
-                    <Button variant="outline" size="icon" onClick={() => handleRefesh(rooms.id)}>
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      onClick={() => handleRefesh(rooms.id)}
+                    >
                       <RefreshCcw className="h-4 w-4" />
                     </Button>
                   </div>
                 </TableCell>
               </TableRow>
             ))
-          }
+          ) : (
+            <TableRow>
+              <TableCell colSpan={5} style={{ textAlign: "center" }}>
+                Danh sách khôi phục phòng trống
+              </TableCell>
+            </TableRow>
+          )}
         </TableBody>
+
       </Table>
       <ToastContainer />
     </div>

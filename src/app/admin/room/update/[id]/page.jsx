@@ -2,6 +2,8 @@
 import React, { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import { useParams, useRouter } from "next/navigation";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 // Hàm chính của component
 export default function UpdateRoom() {
     const router = useRouter();
@@ -129,6 +131,7 @@ export default function UpdateRoom() {
             });
 
             if (response.ok) {
+                toast.success('Cập nhật phòng thành công !')
                 setShowModal(true); // Hiện thông báo khi submit
             } else {
                 const data = await response.json();
@@ -146,7 +149,7 @@ export default function UpdateRoom() {
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
             <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-screen-lg">
-                <h2 className="text-2xl font-semibold text-gray-700 mb-4">Chỉnh sửa tòa nhà</h2>
+                <h2 className="text-2xl font-semibold text-gray-700 mb-4">Chỉnh sửa phòng</h2>
 
                 {error && <p className="text-red-500 mb-4">{error}</p>}
 
@@ -337,6 +340,7 @@ export default function UpdateRoom() {
 
 
             </div>
+            <ToastContainer />
         </div>
     );
 }

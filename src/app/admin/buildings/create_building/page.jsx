@@ -156,7 +156,11 @@ export default function CreateBlog() {
         body: formData,
       });
 
-      const data = await response.json();
+     
+    // Kiểm tra phản hồi từ backend
+    const contentType = response.headers.get("Content-Type");
+    let errorMessage;
+
 
       if (response.ok) {
         toast.success('tạo tòa nhà thành công !')
@@ -165,12 +169,14 @@ export default function CreateBlog() {
         setTienIch([]); // Reset tiện ích về mảng rỗng
         setMoTa("");
         setKhuVuc("");
-      } else if (response.status === 401) {
-        Cookies.remove("token");
-        toast.warning('Phiên làm việc của bạn đã hết hạn, vui lòng đăng nhập lại !')
-        router.push("/");
-      } else {
-        toast.error(response.message || 'Bạn chưa nhập đủ thông tin !');
+      }else {
+        if (contentType.includes("application/json")) {
+          const data = await response.json();
+          errorMessage = data.message || "Đã xảy ra lỗi, vui lòng thử lại!";
+        } else {
+          errorMessage = await response.text(); // Nếu là chuỗi thuần
+        }
+        toast.error(`Lỗi: ${errorMessage}`); // Hiển thị toàn bộ chuỗi
       }
     } catch (error) {
       toast.error('không thể kết nối đến server');

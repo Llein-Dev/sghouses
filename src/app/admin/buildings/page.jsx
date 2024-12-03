@@ -1,5 +1,5 @@
 "use client"
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useEffect, useState } from "react"
 import { Search, FileText, Eye, Download, Trash2, BookCopy, Link, Pencil, Book, Plus, RefreshCcw, ListX } from "lucide-react"
@@ -87,6 +87,7 @@ export default function CategoryBlog() {
       console.log('Delete response status:', response.status);
 
       if (response.ok) {
+        toast.success('Xóa tòa nhà thành công !')
         // Cập nhật danh sách người dùng bằng cách loại bỏ người dùng đã xóa
         setCatagoryBlog((prevBuilding) => prevBuilding.filter(building => building.id !== id));
       } else {
@@ -225,6 +226,7 @@ export default function CategoryBlog() {
           ))}
         </TableBody>
       </Table>
+      <ToastContainer />
     </div>
   )
 }

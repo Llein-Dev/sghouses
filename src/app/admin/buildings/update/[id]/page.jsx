@@ -224,17 +224,17 @@ export default function UpdateBuilding() {
         router.push('/admin/buildings')
     }
 
-    return (
+    return (    
         <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
             <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-screen-lg">
-                <h2 className="text-2xl font-semibold text-gray-700 mb-4">Chỉnh sửa Blog</h2>
+                <h2 className="text-2xl font-semibold text-gray-700 mb-4">Chỉnh sửa tòa nhà</h2>
 
                 {error && <p className="text-red-500 mb-4">{error}</p>}
 
                 <form onSubmit={handleSubmit} className="space-y-4">
 
                     <div>
-                        <label className="block text-gray-600">ID Khu vực</label>
+                        <label className="block text-gray-600">Chọn khu vực</label>
                         <select
                             value={id_area}
                             onChange={(e) => setIdArea(e.target.value)}
@@ -264,6 +264,7 @@ export default function UpdateBuilding() {
                             required
                         />
                     </div>
+                    <label className="block text-gray-600"> Tiện ích chung</label>
                     <div className="bg-gray-100 p-2 flex flex-wrap gap-2 rounded">
                         {utilities.split(";").map((utility, index) => (
                             <div
@@ -301,7 +302,7 @@ export default function UpdateBuilding() {
                         </button>
                     </div>
 
-
+                    <label className="block text-gray-600"> Vị trí tiện ích</label>
                     <div className="bg-gray-100 p-2 flex flex-wrap gap-2 rounded">
                         {location.split(";").map((loc, index) => (
                             <div

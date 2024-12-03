@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 import { Search, RefreshCcw, ListX, List } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import {
   Table,
   TableBody,
@@ -60,6 +62,7 @@ export default function RefeshBuilding() {
 
 
       } else {
+        setFilteredUsers([])
         setError('Không có quyền truy cập');
       }
     } catch (error) {
@@ -96,14 +99,9 @@ export default function RefeshBuilding() {
 
       if (response.ok) {
         await response.json(); // Đợi dữ liệu trả về
-        const shouldGoToRecovery = window.confirm(
-          "Đã khôi phục thành công, bạn có muốn quay về trang Tòa nhà không?"
-        );
-        if (shouldGoToRecovery) {
-          router.push("/admin/buildings"); // Chuyển đến trang users
-        } else {
-          fetchDeletedBuilding(); // Cập nhật danh sách người dùng đã xóa nếu không chuyển trang
-        }
+        toast.success('Khôi phục tòa nhà thành công !')
+        fetchDeletedBuilding(); // Cập nhật danh sách người dùng đã xóa nếu không chuyển trang
+
       } else {
         setError(errorData.message || "Lỗi khi khôi phục người dùng");
       }
@@ -129,17 +127,17 @@ export default function RefeshBuilding() {
           />
         </div>
         <div className="flex items-center space-x-4 w-1/2 justify-end">
-       {/* khôi phục Danh Mục tin tức */}
-    <Button  variant="blue" onClick={handleBuiding} className="bg-blue-700 text-white hover:bg-blue-800">
-      <List className="mr-2 h-4 w-4" />
-     Danh sách hoạt động
-    </Button>
-  </div>
+          {/* khôi phục Danh Mục tin tức */}
+          <Button variant="blue" onClick={handleBuiding} className="bg-blue-900 text-white   hover:bg-blue-800">
+            <List className="mr-2 h-4 w-4" />
+            Danh sách tòa nhà
+          </Button>
+        </div>
       </div>
       <Table>
         <TableHeader>
           <TableRow>
-          <TableHead>ID Phòng</TableHead>
+            <TableHead>ID Phòng</TableHead>
             <TableHead>Ảnh</TableHead>
             <TableHead>Tên tòa nhà</TableHead>
             <TableHead>SLug</TableHead>
@@ -150,30 +148,39 @@ export default function RefeshBuilding() {
         </TableHeader>
         <TableBody>
           {
-            filteredUsers.map((building, index) => (
-              <TableRow key={index}>
-                <TableCell>{building.id}</TableCell>
-                <TableCell>  <img style={{height:"150px", objectFit:"cover", borderRadius:"10px"}} src={`http://localhost:8000/storage/${building.image}`}></img> </TableCell>
-                <TableCell>{building.name}</TableCell>
-                <TableCell>{building.slug}</TableCell>
-                <TableCell>{building.name_area}</TableCell>
-                <TableCell>{building.price}</TableCell>
-                <TableCell>{building.view}</TableCell>
-                <TableCell>
-                  <div className="flex space-x-2">
-
-
-                    <Button variant="outline" size="icon" onClick={() => handleRefesh(building.id)}>
-                      <RefreshCcw className="h-4 w-4" />
-                    </Button>
-                  
-                  </div>
+            filteredUsers.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={8} className="text-center">
+                  Danh sách khôi phục tòa nhà trống
                 </TableCell>
               </TableRow>
-            ))
+            ) : (
+              filteredUsers.map((building, index) => (
+                <TableRow key={index}>
+                  <TableCell>{building.id}</TableCell>
+                  <TableCell>
+                    <img style={{ height: "150px", objectFit: "cover", borderRadius: "10px" }} src={`http://localhost:8000/storage/${building.image}`} />
+                  </TableCell>
+                  <TableCell>{building.name}</TableCell>
+                  <TableCell>{building.slug}</TableCell>
+                  <TableCell>{building.name_area}</TableCell>
+                  <TableCell>{building.price}</TableCell>
+                  <TableCell>{building.view}</TableCell>
+                  <TableCell>
+                    <div className="flex space-x-2">
+                      <Button variant="outline" size="icon" onClick={() => handleRefesh(building.id)}>
+                        <RefreshCcw className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))
+            )
           }
         </TableBody>
+
       </Table>
+      <ToastContainer />
     </div>
 
   );

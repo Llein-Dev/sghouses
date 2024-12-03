@@ -157,7 +157,7 @@ export default function UpdateBuilding() {
         formData.append("location", location);
         formData.append("name", name);
         formData.append("description", description);
-        formData.append("image_old", imageDelete);
+        formData.append("image_delete", imageDelete);
 
         // Gửi danh sách ảnh mới
         images.forEach((image) => formData.append("image[]", image.file));

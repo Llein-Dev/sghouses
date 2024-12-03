@@ -5,6 +5,27 @@ import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Button } from "@/components/ui/button";
+import { FileText } from "lucide-react";
+import dynamic from "next/dynamic";
+// Import React Quill với tính năng hỗ trợ đầy đủ công cụ
+const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
+import "react-quill/dist/quill.snow.css"; // Import CSS mặc định của Quill
+
+// Cấu hình toolbar cho Quill với đầy đủ công cụ
+const modules = {
+    toolbar: [
+        [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }], // Các cấp độ tiêu đề và font
+        [{ 'list': 'ordered' }, { 'list': 'bullet' }], // Danh sách có thứ tự và không có thứ tự
+        ['bold', 'italic', 'underline', 'strike'], // In đậm, in nghiêng, gạch dưới, gạch ngang
+        [{ 'align': [] }], // Căn chỉnh
+        [{ 'color': [] }, { 'background': [] }], // Chọn màu chữ và nền
+        [{ 'script': 'sub' }, { 'script': 'super' }], // Chỉ số trên, chỉ số dưới
+        ['link', 'image'], // Thêm link và ảnh
+        ['blockquote', 'code-block'], // Trích dẫn và khối mã
+        ['clean'], // Xóa định dạng
+    ],
+};
 export default function CreateBlog() {
   const [name, setTen] = useState("");
   const [images, setImages] = useState([]);
@@ -16,13 +37,14 @@ export default function CreateBlog() {
   const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [option, setOption] = useState([]);
   const router = useRouter();
 
   const [utilities, setTienIch] = useState([]); // Mảng tiện ích
   const [query, setQuery] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const availableLocations = ["Hà Nội", "Bình Thuận", "Quãng Ngãi", "Bình Dương", "TP Hồ Chí Minh", "Đà Nẵng", "Hải Phòng"];
+  const availableLocations = ["Cách bách hóa xanh 200m", "Cách trung tâm thành phố Hồ Chí Minh 850m", "cách Quốc lộ một  2km", "Cách quận một 10km"];
   const filteredLocations = availableLocations.filter(
     (loc) =>
       loc.toLowerCase().includes(locationQuery.toLowerCase().trim()) &&
@@ -137,7 +159,7 @@ export default function CreateBlog() {
       const data = await response.json();
 
       if (response.ok) {
-        setSuccessMessage("Tòa nhà đã được tạo thành công!");
+        toast.success('tạo tòa nhà thành công !')
         setTen("");
         setImages([]);
         setTienIch([]); // Reset tiện ích về mảng rỗng
@@ -148,18 +170,54 @@ export default function CreateBlog() {
         toast.warning('Phiên làm việc của bạn đã hết hạn, vui lòng đăng nhập lại !')
         router.push("/");
       } else {
-        setErrorMessage(data.message || "Đã có lỗi xảy ra, vui lòng thử lại.");
+        toast.error(response.message || 'Bạn chưa nhập đủ thông tin !');
       }
     } catch (error) {
-      setErrorMessage("Không thể kết nối đến server, vui lòng thử lại sau.");
+      toast.error('không thể kết nối đến server');
+
     } finally {
       setLoading(false);
     }
   };
 
+  const fetchDataOption = async () => {
+    try {
+      const response = await fetch(`http://localhost:8000/api/khu_vuc/option`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        setOption(result)
+      } else if (response.status === 401) {
+        setError("Không có quyền truy cập. Vui lòng đăng nhập lại.");
+        router.push("/");
+      } else {
+        setError("Lỗi không xác định.");
+      }
+    } catch (err) {
+      setError("Không thể truy cập dữ liệu.");
+    }
+  };
+  useEffect(() => {
+
+    fetchDataOption();
+  }, []);
+  const handleCreatPage = () => {
+    router.push('/admin/buildings');
+  }
 
   return (
     <>
+      <div className="flex justify-end p-6">
+        <Button onClick={handleCreatPage} className="bg-blue-900 text-white hover:bg-blue-600">
+          <FileText className="mr-2 h-4 w-4" />
+          Danh sách tòa nhà
+        </Button>
+      </div>
       <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
         <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-screen-lg">
           <h2 className="text-2xl font-semibold text-gray-700 mb-4">
@@ -181,14 +239,21 @@ export default function CreateBlog() {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-gray-600">Khu vực</label>
-              <input
-                type="text"
+              <select
                 value={id_area}
                 onChange={(e) => setKhuVuc(e.target.value)}
                 className="w-full p-2 border border-gray-300 rounded mt-1"
-                placeholder="Nhập (id) khu vực"
-              />
+              >
+                {
+                  option.map((options) => (
+                    <option value={options.id}>{options.name}</option>
+                  )
+                  )
+                }
+
+              </select>
             </div>
+
             <div>
               <label className="block text-gray-600">Tên tòa nhà</label>
               <input
@@ -315,19 +380,20 @@ export default function CreateBlog() {
             </div>
 
             <div>
-              <label className="block text-gray-600">Mô tả</label>
-              <textarea
+              <label className="block text-gray-600">Nội dung</label>
+              <ReactQuill
                 value={description}
-                onChange={(e) => setMoTa(e.target.value)}
+                onChange={setMoTa}
+                modules={modules} // Sử dụng cấu hình module với toolbar đầy đủ
                 className="w-full p-2 border border-gray-300 rounded mt-1"
-                rows="3"
-                placeholder="Nhập mô tả"
-              ></textarea>
+                placeholder="Nhập nội dung bài viết"
+              />
             </div>
 
 
+
             <div>
-              <label className="block text-gray-600">Vị trí</label>
+              <label className="block text-gray-600">Vị trí tiện ích</label>
               <div className="relative mt-2">
                 {/* Hiển thị các vị trí đã chọn */}
                 <div className="bg-gray-100 p-2 flex flex-wrap gap-2 rounded">
@@ -396,7 +462,7 @@ export default function CreateBlog() {
 
             <button
               type="submit"
-              className={`w-full py-2 px-4 bg-blue-600 text-white rounded mt-4 ${loading ? "opacity-50 cursor-not-allowed" : ""
+              className={`w-full py-2 px-4 bg-blue-900 text-white rounded mt-4 ${loading ? "opacity-50 cursor-not-allowed" : ""
                 }`}
               disabled={loading}
             >

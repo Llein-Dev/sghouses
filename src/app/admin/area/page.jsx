@@ -1,5 +1,6 @@
 "use client"
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { useEffect, useState } from "react"
 import { Search, Trash2, BookCopy, Eye,  Plus, RefreshCcwDot,Pen } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -67,12 +68,9 @@ export default function BlogContent() {
       if (response.ok) {
         // Cập nhật danh sách người dùng bằng cách loại bỏ người dùng đã xóa
         setArea((prevArea) => prevArea.filter(areas => areas.id !== id));
-        const shouldGoToRecovery = window.confirm("Xóa blog thành công! Bạn có muốn đến trang khôi phục không?");
-        if (shouldGoToRecovery) {
-          router.push("/admin/area/refesh_area"); // Chuyển đến trang khôi phục
-        } else {
-            fetchDataArea(); // Cập nhật danh sách người dùng nếu không chuyển trang
-        }
+        toast.success('Xóa khu vực thành công !')
+        fetchDataArea(); // Cập nhật danh sách người dùng nếu không chuyển trang
+        
       } else {
         const errorData = await response.json();
         setError(errorData.message || "Lỗi khi xóa blog");
@@ -141,9 +139,6 @@ export default function BlogContent() {
   const handleRefeshArea = () => {
     router.push('/admin/area/refesh_area')
   }
-  const handleDetailArea = (id) => {
-    router.push(`/admin/area/detail_area/${id}`)
-  }
   const handleCreatArea = () => {
     router.push('/admin/area/create_area')
   }
@@ -157,7 +152,7 @@ export default function BlogContent() {
         <div className="flex items-center space-x-2">
           <Search className="h-5 w-5 text-gray-500" />
           <Input
-            placeholder="Search users..."
+            placeholder="Tìm kiếm..."
             value={""}
             // onChange={handleSearchChange}
             className="max-w-sm"
@@ -167,11 +162,11 @@ export default function BlogContent() {
         <div className="flex justify-end space-x-2">
           <Button onClick={handleCreatArea}  className="bg-green-700 text-white hover:bg-green-600">
             <Plus className="mr-2 h-4 w-4" />
-            create Area
+             Tạo khu vực
           </Button>
           <Button onClick={handleRefeshArea} variant="blue">
             <RefreshCcwDot className="mr-2 h-4 w-4" />
-            Refresh Contract
+            Khôi phục khu vực
           </Button>
         </div>
       </div>
@@ -182,6 +177,8 @@ export default function BlogContent() {
             <TableHead>ID</TableHead>
             <TableHead>Ảnh</TableHead>
             <TableHead>Tên</TableHead>
+            <TableHead>Số tòa nhà</TableHead>
+            <TableHead>Số phòng</TableHead>
             <TableHead>Trạng thái</TableHead>
             <TableHead>Hành động</TableHead>
           </TableRow>
@@ -192,6 +189,8 @@ export default function BlogContent() {
               <TableCell>{areas.id}</TableCell>
               <TableCell> <img style={{height:"150px", width:'250px', objectFit:"cover", borderRadius:"10px"}} src={`http://localhost:8000/storage/${areas.image}`}></img> </TableCell>
               <TableCell>{areas.name} </TableCell>
+              <TableCell>{areas.count_building} </TableCell>
+              <TableCell>{areas.count_room} </TableCell>
               <TableCell>
                 <div className="flex items-center space-x-4">
                   <span className="text-gray-700">{areas.hot ? "On" : "Off"}</span>
@@ -221,16 +220,13 @@ export default function BlogContent() {
                     <BookCopy className="h-4 w-4"
                     />
                   </Button>
-                  <Button variant="outline" size="icon"   onClick={() => handleDetailArea(areas.id)}>
-                    <Eye className="h-4 w-4"
-                    />
-                  </Button>
                 </div>
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
+      <ToastContainer />
     </div>
   )
 }

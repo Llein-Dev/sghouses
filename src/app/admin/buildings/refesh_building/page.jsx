@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
-import { Search, RefreshCcw, ListX, List } from "lucide-react"
+import { Search, RefreshCcw, List } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { toast, ToastContainer } from 'react-toastify';

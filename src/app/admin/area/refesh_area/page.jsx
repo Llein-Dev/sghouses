@@ -1,8 +1,9 @@
 "use client"
-
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Search, Plus, RefreshCcw } from "lucide-react";
+import { Search, Plus, RefreshCcw, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -17,7 +18,7 @@ import Cookies from "js-cookie";
 export default function RefeshArea() {
   const [areaDeleted, setAreaDeleted] = useState([]);
   const [error, setError] = useState(null);
-  const router = useRouter();   
+  const router = useRouter();
 
   const fetchDataAreaDeleted = async () => {
     try {
@@ -38,7 +39,7 @@ export default function RefeshArea() {
         const result = await response.json();
         setAreaDeleted(result);
       } else {
-        setError("Không có quyền truy cập");
+        setAreaDeleted([])
       }
     } catch (error) {
       setError("Không thể truy cập dữ liệu");
@@ -67,14 +68,9 @@ export default function RefeshArea() {
 
       if (response.ok) {
         await response.json(); // Đợi dữ liệu trả về
-        const shouldGoToRecovery = window.confirm(
-          "Đã khôi phục thành công, bạn có muốn quay về trang users không?"
-        );
-        if (shouldGoToRecovery) {
-          router.push("/admin/area"); // Chuyển đến trang users
-        } else {
-            fetchDataAreaDeleted(); // Cập nhật danh sách người dùng đã xóa nếu không chuyển trang
-        }
+        toast.success('Khôi phục khu vực thành công !')
+        fetchDataAreaDeleted(); // Cập nhật danh sách người dùng đã xóa nếu không chuyển trang
+
       } else {
         const errorData = await response.json();
         setError(errorData.message || "Lỗi khi khôi phục người dùng");
@@ -96,11 +92,11 @@ export default function RefeshArea() {
         </div>
         <div className="flex justify-end space-x-2">
           <Button
-            onClick={() => {}}
+            onClick={() => { }}
             className="bg-green-700 text-white hover:bg-green-600"
           >
-            <Plus className="mr-2 h-4 w-4" />
-            Create Blog
+            <FileText className="mr-2 h-4 w-4" />
+            Danh sách khu vực
           </Button>
         </div>
       </div>
@@ -118,25 +114,48 @@ export default function RefeshArea() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {areaDeleted.map((areas, index) => (
-            <TableRow key={index}>
-              <TableCell>{areas.id}</TableCell>
-              <TableCell>
-                <img  style={{height:"150px", width:'250px', objectFit:"cover", borderRadius:"10px"}}  src={`http://localhost:8000/storage/${areas.image}`} alt="Blog" />
-              </TableCell>
-              <TableCell>{areas.name}</TableCell>
-              <TableCell>{areas.slug}</TableCell>
-              <TableCell>
-                <div className="flex space-x-2">
-                  <Button variant="outline" size="icon"  onClick={() => handleRefeshArea(areas.id)}>
-                    <RefreshCcw className="h-4 w-4" />
-                  </Button>
-                </div>
+          {areaDeleted.length > 0 ? (
+            areaDeleted.map((areas, index) => (
+              <TableRow key={index}>
+                <TableCell>{areas.id}</TableCell>
+                <TableCell>
+                  <img
+                    style={{
+                      height: "150px",
+                      width: "250px",
+                      objectFit: "cover",
+                      borderRadius: "10px",
+                    }}
+                    src={`http://localhost:8000/storage/${areas.image}`}
+                    alt="Blog"
+                  />
+                </TableCell>
+                <TableCell>{areas.name}</TableCell>
+                <TableCell>{areas.slug}</TableCell>
+                <TableCell>
+                  <div className="flex space-x-2">
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      onClick={() => handleRefeshArea(areas.id)}
+                    >
+                      <RefreshCcw className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan={5} style={{ textAlign: "center" }}>
+                Danh sách khôi phục trống
               </TableCell>
             </TableRow>
-          ))}
+          )}
         </TableBody>
+
       </Table>
+      <ToastContainer />
     </div>
   );
 }

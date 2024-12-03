@@ -183,7 +183,7 @@ export default function CategoryBlog() {
                             <TableCell>
                                 {rooms.trang_thai}
                             </TableCell>
-                            <TableCell>{rooms.dien_tich}</TableCell>
+                            <TableCell>{rooms.dien_tich} m²</TableCell>
                             <TableCell>{rooms.ngay_tao}</TableCell>
                             <TableCell>
                                 <div className="flex space-x-2">

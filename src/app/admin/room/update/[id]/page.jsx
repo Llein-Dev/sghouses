@@ -223,16 +223,16 @@ export default function UpdateRoom() {
                             required
                         />
                     </div>
-                    <div>
-                        <label className="block text-gray-600">Diện tích</label>
+                    <div className="flex items-center border border-gray-300 rounded p-2 mt-1">
                         <input
                             type="text"
                             value={dien_tich}
                             onChange={(e) => setDienTich(e.target.value)}
-                            className="w-full p-2 border border-gray-300 rounded mt-1"
-                            placeholder="Nhập tiêu đề"
+                            className="flex-grow p-1 outline-none"
+                            placeholder="Nhập diện tích"
                             required
                         />
+                        <span className="ml-2 text-gray-500">m²</span>
                     </div>
 
 

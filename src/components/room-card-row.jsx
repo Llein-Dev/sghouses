@@ -34,8 +34,8 @@ export function RoomCardRowComponent({ product }) {
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [formData, setFormData] = useState({
-    name: "",
-    phone: "",
+    name: user ? user.name : "",
+    phone: user ? user.phone : "",
     content: "",
     id_room: product.id,
     id_user: user ? user.id : "", // Initialize id_user from user state
@@ -86,7 +86,7 @@ export function RoomCardRowComponent({ product }) {
         setIsDialogOpen(false);
         toast.error('Đã xảy ra lỗi. Vui lòng thử lại.');
       }
-    } 
+    }
   };
 
   // Split the image string and get the first image URL
@@ -244,6 +244,7 @@ export function RoomCardRowComponent({ product }) {
                       name="name"
                       value={formData.name}
                       onChange={handleInputChange}
+                      placeholder="Nhập họ tên của bạn"
                       className="col-span-3"
                       required
                     />
@@ -255,6 +256,7 @@ export function RoomCardRowComponent({ product }) {
                       name="phone"
                       value={formData.phone}
                       onChange={handleInputChange}
+                      placeholder="Nhập số điện thoại"
                       className="col-span-3"
                       required
                     />
@@ -266,6 +268,7 @@ export function RoomCardRowComponent({ product }) {
                       name="content"
                       value={formData.content}
                       onChange={handleInputChange}
+                      placeholder="Nhập nội dung yêu cầu của bạn"
                       className="w-full"
                       required
                     />
@@ -290,6 +293,7 @@ export function RoomCardRowComponent({ product }) {
                     </Button>
                   </div>
                 </form>
+
               </DialogContent>
             </Dialog>
 

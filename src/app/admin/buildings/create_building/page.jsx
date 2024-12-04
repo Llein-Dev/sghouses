@@ -198,6 +198,7 @@ export default function CreateBlog() {
       if (response.ok) {
         const result = await response.json();
         setOption(result)
+        console.log(result)
       } else if (response.status === 401) {
         setError("Không có quyền truy cập. Vui lòng đăng nhập lại.");
         router.push("/");

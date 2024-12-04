@@ -164,7 +164,7 @@ export default function RootLayout({ children }) {
           <aside className="w-18 md:w-64 h-full shadow-md flex flex-col justify-between bg-white">
             <div>
               <img
-                src="/Logo.svg" // Path relative to the 'public' folder
+                src="/logo.svg" // Path relative to the 'public' folder
                 alt="Logo"
                 className="w-full p-2 hidden md:block"
               />

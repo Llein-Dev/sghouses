@@ -247,9 +247,6 @@ export default function UpdateBuilding() {
                                 )
                                 )
                             }
-
-
-                            {/* Thêm các option khác tùy ý */}
                         </select>
 
                     </div>

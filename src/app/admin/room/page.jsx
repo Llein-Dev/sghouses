@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Badge } from "@/components/ui/badge"
 import {
     Table,
     TableBody,
@@ -178,11 +179,15 @@ export default function CategoryBlog() {
                     {room.map((rooms, index) => (
                         <TableRow key={index}>
                             <TableCell>{rooms.id}</TableCell>
-                            <TableCell className="flex gap-5">  <img  className="object-cover h-[180px] rounded-lg aspect-video" src={`http://localhost:8000/storage/${rooms.hinh_anh}`}></img> <div><div className="p-1 text-xl font-bold  rounded text-black">{rooms.ten_phong} </div>{rooms.ten_toa_nha} <div>{rooms.ten_khu_vuc}</div> </div>
+                            <TableCell className="flex gap-5">  <img className="object-cover h-[180px] rounded-lg aspect-video" src={`http://localhost:8000/storage/${rooms.hinh_anh}`}></img> <div><div className="p-1 text-xl font-bold  rounded text-black">{rooms.ten_phong} </div>{rooms.ten_toa_nha} <div>{rooms.ten_khu_vuc}</div> </div>
                             </TableCell>
                             <TableCell>
-                                {rooms.trang_thai}
-                            </TableCell>
+                                <Badge
+                                    variant={rooms.trang_thai === 'Đang trống' ? 'success' : 'destructive'}
+                                >
+                                    {rooms.trang_thai}
+                                </Badge>
+                            </TableCell> {/* Trạng Thái */}
                             <TableCell>{rooms.dien_tich} m²</TableCell>
                             <TableCell>{rooms.ngay_tao}</TableCell>
                             <TableCell>

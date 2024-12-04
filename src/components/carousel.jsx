@@ -44,15 +44,17 @@ export function CarouselComponent({ autoPlayInterval = 5000 }) {
       </div>
     );
   }
+  console.log(images);
+  
 
   return (
     <div className="md:relative md:w-full md:block hidden">
       <div className="overflow-hidden relative" style={{ aspectRatio: "10 / 2" }}>
         {images.map((image, index) => (
           <img
-            key={index}
-            src={`http://localhost:8000/storage/${image}`} // Assuming images are relative URLs
-            alt={`Slide ${index + 1}`}
+            key={image.id}
+            src={`http://localhost:8000/storage/${image.image}`} // Assuming images are relative URLs
+            alt={image.title}
             className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${index === currentIndex ? "opacity-100" : "opacity-0"}`}
           />
         ))}

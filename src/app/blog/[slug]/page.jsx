@@ -140,12 +140,15 @@ export default function ArticleDetail() {
                                 {/* Author Info */}
                                 <div className="flex items-center space-x-4 mt-8 p-4 bg-muted rounded-lg">
                                     <Avatar>
-                                        <AvatarImage src="/placeholder.svg?height=40&width=40" alt="Tác giả" />
-                                        <AvatarFallback>TG</AvatarFallback>
+                                        <AvatarImage
+                                            src={user?.avatar_user || "/placeholder.svg?height=40&width=40"}
+                                            alt={user?.name_user || "Tác giả"}
+                                        />
+                                        <AvatarFallback>{user?.name_user?.charAt(0) || "TG"}</AvatarFallback>
                                     </Avatar>
                                     <div>
-                                        <h3 className="font-semibold">Nguyễn Văn A</h3>
-                                        <p className="text-sm text-muted-foreground">Nhà báo chuyên về văn hóa và ẩm thực</p>
+                                        <h3 className="font-semibold">{user?.name_user || "Nguyễn Văn A"}</h3>
+                                        <p className="text-sm text-muted-foreground">{user?.role_user || "Nhà báo chuyên về văn hóa và ẩm thực"}</p>
                                     </div>
                                 </div>
 

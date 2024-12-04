@@ -37,8 +37,8 @@ export default function RoomComponents({ room }) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [formData, setFormData] = useState({
-    name: "",
-    phone: "",
+    name: user ? user.name : "", // Initialize id_user from user state
+    phone: user ? user.phone : "", // Initialize id_user from user state
     content: "",
     id_room: room.id,
     id_user: user ? user.id : "", // Initialize id_user from user state
@@ -262,6 +262,7 @@ export default function RoomComponents({ room }) {
                           name="name"
                           value={formData.name}
                           onChange={handleInputChange}
+                          placeholder="Nhập họ tên của bạn"
                           className="col-span-3"
                           required
                         />
@@ -273,6 +274,7 @@ export default function RoomComponents({ room }) {
                           name="phone"
                           value={formData.phone}
                           onChange={handleInputChange}
+                          placeholder="Nhập số điện thoại"
                           className="col-span-3"
                           required
                         />
@@ -284,6 +286,7 @@ export default function RoomComponents({ room }) {
                           name="content"
                           value={formData.content}
                           onChange={handleInputChange}
+                          placeholder="Nhập nội dung yêu cầu của bạn"
                           className="w-full"
                           required
                         />

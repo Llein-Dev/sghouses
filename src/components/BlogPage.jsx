@@ -16,7 +16,7 @@ import {
 import Breadcrumb from "@/components/breadcum";
 import { useFetchBlogHouse } from "@/utils/api/GET/api";
 import { Spinner } from "./ui/loading";
-function NewsCard({ id, title, excerpt, image, date }) {
+function NewsCard({ id, title, description, image, date }) {
   return (
     <Card className="h-full flex  overflow-hidden flex-col">
       <div className="w-full aspect-video overflow-hidden">
@@ -27,19 +27,20 @@ function NewsCard({ id, title, excerpt, image, date }) {
         />
       </div>
       <CardHeader>
-        <CardTitle className="text-lg">{title}</CardTitle>
+        <CardTitle className="text-base line-clamp-3">
+        <Link
+          href={`/news/${id}`}
+         
+        >
+        {title}
+        </Link></CardTitle>
       </CardHeader>
       <CardContent className="flex-grow">
-        <p className="text-sm text-muted-foreground">{excerpt}</p>
+        <p className="text-sm text-muted-foreground line-clamp-3">{description}</p>
       </CardContent>
       <CardFooter className="flex justify-between items-center">
         <span className="text-xs text-muted-foreground">{date}</span>
-        <Link
-          href={`/news/${id}`}
-          className="text-primary hover:underline text-sm"
-        >
-          Xem thêm
-        </Link>
+        
       </CardFooter>
     </Card>
   );
@@ -47,22 +48,26 @@ function NewsCard({ id, title, excerpt, image, date }) {
 function NewsCardRow({ id, title, excerpt, image, date }) {
   return (
     <Card className="h-full flex  overflow-hidden flex-row">
-      <div className="w-2/5 aspect-square overflow-hidden">
+      <div className="w-2/6 aspect-square overflow-hidden">
         <img
           src={`http://localhost:8000/storage/${image}`}
           alt={title}
           className="object-cover w-full h-full"
         />
       </div>
-      <div className="flex flex-col justify-between w-3/5">
-        <CardHeader>
-          <CardTitle className="text-lg">
-            <Link href={`/blog/${id}`}>{title}</Link>
+      <div className="flex flex-col justify-between w-4/6">
+      <CardHeader>  
+          <CardTitle className="text-base ">
+            <Link  href={`/blog/${id}`}>
+            <p className="line-clamp-3">{title}</p>
+            </Link>
           </CardTitle>
+
         </CardHeader>
-        <CardContent className="flex-grow">
+        {/* <CardContent className="flex-grow">
           <p className="text-sm text-muted-foreground">{excerpt}</p>
-        </CardContent>
+        </CardContent> */}
+
         <CardFooter className="flex justify-between items-center">
           <span className="text-xs text-muted-foreground">{date}</span>
           <Link
@@ -85,9 +90,10 @@ export default function NewsHomepage() {
   if (error) return <p>Error fetching news: {error.message}</p>; // Handle error state
 
   const featuredNews = BlogHouse[0]; // Assuming the first item is featured
-  const sideNews = BlogHouse.slice(1, 4); // Adjust the slicing based on your data structure
-  const moreNews = BlogHouse.slice(4, 8); // Adjust accordingly
-  const recommendedNews = BlogHouse.slice(8, 12); // Adjust accordingly
+  const sideNews = BlogHouse.slice(1, 5); // Adjust the slicing based on your data structure
+  const moreNews = BlogHouse.slice(6, 12); // Adjust accordingly
+  // const recommendedNews = BlogHouse.slice(8, 12); // Adjust accordingly
+  console.log(featuredNews);
 
   return (
     <div className="container mx-auto px-4 space-y-4 py-4">
@@ -105,10 +111,10 @@ export default function NewsHomepage() {
         </div>
       </section>
       <div className="space-y-16">
-        <section className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <section className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Large News */}
           <Card className="md:col-span-2 space-y-2 h-full flex flex-col overflow-hidden">
-            <div className="relative aspect-video overflow-hidden">
+            <div className="relative aspect-[18/9] overflow-hidden">
               <img
                 src={`http://localhost:8000/storage/${featuredNews.image}`}
                 alt={featuredNews.title}
@@ -125,10 +131,10 @@ export default function NewsHomepage() {
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground">
-                {featuredNews.content.slice(0, 100)}...
-              </p>{" "}
-              {/* Display a snippet of the content */}
+                {featuredNews?.description ? featuredNews.description.slice(0, 100) : "No content available"}...
+              </p>
             </CardContent>
+
             <CardFooter className="flex justify-between items-center">
               <span className="text-sm text-muted-foreground">
                 {new Date(featuredNews.created_at).toLocaleDateString()}
@@ -163,13 +169,13 @@ export default function NewsHomepage() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             {recommendedNews.map((news) => (
               <Card key={news.id} className="flex items-center p-4">
-                <div className="mr-4 bg-primary text-primary-foreground rounded-full aspect-square h-12 flex items-center justify-center text-xl font-bold">
+                <div className="mr-4 bg-orange-600 text-primary-foreground rounded-full aspect-square h-12 flex items-center justify-center text-xl font-bold">
                   {news.id}
                 </div>
                 <div>
-                  <h3 className="font-semibold">{news.title}</h3>
+                  <h3 className="font-semibold ">{news.title}</h3>
                   <p className="text-sm text-muted-foreground">
-                    {new Date(news.created_at).toLocaleDateString()}
+                    {/* {new Date(news.created_at).toLocaleDateString()} */}
                   </p>
                 </div>
               </Card>

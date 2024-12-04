@@ -82,7 +82,7 @@ export default function UpdateBlog() {
             });
 
             if (response.ok) {
-                toast.success('Blog đã cập nhật thành công!', {
+                toast.success('Khu vực đã cập nhật thành công!', {
                     onClose: () => {
                         router.push(`/admin/area`);
                     },

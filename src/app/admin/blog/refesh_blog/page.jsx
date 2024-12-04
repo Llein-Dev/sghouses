@@ -131,8 +131,15 @@ export default function RefeshBlog() {
               <TableRow key={index}>
                 <TableCell>{blogsDeleted.id}</TableCell>
                 <TableCell>
-                  <img src={`http://localhost:8000/storage/${blogsDeleted.image}`} alt="Blog" />
+                  <img
+                    src={`http://localhost:8000/storage/${blogsDeleted.image}`}
+                    alt="Blog"
+                    onError={(e) => {
+                      e.target.src = "https://png.pngtree.com/png-vector/20190820/ourmid/pngtree-no-image-vector-illustration-isolated-png-image_1694547.jpg"; // URL ảnh mặc định
+                    }}
+                  />
                 </TableCell>
+
                 <TableCell>{blogsDeleted.title}</TableCell>
                 <TableCell>{blogsDeleted.name_cate}</TableCell>
                 <TableCell>{blogsDeleted.description}</TableCell>

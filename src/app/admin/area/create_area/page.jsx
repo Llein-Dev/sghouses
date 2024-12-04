@@ -32,7 +32,7 @@ export default function CreateArea() {
 
         const adminToken = Cookies.get("token");
         if (!adminToken) {
-            toast.error("vui lòng đăng nhập trước khi tạo blog !"); // Thông báo lỗi    
+            toast.error("vui lòng đăng nhập trước khi tạo khu vực !"); // Thông báo lỗi    
             router.push("/");
             return;
         }
@@ -62,7 +62,7 @@ export default function CreateArea() {
             console.log(data);
 
             if (response.ok) {
-                setSuccessMessage("Blog đã được tạo thành công!");
+                setSuccessMessage("Khu vực đã được tạo thành công!");
             } else {
                 setErrorMessage(data.message || "Đã có lỗi xảy ra, vui lòng thử lại.");
             }
@@ -128,7 +128,7 @@ export default function CreateArea() {
                             disabled={loading}
                             className={`w-full p-2 rounded ${loading ? "bg-gray-400" : "bg-blue-600 hover:bg-blue-700"} text-white transition`}
                         >
-                            {loading ? "Đang tạo..." : "Thêm Blog"}
+                            {loading ? "Đang tạo..." : "Thêm khu vực"}
                         </button>
                     </form>
                 </div>

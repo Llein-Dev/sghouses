@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
-import { Search, RefreshCcw } from "lucide-react"
+import { Search, RefreshCcw, FileText } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
@@ -111,6 +111,10 @@ export default function RefeshCataBlog() {
       console.log("Lỗi khi thực hiện khôi phục người dùng:", error);
     }
   };
+
+  const handleReturn = () => {
+    router.push('/admin/categories_blogs')
+  }
   return (
 
     <div className="space-y-4">
@@ -124,6 +128,10 @@ export default function RefeshCataBlog() {
             className="max-w-sm"
           />
         </div>
+        <Button onClick={handleReturn} variant="blue">
+              <FileText className="mr-2 h-4 w-4" />
+            Danh mục tin tức
+            </Button>
       </div>
       <Table>
         <TableHeader>

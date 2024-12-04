@@ -73,11 +73,11 @@ export default function BlogContent() {
         
       } else {
         const errorData = await response.json();
-        setError(errorData.message || "Lỗi khi xóa blog");
+        setError(errorData.message || "Lỗi khi xóa khu vực");
       }
     } catch (error) {
       console.error("Error:", error);
-      setError("Có lỗi xảy ra khi xóa blog");
+      setError("Có lỗi xảy ra khi xóa khu vực");
     }
   };
    // nhân bản Area

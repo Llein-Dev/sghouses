@@ -176,13 +176,8 @@ export default function CategoryBlog() {
       });
 
       if (response.ok) {
-        const data = await response.json();
-        console.log(data);
-        toast.success("Thêm danh mục blog thành công!");
-        setCatagoryBlog(data);
-        if (window.confirm("Thêm danh mục blog thành công! vui lòng đợi trong giây lát.")) {
-          window.location.reload();
-        }
+        toast.success('Thêm danh mục tin tức thành công!', {
+      });
       } else {
         const errorData = await response.json();
         toast.error(`Lỗi khi thêm danh mục: ${errorData.message || "Có lỗi xảy ra"}`);
@@ -200,11 +195,13 @@ export default function CategoryBlog() {
   // Phân trang
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const filteredCategoryBlog = categoryBlog.filter((blog) =>
-    `${blog.name} ${blog.slug} ${blog.status}`
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase())
-  );
+  const filteredCategoryBlog = Array.isArray(categoryBlog)
+  ? categoryBlog.filter((blog) =>
+      `${blog.name} ${blog.slug} ${blog.status}`
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase())
+    )
+  : []; // Nếu không phải mảng, trả về mảng rỗng
   const currentItems = filteredCategoryBlog.slice(
     indexOfFirstItem,
     indexOfLastItem

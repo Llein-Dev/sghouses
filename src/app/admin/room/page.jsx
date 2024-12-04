@@ -120,9 +120,9 @@ export default function CategoryBlog() {
     const handleRefesh = () => {
         router.push('/admin/room/refesh_room')
     }
-    // const handleCreatPage = () => {
-    //     router.push('/admin/room/create_room')
-    //   }
+    const handleCreatPage = () => {
+        router.push('/admin/room/create_room')
+      }
     const handleEditRoom = (id) => {
         router.push(`/admin/room/update/${id}`)
     }
@@ -149,10 +149,10 @@ export default function CategoryBlog() {
                     {/* Nút Thêm Danh Mục và Modal */}
                     <Dialog>
                         <DialogTrigger asChild>
-                            {/* <Button onClick={handleCreatPage} className="bg-green-700 text-white hover:bg-green-600">
+                            <Button onClick={handleCreatPage} className="bg-green-700 text-white hover:bg-green-600">
                                 <Plus className="mr-2 h-4 w-4" />
                                  Tạo Phòng
-                            </Button> */}
+                            </Button>
                         </DialogTrigger>
                     </Dialog>
                     {/* khôi phục Danh Mục tin tức */}
@@ -179,7 +179,7 @@ export default function CategoryBlog() {
                     {room.map((rooms, index) => (
                         <TableRow key={index}>
                             <TableCell>{rooms.id}</TableCell>
-                            <TableCell className="flex gap-5">  <img className="object-cover h-[180px] rounded-lg aspect-video" src={`http://localhost:8000/storage/${rooms.hinh_anh}`}></img> <div><div className="p-1 text-xl font-bold  rounded text-black">{rooms.ten_phong} </div>{rooms.ten_toa_nha} <div>{rooms.ten_khu_vuc}</div> </div>
+                            <TableCell className="flex gap-5">  <img className="object-cover h-[100px] rounded-lg aspect-video" src={`http://localhost:8000/storage/${rooms.hinh_anh}`}></img> <div><div className="p-1 text-xl font-bold  rounded text-black">{rooms.ten_phong} </div>{rooms.ten_toa_nha} <div>{rooms.ten_khu_vuc}</div> </div>
                             </TableCell>
                             <TableCell>
                                 <Badge
@@ -194,6 +194,9 @@ export default function CategoryBlog() {
                                 <div className="flex space-x-2">
                                     {/* Nút Gọi điện */}
                                     <Dialog>
+                                        <Button variant="outline" size="icon" onClick={() => handleDeleteRoom(rooms.id)}>
+                                            <Trash2 className="h-4 w-4" />
+                                        </Button>
                                         <DialogTrigger asChild>
                                             <Button variant="outline" onClick={() => handleEditRoom(rooms.id)} >
                                                 <Pencil className="mr-2 h-4 w-4" />
@@ -204,13 +207,12 @@ export default function CategoryBlog() {
                                             />
                                         </Button>
                                     </Dialog>
-                                    <Button variant="outline" size="icon" onClick={() => handleDeleteRoom(rooms.id)}>
-                                        <Trash2 className="h-4 w-4" />
-                                    </Button>
+
                                     <Button variant="outline" size="icon" onClick={() => handleDetailRoom(rooms.id)}>
                                         <Eye className="h-4 w-4"
                                         />
                                     </Button>
+
                                 </div>
                             </TableCell>
                         </TableRow>

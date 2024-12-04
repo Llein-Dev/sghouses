@@ -128,7 +128,7 @@ export default function RefeshArea() {
                       borderRadius: "10px",
                     }}
                     src={`http://localhost:8000/storage/${areas.image}`}
-                    alt="Blog"
+                    alt={`${areas.image}`}
                   />
                 </TableCell>
                 <TableCell>{areas.name}</TableCell>

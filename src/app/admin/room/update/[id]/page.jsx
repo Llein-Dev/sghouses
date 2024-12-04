@@ -26,6 +26,7 @@ export default function UpdateRoom() {
     const [showModal, setShowModal] = useState(false);
     const [showModalFalse, setShowModalFalse] = useState(false);
     const [query, setQuery] = useState(""); // Initialize query state
+    const [queryNoiThat, setQueryNoiThat] = useState(""); // Initialize query state
     
     const handleRemoveUtility = (utilityToRemove) => {
         setUtilities(
@@ -35,8 +36,16 @@ export default function UpdateRoom() {
                 .join(";") // Chuyển lại thành chuỗi
         );
     };
+    const handleRemoveNoiThat = (noiThatToRemove) => {
+        setNoiThat(
+            noi_that
+                .split(";") // Tách chuỗi thành mảng
+                .filter((noiThat) => noiThat.trim() !== noiThatToRemove.trim()) // Loại bỏ phần tử muốn xóa
+                .join(";") // Chuyển lại thành chuỗi
+        );
+    };
     
-      // Handle adding a utility
+
       const handleAddUtility = () => {
         if (query.trim() !== "") {
             // Add the new utility, ensuring utilities is always a string
@@ -46,7 +55,18 @@ export default function UpdateRoom() {
             });
             setQuery(""); // Reset input field after adding the utility
         }
-    };
+    };     // Handle adding a utility
+      const handleAddNoiThat = () => {
+        if (queryNoiThat.trim() !== "") {
+            // Add the new utility, ensuring utilities is always a string
+            setNoiThat((prev) => {
+                const updatedNoiThat = prev ? `${prev};${queryNoiThat.trim()}` : queryNoiThat.trim(); // Concatenate with semicolon if there's already a value
+                return updatedNoiThat;
+            });
+            setQueryNoiThat(""); // Reset input field after adding the utility
+        }
+    };     // Handle adding a utility
+ 
     
     useEffect(() => {
         const adminToken = Cookies.get("token");
@@ -103,7 +123,7 @@ export default function UpdateRoom() {
             if (response.ok) {
                 const result = await response.json();
                 console.log(result)
-                setImageOld(result.hinh_anh ? result.hinh_anh.split(";") : []);
+                setImageOld(result.image ? result.image.split(";") : []);
                 setIDToaNha(result.id_building || "");
                 setName(result.name || "");
                 setGacLung(result.gac_lung || "");
@@ -299,21 +319,7 @@ export default function UpdateRoom() {
                             </div>
                         </div>
                     </div>
-{/* 
 
-
-
-                    <div>
-                        <label className="block text-gray-600">Tiện ích</label>
-                        <input
-                            type="text"
-                            value={tien_ich}
-                            onChange={(e) => setUtilities(e.target.value)}
-                            className="w-full p-2 border border-gray-300 rounded mt-1"
-                            placeholder="Nhập tiêu đề"
-                            required
-                        />
-                    </div> */}
                     <label className="block text-gray-600"> Tiện ích chung</label>
                     <div className="bg-gray-100 p-2 flex flex-wrap gap-2 rounded">
                         {tien_ich.split(";").map((utility, index) => (
@@ -352,18 +358,44 @@ export default function UpdateRoom() {
                         </button>
                     </div>
 
-
-                    <div>
-                        <label className="block text-gray-600">Nội Thất</label>
+                    <label className="block text-gray-600"> Nội thất</label>
+                    <div className="bg-gray-100 p-2 flex flex-wrap gap-2 rounded">
+                        {noi_that.split(";").map((noiThat, index) => (
+                            <div
+                                key={index}
+                                className="bg-blue-900 text-white px-3 py-1 rounded-full flex items-center gap-2"
+                            >
+                                {noiThat.trim()}
+                                <button
+                                    type="button"
+                                    className="text-white hover:text-gray-300"
+                                    onClick={() => handleRemoveNoiThat(noiThat)}
+                                >
+                                    ✕
+                                </button>
+                            </div>
+                        ))}
+                    </div>
+                    <div className="flex items-center gap-2 mt-2">
                         <input
                             type="text"
-                            value={noi_that}
-                            onChange={(e) => setNoiThat(e.target.value)}
-                            className="w-full p-2 border border-gray-300 rounded mt-1"
-                            placeholder="Nhập tiêu đề"
-                            required
+                            value={queryNoiThat}
+                            onChange={(e) => setQueryNoiThat(e.target.value)} // Cập nhật queryNoiThat khi người dùng nhập
+                            placeholder="Thêm hoặc tìm tiện ích"
+                            className="w-full p-2 border border-gray-300 rounded"
+                        // onFocus={() => setMenuOpen(true)}
+                        // onBlur={() => setTimeout(() => setMenuOpen(false), 200)}
                         />
+                        <button
+                            type="button"
+                            onClick={handleAddNoiThat} // Thêm tiện ích khi nhấn nút
+                            className="bg-blue-900 text-white px-3 py-2 rounded"
+                            disabled={queryNoiThat.trim() === ""}
+                        >
+                            Thêm
+                        </button>
                     </div>
+
                     {/* Ảnh hiện tại */}
                     <div>
                         <h4 className="text-gray-600 mt-4">Ảnh Cũ:</h4>

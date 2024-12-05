@@ -60,20 +60,28 @@ export default function CreateRoom() {
 
 
   const tags = [
-    "Wifi miễn phí",
-    "Bảo vệ 24/7",
-    "Hồ bơi",
-    "Phòng gym",
-    "Thang máy",
-    "Căn hộ tiện nghi",
+    "Tủ lạnh",
+    "Máy lạnh",
+    "Máy quạt",
+    "Bình nóng lạnh",
+    "Bếp điện từ",
+    "Tivi",
   ];
   const tagss = [
     "Giường",
-    "Tủ",
-    "Bàn",
+    "Tủ quần áo",
+    "Bộ bàn ăn",
     "Ghế",
+    "Sofa", 
     "Toilet",
     "Máy lạnh",
+    "Nệm",
+    "Bộ chăn-ga gối",
+    "Bàn trang điểm",
+    "Kệ giày dép",
+    "Cửa sổ",
+    "Rèm cửa"
+
   ];
   const handleRemoveUtility = (tag) => {
     setTienIch(tien_ich.filter((item) => item !== tag));
@@ -181,22 +189,22 @@ export default function CreateRoom() {
         body: formData,
       });
 
-      const data = await response.json();
+    // Kiểm tra phản hồi từ backend
+    const contentType = response.headers.get("Content-Type");
+    let errorMessage;
+
 
       if (response.ok) {
-        toast.success("Phòng đã được tạo thành công!");
-        // setTen("");
-        // setImages([]);
-        // setTienIch([]); // Reset tiện ích về mảng rỗng
-        // setMoTa("");
-        // setViTri("");
-        // setKhuVuc("");
-      } else if (response.status === 401) {
-        Cookies.remove("token");
-        toast.warning("phiên làm việc hết hạn, vui lòng đăng nhập lại!");
-        router.push("/");
-      } else {
-        setErrorMessage(data.message || "Đã có lỗi xảy ra, vui lòng thử lại.");
+        toast.success('tạo tòa nhà thành công !')
+   
+      }else {
+        if (contentType.includes("application/json")) {
+          const data = await response.json();
+          errorMessage = data.message || "Đã xảy ra lỗi, vui lòng thử lại!";
+        } else {
+          errorMessage = await response.text(); // Nếu là chuỗi thuần
+        }
+        toast.error(`Lỗi: ${errorMessage}`); // Hiển thị toàn bộ chuỗi
       }
     } catch (error) {
       setErrorMessage("Không thể kết nối đến server, vui lòng thử lại sau.");
@@ -233,7 +241,7 @@ export default function CreateRoom() {
                 value={id_building}
                 onChange={(e) => setIdBuilding(e.target.value)}
                 className="w-full p-2 border border-gray-300 rounded mt-1"
-                required
+                
               >
                 {
                   optionToaNha.map((option) => (
@@ -303,7 +311,7 @@ export default function CreateRoom() {
 
             {/* Tiện ích */}
             <div>
-              <label className="block text-gray-600">Tiện ích nội thất</label>
+              <label className="block text-gray-600">Tiện ích</label>
               <div className="relative mt-2">
                 {/* Hiển thị danh sách tiện ích đã chọn */}
                 <div className="bg-gray-100 p-2 flex flex-wrap gap-2 rounded">
@@ -371,7 +379,7 @@ export default function CreateRoom() {
 
                  {/* Nội Thất */}
                  <div>
-              <label className="block text-gray-600">Nội thật</label>
+              <label className="block text-gray-600">Nội thất</label>
               <div className="relative mt-2">
                 {/* Hiển thị danh sách nội thất đã chọn */}
                 <div className="bg-gray-100 p-2 flex flex-wrap gap-2 rounded">
@@ -482,7 +490,6 @@ export default function CreateRoom() {
                     onChange={(e) => setDienTich(e.target.value)}
                     className="flex-grow p-1 outline-none"
                     placeholder="Nhập diện tích"
-                    required
                   />
                   <span className="ml-2 text-gray-500">m²</span>
                 </div>
@@ -498,7 +505,7 @@ export default function CreateRoom() {
                   onChange={(e) => setTienThue(e.target.value)}
                   className="flex-grow p-1 outline-none"
                   placeholder="Nhập giá thuê"
-                  required
+                  
                 />
                 <span className="ml-2 text-gray-500">vnđ / Tháng</span>
               </div>
@@ -515,7 +522,7 @@ export default function CreateRoom() {
                     onChange={(e) => setTienDien(e.target.value)}
                     className="flex-grow p-1 outline-none"
                     placeholder="Nhập tiền điện"
-                    required
+                    
                   />
                   <span className="ml-2 text-gray-500">vnđ / Kwh</span>
                 </div>
@@ -531,7 +538,7 @@ export default function CreateRoom() {
                     onChange={(e) => setTienNuoc(e.target.value)}
                     className="flex-grow p-1 outline-none"
                     placeholder="Nhập tiền nước"
-                    required
+                    
                   />
                   <span className="ml-2 text-gray-500">vnđ / m³</span>
                 </div>
@@ -550,7 +557,7 @@ export default function CreateRoom() {
                   onChange={(e) => setTienXe(e.target.value)}
                   className="flex-grow p-1 outline-none"
                   placeholder="Nhập tiền xe"
-                  required
+                  
                 />
                 <span className="ml-2 text-gray-500">vnđ / Xe</span>
               </div>
@@ -565,7 +572,7 @@ export default function CreateRoom() {
                   onChange={(e) => setDichVu(e.target.value)}
                   className="flex-grow p-1 outline-none"
                   placeholder="Nhập tiền dịch vụ"
-                  required
+                  
                 />
                 <span className="ml-2 text-gray-500">vnđ / Tháng</span>
               </div>

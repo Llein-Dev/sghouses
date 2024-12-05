@@ -5,8 +5,12 @@ import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Button } from "@/components/ui/button";
+import { FileText } from "lucide-react";
 export default function CreateBanner() {
-    const [name, setTitle] = useState("");
+    const [title, setTitle] = useState("");
+    const [content, setContent] = useState("");
+    const [order, setOrder] = useState("");
     const [image, setImage] = useState(null); // Giữ nguyên file ảnh thay vì mã hóa
     const [preview, setPreview] = useState(null); // URL ảnh xem trước
     const [successMessage, setSuccessMessage] = useState("");
@@ -43,14 +47,16 @@ export default function CreateBanner() {
 
         // Sử dụng FormData để gửi file ảnh
         const formData = new FormData();
-        formData.append("name", name);
+        formData.append("title", title);
+        formData.append("content", content);
+        formData.append("order", order);
         if (image) {
             formData.append("image", image); // Đính kèm file ảnh
         }
 
         try {
             const adminToken = Cookies.get("token");
-            const response = await fetch("http://localhost:8000/api/khu-vuc/add", {
+            const response = await fetch("http://localhost:8000/api/banner/add", {
                 method: "POST",
                 headers: {
                     "Authorization": `Bearer ${adminToken}`,
@@ -62,21 +68,29 @@ export default function CreateBanner() {
             console.log(data);
 
             if (response.ok) {
-                setSuccessMessage("Khu vực đã được tạo thành công!");
+                toast.success("Biểu ngữ đã được tạo thành công!");
             } else {
-                setErrorMessage(data.message || "Đã có lỗi xảy ra, vui lòng thử lại.");
+                toast.warning(data.message);
             }
         } catch (error) {
-            setErrorMessage("Không thể kết nối đến server, vui lòng thử lại sau.");
+            toast.error(data.message || "Không thể kết nối đến server, vui lòng thử lại sau.");
         } finally {
             setLoading(false);
         }
     };
+    const handleRefesh = () => {
+        router.push('/admin/banners');
+    }
 
     return (
         <>
-
-            <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
+            <div className="flex justify-end p-6">
+                <Button onClick={handleRefesh} className="bg-blue-900 text-white hover:bg-blue-600">
+                    <FileText className="mr-2 h-4 w-4" />
+                    Trang biểu ngữ
+                </Button>
+            </div>
+            <div className=" flex items-center justify-center bg-gray-100 p-6">
                 <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-screen-lg">
                     <h2 className="text-2xl font-semibold text-gray-700 mb-4">Tạo biểu ngữ mới</h2>
 
@@ -97,11 +111,34 @@ export default function CreateBanner() {
                             <label className="block text-gray-600">Tiêu đề</label>
                             <input
                                 type="text"
-                                value={name}
+                                value={title}
                                 onChange={(e) => setTitle(e.target.value)}
                                 className="w-full p-2 border border-gray-300 rounded mt-1"
                                 placeholder="Nhập tiêu đề"
-                                required
+
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-gray-600">Thứ tự</label>
+                            <input
+                                type="number"
+                                step={2}
+                                value={order}
+                                onChange={(e) => setOrder(e.target.value)}
+                                className="w-full p-2 border border-gray-300 rounded mt-1"
+                                placeholder="Nhập tiêu đề"
+
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-gray-600">Tiêu đề</label>
+                            <textarea
+                                type="text"
+                                value={content}
+                                onChange={(e) => setContent(e.target.value)}
+                                className="w-full p-2 border border-gray-300 rounded mt-1"
+                                placeholder="Nhập tiêu đề"
+
                             />
                         </div>
 

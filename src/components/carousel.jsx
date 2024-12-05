@@ -12,7 +12,7 @@ export function CarouselComponent({ autoPlayInterval = 5000 }) {
   useEffect(() => {
     const fetchBanners = async () => {
       try {
-        const response = await fetch("http://localhost:8000/api/banner"); // Replace with your API endpoint
+        const response = await fetch("http://localhost:8000/api/banner/show"); // Replace with your API endpoint
         if (!response.ok) throw new Error("Network response was not ok");
         const data = await response.json();
         setImages(data); // Assuming the API returns an array of image URLs

@@ -78,7 +78,7 @@ export default function CreateBanner() {
 
             <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
                 <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-screen-lg">
-                    <h2 className="text-2xl font-semibold text-gray-700 mb-4">Tạo Khu Vực Mới</h2>
+                    <h2 className="text-2xl font-semibold text-gray-700 mb-4">Tạo biểu ngữ mới</h2>
 
                     {successMessage && (
                         <div className="bg-green-100 text-green-800 p-4 rounded mb-4">

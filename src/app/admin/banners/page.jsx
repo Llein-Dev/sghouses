@@ -141,9 +141,9 @@ export default function Banners() {
     router.push('/admin/banners/refesh_banners')
   }
   const handleCreatBanner = () => {
-    router.push('/admin/banners/c')
+    router.push('/admin/banners/create_banners')
   }
-  const handleUpdateArea = (id) => {
+  const handleUpdateBanner = (id) => {
     router.push(`/admin/banners/update_banners/${id}`)
   }
   return (
@@ -220,7 +220,7 @@ export default function Banners() {
                   <Button variant="outline" size="icon" onClick={() => handleDeleteBanners(banner.id)} >
                     <Trash2 className="h-4 w-4" />
                   </Button>
-                  <Button variant="outline" size="icon" onClick={() => handleUpdateArea(banner.id)}  >
+                  <Button variant="outline" size="icon" onClick={() => handleUpdateBanner(banner.id)}  >
                     <Pen className="h-4 w-4"
                     />
                   </Button>

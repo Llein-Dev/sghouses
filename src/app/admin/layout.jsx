@@ -20,7 +20,8 @@ import {
   Minimize,
   Newspaper,
   Home,
-  Receipt
+  Receipt,
+  MessageCircle 
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -103,6 +104,12 @@ const navItems = [
     label: "Biểu ngữ", // Banners
     icon: <Image className="p-1 bg-blue-900 rounded text-white" />,
     key: "banners",
+  },
+  {
+    href: "/admin/comment",
+    label: "Bình luận", // Settings
+    icon: <MessageCircle  className="p-1 bg-blue-900 rounded text-white" />,
+    key: "comment",
   },
   {
     href: "/admin/settings",

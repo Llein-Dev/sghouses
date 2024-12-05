@@ -54,59 +54,59 @@ export default function Banners() {
     // Call the prop to expose fetchData
   }, [router]);
 
-  // Delete Blog
-  //  const handleDeleteArea = async (id) => {
-  //     const adminToken = Cookies.get("token");
-  //     try {
-  //       const response = await fetch(`http://localhost:8000/api/khu-vuc/delete/${id}`, {
-  //         method: "DELETE",
-  //         headers: {
-  //           Authorization: `Bearer ${adminToken}`,
-  //           "Content-Type": "application/json",
-  //         },
-  //       });
-  //       console.log('Delete response status:', response.status);
-  //       if (response.ok) {
-  //         // Cập nhật danh sách người dùng bằng cách loại bỏ người dùng đã xóa
-  //         setBanner((prevArea) => prevArea.filter(banner => banner.id !== id));
-  //         toast.success('Xóa biểu ngữ thành công !')
-  //         fetchDataBanners(); // Cập nhật danh sách người dùng nếu không chuyển trang
+ 
+   const handleDeleteBanners = async (id) => {
+      const adminToken = Cookies.get("token");
+      try {
+        const response = await fetch(`http://localhost:8000/api/banner/delete/${id}`, {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${adminToken}`,
+            "Content-Type": "application/json",
+          },
+        });
+        console.log('Delete response status:', response.status);
+        if (response.ok) {
+          // Cập nhật danh sách người dùng bằng cách loại bỏ người dùng đã xóa
+          setBanner((prevBanner) => prevBanner.filter(banner => banner.id !== id));
+          toast.success('Xóa biểu ngữ thành công !')
+          fetchDataBanners(); // Cập nhật danh sách người dùng nếu không chuyển trang
 
-  //       } else {
-  //         const errorData = await response.json();
-  //         setError(errorData.message || "Lỗi khi xóa biểu ngữ");
-  //       }
-  //     } catch (error) {
-  //       console.error("Error:", error);
-  //       setError("Có lỗi xảy ra khi xóa biểu ngữ");
-  //     }
-  //   };
-  // nhân bản Area
-  //  const handleCoppyArea = async (id) => {
-  //   const adminToken = Cookies.get("token");
-  //   try {
-  //     const response = await fetch(`http://localhost:8000/api/khu-vuc/duplicate/${id}`, {
-  //       method: "GET",
-  //       headers: {
-  //         Authorization: `Bearer ${adminToken}`,
-  //         "Content-Type": "application/json",
-  //       },
-  //     });
-  //     if (response.ok) {
-  //       const newArea = await response.json();
-  //       setBanner((prevArea) => [...prevArea, newArea]); // Cập nhật danh sách user
-  //       // Hiện thông báo và tải lại danh sách users
-  //       fetchDataBanners(); // Gọi lại fetchData để tải lại danh sách user mới
+        } else {
+          const errorData = await response.json();
+          setError(errorData.message || "Lỗi khi xóa biểu ngữ");
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        setError("Có lỗi xảy ra khi xóa biểu ngữ");
+      }
+    };
+  // nhân bản bannner
+   const handleCoppyBanner = async (id) => {
+    const adminToken = Cookies.get("token");
+    try {
+      const response = await fetch(`http://localhost:8000/api/banner/duplicate/${id}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${adminToken}`,
+          "Content-Type": "application/json",
+        },
+      });
+      if (response.ok) {
+        const newArea = await response.json();
+        setBanner((prevBanner) => [...prevBanner, newArea]); // Cập nhật danh sách user
+        // Hiện thông báo và tải lại danh sách users
+        fetchDataBanners(); // Gọi lại fetchData để tải lại danh sách user mới
 
-  //     } else {
-  //       const errorData = await response.json();
-  //       setError(errorData.message || "Lỗi lấy thông tin phản hồi");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error:", error);
-  //     setError("Có lỗi xảy ra khi sao chép người dùng");
-  //   }
-  // };
+      } else {
+        const errorData = await response.json();
+        setError(errorData.message || "Lỗi lấy thông tin phản hồi");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      setError("Có lỗi xảy ra khi sao chép người dùng");
+    }
+  };
   const handleToggle = async (id, isHot) => {
     const adminToken = Cookies.get("token");
     try {
@@ -122,8 +122,8 @@ export default function Banners() {
       if (response.ok) {
         const result = await response.json();
         toast.success(result.message || 'Cập nhật thành công');
-        setBanner(prevArea =>
-          prevArea.map(banners =>
+        setBanner(prevBanner =>
+          prevBanner.map(banners =>
             banners.id === id ? { ...banners, status: !isHot } : banners
           )
         );
@@ -137,11 +137,11 @@ export default function Banners() {
   };
 
 
-  const handleRefeshArea = () => {
+  const handleRefeshBanner = () => {
     router.push('/admin/banners/refesh_banners')
   }
-  const handleCreatArea = () => {
-    router.push('/admin/banners/create_banners')
+  const handleCreatBanner = () => {
+    router.push('/admin/banners/c')
   }
   const handleUpdateArea = (id) => {
     router.push(`/admin/banners/update_banners/${id}`)
@@ -161,11 +161,11 @@ export default function Banners() {
         </div>
         {/* Cột buttons */}
         <div className="flex justify-end space-x-2">
-          <Button onClick={handleCreatArea} className="bg-green-700 text-white hover:bg-green-600">
+          <Button onClick={handleCreatBanner} className="bg-green-700 text-white hover:bg-green-600">
             <Plus className="mr-2 h-4 w-4" />
             Tạo biểu ngữ
           </Button>
-          <Button onClick={handleRefeshArea} variant="blue">
+          <Button onClick={handleRefeshBanner} variant="blue">
             <RefreshCcwDot className="mr-2 h-4 w-4" />
             Khôi phục biểu ngữ
           </Button>
@@ -217,14 +217,14 @@ export default function Banners() {
 
               <TableCell>
                 <div className="flex space-x-2">
-                  <Button variant="outline" size="icon" onClick={() => handleDeleteArea(banner.id)} >
+                  <Button variant="outline" size="icon" onClick={() => handleDeleteBanners(banner.id)} >
                     <Trash2 className="h-4 w-4" />
                   </Button>
                   <Button variant="outline" size="icon" onClick={() => handleUpdateArea(banner.id)}  >
                     <Pen className="h-4 w-4"
                     />
                   </Button>
-                  <Button variant="outline" size="icon" onClick={() => handleCoppyArea(banner.id)}  >
+                  <Button variant="outline" size="icon" onClick={() => handleCoppyBanner(banner.id)}  >
                     <BookCopy className="h-4 w-4"
                     />
                   </Button>

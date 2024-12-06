@@ -160,7 +160,7 @@ export default function BlogContent() {
         </div>
         {/* Cột buttons */}
         <div className="flex justify-end space-x-2">
-          <Button onClick={handleCreatArea}  className="bg-green-700 text-white hover:bg-green-600">
+          <Button onClick={handleCreatArea} variant="blue"  >
             <Plus className="mr-2 h-4 w-4" />
              Tạo khu vực
           </Button>

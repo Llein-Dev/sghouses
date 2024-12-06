@@ -119,6 +119,9 @@ export default function Infomation() {
     const handleRefesh = () => {
         router.push('/admin/information/refesh_info')
     }
+    const handleCreateMail = () => {
+        router.push('/admin/information/create_mail')
+    }
     return (
         <>
             <div className="space-y-4">
@@ -135,10 +138,14 @@ export default function Infomation() {
                             />
                         </div>
                         {/* Cột 2 */}
-                        <div className="w-1/2 flex justify-end">
+                        <div className="w-1/2 flex justify-end gap-4">
                             <Button onClick={handleRefesh} variant="blue">
                                 <FileText className="mr-2 h-4 w-4" />
                                 Khôi phục
+                            </Button>
+                            <Button onClick={handleCreateMail}  className="bg-green-700 text-white hover:bg-green-600">
+                                <FileText className="mr-2 h-4 w-4" />
+                                Gửi mail
                             </Button>
                         </div>
                     </div>

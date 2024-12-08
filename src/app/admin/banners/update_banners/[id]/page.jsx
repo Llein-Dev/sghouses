@@ -117,29 +117,28 @@ export default function UpdateBanner() {
             </div>
             <div className=" flex items-center justify-center bg-gray-100 p-6">
                 <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-screen-lg">
-                    <h2 className="text-2xl font-semibold text-gray-700 mb-4">Chỉnh sửa khu vực</h2>
+                    <h2 className="text-2xl font-semibold text-gray-700 mb-4">Chỉnh sửa biểu ngữ</h2>
 
                     {error && <p className="text-red-500 mb-4">{error}</p>}
 
                     <form onSubmit={handleSubmit} className="space-y-4">
-                        <div>
-                            <label className="block text-gray-600">Tiêu đề</label>
-                            <input
-                                type="text"
-                                value={title}
-                                onChange={(e) => setTitle(e.target.value)}
-                                className="w-full p-2 border border-gray-300 rounded mt-1"
-                                placeholder="Nhập tiêu đề"
-                                required
-                            />
-                        </div>
-
                         <div>
                             <label className="block text-gray-600">Thứ tự</label>
                             <input
                                 type="text"
                                 value={order}
                                 onChange={(e) => setOrder(e.target.value)}
+                                className="w-full p-2 border border-gray-300 rounded mt-1"
+                                placeholder="Nhập tiêu đề"
+                                required
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-gray-600">Tiêu đề</label>
+                            <input
+                                type="text"
+                                value={title}
+                                onChange={(e) => setTitle(e.target.value)}
                                 className="w-full p-2 border border-gray-300 rounded mt-1"
                                 placeholder="Nhập tiêu đề"
                                 required

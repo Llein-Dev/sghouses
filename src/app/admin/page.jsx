@@ -16,7 +16,7 @@ import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
-
+// const [deploymentData, setDoanhThu] = useState([])
 const deploymentData = [
   { name: 'Jan', deployments: 65 },
   { name: 'Feb', deployments: 59 },
@@ -26,6 +26,37 @@ const deploymentData = [
   { name: 'Jun', deployments: 55 },
   { name: 'Jul', deployments: 40 },
 ];
+// const fetchDoanhThu = async () => {
+    
+//   try {
+//       const adminToken = Cookies.get("token");
+//       const response = await fetch('http://localhost:8000/api/dashboard/doanh_thu', {
+//           headers: {
+//             'Authorization': `Bearer ${adminToken}`,
+//             'Content-Type': 'application/json',
+//           },
+//         });
+//     if (response.ok) {
+//       const result = await response.json();
+//       setDoanhThu(result);
+//     } else {
+//       setError('Không có quyền truy cập');
+//     }
+//   } catch (error) {
+//     setError('Không thể truy cập dữ liệu');
+//   }
+// }
+// // Gọi fetchData trong useEffect khi trang load lần đầu
+// useEffect(() => {
+//   const adminToken = Cookies.get('token');
+//   if (!adminToken) {
+//     router.push('/');
+//     return;
+//   }
+//   fetchDoanhThu();
+//   // Call the prop to expose fetchData
+// }, [router]);
+
 
 const usageData = [
   { name: 'Mon', usage: 4000 },
@@ -167,7 +198,7 @@ export default function Home() {
       <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2 ">
         <Card>
           <CardHeader>
-            <CardTitle>Lượt xem tháng</CardTitle>
+            <CardTitle>Doanh thu</CardTitle>
           </CardHeader>
           <CardContent>
             <ChartContainer
@@ -192,7 +223,7 @@ export default function Home() {
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle>Server Usage</CardTitle>
+            <CardTitle>Lượt xem tòa nhà</CardTitle>
           </CardHeader>
           <CardContent>
             <ChartContainer

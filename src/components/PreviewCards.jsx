@@ -48,7 +48,6 @@ export function EnhancedPreviewCards({ selectedRoom, selectedUser, col = 1 }) {
               {selectedRoom.hinh_anh && (
                 <div className="mt-4 rounded-lg overflow-hidden">
                   <img src={`http://localhost:8000/storage/${selectedRoom.hinh_anh}`} alt={selectedRoom.ten_phong}
-
                     className="w-full h-48 object-cover"
                   />
                 </div>

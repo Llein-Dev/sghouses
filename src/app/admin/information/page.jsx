@@ -122,6 +122,9 @@ export default function Infomation() {
     const handleCreateMail = () => {
         router.push('/admin/information/create_mail')
     }
+    const  handleMail = () => {
+        router.push('/admin/information/mail')
+    }
     return (
         <>
             <div className="space-y-4">
@@ -146,6 +149,10 @@ export default function Infomation() {
                             <Button onClick={handleCreateMail}  className="bg-green-700 text-white hover:bg-green-600">
                                 <FileText className="mr-2 h-4 w-4" />
                                 Gửi mail
+                            </Button>
+                            <Button onClick={handleMail}  className="bg-green-700 text-white hover:bg-green-600">
+                                <FileText className="mr-2 h-4 w-4" />
+                                Danh sách gửi mail
                             </Button>
                         </div>
                     </div>

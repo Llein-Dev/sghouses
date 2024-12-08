@@ -180,8 +180,9 @@ export default function Banners() {
             <TableHead>Tiêu đề</TableHead>
             <TableHead>Nội dung</TableHead>
             <TableHead>Thứ tự</TableHead>
-            <TableHead>Trạng thái</TableHead>
             <TableHead>Ngày tạo</TableHead>
+            <TableHead>Trạng thái</TableHead>
+            <TableHead>Hành động</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>

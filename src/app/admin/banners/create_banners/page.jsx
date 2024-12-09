@@ -126,18 +126,18 @@ export default function CreateBanner() {
                                 value={order}
                                 onChange={(e) => setOrder(e.target.value)}
                                 className="w-full p-2 border border-gray-300 rounded mt-1"
-                                placeholder="Nhập tiêu đề"
+                                placeholder="Nhập thứ tự"
 
                             />
                         </div>
                         <div>
-                            <label className="block text-gray-600">Tiêu đề</label>
+                            <label className="block text-gray-600">Nội dung</label>
                             <textarea
                                 type="text"
                                 value={content}
                                 onChange={(e) => setContent(e.target.value)}
                                 className="w-full p-2 border border-gray-300 rounded mt-1"
-                                placeholder="Nhập tiêu đề"
+                                placeholder="Nhập nội dung"
 
                             />
                         </div>
@@ -163,9 +163,9 @@ export default function CreateBanner() {
                         <button
                             type="submit"
                             disabled={loading}
-                            className={`w-full p-2 rounded ${loading ? "bg-gray-400" : "bg-blue-600 hover:bg-blue-700"} text-white transition`}
+                            className={`w-full p-2 rounded ${loading ? "bg-gray-400" : "bg-blue-900 hover:bg-blue-700"} text-white transition`}
                         >
-                            {loading ? "Đang tạo..." : "Thêm khu vực"}
+                            {loading ? "Đang tạo..." : "Thêm biểu ngữ"}
                         </button>
                     </form>
                 </div>

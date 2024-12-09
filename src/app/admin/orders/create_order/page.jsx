@@ -108,7 +108,7 @@ export default function CreateOrder() {
         Trang hóa đơn
     </Button>
 </div>
-    <div className="min-h-screen bg-gradient-to-br from-white-50 to-blue-100 flex items-center justify-center p-6">
+    <div className=" bg-gradient-to-br from-white-50 to-blue-100 flex items-center justify-center p-6">
       <div className="max-w-4xl w-full bg-white shadow-lg rounded-lg p-8">
         <h1 className="text-3xl font-bold text-gray-700 text-center mb-8">
           Tạo Hóa Đơn

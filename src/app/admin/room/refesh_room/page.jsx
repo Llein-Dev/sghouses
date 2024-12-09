@@ -101,9 +101,9 @@ export default function RefeshBuilding() {
         </div>
         <div className="flex items-center space-x-4 w-1/2 justify-end">
           {/* khôi phục Danh Mục tin tức */}
-          <Button variant="blue" onClick={handleRoom} className="bg-blue-700 text-white hover:bg-blue-800">
+          <Button variant="blue" onClick={handleRoom} className="bg-blue-900 text-white hover:bg-blue-800">
             <List className="mr-2 h-4 w-4" />
-            Danh sách Tòa nhà
+            Danh sách phòng
           </Button>
         </div>
       </div>

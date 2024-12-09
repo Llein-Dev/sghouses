@@ -90,9 +90,9 @@ export default function UpdateBanner() {
             });
 
             if (response.ok) {
-                toast.success('Khu vực đã cập nhật thành công!', {
+                toast.success('Biểu đã cập nhật thành công!', {
                     onClose: () => {
-                        router.push(`/admin/area`);
+                        router.push(`/admin/banners`);
                     },
                 });
             } else {
@@ -130,7 +130,7 @@ export default function UpdateBanner() {
                                 onChange={(e) => setOrder(e.target.value)}
                                 className="w-full p-2 border border-gray-300 rounded mt-1"
                                 placeholder="Nhập tiêu đề"
-                                required
+                                
                             />
                         </div>
                         <div>
@@ -141,7 +141,7 @@ export default function UpdateBanner() {
                                 onChange={(e) => setTitle(e.target.value)}
                                 className="w-full p-2 border border-gray-300 rounded mt-1"
                                 placeholder="Nhập tiêu đề"
-                                required
+                                
                             />
                         </div>
                         <div>
@@ -152,7 +152,7 @@ export default function UpdateBanner() {
                                 onChange={(e) => setContent(e.target.value)}
                                 className="w-full p-2 border border-gray-300 rounded mt-1"
                                 placeholder="Nhập tiêu đề"
-                                required
+                                
                             />
                         </div>
                         <div>
@@ -182,7 +182,7 @@ export default function UpdateBanner() {
                             type="submit"
                             className="w-full p-2 rounded bg-blue-600 hover:bg-blue-700 text-white transition"
                         >
-                            Cập nhật khu vực
+                            Cập nhật
                         </button>
                     </form>
                 </div>

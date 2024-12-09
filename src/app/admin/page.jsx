@@ -16,46 +16,15 @@ import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
-// const [deploymentData, setDoanhThu] = useState([])
-const deploymentData = [
-  { name: 'Jan', deployments: 65 },
-  { name: 'Feb', deployments: 59 },
-  { name: 'Mar', deployments: 80 },
-  { name: 'Apr', deployments: 81 },
-  { name: 'May', deployments: 56 },
-  { name: 'Jun', deployments: 55 },
-  { name: 'Jul', deployments: 40 },
-];
-// const fetchDoanhThu = async () => {
-    
-//   try {
-//       const adminToken = Cookies.get("token");
-//       const response = await fetch('http://localhost:8000/api/dashboard/doanh_thu', {
-//           headers: {
-//             'Authorization': `Bearer ${adminToken}`,
-//             'Content-Type': 'application/json',
-//           },
-//         });
-//     if (response.ok) {
-//       const result = await response.json();
-//       setDoanhThu(result);
-//     } else {
-//       setError('Không có quyền truy cập');
-//     }
-//   } catch (error) {
-//     setError('Không thể truy cập dữ liệu');
-//   }
-// }
-// // Gọi fetchData trong useEffect khi trang load lần đầu
-// useEffect(() => {
-//   const adminToken = Cookies.get('token');
-//   if (!adminToken) {
-//     router.push('/');
-//     return;
-//   }
-//   fetchDoanhThu();
-//   // Call the prop to expose fetchData
-// }, [router]);
+// const deploymentData = [
+//   { name: 'Jan', deployments: 65 },
+//   { name: 'Feb', deployments: 59 },
+//   { name: 'Mar', deployments: 80 },
+//   { name: 'Apr', deployments: 81 },
+//   { name: 'May', deployments: 56 },
+//   { name: 'Jun', deployments: 55 },
+//   { name: 'Jul', deployments: 40 },
+// ];
 
 
 const usageData = [
@@ -76,10 +45,44 @@ const recentDeployments = [
 ];
 
 export default function Home() {
+  const [deploymentData, setDoanhThu] = useState([])
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
   const router = useRouter();
+  const [year, setYear] = useState(null); // State để lưu năm
 
+  const fetchDoanhThu = async () => {
+    
+    try {
+        const adminToken = Cookies.get("token");
+        const response = await fetch('http://localhost:8000/api/dashboard/doanh_thu', {
+            headers: {
+              'Authorization': `Bearer ${adminToken}`,
+              'Content-Type': 'application/json',
+            },
+          });
+      if (response.ok) {
+        const result = await response.json();
+        setDoanhThu(result.data || []);
+        setYear(result.year); // Lưu năm vào state
+      } else {
+        setError('Không có quyền truy cập');
+      }
+    } catch (error) {
+      setError('Không thể truy cập dữ liệu');
+    }
+  }
+  // Gọi fetchData trong useEffect khi trang load lần đầu
+  useEffect(() => {
+    const adminToken = Cookies.get('token');
+    if (!adminToken) {
+      router.push('/');
+      return;
+    }
+    fetchDoanhThu();
+    // Call the prop to expose fetchData
+  }, [router]);
+  
   useEffect(() => {
     const adminToken = Cookies.get('token');
     const fetchData = async () => {
@@ -196,9 +199,9 @@ export default function Home() {
 
       {/* Charts */}
       <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2 ">
-        <Card>
-          <CardHeader>
-            <CardTitle>Doanh thu</CardTitle>
+        <Card >
+          <CardHeader >
+            <CardTitle >Doanh thu {year}</CardTitle> 
           </CardHeader>
           <CardContent>
             <ChartContainer
@@ -215,7 +218,7 @@ export default function Home() {
                   <XAxis dataKey="name" />
                   <YAxis />
                   <ChartTooltip content={<ChartTooltipContent />} />
-                  <Bar dataKey="deployments" fill="var(--color-deployments)" />
+                  <Bar dataKey="doanh thu" fill="var(--color-deployments)" />
                 </BarChart>
               </ResponsiveContainer>
             </ChartContainer>

@@ -130,7 +130,7 @@ export default function RefeshCataBlog() {
                 </div>
                 <Button onClick={handleReturn} variant="blue">
                     <FileText className="mr-2 h-4 w-4" />
-                    Danh mục tin tức
+                    Trang bình luận
                 </Button>
             </div>
             <Table>

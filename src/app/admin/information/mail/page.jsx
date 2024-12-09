@@ -2,7 +2,7 @@
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useEffect, useState } from "react"
-import { Search, Trash2, BookCopy, Eye,  Plus, RefreshCcwDot,Pen } from "lucide-react"
+import { Search, Trash2, BookCopy, Eye,  Plus, RefreshCcwDot,Pen, FileText } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
@@ -75,8 +75,8 @@ export default function BlogContent() {
         {/* Cột buttons */}
         <div className="flex justify-end space-x-2">
           <Button onClick={handleRefeshInfo} variant="blue">
-            <RefreshCcwDot className="mr-2 h-4 w-4" />
-            Khôi phục khu vực
+            <FileText className="mr-2 h-4 w-4" />
+            Trang nhận tin
           </Button>
         </div>
       </div>

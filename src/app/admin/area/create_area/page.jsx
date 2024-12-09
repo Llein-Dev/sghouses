@@ -5,6 +5,8 @@ import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Button } from "@/components/ui/button";
+import { FileText } from "lucide-react";
 export default function CreateArea() {
     const [name, setTitle] = useState("");
     const [image, setImage] = useState(null); // Giữ nguyên file ảnh thay vì mã hóa
@@ -72,10 +74,17 @@ export default function CreateArea() {
             setLoading(false);
         }
     };
-
+    const handleRefesh = () => {
+        router.push('/admin/area');
+    }
     return (
         <>
-
+            <div className="flex justify-end p-6">
+                <Button onClick={handleRefesh} className="bg-blue-900 text-white hover:bg-blue-600">
+                    <FileText className="mr-2 h-4 w-4" />
+                    Trang khu vực
+                </Button>
+            </div>
             <div className="flex items-center justify-center bg-gray-100 p-6">
                 <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-screen-lg">
                     <h2 className="text-2xl font-semibold text-gray-700 mb-4">Tạo Khu Vực Mới</h2>
@@ -125,7 +134,7 @@ export default function CreateArea() {
                         <button
                             type="submit"
                             disabled={loading}
-                            className={`w-full p-2 rounded ${loading ? "bg-gray-400" : "bg-blue-600 hover:bg-blue-700"} text-white transition`}
+                            className={`w-full p-2 rounded ${loading ? "bg-gray-400" : "bg-blue-900 hover:bg-blue-700"} text-white transition`}
                         >
                             {loading ? "Đang tạo..." : "Thêm khu vực"}
                         </button>

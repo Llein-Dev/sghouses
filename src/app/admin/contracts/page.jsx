@@ -322,7 +322,7 @@ export default function Contract() {
                 handleUserChange({ target: { value: id_user } });
               }} variant="blue" className="bg-green-700 text-white hover:bg-green-600">
                 <Plus className="mr-2 h-4 w-4" />
-                Thêm Danh Mục
+                Thêm hợp đồng
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[80vw]">

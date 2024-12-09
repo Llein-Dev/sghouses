@@ -4,6 +4,8 @@ import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { FileText } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export default function CreateOrder() {
   const [formData, setFormData] = useState({
@@ -95,8 +97,17 @@ export default function CreateOrder() {
       setLoading(false);
     }
   };
-
+  const handleRefesh = () => {
+    router.push('/admin/orders');
+}
   return (
+    <>
+    <div className="flex justify-end p-6">
+    <Button onClick={handleRefesh} className="bg-blue-900 text-white hover:bg-blue-600">
+        <FileText className="mr-2 h-4 w-4" />
+        Trang hóa đơn
+    </Button>
+</div>
     <div className="min-h-screen bg-gradient-to-br from-white-50 to-blue-100 flex items-center justify-center p-6">
       <div className="max-w-4xl w-full bg-white shadow-lg rounded-lg p-8">
         <h1 className="text-3xl font-bold text-gray-700 text-center mb-8">
@@ -320,7 +331,7 @@ export default function CreateOrder() {
               className={`px-6 py-2 text-white font-semibold rounded-lg shadow-md focus:outline-none ${
                 loading
                   ? "bg-gray-400 cursor-not-allowed"
-                  : "bg-blue-500 hover:bg-blue-600"
+                  : "bg-blue-900 hover:bg-blue-600"
               }`}
               disabled={loading}
             >
@@ -331,5 +342,6 @@ export default function CreateOrder() {
       </div>
       <ToastContainer />
     </div>
+    </>
   );
 }

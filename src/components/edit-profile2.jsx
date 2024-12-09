@@ -166,7 +166,7 @@ export default function EditProfile2Component({ user }) {
                 <form className="space-y-6" onSubmit={handleProfileUpdate}>
                     <div className="flex items-center space-x-4">
                         <Avatar className="h-24 w-24">
-                            <AvatarImage alt={formData.name || "User"} src={`http://localhost:8000/storage/${formData.avatar}`} />
+                            <AvatarImage alt={formData.name || "User"} src={`${process.env.NEXT_PUBLIC_PATH_FILE}${formData.avatar}`} />
                             <AvatarFallback><Camera className="opacity-75" /></AvatarFallback>
                         </Avatar>
                         <div>

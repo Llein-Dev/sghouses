@@ -45,7 +45,7 @@ export default function BuildingDetailComponent() {
             content: newComment,
             likes: 0,
             replies: 0,
-            avatar: user ? `http://localhost:8000/storage/${user?.avatar}` : "",
+            avatar: user ? `${process.env.NEXT_PUBLIC_PATH_FILE}${user?.avatar}` : "",
         };
         setComments([...comments, newCommentObj]);
 
@@ -90,7 +90,7 @@ export default function BuildingDetailComponent() {
                                 {building?.image.split(";").slice(0, 2).map((imgUrl, index) => (
                                     <img
                                         key={index}
-                                        src={`http://localhost:8000/storage/${imgUrl}`}
+                                        src={`${process.env.NEXT_PUBLIC_PATH_FILE}${imgUrl}`}
                                         alt={`Hình ảnh tòa nhà ${index + 1}`}
                                         width={600}
                                         height={300}
@@ -102,7 +102,7 @@ export default function BuildingDetailComponent() {
                                 {building?.image.split(";").slice(2, 5).map((imgUrl, index) => (
                                     <img
                                         key={index}
-                                        src={`http://localhost:8000/storage/${imgUrl}`}
+                                        src={`${process.env.NEXT_PUBLIC_PATH_FILE}${imgUrl}`}
                                         alt={`Hình ảnh nội thất ${index + 1}`}
                                         width={300}
                                         height={200}

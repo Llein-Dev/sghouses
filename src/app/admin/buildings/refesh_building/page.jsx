@@ -159,7 +159,7 @@ export default function RefeshBuilding() {
                 <TableRow key={index}>
                   <TableCell>{building.id}</TableCell>
                   <TableCell>
-                    <img style={{ height: "150px", objectFit: "cover", borderRadius: "10px" }} src={`http://localhost:8000/storage/${building.image}`} />
+                    <img style={{ height: "150px", objectFit: "cover", borderRadius: "10px" }} src={`${process.env.NEXT_PUBLIC_PATH_FILE}${building.image}`} />
                   </TableCell>
                   <TableCell>{building.name}</TableCell>
                   <TableCell>{building.slug}</TableCell>

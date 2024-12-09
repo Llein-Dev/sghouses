@@ -173,7 +173,7 @@ export function HeaderComponent() {
                     <Avatar className="h-10 w-10">
                       <AvatarImage
                         alt={user?.name || "User"}
-                        src={`http://localhost:8000/storage/${user?.avatar}`}
+                        src={`${process.env.NEXT_PUBLIC_PATH_FILE}${user?.avatar}`}
                       />
                       <AvatarFallback>
                         {user?.name.charAt(0) || "User"}
@@ -187,7 +187,7 @@ export function HeaderComponent() {
                   <Avatar className="h-10 w-10">
                     <AvatarImage
                       alt={user?.name || "User"}
-                      src={`http://localhost:8000/storage/${user?.avatar}`}
+                      src={`${process.env.NEXT_PUBLIC_PATH_FILE}${user?.avatar}`}
                     />
                     <AvatarFallback>
                       {user?.name.charAt(0) || "User"}
@@ -322,7 +322,7 @@ export function HeaderComponent() {
                     <Avatar className="h-10 w-10">
                       <AvatarImage
                         alt={user?.name || "User"}
-                        src={`http://localhost:8000/storage/${user?.avatar}`}
+                        src={`${process.env.NEXT_PUBLIC_PATH_FILE}${user?.avatar}`}
                       />
                       <AvatarFallback>
                         {user?.name.charAt(0) || "User"}

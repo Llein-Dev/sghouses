@@ -37,7 +37,7 @@ export default function UserProfile({ user, GoEditProfile, GoManageRoom }) {
                 <CardContent className="flex flex-col sm:flex-row justify-between items-center p-6 space-y-4 sm:space-y-0">
                     <div className="flex flex-col sm:flex-row items-center sm:items-end space-y-4 sm:space-y-0 sm:space-x-4">
                         <Avatar className="w-24 h-24 border-4 border-white shadow-lg">
-                            <AvatarImage src={`http://localhost:8000/storage/${user?.avatar}`} alt={user?.name || "User"} />
+                            <AvatarImage src={`${process.env.NEXT_PUBLIC_PATH_FILE}${user?.avatar}`} alt={user?.name || "User"} />
                             <AvatarFallback><Camera className="opacity-75" /></AvatarFallback>
                         </Avatar>
                         <div className="text-center sm:text-left">

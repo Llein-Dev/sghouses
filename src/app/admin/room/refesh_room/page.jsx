@@ -129,7 +129,7 @@ export default function RefeshBuilding() {
                       objectFit: "cover",
                       borderRadius: "10px",
                     }}
-                    src={`http://localhost:8000/storage/${rooms.hinh_anh}`}
+                    src={`${process.env.NEXT_PUBLIC_PATH_FILE}${rooms.hinh_anh}`}
                     alt="Room"
                   />
                   <div>

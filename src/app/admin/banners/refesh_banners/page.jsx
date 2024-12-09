@@ -157,7 +157,7 @@ export default function RefeshBanner() {
                                             objectFit: "cover",
                                             borderRadius: "10px",
                                         }}
-                                        src={`http://localhost:8000/storage/${banner.image}`}
+                                        src={`${process.env.NEXT_PUBLIC_PATH_FILE}${banner.image}`}
                                         alt={`${banner.image}`}
                                     />
                                 </TableCell>

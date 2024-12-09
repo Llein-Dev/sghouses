@@ -346,7 +346,7 @@ export default function UpdateBuilding() {
                             {imageOld.map((image, index) => (
                                 <div key={index} className="relative group">
                                     <img
-                                        src={`http://localhost:8000/storage/${image}`}
+                                        src={`${process.env.NEXT_PUBLIC_PATH_FILE}${image}`}
                                         alt={`Ảnh cũ ${index + 1}`}
                                         className="w-full h-32 object-cover rounded shadow"
                                     />

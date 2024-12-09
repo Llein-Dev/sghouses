@@ -51,7 +51,7 @@ export default function FilterPage() {
                         <Link key={index} href={`/filter-room?area=${category.slug}`} className="flex w-full overflow-hidden rounded-lg shadow flex-col items-center group">
                             <div className="relative w-full aspect-[16/9] mb-2 overflow-hidden">
                                 <img
-                                    src={`http://localhost:8000/storage/${category?.image}`}
+                                    src={`${process.env.NEXT_PUBLIC_PATH_FILE}${category?.image}`}
                                     alt={category.name}
                                     fill
     

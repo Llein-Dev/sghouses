@@ -127,7 +127,7 @@ export default function RefeshArea() {
                       objectFit: "cover",
                       borderRadius: "10px",
                     }}
-                    src={`http://localhost:8000/storage/${areas.image}`}
+                    src={`${process.env.NEXT_PUBLIC_PATH_FILE}${areas.image}`}
                     alt={`${areas.image}`}
                   />
                 </TableCell>

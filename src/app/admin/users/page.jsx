@@ -240,7 +240,7 @@ export default function UsersContent() {
               <TableCell>
                 {user.avatar ? (
                   <img
-                    src={`http://localhost:8000/storage/${user.avatar}`}
+                    src={`${process.env.NEXT_PUBLIC_PATH_FILE}${user.avatar}`}
                     alt={`${user.name}'s avatar`}
                     className="w-10 h-10 rounded-full"
                   />

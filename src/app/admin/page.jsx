@@ -16,17 +16,6 @@ import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
-// const deploymentData = [
-//   { name: 'Jan', deployments: 65 },
-//   { name: 'Feb', deployments: 59 },
-//   { name: 'Mar', deployments: 80 },
-//   { name: 'Apr', deployments: 81 },
-//   { name: 'May', deployments: 56 },
-//   { name: 'Jun', deployments: 55 },
-//   { name: 'Jul', deployments: 40 },
-// ];
-
-
 const usageData = [
   { name: 'Mon', usage: 4000 },
   { name: 'Tue', usage: 3000 },
@@ -37,30 +26,46 @@ const usageData = [
   { name: 'Sun', usage: 3490 },
 ];
 
-const recentDeployments = [
-  { id: 1, project: 'E-commerce Site', status: 'Success', time: '2 hours ago' },
-  { id: 2, project: 'Blog Platform', status: 'Failed', time: '5 hours ago' },
-  { id: 3, project: 'Mobile App Backend', status: 'Success', time: '1 day ago' },
-  { id: 4, project: 'Analytics Dashboard', status: 'In Progress', time: 'Just now' },
-];
 
 export default function Home() {
   const [deploymentData, setDoanhThu] = useState([])
+  const [hoadontrehen, setHoaDonTreHen] = useState([])
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
   const router = useRouter();
   const [year, setYear] = useState(null); // State để lưu năm
 
-  const fetchDoanhThu = async () => {
-    
+  const fetchHoaDonTreHen = async () => {
+
     try {
-        const adminToken = Cookies.get("token");
-        const response = await fetch('http://localhost:8000/api/dashboard/doanh_thu', {
-            headers: {
-              'Authorization': `Bearer ${adminToken}`,
-              'Content-Type': 'application/json',
-            },
-          });
+      const adminToken = Cookies.get("token");
+      const response = await fetch('http://localhost:8000/api/dashboard/tre_han', {
+        headers: {
+          'Authorization': `Bearer ${adminToken}`,
+          'Content-Type': 'application/json',
+        },
+      });
+      if (response.ok) {
+        const result = await response.json();
+        setHoaDonTreHen(result.hoa_don_tre_han || []);
+      } else {
+        setError('Không có quyền truy cập');
+      }
+    } catch (error) {
+      setError('Không thể truy cập dữ liệu');
+    }
+  }
+
+  const fetchDoanhThu = async () => {
+
+    try {
+      const adminToken = Cookies.get("token");
+      const response = await fetch('http://localhost:8000/api/dashboard/doanh_thu', {
+        headers: {
+          'Authorization': `Bearer ${adminToken}`,
+          'Content-Type': 'application/json',
+        },
+      });
       if (response.ok) {
         const result = await response.json();
         setDoanhThu(result.data || []);
@@ -80,9 +85,10 @@ export default function Home() {
       return;
     }
     fetchDoanhThu();
+    fetchHoaDonTreHen();
     // Call the prop to expose fetchData
   }, [router]);
-  
+
   useEffect(() => {
     const adminToken = Cookies.get('token');
     const fetchData = async () => {
@@ -111,7 +117,7 @@ export default function Home() {
     } else {
       router.push('/login');
     }
-    
+
   }, [router]);
 
   return (
@@ -133,13 +139,13 @@ export default function Home() {
             </svg>
           </CardHeader>
           <CardContent>
-          {error ? (
-            <p className="text-red-500 "> {error}</p>
-          ) : !data ? (
-            <p>Đang tải dữ liệu...</p>
-          ) : (
-            <div className="text-2xl font-bold">{data.total_user}</div>
-          )}
+            {error ? (
+              <p className="text-red-500 "> {error}</p>
+            ) : !data ? (
+              <p>Đang tải dữ liệu...</p>
+            ) : (
+              <div className="text-2xl font-bold">{data.total_user}</div>
+            )}
           </CardContent>
         </Card>
         <Card>
@@ -160,13 +166,13 @@ export default function Home() {
             </svg>
           </CardHeader>
           <CardContent>
-          {error ? (
-            <p className="text-red-500">{error}</p>
-          ) : !data ? (
-            <p>Đang tải dữ liệu...</p>
-          ) : (
-            <div className="text-2xl font-bold">{data.total_contract}</div>
-          )}
+            {error ? (
+              <p className="text-red-500">{error}</p>
+            ) : !data ? (
+              <p>Đang tải dữ liệu...</p>
+            ) : (
+              <div className="text-2xl font-bold">{data.total_contract}</div>
+            )}
           </CardContent>
         </Card>
         <Card>
@@ -186,13 +192,13 @@ export default function Home() {
             </svg>
           </CardHeader>
           <CardContent>
-            {error? (
-            <p className="text-red-500">{error}</p>
-          ) : !data ? (
-            <p>Đang tải dữ liệu...</p>
-          ) : (
-            <div className="text-2xl font-bold">{data.total_contact_room}</div>
-          )}
+            {error ? (
+              <p className="text-red-500">{error}</p>
+            ) : !data ? (
+              <p>Đang tải dữ liệu...</p>
+            ) : (
+              <div className="text-2xl font-bold">{data.total_contact_room}</div>
+            )}
           </CardContent>
         </Card>
       </div>
@@ -201,7 +207,7 @@ export default function Home() {
       <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2 ">
         <Card >
           <CardHeader >
-            <CardTitle >Doanh thu {year}</CardTitle> 
+            <CardTitle >Doanh thu {year}</CardTitle>
           </CardHeader>
           <CardContent>
             <ChartContainer
@@ -226,7 +232,7 @@ export default function Home() {
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle>Lượt xem tòa nhà</CardTitle>
+            <CardTitle>Thống kê -- tính sau</CardTitle>
           </CardHeader>
           <CardContent>
             <ChartContainer
@@ -254,24 +260,39 @@ export default function Home() {
       {/* Recent Deployments Table */}
       <Card className="mt-4">
         <CardHeader>
-          <CardTitle>Recent Deployments</CardTitle>
-          <CardDescription>A list of recent deployments across all projects.</CardDescription>
+          <CardTitle>Hóa đơn trễ hẹn</CardTitle>
+          <CardDescription>Danh sách hóa đơn trễ hẹn !</CardDescription>
         </CardHeader>
         <CardContent>
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Project</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Time</TableHead>
+                <TableHead>ID hợp đồng</TableHead>
+                <TableHead>ID người dùng</TableHead>
+                <TableHead>Ảnh</TableHead>
+                <TableHead>Tên người dùng</TableHead>
+                <TableHead>Email</TableHead>
+                <TableHead>Giá đặt phòng</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {recentDeployments.map((deployment) => (
-                <TableRow key={deployment.id}>
-                  <TableCell>{deployment.project}</TableCell>
-                  <TableCell>{deployment.status}</TableCell>
-                  <TableCell>{deployment.time}</TableCell>
+              {hoadontrehen.map((deployment) => (
+                <TableRow key={deployment.index}>
+                  <TableCell>{deployment.hop_dong_id}</TableCell>
+                  <TableCell>{deployment.id_user}</TableCell>
+                  <TableCell>
+                    <img style={{ height: "50px", width: "50px",objectFit: "cover",borderRadius: "50%",}}
+                     src={`REACT_APP_IMAGE_ERROR/${deployment.avatar_user}`}
+                     onError={(e) => {
+                       e.target.onerror = null; // Ngăn việc gọi onError lặp lại
+                       e.target.src = "https://vnsteelthanglong.vn/core/img/default_image.png"; // Đường dẫn ảnh mặc định
+                     }}
+                     alt="Avatar"
+                    />
+                  </TableCell>
+                  <TableCell>{deployment.name_user}</TableCell>
+                  <TableCell>{deployment.email_user}</TableCell>
+                  <TableCell>{deployment.total}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

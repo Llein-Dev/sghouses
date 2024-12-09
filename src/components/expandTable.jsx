@@ -109,7 +109,7 @@ export default function ExpandableTable({ items, handleDeleteContactRoom }) {
                                             <div className=''>
                                                 <div className="flex flex-col items-center mb-4">
                                                     <img
-                                                        src={`http://localhost:8000/storage/${roomDetails.image.split(';')[0]}`} // Thêm đường dẫn
+                                                        src={`${process.env.NEXT_PUBLIC_PATH_FILE}${roomDetails.image.split(';')[0]}`} // Thêm đường dẫn
                                                         alt={roomDetails.name}
                                                         className="w-full h-40 object-cover rounded-lg" // Điều chỉnh kích thước hình ảnh
                                                     />

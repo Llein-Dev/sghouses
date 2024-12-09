@@ -26,7 +26,7 @@ export default function CommentComponent({ comments , onCommentAdd, user }) {
             <CardContent>
                 <div className="flex items-center space-x-2">
                     <Avatar>
-                        <AvatarImage src={`http://localhost:8000/storage/${user?.avatar}`} alt="" />
+                        <AvatarImage src={`${process.env.NEXT_PUBLIC_PATH_FILE}${user?.avatar}`} alt="" />
                         <AvatarFallback>{user?.name}</AvatarFallback>
                     </Avatar>
                     <Input

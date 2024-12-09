@@ -96,7 +96,7 @@ export default function Favourite() {
               <div className="flex flex-col sm:flex-row">
                 <div className="relative w-full sm:w-1/4 md:aspect-[4/3] aspect-video">
                   <img
-                    src={`http://localhost:8000/storage/${
+                    src={`${process.env.NEXT_PUBLIC_PATH_FILE}${
                       item?.hinh_anh.split(";")[0]
                     }`} // Display the first image
                     alt={item?.ten_phong}

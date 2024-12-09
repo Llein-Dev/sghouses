@@ -15,13 +15,15 @@ import {
 } from "@/components/ui/table"
 import Cookies from "js-cookie"
 import { useRouter } from "next/navigation"
-// import { useRouter } from "next/navigation"
+// const imageUrl = `${process.env.NEXT_PUBIC_IMAGE_BASE_URL}`;
+// import { useRouter } from "next/navigLation"
 export default function Banners() {
   const [banners, setBanner] = useState([])
   const [error, setError] = useState([])
   const router = useRouter(); // Khởi tạo router
   // const router = useRouter()
   // Định nghĩa hàm fetchData
+  const api_image = process.env.REACT_APP_IMAGE_ERROR;
   const fetchDataBanners = async () => {
 
     try {
@@ -189,7 +191,7 @@ export default function Banners() {
           {banners.map((banner, index) => (
             <TableRow key={index} >
               <TableCell>{banner.id}</TableCell>
-              <TableCell> <img style={{ height: "150px", width: '250px', objectFit: "cover", borderRadius: "10px" }} src={`http://localhost:8000/storage/${banner.image}`}></img> </TableCell>
+              <TableCell> <img style={{ height: "150px", width: '250px', objectFit: "cover", borderRadius: "10px" }} src={`${process.env.NEXT_PUBLIC_PATH_FILE}${banner.image}`}></img> </TableCell>
               <TableCell className={!banner.title ? 'text-gray-500' : ''}>
                 {banner.title ? banner.title : 'Tên trống'}
               </TableCell>

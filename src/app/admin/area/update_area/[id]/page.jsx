@@ -131,7 +131,7 @@ export default function UpdateBlog() {
                                     src={
                                         imagePreview.startsWith("blob:") 
                                             ? imagePreview // Hiển thị preview ảnh mới
-                                            : `http://localhost:8000/storage/${imagePreview}` // Hiển thị ảnh hiện tại
+                                            : `${process.env.NEXT_PUBLIC_PATH_FILE}${imagePreview}` // Hiển thị ảnh hiện tại
                                     }
                                     alt="Preview"
                                     className="w-32 h-32 object-cover rounded"

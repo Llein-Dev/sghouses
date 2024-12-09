@@ -23,7 +23,7 @@ import Cookies from "js-cookie"
 import { Label } from "recharts"
 
 
-export default function CategoryBlog() {
+export default function Buildings() {
   const [buildings, setCatagoryBlog] = useState([])
   const router = useRouter()
   const [error, setError] = useState([])
@@ -187,7 +187,7 @@ export default function CategoryBlog() {
           {buildings.map((building, index) => (
             <TableRow key={index}>
               <TableCell>{building.id}</TableCell>
-              <TableCell className="flex gap-5">  <img style={{ height: "150px", objectFit: "cover", borderRadius: "10px" }} src={`http://localhost:8000/storage/${building.image}`}></img> <div><div className="p-1 text-xl font-bold  rounded text-black">{building.name}</div>{building.name_area}</div>
+              <TableCell className="flex gap-5">  <img style={{ height: "150px", objectFit: "cover", borderRadius: "10px" }} src={`${process.env.NEXT_PUBLIC_PATH_FILE}${building.image}`}></img> <div><div className="p-1 text-xl font-bold  rounded text-black">{building.name}</div>{building.name_area}</div>
               </TableCell>
               <TableCell>{building.room}</TableCell> {/* số phòng */}
               <TableCell>

@@ -17,10 +17,8 @@ import {
   Dialog,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { Badge } from "@/components/ui/badge"
 import { useRouter } from "next/navigation"
 import Cookies from "js-cookie"
-import { Label } from "recharts"
 
 
 export default function Buildings() {

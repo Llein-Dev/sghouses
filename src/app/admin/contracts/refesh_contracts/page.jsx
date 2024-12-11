@@ -128,7 +128,7 @@ export default function RefeshContracts() {
           <div className="flex items-center space-x-2">
             <Search className="h-5 w-5 text-gray-500" />
             <Input
-              placeholder="Search users..."
+              placeholder="Tìm kiếm..."
               value={searchTerm}
               onChange={handleSearchChange}
               className="max-w-sm"

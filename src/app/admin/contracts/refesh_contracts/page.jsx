@@ -117,7 +117,7 @@ export default function RefeshContracts() {
   }
   return (
     <>
-      <div className="flex justify-end p-6">
+      <div className="flex justify-end">
         <Button onClick={handleReturn} className="bg-blue-900 text-white hover:bg-blue-600">
           <FileText className="mr-2 h-4 w-4" />
           Trang hợp đồng

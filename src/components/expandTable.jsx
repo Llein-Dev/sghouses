@@ -48,11 +48,11 @@ export default function ExpandableTable({ items, handleDeleteContactRoom }) {
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead>Name</TableHead>
-                        <TableHead>Room</TableHead>
-                        <TableHead>Phone</TableHead>
-                        <TableHead>Created At</TableHead>
-                        <TableHead>Actions</TableHead>
+                        <TableHead>Tên</TableHead>
+                        <TableHead>Phòng</TableHead>
+                        <TableHead>Số điện thoại</TableHead>
+                        <TableHead>Ngày tạo</TableHead>
+                        <TableHead>Hành động</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>

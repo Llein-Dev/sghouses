@@ -187,7 +187,10 @@ export default function BlogContent() {
           {area.map((areas, index) => (
             <TableRow key={index} >
               <TableCell>{areas.id}</TableCell>
-              <TableCell> <img style={{height:"150px", width:'250px', objectFit:"cover", borderRadius:"10px"}} src={`${process.env.NEXT_PUBLIC_PATH_FILE}${areas.image}`}></img> </TableCell>
+              <TableCell> <img style={{height:"150px", width:'250px', objectFit:"cover", borderRadius:"10px"}} src={`${process.env.NEXT_PUBLIC_PATH_FILE}${areas.image}`}
+               onError={(e) => {
+                e.target.src = "https://png.pngtree.com/png-vector/20190820/ourmid/pngtree-no-image-vector-illustration-isolated-png-image_1694547.jpg"; // URL ảnh mặc định
+            }}></img> </TableCell>
               <TableCell>{areas.name} </TableCell>
               <TableCell>{areas.count_building} </TableCell>
               <TableCell>{areas.count_room} </TableCell>

@@ -144,7 +144,7 @@ export default function Buildings() {
   <div className="flex items-center space-x-2 w-1/2">
     <Search className="h-5 w-5 text-gray-500" />
     <Input
-      placeholder="Search contracts..."
+      placeholder="Tìm kiếm..."
       className="max-w-sm"
       // value={searchTerm}
       // onChange={(e) => setSearchTerm(e.target.value)}
@@ -178,7 +178,7 @@ export default function Buildings() {
             <TableHead>Thông tin tòa nhà</TableHead>
             <TableHead>Số phòng</TableHead>
             <TableHead>Nổi bật</TableHead>
-            <TableHead>Actions</TableHead>
+            <TableHead>Hành động</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -203,8 +203,6 @@ export default function Buildings() {
                   </label>
                 </div>
               </TableCell>
-       
-              <TableCell>{building.view}</TableCell>   {/* lượt xem */}
               <TableCell>
                 <div className="flex space-x-2">
                   {/* Nút Gọi điện */}

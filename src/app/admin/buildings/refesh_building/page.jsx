@@ -120,7 +120,7 @@ export default function RefeshBuilding() {
         <div className="flex items-center space-x-2">
           <Search className="h-5 w-5 text-gray-500" />
           <Input
-            placeholder="Search users..."
+            placeholder="Tìm kiếm..."
             value={searchTerm}
             onChange={handleSearchChange}
             className="max-w-sm"
@@ -140,9 +140,8 @@ export default function RefeshBuilding() {
             <TableHead>ID Phòng</TableHead>
             <TableHead>Ảnh</TableHead>
             <TableHead>Tên tòa nhà</TableHead>
-            <TableHead>SLug</TableHead>
+            <TableHead>Đường dẫn</TableHead>
             <TableHead>Khu vực</TableHead>
-            <TableHead>view</TableHead>
             <TableHead>Hành động</TableHead>
           </TableRow>
         </TableHeader>
@@ -164,8 +163,6 @@ export default function RefeshBuilding() {
                   <TableCell>{building.name}</TableCell>
                   <TableCell>{building.slug}</TableCell>
                   <TableCell>{building.name_area}</TableCell>
-                  <TableCell>{building.price}</TableCell>
-                  <TableCell>{building.view}</TableCell>
                   <TableCell>
                     <div className="flex space-x-2">
                       <Button variant="outline" size="icon" onClick={() => handleRefesh(building.id)}>

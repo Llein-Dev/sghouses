@@ -228,7 +228,7 @@ export default function Contract() {
           window.location.reload();
         }
       } else {
-        const errorData = await response.json();
+       ; const errorData = await response.json()
         toast.error(`Lỗi khi thêm danh mục: ${errorData.message || "Có lỗi xảy ra"}`);
       }
     } catch (error) {

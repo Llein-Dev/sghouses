@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
-import { Search, RefreshCcw } from "lucide-react"
+import { Search, RefreshCcw, FileText } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
@@ -112,55 +112,70 @@ export default function RefeshContracts() {
       console.log("Lỗi khi thực hiện khôi phục người dùng:", error);
     }
   };
+  const handleReturn = () => {
+    router.push('/admin/contracts');
+  }
   return (
-
-    <div className="space-y-4">
-      <div className="flex justify-between items-center">
-        <div className="flex items-center space-x-2">
-          <Search className="h-5 w-5 text-gray-500" />
-          <Input
-            placeholder="Search users..."
-            value={searchTerm}
-            onChange={handleSearchChange}
-            className="max-w-sm"
-          />
-        </div>
+    <>
+      <div className="flex justify-end p-6">
+        <Button onClick={handleReturn} className="bg-blue-900 text-white hover:bg-blue-600">
+          <FileText className="mr-2 h-4 w-4" />
+          Trang hợp đồng
+        </Button>
       </div>
-      <Table>
-        <TableHeader>
-          <TableRow>
-          <TableHead>ID Phòng</TableHead>
-            <TableHead>ID người dùng</TableHead>
-            <TableHead>Trạng thái</TableHead>
-            <TableHead>Ngày bắt đầu</TableHead>
-            <TableHead>Ngày kết thúc</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {
-            filteredUsers.map((contracts, index) => (
-              <TableRow key={index}>
-                <TableCell>{contracts.id_room}</TableCell>
-                <TableCell>{contracts.id_user}</TableCell>
-                <TableCell>{contracts.status}</TableCell>
-                <TableCell>{contracts.date_start}</TableCell>
-                <TableCell>{contracts.date_end}</TableCell>
-                <TableCell>
-                  <div className="flex space-x-2">
+      <div className="space-y-4">
+        <div className="flex justify-between items-center">
+          <div className="flex items-center space-x-2">
+            <Search className="h-5 w-5 text-gray-500" />
+            <Input
+              placeholder="Search users..."
+              value={searchTerm}
+              onChange={handleSearchChange}
+              className="max-w-sm"
+            />
+          </div>
+        </div>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>ID Phòng</TableHead>
+              <TableHead>ID người dùng</TableHead>
+              <TableHead>Trạng thái</TableHead>
+              <TableHead>Ngày bắt đầu</TableHead>
+              <TableHead>Ngày kết thúc</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {
+              filteredUsers.length > 0 ? (
+                filteredUsers.map((contracts, index) => (
+                  <TableRow key={index}>
+                    <TableCell>{contracts.id_room}</TableCell>
+                    <TableCell>{contracts.id_user}</TableCell>
+                    <TableCell>{contracts.status}</TableCell>
+                    <TableCell>{contracts.date_start}</TableCell>
+                    <TableCell>{contracts.date_end}</TableCell>
+                    <TableCell>
+                      <div className="flex space-x-2">
+                        <Button variant="outline" size="icon" onClick={() => handleRefesh(contracts.id)}>
+                          <RefreshCcw className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={6} className="text-center">
+                    Không có dữ liệu để hiển thị
+                  </TableCell>
+                </TableRow>
+              )
+            }
+          </TableBody>
 
-
-                    <Button variant="outline" size="icon" onClick={() => handleRefesh(contracts.id)}>
-                      <RefreshCcw className="h-4 w-4" />
-                    </Button>
-                  
-                  </div>
-                </TableCell>
-              </TableRow>
-            ))
-          }
-        </TableBody>
-      </Table>
-    </div>
-
-  );
+        </Table>
+      </div>
+</>
+      );
 }

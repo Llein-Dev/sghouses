@@ -137,7 +137,7 @@ export default function CategoryBlog() {
                 <div className="flex items-center space-x-2 w-1/2">
                     <Search className="h-5 w-5 text-gray-500" />
                     <Input
-                        placeholder="Search contracts..."
+                        placeholder="Tìm kiếm..."
                         className="max-w-sm"
                     // value={searchTerm}
                     // onChange={(e) => setSearchTerm(e.target.value)}

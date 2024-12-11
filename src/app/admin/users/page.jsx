@@ -221,7 +221,7 @@ export default function UsersContent() {
         <TableHeader>
           <TableRow>
             <TableHead>STT</TableHead>
-            <TableHead>Avatar</TableHead> {/* New column for Avatar */}
+            <TableHead>Ảnh</TableHead> {/* New column for Avatar */}
             <TableHead>Tên</TableHead>
             <TableHead>Email</TableHead>
             <TableHead>Số điện thoại</TableHead>

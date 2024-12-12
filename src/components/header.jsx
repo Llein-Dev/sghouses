@@ -2,7 +2,14 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { LogOut, Bell, DoorOpen, Menu, Accessibility, UsersRoundIcon } from "lucide-react";
+import {
+  LogOut,
+  Bell,
+  DoorOpen,
+  Menu,
+  Accessibility,
+  UsersRoundIcon,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -105,7 +112,7 @@ export function HeaderComponent() {
   );
 
   return (
-    <header className="bg-background border-b fixed w-full top-0 px-4 z-40"> 
+    <header className="bg-background border-b fixed w-full top-0 px-4 z-40">
       <div className="container mx-auto px-4 py-3 flex items-center justify-between">
         <div className="flex items-center space-x-8">
           <Link href="/">
@@ -170,29 +177,23 @@ export function HeaderComponent() {
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="relative p-0">
                   <div className="flex items-center space-x-2 p-2">
-                    <Avatar className="h-10 w-10">
-                      <AvatarImage
+                    <div className="h-10 w-10">
+                      <img
                         alt={user?.name || "User"}
-                        src={`${process.env.NEXT_PUBLIC_PATH_FILE}${user?.avatar}`}
+                        src={user?.avatar || "User"}
                       />
-                      <AvatarFallback>
-                        {user?.name.charAt(0) || "User"}
-                      </AvatarFallback>
-                    </Avatar>
+                    </div>
                   </div>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-full" align="end" forceMount>
                 <div className="flex items-center space-x-2 p-2">
-                  <Avatar className="h-10 w-10">
-                    <AvatarImage
+                  <div className="h-10 w-10">
+                    <img
                       alt={user?.name || "User"}
-                      src={`${process.env.NEXT_PUBLIC_PATH_FILE}${user?.avatar}`}
+                      src={user?.avatar || "User"}
                     />
-                    <AvatarFallback>
-                      {user?.name.charAt(0) || "User"}
-                    </AvatarFallback>
-                  </Avatar>
+                  </div>
                   <div className="flex flex-col space-y-1">
                     <p className="text-sm font-medium leading-none">
                       {user?.name || "User"}
@@ -237,7 +238,10 @@ export function HeaderComponent() {
                   </>
                 )}
 
-                <DropdownMenuItem className="border-t pt-4" onClick={handleLogout}>
+                <DropdownMenuItem
+                  className="border-t pt-4"
+                  onClick={handleLogout}
+                >
                   <LogOut className="mr-2 h-4 w-4" />
                   <span>Đăng xuất</span>
                 </DropdownMenuItem>

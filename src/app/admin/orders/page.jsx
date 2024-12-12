@@ -57,7 +57,7 @@ export default function Order() {
   }, [router]);
 
   // Tìm kiếm và phân trang
-  const filteredContracts = orders.filter((order) =>
+  const filteredOrder = orders.filter((order) =>
     `${order.hop_dong_id} ${order.tong_tien} ${order.trang_thai}`
       .toLowerCase()
       .includes(searchTerm.toLowerCase())
@@ -65,19 +65,19 @@ export default function Order() {
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredContracts.slice(
+  const currentItems = filteredOrder.slice(
     indexOfFirstItem,
     indexOfLastItem
   );
 
-  const totalPages = Math.ceil(filteredContracts.length / itemsPerPage);
+  const totalPages = Math.ceil(filteredOrder.length / itemsPerPage);
 
   // Đặt lại trang khi số lượng trang giảm
   useEffect(() => {
     if (currentPage > totalPages) {
       setCurrentPage(1);
     }
-  }, [filteredContracts.length, totalPages]);
+  }, [filteredOrder.length, totalPages]);
 
 
   

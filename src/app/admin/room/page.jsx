@@ -26,8 +26,7 @@ export default function CategoryBlog() {
     const [room, setRoom] = useState([])
     const router = useRouter()
     const [error, setError] = useState([])
-
-
+    const [searchTerm, setSearchTerm] = useState(""); // Từ khóa tìm kiếm
     useEffect(() => {
         const adminToken = Cookies.get('token');
         if (!adminToken) {
@@ -117,6 +116,12 @@ export default function CategoryBlog() {
         }
     };
 
+    const filteredRoom = room.filter((rooms) =>
+        `${rooms.ten_phong} ${rooms.trang_thai} ${rooms.dien_tich} ${rooms.ngay_tao}  `
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase())
+      );
+
     const handleRefesh = () => {
         router.push('/admin/room/refesh_room')
     }
@@ -139,8 +144,8 @@ export default function CategoryBlog() {
                     <Input
                         placeholder="Tìm kiếm..."
                         className="max-w-sm"
-                    // value={searchTerm}
-                    // onChange={(e) => setSearchTerm(e.target.value)}
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
                     />
                 </div>
 
@@ -176,7 +181,7 @@ export default function CategoryBlog() {
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {room.map((rooms, index) => (
+                    {filteredRoom.map((rooms, index) => (
                         <TableRow key={index}>
                             <TableCell>{rooms.id}</TableCell>
                             <TableCell className="flex gap-5">  <img className="object-cover h-[100px] rounded-lg aspect-video" src={`${process.env.NEXT_PUBLIC_PATH_FILE}${rooms.hinh_anh}`}

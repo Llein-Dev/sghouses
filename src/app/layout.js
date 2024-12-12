@@ -12,11 +12,12 @@ import Cookies from "js-cookie";
 import { Spinner } from "@/components/ui/loading";
 import { profileAPI } from "@/utils/api/Auth/api";
 import { ToastContainer } from "react-toastify";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 export default function RootLayout({ children }) {
   const pathname = usePathname();
   const router = useRouter();
-  const isAdminRoute = pathname.startsWith('/admin');
+  const isAdminRoute = pathname.startsWith("/admin");
   const token = Cookies.get("token");
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -57,12 +58,19 @@ export default function RootLayout({ children }) {
         <meta charSet="UTF-8" />
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="description" content="SGHouses - Tìm nhà trọ, phòng trọ cho thuê tại Việt Nam." />
+        <meta
+          name="description"
+          content="SGHouses - Tìm nhà trọ, phòng trọ cho thuê tại Việt Nam."
+        />
         <meta name="keywords" content="SGHouses, thuê nhà, thuê phòng trọ" />
         <meta name="author" content="SGHouses Team" />
         <title>SGHouses - Tìm Nhà Trọ Hồ Chí Minh</title>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="true"
+        />
         <link
           href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
           rel="stylesheet"
@@ -73,33 +81,36 @@ export default function RootLayout({ children }) {
         ></script>
       </head>
       <body className="antialiased montserrat-header">
-        <Provider store={store}>
-          {loading ? (
-            <div className="h-screen w-full flex justify-center items-center">
-              <Spinner />
-            </div>
-          ) : (
-            <>
-              {/* Render layout only if not on the Not Found page */}
-              {!isNotFoundPage && (isAdminRoute && isAdmin ? (
-                children
-              ) : (
-                <>
-                  <HeaderComponent />
-                  <div className="mt-[72px] bg-gray-100 overflow-y-auto">
-                    <MotionWrapper animationType="fade" key={pathname}>
-                      {children}
-                    </MotionWrapper>
-                  </div>
-                  <FooterComponent />
-                  <ToastContainer />
-                </>
-              ))}
-              {/* Render children for the Not Found page */}
-              {isNotFoundPage && children}
-            </>
-          )}
-        </Provider>
+        <GoogleOAuthProvider clientId="328656461153-lr3to77h14eje21q7c0u4mcu9hkafcf8.apps.googleusercontent.com">
+          <Provider store={store}>
+            {loading ? (
+              <div className="h-screen w-full flex justify-center items-center">
+                <Spinner />
+              </div>
+            ) : (
+              <>
+                {/* Render layout only if not on the Not Found page */}
+                {!isNotFoundPage &&
+                  (isAdminRoute && isAdmin ? (
+                    children
+                  ) : (
+                    <>
+                      <HeaderComponent />
+                      <div className="mt-[72px] bg-gray-100 overflow-y-auto">
+                        <MotionWrapper animationType="fade" key={pathname}>
+                          {children}
+                        </MotionWrapper>
+                      </div>
+                      <FooterComponent />
+                      <ToastContainer />
+                    </>
+                  ))}
+                {/* Render children for the Not Found page */}
+                {isNotFoundPage && children}
+              </>
+            )}
+          </Provider>
+        </GoogleOAuthProvider>
       </body>
     </html>
   );

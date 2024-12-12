@@ -1,7 +1,7 @@
 // LoginPage.js
 "use client";
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css'; 
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { AuthForm } from "@/components/auth-form";
 import Breadcrumb from "@/components/breadcum";
 import { useState } from "react";
@@ -10,10 +10,13 @@ import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { setProfile } from "@/redux/authSlice";
 
-
 export default function LoginPage() {
   const [isLogin, setIsLogin] = useState(true);
-  const [formData, setFormData] = useState({ name: "", email: "", password: "" });
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -54,14 +57,17 @@ export default function LoginPage() {
             if (profile && profile.length > 0) {
               const userdata = profile[0];
               dispatch(setProfile(userdata)); // Update Redux state with user data
-            
             }
           } catch (error) {
             console.error("Failed to fetch user profile:", error);
           }
         }
       } else {
-        response = await signupAPI(formData.name, formData.email, formData.password);
+        response = await signupAPI(
+          formData.name,
+          formData.email,
+          formData.password,
+        );
         toast.success("đăng nhập thành công!");
         toggleForm();
       }
@@ -74,20 +80,19 @@ export default function LoginPage() {
 
   return (
     <>
-    <div className="container mx-auto px-4 space-y-4 pt-4">
-      <Breadcrumb />
-      <AuthForm
-        isLogin={isLogin}
-        formData={formData}
-        error={error}
-        loading={loading}
-        toggleForm={toggleForm}
-        handleChange={handleChange}
-        handleSubmit={handleSubmit}
-        handleToForgot={handleToForgot}
-      />
-    </div>
-
-       </>
+      <div className="container mx-auto px-4 space-y-4 pt-4">
+        <Breadcrumb />
+        <AuthForm
+          isLogin={isLogin}
+          formData={formData}
+          error={error}
+          loading={loading}
+          toggleForm={toggleForm}
+          handleChange={handleChange}
+          handleSubmit={handleSubmit}
+          handleToForgot={handleToForgot}
+        />
+      </div>
+    </>
   );
 }

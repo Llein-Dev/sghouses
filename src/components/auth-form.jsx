@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import GoogleLoginHandler from "./LoginGoogle";
 
 export function AuthForm({
   isLogin,
@@ -18,7 +19,7 @@ export function AuthForm({
       <div className="hidden md:flex flex-1 items-center justify-center bg-gray-200">
         <img
           src="/dark-blue-house-exterior-2.png"
-          alt="Hình minh họa xác thực"
+          alt="Auth illustration"
           className="object-cover w-full h-full"
         />
       </div>
@@ -26,18 +27,18 @@ export function AuthForm({
         <div className="w-full max-w-md border-none">
           <CardHeader>
             <CardTitle className="text-2xl font-bold">
-              {isLogin ? "Đăng nhập" : "Đăng ký"}
+              {isLogin ? "Login" : "Sign Up"}
             </CardTitle>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
               {!isLogin && (
                 <div className="space-y-2">
-                  <Label htmlFor="name">Họ và Tên</Label>
+                  <Label htmlFor="name">Full Name</Label>
                   <Input
                     id="name"
                     type="text"
-                    placeholder="Nhập họ và tên của bạn"
+                    placeholder="Enter your full name"
                     value={formData.name}
                     onChange={handleChange}
                     required
@@ -49,18 +50,18 @@ export function AuthForm({
                 <Input
                   id="email"
                   type="email"
-                  placeholder="Nhập email của bạn"
+                  placeholder="Enter your email"
                   value={formData.email}
                   onChange={handleChange}
                   required
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="password">Mật khẩu</Label>
+                <Label htmlFor="password">Password</Label>
                 <Input
                   id="password"
                   type="password"
-                  placeholder="Nhập mật khẩu của bạn"
+                  placeholder="Enter your password"
                   value={formData.password}
                   onChange={handleChange}
                   required
@@ -74,8 +75,8 @@ export function AuthForm({
                 onClick={toggleForm}
               >
                 {isLogin
-                  ? "Chưa có tài khoản? Đăng ký"
-                  : "Đã có tài khoản? Đăng nhập"}
+                  ? "Don't have an account? Sign Up"
+                  : "Already have an account? Login"}
               </Button>
               <Button
                 type="submit"
@@ -85,11 +86,11 @@ export function AuthForm({
               >
                 {loading
                   ? isLogin
-                    ? "Đang đăng nhập..."
-                    : "Đang đăng ký..."
+                    ? "Logging in..."
+                    : "Signing up..."
                   : isLogin
-                  ? "Đăng nhập"
-                  : "Đăng ký"}
+                  ? "Login"
+                  : "Sign Up"}
               </Button>
               <Button
                 variant="link"
@@ -101,6 +102,7 @@ export function AuthForm({
               </Button>
             </form>
           </CardContent>
+          <GoogleLoginHandler />
         </div>
       </div>
     </div>

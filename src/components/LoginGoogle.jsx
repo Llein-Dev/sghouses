@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { GoogleLogin } from "@react-oauth/google";
 import Cookies from "js-cookie";
-
+// GoogleLogin
 export default function GoogleLoginHandler() {
   const router = useRouter();
   const [error, setError] = useState(null);

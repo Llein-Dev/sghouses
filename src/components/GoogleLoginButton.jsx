@@ -1,4 +1,4 @@
-// components/GoogleLoginButton.js
+// GoogleLogin
 import { GoogleLogin } from "@react-oauth/google";
 
 export default function GoogleLoginButton({ onLoginSuccess, onLoginError }) {

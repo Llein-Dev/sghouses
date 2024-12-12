@@ -26,8 +26,7 @@ export default function CategoryBlog() {
     const [room, setRoom] = useState([])
     const router = useRouter()
     const [error, setError] = useState([])
-
-
+    const [searchTerm, setSearchTerm] = useState(""); // Từ khóa tìm kiếm
     useEffect(() => {
         const adminToken = Cookies.get('token');
         if (!adminToken) {
@@ -117,12 +116,18 @@ export default function CategoryBlog() {
         }
     };
 
+    const filteredRoom = room.filter((rooms) =>
+        `${rooms.ten_phong} ${rooms.trang_thai} ${rooms.dien_tich} ${rooms.ngay_tao}  `
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase())
+      );
+
     const handleRefesh = () => {
         router.push('/admin/room/refesh_room')
     }
     const handleCreatPage = () => {
         router.push('/admin/room/create_room')
-      }
+    }
     const handleEditRoom = (id) => {
         router.push(`/admin/room/update/${id}`)
     }
@@ -137,10 +142,10 @@ export default function CategoryBlog() {
                 <div className="flex items-center space-x-2 w-1/2">
                     <Search className="h-5 w-5 text-gray-500" />
                     <Input
-                        placeholder="Search contracts..."
+                        placeholder="Tìm kiếm..."
                         className="max-w-sm"
-                    // value={searchTerm}
-                    // onChange={(e) => setSearchTerm(e.target.value)}
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
                     />
                 </div>
 
@@ -151,7 +156,7 @@ export default function CategoryBlog() {
                         <DialogTrigger asChild>
                             <Button onClick={handleCreatPage} className="bg-green-700 text-white hover:bg-green-600">
                                 <Plus className="mr-2 h-4 w-4" />
-                                 Tạo Phòng
+                                Tạo Phòng
                             </Button>
                         </DialogTrigger>
                     </Dialog>
@@ -176,10 +181,13 @@ export default function CategoryBlog() {
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {room.map((rooms, index) => (
+                    {filteredRoom.map((rooms, index) => (
                         <TableRow key={index}>
                             <TableCell>{rooms.id}</TableCell>
-                            <TableCell className="flex gap-5">  <img className="object-cover h-[100px] rounded-lg aspect-video" src={`http://localhost:8000/storage/${rooms.hinh_anh}`}></img> <div><div className="p-1 text-xl font-bold  rounded text-black">{rooms.ten_phong} </div>{rooms.ten_toa_nha} <div>{rooms.ten_khu_vuc}</div> </div>
+                            <TableCell className="flex gap-5">  <img className="object-cover h-[100px] rounded-lg aspect-video" src={`${process.env.NEXT_PUBLIC_PATH_FILE}${rooms.hinh_anh}`}
+                             onError={(e) => {
+                                e.target.src = "https://png.pngtree.com/png-vector/20190820/ourmid/pngtree-no-image-vector-illustration-isolated-png-image_1694547.jpg"; // URL ảnh mặc định
+                            }}></img> <div><div className="p-1 text-xl font-bold  rounded text-black">{rooms.ten_phong} </div>{rooms.ten_toa_nha} <div>{rooms.ten_khu_vuc}</div> </div>
                             </TableCell>
                             <TableCell>
                                 <Badge

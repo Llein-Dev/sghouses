@@ -47,8 +47,7 @@ export function EnhancedPreviewCards({ selectedRoom, selectedUser, col = 1 }) {
               </div>
               {selectedRoom.hinh_anh && (
                 <div className="mt-4 rounded-lg overflow-hidden">
-                  <img src={`http://localhost:8000/storage/${selectedRoom.hinh_anh}`} alt={selectedRoom.ten_phong}
-
+                  <img src={`${process.env.NEXT_PUBLIC_PATH_FILE}${selectedRoom.hinh_anh}`} alt={selectedRoom.ten_phong}
                     className="w-full h-48 object-cover"
                   />
                 </div>
@@ -71,7 +70,7 @@ export function EnhancedPreviewCards({ selectedRoom, selectedUser, col = 1 }) {
           {selectedUser ? (
             <div className="flex items-start space-x-4">
               <Avatar className="h-16 w-16">
-                <AvatarImage src={`http://localhost:8000/storage/${selectedUser.avatar}`} alt={selectedUser.name} />
+                <AvatarImage src={`${process.env.NEXT_PUBLIC_PATH_FILE}${selectedUser.avatar}`} alt={selectedUser.name} />
                 <AvatarFallback>{selectedUser.name.charAt(0)}</AvatarFallback>
               </Avatar>
               <div className="space-y-2">

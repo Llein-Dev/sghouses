@@ -53,7 +53,7 @@ export function CarouselComponent({ autoPlayInterval = 5000 }) {
         {images.map((image, index) => (
           <img
             key={image.id}
-            src={`http://localhost:8000/storage/${image.image}`} // Assuming images are relative URLs
+            src={`${process.env.NEXT_PUBLIC_PATH_FILE}${image.image}`} // Assuming images are relative URLs
             alt={image.title}
             className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${index === currentIndex ? "opacity-100" : "opacity-0"}`}
           />

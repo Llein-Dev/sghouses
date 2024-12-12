@@ -89,7 +89,7 @@ export default function RefeshArea() {
         <div className="flex items-center space-x-2">
           <Search className="h-5 w-5 text-gray-500" />
           <Input
-            placeholder="Search users..."
+            placeholder="Tìm kiếm..."
             value={""}
             className="max-w-sm"
           />
@@ -108,10 +108,10 @@ export default function RefeshArea() {
         <TableHeader>
           <TableRow>
             <TableHead>ID</TableHead>
-            <TableHead>Image</TableHead>
-            <TableHead>Name</TableHead>
-            <TableHead>Slug</TableHead>
-            <TableHead>Actions</TableHead>
+            <TableHead>Ảnh</TableHead>
+            <TableHead>Tên</TableHead>
+            <TableHead>Đường dẫn</TableHead>
+            <TableHead>Hành động</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -127,7 +127,7 @@ export default function RefeshArea() {
                       objectFit: "cover",
                       borderRadius: "10px",
                     }}
-                    src={`http://localhost:8000/storage/${areas.image}`}
+                    src={`${process.env.NEXT_PUBLIC_PATH_FILE}${areas.image}`}
                     alt={`${areas.image}`}
                   />
                 </TableCell>

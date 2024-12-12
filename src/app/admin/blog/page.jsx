@@ -32,6 +32,7 @@ import 'react-toastify/dist/ReactToastify.css';
 export default function BlogContent() {
   const [blog, setBlog] = useState([])
   const [error, setError] = useState([])
+  const [searchTerm, setSearchTerm] = useState(""); // Từ khóa tìm kiếm
   const router = useRouter(); // Khởi tạo router
   // const router = useRouter()
   // Định nghĩa hàm fetchData
@@ -115,6 +116,11 @@ export default function BlogContent() {
       toast.warning("Có lỗi khi sao chép bài viết");
     }
   };
+  const filteredBlog = blog.filter((blogs) =>
+    `${blogs.title} ${blogs.id} ${blogs.name_cate} ${blogs.description}  `
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase())
+  );
 
   const handleCreatPage = () => {
     router.push('/admin/blog/create_blog')
@@ -133,12 +139,14 @@ export default function BlogContent() {
           <Search className="h-5 w-5 text-gray-500" />
           <Input
             placeholder="Tiềm kiếm..."
-            value={""}
-            // onChange={handleSearchChange}
+            value={searchTerm}
+            onChange={(e) => {
+              setSearchTerm(e.target.value);
+              // setCurrentPage(1); // Reset về trang đầu khi tìm kiếm
+            }}
             className="max-w-sm"
           />
         </div>
-
         {/* Cột buttons */}
         <div className="flex justify-end space-x-2">
           <Button onClick={handleCreatPage} className="bg-green-700 text-white hover:bg-green-600">
@@ -164,10 +172,10 @@ export default function BlogContent() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {blog.map((blogs, index) => (
+          {filteredBlog.map((blogs, index) => (
             <TableRow key={index} >
               <TableCell>{blogs.id}</TableCell>
-              <TableCell>  <img style={{height:"150px",width:"450px", objectFit:"cover", borderRadius:"10px"}} src={`http://localhost:8000/storage/${blogs.image}`} 
+              <TableCell>  <img style={{height:"150px",width:"450px", objectFit:"cover", borderRadius:"10px"}} src={`${process.env.NEXT_PUBLIC_PATH_FILE}${blogs.image}`} 
               onError={(e) => {
                e.target.src = "https://png.pngtree.com/png-vector/20190820/ourmid/pngtree-no-image-vector-illustration-isolated-png-image_1694547.jpg"; // URL ảnh mặc định
               }}></img> </TableCell>

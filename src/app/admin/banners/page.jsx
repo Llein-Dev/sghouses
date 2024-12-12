@@ -15,11 +15,14 @@ import {
 } from "@/components/ui/table"
 import Cookies from "js-cookie"
 import { useRouter } from "next/navigation"
-// import { useRouter } from "next/navigation"
+// const imageUrl = `${process.env.NEXT_PUBIC_IMAGE_BASE_URL}`;
+// import { useRouter } from "next/navigLation"
 export default function Banners() {
   const [banners, setBanner] = useState([])
   const [error, setError] = useState([])
-  const router = useRouter(); // Khởi tạo router
+  const router = useRouter(); // Khởi tạo 
+  const [searchTerm, setSearchTerm] = useState(""); // Từ khóa tìm kiếm
+
   // const router = useRouter()
   // Định nghĩa hàm fetchData
   const fetchDataBanners = async () => {
@@ -136,7 +139,11 @@ export default function Banners() {
     }
   };
 
-
+  const filteredBanner = banners.filter((banner) =>
+    `${banner.id}   `
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase())
+  );
   const handleRefeshBanner = () => {
     router.push('/admin/banners/refesh_banners')
   }
@@ -154,8 +161,11 @@ export default function Banners() {
           <Search className="h-5 w-5 text-gray-500" />
           <Input
             placeholder="Tìm kiếm..."
-            value={""}
-            // onChange={handleSearchChange}
+            value={searchTerm}
+            onChange={(e) => {
+              setSearchTerm(e.target.value);
+              // setCurrentPage(1); // Reset về trang đầu khi tìm kiếm
+            }}
             className="max-w-sm"
           />
         </div>
@@ -180,15 +190,16 @@ export default function Banners() {
             <TableHead>Tiêu đề</TableHead>
             <TableHead>Nội dung</TableHead>
             <TableHead>Thứ tự</TableHead>
-            <TableHead>Trạng thái</TableHead>
             <TableHead>Ngày tạo</TableHead>
+            <TableHead>Trạng thái</TableHead>
+            <TableHead>Hành động</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {banners.map((banner, index) => (
+          {filteredBanner.map((banner, index) => (
             <TableRow key={index} >
               <TableCell>{banner.id}</TableCell>
-              <TableCell> <img style={{ height: "150px", width: '250px', objectFit: "cover", borderRadius: "10px" }} src={`http://localhost:8000/storage/${banner.image}`}></img> </TableCell>
+              <TableCell> <img style={{ height: "150px", width: '250px', objectFit: "cover", borderRadius: "10px" }} src={`${process.env.NEXT_PUBLIC_PATH_FILE}${banner.image}`}></img> </TableCell>
               <TableCell className={!banner.title ? 'text-gray-500' : ''}>
                 {banner.title ? banner.title : 'Tên trống'}
               </TableCell>

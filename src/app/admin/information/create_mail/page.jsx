@@ -5,6 +5,8 @@ import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Button } from "@/components/ui/button";
+import { FileText } from "lucide-react";
 export default function CreateMail() {
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
@@ -47,33 +49,40 @@ export default function CreateMail() {
             console.log(data);
             const contentType = response.headers.get("Content-Type");
             let errorMessage;
-        
-        
-              if (response.ok) {
-                toast.success('tạo tòa nhà thành công !')
-           
-              }else {
+
+
+            if (response.ok) {
+                toast.success('tạo mail thành công !')
+
+            } else {
                 if (contentType.includes("application/json")) {
-                  const data = await response.json();
-                  errorMessage = data.message || "Đã xảy ra lỗi, vui lòng thử lại!";
+                    const data = await response.json();
+                    errorMessage = data.message || "Đã xảy ra lỗi, vui lòng thử lại!";
                 } else {
-                  errorMessage = await response.text(); // Nếu là chuỗi thuần
+                    errorMessage = await response.text(); // Nếu là chuỗi thuần
                 }
                 toast.error(`Lỗi: ${errorMessage}`); // Hiển thị toàn bộ chuỗi
-              }
+            }
         } catch (error) {
             toast.error("Không thể kết nối đến server, vui lòng thử lại sau.");
         } finally {
             setLoading(false);
         }
     };
-
+    const handleRefesh = () => {
+        router.push('/admin/information');
+    }
     return (
         <>
-
+            <div className="flex justify-end p-6">
+                <Button onClick={handleRefesh} className="bg-blue-900 text-white hover:bg-blue-600">
+                    <FileText className="mr-2 h-4 w-4" />
+                    Trang nhận tin
+                </Button>
+            </div>
             <div className=" flex items-center justify-center bg-gray-100 p-6">
                 <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-screen-lg">
-                    <h2 className="text-2xl font-semibold text-gray-700 mb-4">Tạo Khu Vực Mới</h2>
+                    <h2 className="text-2xl font-semibold text-gray-700 mb-4">Gửi mail</h2>
 
                     {successMessage && (
                         <div className="bg-green-100 text-green-800 p-4 rounded mb-4">
@@ -96,7 +105,7 @@ export default function CreateMail() {
                                 onChange={(e) => setTitle(e.target.value)}
                                 className="w-full p-2 border border-gray-300 rounded mt-1"
                                 placeholder="Nhập tiêu đề"
-                                
+
                             />
                         </div>
                         <div>
@@ -107,7 +116,7 @@ export default function CreateMail() {
                                 onChange={(e) => setContent(e.target.value)}
                                 className="w-full p-2 border border-gray-300 rounded mt-1"
                                 placeholder="Nhập tiêu đề"
-                                
+
                             />
                         </div>
 
@@ -116,7 +125,7 @@ export default function CreateMail() {
                             disabled={loading}
                             className={`w-full p-2 rounded ${loading ? "bg-gray-400" : "bg-blue-900 hover:bg-blue-700"} text-white transition`}
                         >
-                            {loading ? "Đang tạo..." : "Thêm Email"}
+                            {loading ? "Đang tạo..." : "Gửi Email"}
                         </button>
                     </form>
                 </div>

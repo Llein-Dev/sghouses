@@ -124,7 +124,7 @@ export default function RoomComponents({ room }) {
             <Dialog>
               <DialogTrigger asChild>
                 <img
-                  src={`http://localhost:8000/storage/${images[0]}`} // Hiển thị hình ảnh đầu tiên
+                  src={`${process.env.NEXT_PUBLIC_PATH_FILE}${images[0]}`} // Hiển thị hình ảnh đầu tiên
                   alt="Room Image"
                   className="rounded-md object-cover w-full  lg:aspect-square cursor-pointer"
                 />
@@ -132,7 +132,7 @@ export default function RoomComponents({ room }) {
               <DialogContent className="max-w-[60vw] max-h-[90vh] p-0">
                 <div className="relative h-full">
                   <img
-                    src={`http://localhost:8000/storage/${images[currentImageIndex]}`} // Sử dụng đường dẫn đầy đủ
+                    src={`${process.env.NEXT_PUBLIC_PATH_FILE}${images[currentImageIndex]}`} // Sử dụng đường dẫn đầy đủ
                     alt={`Room Image ${currentImageIndex + 1}`}
                     className="rounded-lg"
                     style={{

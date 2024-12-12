@@ -46,7 +46,7 @@ export default function ArticleDetail() {
             id: comments?.length + 1, // Tạo id giả lập
             name: user?.name || "Người dùng",
             content: newComment,
-            avatar: user?.avatar ? `http://localhost:8000/storage/${user.avatar}` : "",
+            avatar: user?.avatar ? `${process.env.NEXT_PUBLIC_PATH_FILE}${user.avatar}` : "",
             likes: 0,
             replies: 0,
             date: "Vừa xong", // Hiển thị thời gian tạm thời
@@ -79,7 +79,7 @@ export default function ArticleDetail() {
                     id: data.id, // ID thực từ server
                     name: user?.name,
                     content: newComment,
-                    avatar: user?.avatar ? `http://localhost:8000/storage/${user.avatar}` : "",
+                    avatar: user?.avatar ? `${process.env.NEXT_PUBLIC_PATH_FILE}${user.avatar}` : "",
                     likes: 0,
                     replies: 0,
                     date: data.date || "Vừa xong",
@@ -123,7 +123,7 @@ export default function ArticleDetail() {
                                     </p>
                                 </div>
                                 <img
-                                    src={`http://localhost:8000/storage/${detailBlog.image}`}
+                                    src={`${process.env.NEXT_PUBLIC_PATH_FILE}${detailBlog.image}`}
                                     alt="SGhouses Việt Nam"
                                     className="w-full h-[400px] object-cover rounded-lg mb-6"
 
@@ -183,7 +183,7 @@ export default function ArticleDetail() {
                                         <CardContent className="grid p-0 overflow-hidden grid-cols-3">
                                             {/* Image Section */}
                                             <img
-                                                src={`http://localhost:8000/storage/${i.image}`}
+                                                src={`${process.env.NEXT_PUBLIC_PATH_FILE}${i.image}`}
                                                 alt={`Related Article ${i.title}`}
                                                 className="col-span-1 aspect-square object-cover"
                                             />

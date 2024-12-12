@@ -2,18 +2,9 @@
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useEffect, useState } from "react";
-import { Search, Trash2, FileText } from "lucide-react";
+import { Search,FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import ExpandableTable from "@/components/expandTable";
@@ -72,7 +63,7 @@ export default function ContractContent() {
 
       if (response.ok) {
         toast.success("Xóa thành công!");
-        setContracts((prev) => prev.filter((contract) => contract.id !== id));
+        setContracts((prev) => prev.filter((contact) => contact.id !== id));
       } else {
         setError("Lỗi khi xóa liên hệ.");
       }
@@ -85,17 +76,17 @@ export default function ContractContent() {
     router.push("/admin/contacts/refeshContacts");
   };
 
-  // Phân trang
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const filteredContracts = contacts.filter((contract) =>
-    `${contract.name} ${contract.id_room} ${contract.phone}`
+
+  const filteredContacts = contacts.filter((contact) =>
+    `${contact.name} ${contact.id_room} ${contact.phone}`
       .toLowerCase()
       .includes(searchTerm.toLowerCase())
   );
-  const currentItems = filteredContracts.slice(indexOfFirstItem, indexOfLastItem);
-
-  const totalPages = Math.ceil(filteredContracts.length / itemsPerPage);
+  // Phân trang
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredContacts.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(filteredContacts.length / itemsPerPage);
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
   console.log(currentItems);
 

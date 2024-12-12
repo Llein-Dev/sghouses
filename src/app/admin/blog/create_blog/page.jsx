@@ -7,7 +7,24 @@ import { Button } from "@/components/ui/button";
 import { FileText, Plus } from "lucide-react";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import dynamic from "next/dynamic";
+// Import React Quill với tính năng hỗ trợ đầy đủ công cụ
+const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
+import "react-quill/dist/quill.snow.css"; // Import 
+// Cấu hình toolbar cho Quill với đầy đủ công cụ
+const modules = {
+    toolbar: [
+        [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }], // Các cấp độ tiêu đề và font
+        [{ 'list': 'ordered' }, { 'list': 'bullet' }], // Danh sách có thứ tự và không có thứ tự
+        ['bold', 'italic', 'underline', 'strike'], // In đậm, in nghiêng, gạch dưới, gạch ngang
+        [{ 'align': [] }], // Căn chỉnh
+        [{ 'color': [] }, { 'background': [] }], // Chọn màu chữ và nền
+        [{ 'script': 'sub' }, { 'script': 'super' }], // Chỉ số trên, chỉ số dưới
+        ['link', 'image'], // Thêm link và ảnh
+        ['blockquote', 'code-block'], // Trích dẫn và khối mã
+        ['clean'], // Xóa định dạng
+    ],
+};
 export default function CreateBlog() {
     const [title, setTitle] = useState("");
     const [image, setImage] = useState(null); // Giữ nguyên file ảnh thay vì mã hóa
@@ -96,14 +113,21 @@ export default function CreateBlog() {
                 body: formData,
             });
 
-            const data = await response.json();
+            const contentType = response.headers.get("Content-Type");
+            let errorMessage;
             if (response.ok) {
                 toast.success("Blog đã được tạo thành công!");
             } else {
-                setErrorMessage(data.message || "Đã có lỗi xảy ra, vui lòng thử lại.");
+                if (contentType.includes("application/json")) {
+                    const data = await response.json();
+                    errorMessage = data.message || "Đã xảy ra lỗi, vui lòng thử lại!";
+                } else {
+                    errorMessage = await response.text(); // Nếu là chuỗi thuần
+                }
+                toast.error(`Lỗi: ${errorMessage}`); // Hiển thị toàn bộ chuỗi
             }
         } catch (error) {
-            setErrorMessage("Không thể kết nối đến server, vui lòng thử lại sau.");
+            toast.error("Không thể kết nối đến server, vui lòng thử lại sau.");
         } finally {
             setLoading(false);
         }
@@ -121,7 +145,7 @@ export default function CreateBlog() {
                     Trang tin tức
                 </Button>
             </div>
-            <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
+            <div className="flex items-center justify-center bg-gray-100 p-6">
                 <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-screen-lg">
                     <h2 className="text-2xl font-semibold text-gray-700 mb-4">Tạo bài viết mới</h2>
 
@@ -146,7 +170,7 @@ export default function CreateBlog() {
                                 onChange={(e) => setTitle(e.target.value)}
                                 className="w-full p-2 border border-gray-300 rounded mt-1"
                                 placeholder="Nhập tiêu đề"
-                                required
+
                             />
                         </div>
 
@@ -167,16 +191,16 @@ export default function CreateBlog() {
 
                         <div>
                             <label className="block text-gray-600">Nội dung</label>
-                            <textarea
+                            <ReactQuill
                                 value={content}
-                                onChange={(e) => setContent(e.target.value)}
+                                onChange={setContent}
+                                modules={modules} // Sử dụng cấu hình module với toolbar đầy đủ
                                 className="w-full p-2 border border-gray-300 rounded mt-1"
                                 rows="5"
                                 placeholder="Nhập nội dung bài viết"
-                                required
-                            ></textarea>
-                        </div>
 
+                            ></ReactQuill>
+                        </div>
                         <div>
                             <label className="block text-gray-600">Đường dẫn</label>
                             <input
@@ -185,20 +209,21 @@ export default function CreateBlog() {
                                 onChange={(e) => setSlug(e.target.value)}
                                 className="w-full p-2 border border-gray-300 rounded mt-1"
                                 placeholder="Nhập đường dẫn"
-                                required
+
                             />
                         </div>
 
                         <div>
                             <label className="block text-gray-600">Mô tả</label>
-                            <textarea
+                            <ReactQuill
                                 value={description}
-                                onChange={(e) => setDescription(e.target.value)}
+                                onChange={setDescription}
+                                modules={modules} // Sử dụng cấu hình module với toolbar đầy đủ
                                 className="w-full p-2 border border-gray-300 rounded mt-1"
                                 rows="3"
                                 placeholder="Nhập mô tả ngắn"
-                                required
-                            ></textarea>
+
+                            ></ReactQuill>
                         </div>
 
                         <div>
@@ -207,7 +232,7 @@ export default function CreateBlog() {
                                 value={cate_id}
                                 onChange={(e) => setCategory(e.target.value)}
                                 className="w-full p-2 border border-gray-300 rounded mt-1"
-                                required
+
                             >
                                 <option value="" disabled>
                                     Chọn danh mục
@@ -223,7 +248,7 @@ export default function CreateBlog() {
                         <button
                             type="submit"
                             disabled={loading}
-                            className={`w-full p-2 rounded ${loading ? "bg-gray-400" : "bg-blue-600 hover:bg-blue-700"} text-white transition`}
+                            className={`w-full p-2 rounded ${loading ? "bg-gray-400" : "bg-blue-900 hover:bg-blue-700"} text-white transition`}
                         >
                             {loading ? "Đang tạo..." : "Thêm bài viết"}
                         </button>

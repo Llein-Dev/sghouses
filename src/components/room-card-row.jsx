@@ -105,7 +105,7 @@ export function RoomCardRowComponent({ product }) {
       <div className="flex flex-col sm:flex-row">
         <div className="relative w-full sm:w-1/3 md:aspect-[4/3] aspect-video">
           <img
-            src={`http://localhost:8000/storage/${firstImage}`}
+            src={`${process.env.NEXT_PUBLIC_PATH_FILE}${firstImage}`}
             alt={product?.ten_phong}
             className="rounded-t-lg h-full w-full object-cover sm:rounded-l-lg sm:rounded-t-none "
           />

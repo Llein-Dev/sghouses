@@ -20,7 +20,7 @@ export function ProductCardColCheapComponent({ productsHouseCheap }) {
       {productsHouseCheap.slice(0, 4).map((houseCheap, index) => (
         <Card key={index} className="overflow-hidden ">
           <div className="relative w-full aspect-video mb-2 overflow-hidden ">
-            <img src={`http://localhost:8000/storage/${houseCheap?.image}`} />
+            <img src={`${process.env.NEXT_PUBLIC_PATH_FILE}${houseCheap?.image}`} />
           </div>
           <CardContent className="p-4">
             <p className="text-sm text-muted-foreground mb-2 flex items-center">

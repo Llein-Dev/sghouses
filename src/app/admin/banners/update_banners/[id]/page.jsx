@@ -90,9 +90,9 @@ export default function UpdateBanner() {
             });
 
             if (response.ok) {
-                toast.success('Khu vực đã cập nhật thành công!', {
+                toast.success('Biểu đã cập nhật thành công!', {
                     onClose: () => {
-                        router.push(`/admin/area`);
+                        router.push(`/admin/banners`);
                     },
                 });
             } else {
@@ -117,23 +117,11 @@ export default function UpdateBanner() {
             </div>
             <div className=" flex items-center justify-center bg-gray-100 p-6">
                 <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-screen-lg">
-                    <h2 className="text-2xl font-semibold text-gray-700 mb-4">Chỉnh sửa khu vực</h2>
+                    <h2 className="text-2xl font-semibold text-gray-700 mb-4">Chỉnh sửa biểu ngữ</h2>
 
                     {error && <p className="text-red-500 mb-4">{error}</p>}
 
                     <form onSubmit={handleSubmit} className="space-y-4">
-                        <div>
-                            <label className="block text-gray-600">Tiêu đề</label>
-                            <input
-                                type="text"
-                                value={title}
-                                onChange={(e) => setTitle(e.target.value)}
-                                className="w-full p-2 border border-gray-300 rounded mt-1"
-                                placeholder="Nhập tiêu đề"
-                                required
-                            />
-                        </div>
-
                         <div>
                             <label className="block text-gray-600">Thứ tự</label>
                             <input
@@ -142,7 +130,18 @@ export default function UpdateBanner() {
                                 onChange={(e) => setOrder(e.target.value)}
                                 className="w-full p-2 border border-gray-300 rounded mt-1"
                                 placeholder="Nhập tiêu đề"
-                                required
+                                
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-gray-600">Tiêu đề</label>
+                            <input
+                                type="text"
+                                value={title}
+                                onChange={(e) => setTitle(e.target.value)}
+                                className="w-full p-2 border border-gray-300 rounded mt-1"
+                                placeholder="Nhập tiêu đề"
+                                
                             />
                         </div>
                         <div>
@@ -153,7 +152,7 @@ export default function UpdateBanner() {
                                 onChange={(e) => setContent(e.target.value)}
                                 className="w-full p-2 border border-gray-300 rounded mt-1"
                                 placeholder="Nhập tiêu đề"
-                                required
+                                
                             />
                         </div>
                         <div>
@@ -170,7 +169,7 @@ export default function UpdateBanner() {
                                         src={
                                             imagePreview.startsWith("blob:")
                                                 ? imagePreview // Hiển thị preview ảnh mới
-                                                : `http://localhost:8000/storage/${imagePreview}` // Hiển thị ảnh hiện tại
+                                                : `${process.env.NEXT_PUBLIC_PATH_FILE}${imagePreview}` // Hiển thị ảnh hiện tại
                                         }
                                         alt="Preview"
                                         className="w-32 h-32 object-cover rounded"
@@ -183,7 +182,7 @@ export default function UpdateBanner() {
                             type="submit"
                             className="w-full p-2 rounded bg-blue-600 hover:bg-blue-700 text-white transition"
                         >
-                            Cập nhật khu vực
+                            Cập nhật
                         </button>
                     </form>
                 </div>

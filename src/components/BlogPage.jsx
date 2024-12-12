@@ -21,7 +21,7 @@ function NewsCard({ id, title, description, image, date }) {
     <Card className="h-full flex  overflow-hidden flex-col">
       <div className="w-full aspect-video overflow-hidden">
         <img
-          src={`http://localhost:8000/storage/${image}`}
+          src={`${process.env.NEXT_PUBLIC_PATH_FILE}${image}`}
           alt={title}
           className="object-cover w-full h-full"
         />
@@ -50,7 +50,7 @@ function NewsCardRow({ id, title, excerpt, image, date }) {
     <Card className="h-full flex  overflow-hidden flex-row">
       <div className="w-2/6 aspect-square overflow-hidden">
         <img
-          src={`http://localhost:8000/storage/${image}`}
+          src={`${process.env.NEXT_PUBLIC_PATH_FILE}${image}`}
           alt={title}
           className="object-cover w-full h-full"
         />
@@ -116,7 +116,7 @@ export default function NewsHomepage() {
           <Card className="md:col-span-2 space-y-2 h-full flex flex-col overflow-hidden">
             <div className="relative aspect-[18/9] overflow-hidden">
               <img
-                src={`http://localhost:8000/storage/${featuredNews.image}`}
+                src={`${process.env.NEXT_PUBLIC_PATH_FILE}${featuredNews.image}`}
                 alt={featuredNews.title}
                 className="object-cover w-full"
               />

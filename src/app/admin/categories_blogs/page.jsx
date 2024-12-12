@@ -222,8 +222,8 @@ export default function CategoryBlog() {
             <Input
               placeholder="Tìm kiếm..."
               className="max-w-sm"
-            // value={searchTerm}
-            // onChange={(e) => setSearchTerm(e.target.value)}
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
 

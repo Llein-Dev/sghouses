@@ -21,7 +21,7 @@ export function ProductCardRowComponent({
             <div className="flex flex-col sm:flex-row">
                 <div className="relative w-full sm:w-1/3 md:aspect-[4/3] aspect-video">
                     <img
-                       src={`http://localhost:8000/storage/${product?.image}`} 
+                       src={`${process.env.NEXT_PUBLIC_PATH_FILE}${product?.image}`} 
                         alt={product?.name}
                         layout="fill"
                         objectFit="cover"

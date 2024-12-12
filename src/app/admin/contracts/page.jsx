@@ -228,7 +228,7 @@ export default function Contract() {
           window.location.reload();
         }
       } else {
-        const errorData = await response.json();
+       ; const errorData = await response.json()
         toast.error(`Lỗi khi thêm danh mục: ${errorData.message || "Có lỗi xảy ra"}`);
       }
     } catch (error) {
@@ -305,7 +305,7 @@ export default function Contract() {
         <div className="flex items-center space-x-2 w-1/2">
           <Search className="h-5 w-5 text-gray-500" />
           <Input
-            placeholder="Search contracts..."
+            placeholder="Tìm kiếm..."
             className="max-w-sm"
           // value={searchTerm}
           // onChange={(e) => setSearchTerm(e.target.value)}
@@ -322,7 +322,7 @@ export default function Contract() {
                 handleUserChange({ target: { value: id_user } });
               }} variant="blue" className="bg-green-700 text-white hover:bg-green-600">
                 <Plus className="mr-2 h-4 w-4" />
-                Thêm Danh Mục
+                Thêm hợp đồng
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[80vw]">

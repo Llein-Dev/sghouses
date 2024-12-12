@@ -93,7 +93,7 @@ export default function RefeshBuilding() {
         <div className="flex items-center space-x-2">
           <Search className="h-5 w-5 text-gray-500" />
           <Input
-            placeholder="Search users..."
+            placeholder="Tìm kiếm..."
             // value={searchTerm}
             // onChange={handleSearchChange}
             className="max-w-sm"
@@ -101,9 +101,9 @@ export default function RefeshBuilding() {
         </div>
         <div className="flex items-center space-x-4 w-1/2 justify-end">
           {/* khôi phục Danh Mục tin tức */}
-          <Button variant="blue" onClick={handleRoom} className="bg-blue-700 text-white hover:bg-blue-800">
+          <Button variant="blue" onClick={handleRoom} className="bg-blue-900 text-white hover:bg-blue-800">
             <List className="mr-2 h-4 w-4" />
-            Danh sách Tòa nhà
+            Danh sách phòng
           </Button>
         </div>
       </div>
@@ -129,7 +129,7 @@ export default function RefeshBuilding() {
                       objectFit: "cover",
                       borderRadius: "10px",
                     }}
-                    src={`http://localhost:8000/storage/${rooms.hinh_anh}`}
+                    src={`${process.env.NEXT_PUBLIC_PATH_FILE}${rooms.hinh_anh}`}
                     alt="Room"
                   />
                   <div>

@@ -17,16 +17,15 @@ import {
   Dialog,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { Badge } from "@/components/ui/badge"
 import { useRouter } from "next/navigation"
 import Cookies from "js-cookie"
-import { Label } from "recharts"
 
 
-export default function CategoryBlog() {
+export default function Buildings() {
   const [buildings, setCatagoryBlog] = useState([])
   const router = useRouter()
   const [error, setError] = useState([])
+  const [searchTerm, setSearchTerm] = useState(""); // Từ khóa tìm kiếm
 
   
   useEffect(() => {
@@ -128,7 +127,11 @@ export default function CategoryBlog() {
       }
     };
 
-
+    const filteredBuilding = buildings.filter((building) =>
+      `${building.room} ${building.name} ${building.name_area} `
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase())
+    );
   const handleRefesh = () => {
     router.push('/admin/buildings/refesh_building')
   }
@@ -146,10 +149,10 @@ export default function CategoryBlog() {
   <div className="flex items-center space-x-2 w-1/2">
     <Search className="h-5 w-5 text-gray-500" />
     <Input
-      placeholder="Search contracts..."
+      placeholder="Tìm kiếm..."
       className="max-w-sm"
-      // value={searchTerm}
-      // onChange={(e) => setSearchTerm(e.target.value)}
+      value={searchTerm}
+      onChange={(e) => setSearchTerm(e.target.value)}
     />
   </div>
   
@@ -180,14 +183,14 @@ export default function CategoryBlog() {
             <TableHead>Thông tin tòa nhà</TableHead>
             <TableHead>Số phòng</TableHead>
             <TableHead>Nổi bật</TableHead>
-            <TableHead>Actions</TableHead>
+            <TableHead>Hành động</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {buildings.map((building, index) => (
+          {filteredBuilding.map((building, index) => (
             <TableRow key={index}>
               <TableCell>{building.id}</TableCell>
-              <TableCell className="flex gap-5">  <img style={{ height: "150px", objectFit: "cover", borderRadius: "10px" }} src={`http://localhost:8000/storage/${building.image}`}></img> <div><div className="p-1 text-xl font-bold  rounded text-black">{building.name}</div>{building.name_area}</div>
+              <TableCell className="flex gap-5">  <img style={{ height: "150px", objectFit: "cover", borderRadius: "10px" }} src={`${process.env.NEXT_PUBLIC_PATH_FILE}${building.image}`}></img> <div><div className="p-1 text-xl font-bold  rounded text-black">{building.name}</div>{building.name_area}</div>
               </TableCell>
               <TableCell>{building.room}</TableCell> {/* số phòng */}
               <TableCell>
@@ -205,8 +208,6 @@ export default function CategoryBlog() {
                   </label>
                 </div>
               </TableCell>
-       
-              <TableCell>{building.view}</TableCell>   {/* lượt xem */}
               <TableCell>
                 <div className="flex space-x-2">
                   {/* Nút Gọi điện */}

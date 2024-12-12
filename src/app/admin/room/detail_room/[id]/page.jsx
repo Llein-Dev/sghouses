@@ -61,7 +61,7 @@ export default function DetailRoom() {
               {room.image.split(";").map((img, index) => (
                 <img
                   key={index}
-                  src={`http://localhost:8000/storage/${img}`}
+                  src={`${process.env.NEXT_PUBLIC_PATH_FILE}${img}`}
                   alt={`Hình ảnh ${index + 1}`}
                   className="w-48 h-32 object-cover rounded-lg shadow-md"
                 />

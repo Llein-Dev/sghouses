@@ -72,7 +72,7 @@ export function RoomManagement({ contactsData, contractsData }) {
                     {/* Hiển thị hình ảnh phòng */}
                     <div className="flex flex-col items-center mb-4">
                       <img
-                        src={`http://localhost:8000/storage/${contact.roomDetails.image.split(';')[0]}`} // Thêm đường dẫn
+                        src={`${process.env.NEXT_PUBLIC_PATH_FILE}${contact.roomDetails.image.split(';')[0]}`} // Thêm đường dẫn
                         alt={contact.roomDetails.name}
                         className="w-full h-40 object-cover rounded-lg" // Điều chỉnh kích thước hình ảnh
                       />

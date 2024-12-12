@@ -221,7 +221,7 @@ export default function UsersContent() {
         <TableHeader>
           <TableRow>
             <TableHead>STT</TableHead>
-            <TableHead>Avatar</TableHead> {/* New column for Avatar */}
+            <TableHead>Ảnh</TableHead> {/* New column for Avatar */}
             <TableHead>Tên</TableHead>
             <TableHead>Email</TableHead>
             <TableHead>Số điện thoại</TableHead>
@@ -240,7 +240,7 @@ export default function UsersContent() {
               <TableCell>
                 {user.avatar ? (
                   <img
-                    src={`http://localhost:8000/storage/${user.avatar}`}
+                    src={`${process.env.NEXT_PUBLIC_PATH_FILE}${user.avatar}`}
                     alt={`${user.name}'s avatar`}
                     className="w-10 h-10 rounded-full"
                   />

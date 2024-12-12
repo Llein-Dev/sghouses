@@ -20,6 +20,7 @@ export default function BlogContent() {
   const [area, setArea] = useState([])
   const [error, setError] = useState([])
   const router = useRouter(); // Khởi tạo router
+  const [searchTerm, setSearchTerm] = useState(""); // Từ khóa tìm kiếm
   // const router = useRouter()
   // Định nghĩa hàm fetchData
   const fetchDataArea = async () => {
@@ -135,6 +136,11 @@ export default function BlogContent() {
     }
   };
 
+  const filteredArea = area.filter((areas) =>
+    `${areas.name}  `
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase())
+  );
 
   const handleRefeshArea = () => {
     router.push('/admin/area/refesh_area')
@@ -153,8 +159,11 @@ export default function BlogContent() {
           <Search className="h-5 w-5 text-gray-500" />
           <Input
             placeholder="Tìm kiếm..."
-            value={""}
-            // onChange={handleSearchChange}
+            value={searchTerm}
+            onChange={(e) => {
+              setSearchTerm(e.target.value);
+              // setCurrentPage(1); // Reset về trang đầu khi tìm kiếm
+            }}
             className="max-w-sm"
           />
         </div>
@@ -184,7 +193,7 @@ export default function BlogContent() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {area.map((areas, index) => (
+          {filteredArea.map((areas, index) => (
             <TableRow key={index} >
               <TableCell>{areas.id}</TableCell>
               <TableCell> <img style={{height:"150px", width:'250px', objectFit:"cover", borderRadius:"10px"}} src={`${process.env.NEXT_PUBLIC_PATH_FILE}${areas.image}`}

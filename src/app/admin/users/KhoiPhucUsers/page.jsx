@@ -173,7 +173,7 @@ export default function KhoiPhucUsers() {
                   <TableRow key={user.id}>
                     <TableCell>{index + 1}</TableCell>
                     <TableCell>
-                      {user.avatar ? (
+                      {user.avatar && user.avatar.trim() ? (
                         <img
                           src={`${process.env.NEXT_PUBLIC_PATH_FILE}${user.avatar}`}
                           alt={`${user.name}'s avatar`}
@@ -181,10 +181,11 @@ export default function KhoiPhucUsers() {
                         />
                       ) : (
                         <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-500">
-                          <UserIcon className="h-6 w-6" /> {/* Biểu tượng người dùng */}
+                          <UserIcon className="h-6 w-6" />
                         </div>
                       )}
-                    </TableCell> {/* Avatar display */}
+                    </TableCell>
+
                     <TableCell>{user.name}</TableCell>
                     <TableCell>{user.email}</TableCell>
                     <TableCell>{user.phone}</TableCell>
@@ -204,7 +205,7 @@ export default function KhoiPhucUsers() {
                 ))
               ) : (
                 <TableRow>
-                  <TableCell colSpan={5} className="text-center text-gray-500">
+                  <TableCell colSpan={10} className="text-center text-gray-500">
                     Không có người dùng nào bị cấm.
                   </TableCell>
                 </TableRow>

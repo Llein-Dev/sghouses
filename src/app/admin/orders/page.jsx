@@ -125,7 +125,7 @@ export default function Order() {
           {currentItems.length > 0 ? (
             currentItems.map((order, index) => (
               <TableRow key={index}>
-                <TableCell>{order.token}</TableCell>
+                <TableCell>{order.token}</TableCell> {/* xóa hợp đồng đi*/}
                 <TableCell>{order.hop_dong_id}</TableCell>
                 <TableCell>{order.tong_tien}</TableCell>
                 <TableCell>{order.trang_thai}</TableCell>

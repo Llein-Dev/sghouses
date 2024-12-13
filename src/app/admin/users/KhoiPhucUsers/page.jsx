@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
-import { Search, RefreshCcw, FileText } from "lucide-react"
+import { Search, RefreshCcw, FileText, UserIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
@@ -134,76 +134,100 @@ export default function KhoiPhucUsers() {
   return (
     <>
 
-    <div className="space-y-4">
-      <div className="flex justify-between items-center">
-        <div className="flex items-center space-x-2">
-          <Search className="h-5 w-5 text-gray-500" />
-          <Input
-            placeholder="Tìm kiếm..."
-            value={searchTerm}
-            onChange={handleSearchChange}
-            className="max-w-sm"
-          />
+      <div className="space-y-4">
+        <div className="flex justify-between items-center">
+          <div className="flex items-center space-x-2">
+            <Search className="h-5 w-5 text-gray-500" />
+            <Input
+              placeholder="Tìm kiếm..."
+              value={searchTerm}
+              onChange={handleSearchChange}
+              className="max-w-sm"
+            />
+          </div>
+          <Button onClick={handleReturn} variant="blue">
+            <FileText className="mr-2 h-4 w-4" />
+            Quay lại trang người dùng
+          </Button>
         </div>
-        <Button onClick={handleReturn} variant="blue">
-          <FileText className="mr-2 h-4 w-4" />
-          Quay lại trang người dùng
-        </Button>
-      </div>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>STT</TableHead>
-            <TableHead>Tên</TableHead>
-            <TableHead>Email</TableHead>
-            <TableHead>Quyền</TableHead>
-            <TableHead>Hành động</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {
-            currentUsers.length > 0 ? (
-              currentUsers.map((user, index) => (
-                <TableRow key={index}>
-                  <TableCell>{user.id}</TableCell>
-                  <TableCell>{user.name}</TableCell>
-                  <TableCell>{user.email}</TableCell>
-                  <TableCell>{user.born}</TableCell>
-                  <TableCell>
-                    <div className="flex space-x-2">
-                      <Button variant="outline" size="icon" onClick={() => handleRefesh(user.id)}>
-                        <RefreshCcw className="h-4 w-4" />
-                      </Button>
-                    </div>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>STT</TableHead>
+              <TableHead>Ảnh</TableHead> {/* New column for Avatar */}
+              <TableHead>Tên</TableHead>
+              <TableHead>Email</TableHead>
+              <TableHead>Số điện thoại</TableHead>
+              <TableHead>Địa chỉ</TableHead> {/* New column for Address */}
+              <TableHead>Ngày sinh</TableHead> {/* New column for Birth Date */}
+              <TableHead>Giới tính</TableHead> {/* New column for Gender */}
+              {/* <TableHead>Ngày đăng ký</TableHead> New column for Registration Date */}
+              <TableHead>Quyền</TableHead>
+              <TableHead>Hành động</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {
+              currentUsers.length > 0 ? (
+                currentUsers.map((user, index) => (
+                  <TableRow key={user.id}>
+                    <TableCell>{index + 1}</TableCell>
+                    <TableCell>
+                      {user.avatar ? (
+                        <img
+                          src={`${process.env.NEXT_PUBLIC_PATH_FILE}${user.avatar}`}
+                          alt={`${user.name}'s avatar`}
+                          className="w-10 h-10 rounded-full"
+                        />
+                      ) : (
+                        <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-500">
+                          <UserIcon className="h-6 w-6" /> {/* Biểu tượng người dùng */}
+                        </div>
+                      )}
+                    </TableCell> {/* Avatar display */}
+                    <TableCell>{user.name}</TableCell>
+                    <TableCell>{user.email}</TableCell>
+                    <TableCell>{user.phone}</TableCell>
+                    <TableCell>{user.address || 'Chưa có địa chỉ'}</TableCell> {/* Display address, handle null */}
+                    <TableCell>{new Date(user.born).toLocaleDateString()}</TableCell> {/* Display birth date */}
+                    <TableCell>{user.gender === 1 ? 'Nam' : 'Nữ'}</TableCell> {/* Display gender */}
+                    {/* <TableCell>{user.date_create}</TableCell> Display registration date */}
+                    <TableCell>{user.role === 0 ? 'Admin' : 'User'}</TableCell>
+                    <TableCell>
+                      <div className="flex space-x-2">
+                        <Button variant="outline" size="icon" onClick={() => handleRefesh(user.id)}>
+                          <RefreshCcw className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={5} className="text-center text-gray-500">
+                    Không có người dùng nào bị cấm.
                   </TableCell>
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell colSpan={5} className="text-center text-gray-500">
-                  Không có người dùng nào bị cấm.
-                </TableCell>
-              </TableRow>
-            )
-          }
-        </TableBody>
+              )
+            }
+          </TableBody>
 
-      </Table>
-      {/* Pagination */}
-      <div className="flex justify-center mt-4">
-        {[...Array(Math.ceil(filteredUsers.length / usersPerPage))].map((_, index) => (
-          <Button
-            key={index}
-            onClick={() => paginate(index + 1)}
-            variant={currentPage === index + 1 ? "blue" : "outline"}
-          >
-            {index + 1}
-          </Button>
-        ))}
+        </Table>
+        {/* Pagination */}
+        <div className="flex justify-center mt-4">
+          {[...Array(Math.ceil(filteredUsers.length / usersPerPage))].map((_, index) => (
+            <Button
+              key={index}
+              onClick={() => paginate(index + 1)}
+              variant={currentPage === index + 1 ? "blue" : "outline"}
+            >
+              {index + 1}
+            </Button>
+          ))}
+        </div>
+
       </div>
-      
-    </div>
- <ToastContainer />
- </>
+      <ToastContainer />
+    </>
   );
 }

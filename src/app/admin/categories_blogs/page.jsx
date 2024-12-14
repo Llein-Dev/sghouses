@@ -299,7 +299,7 @@ export default function CategoryBlog() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>ID</TableHead>
+              <TableHead>STT</TableHead>
               <TableHead>Tên Danh Mục Tin Tức</TableHead>
               <TableHead>Dường dẫn</TableHead>
               <TableHead>Tình trạng</TableHead>
@@ -315,7 +315,7 @@ export default function CategoryBlog() {
               currentItems
                 .map((blogs, index) => (
                   <TableRow key={index}>
-                    <TableCell>{blogs.id}</TableCell>
+                    <TableCell>{index + 1}</TableCell>
                     <TableCell>{blogs.name}</TableCell>
                     <TableCell>{blogs.slug}</TableCell>
                     <TableCell>{blogs.status}</TableCell>

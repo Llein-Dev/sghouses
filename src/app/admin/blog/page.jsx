@@ -163,7 +163,7 @@ export default function BlogContent() {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>ID</TableHead>
+            <TableHead>STT</TableHead>
             <TableHead>Ảnh</TableHead>
             <TableHead>Tên tin tức</TableHead>
             <TableHead>Danh mục tin tức</TableHead>
@@ -174,7 +174,7 @@ export default function BlogContent() {
         <TableBody>
           {filteredBlog.map((blogs, index) => (
             <TableRow key={index} >
-              <TableCell>{blogs.id}</TableCell>
+              <TableCell>{index + 1}</TableCell>
               <TableCell>  <img style={{height:"150px",width:"450px", objectFit:"cover", borderRadius:"10px"}} src={`${process.env.NEXT_PUBLIC_PATH_FILE}${blogs.image}`} 
               onError={(e) => {
                e.target.src = "https://png.pngtree.com/png-vector/20190820/ourmid/pngtree-no-image-vector-illustration-isolated-png-image_1694547.jpg"; // URL ảnh mặc định

@@ -7,6 +7,25 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Button } from "@/components/ui/button";
 import { FileText } from "lucide-react";
+import dynamic from "next/dynamic";
+// Import React Quill với tính năng hỗ trợ đầy đủ công cụ
+const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
+import "react-quill/dist/quill.snow.css"; // Import CSS mặc định của Quill
+
+// Cấu hình toolbar cho Quill với đầy đủ công cụ
+const modules = {
+    toolbar: [
+        [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }], // Các cấp độ tiêu đề và font
+        [{ 'list': 'ordered' }, { 'list': 'bullet' }], // Danh sách có thứ tự và không có thứ tự
+        ['bold', 'italic', 'underline', 'strike'], // In đậm, in nghiêng, gạch dưới, gạch ngang
+        [{ 'align': [] }], // Căn chỉnh
+        [{ 'color': [] }, { 'background': [] }], // Chọn màu chữ và nền
+        [{ 'script': 'sub' }, { 'script': 'super' }], // Chỉ số trên, chỉ số dưới
+        ['link', 'image'], // Thêm link và ảnh
+        ['blockquote', 'code-block'], // Trích dẫn và khối mã
+        ['clean'], // Xóa định dạng
+    ],
+};
 export default function CreateMail() {
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
@@ -110,10 +129,11 @@ export default function CreateMail() {
                         </div>
                         <div>
                             <label className="block text-gray-600">Nội dung</label>
-                            <textarea
+                            <ReactQuill
                                 type="text"
                                 value={content}
-                                onChange={(e) => setContent(e.target.value)}
+                                onChange={setContent}
+                                modules={modules} // Sử dụng cấu hình module với toolbar đầy đủ
                                 className="w-full p-2 border border-gray-300 rounded mt-1"
                                 placeholder="Nhập tiêu đề"
 

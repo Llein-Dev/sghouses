@@ -136,7 +136,7 @@ export default function RefeshCataBlog() {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>ID</TableHead>
+            <TableHead>STT</TableHead>
             <TableHead>Tên Danh Mục Tin Tức</TableHead>
             <TableHead>Điện thoại</TableHead>
             <TableHead>Tình trạng</TableHead>
@@ -148,7 +148,7 @@ export default function RefeshCataBlog() {
             filteredUsers.length > 0 ? (
               filteredUsers.map((cateBlog, index) => (
                 <TableRow key={index}>
-                  <TableCell>{cateBlog.id}</TableCell>
+                  <TableCell>{index + 1}</TableCell>
                   <TableCell>{cateBlog.name}</TableCell>
                   <TableCell>{cateBlog.slug}</TableCell>
                   <TableCell>{cateBlog.status}</TableCell>

@@ -6,24 +6,8 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import dynamic from "next/dynamic";
-// Import React Quill với tính năng hỗ trợ đầy đủ công cụ
-const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
-import "react-quill/dist/quill.snow.css"; // Import 
-// Cấu hình toolbar cho Quill với đầy đủ công cụ
-const modules = {
-  toolbar: [
-    [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }], // Các cấp độ tiêu đề và font
-    [{ 'list': 'ordered' }, { 'list': 'bullet' }], // Danh sách có thứ tự và không có thứ tự
-    ['bold', 'italic', 'underline', 'strike'], // In đậm, in nghiêng, gạch dưới, gạch ngang
-    [{ 'align': [] }], // Căn chỉnh
-    [{ 'color': [] }, { 'background': [] }], // Chọn màu chữ và nền
-    [{ 'script': 'sub' }, { 'script': 'super' }], // Chỉ số trên, chỉ số dưới
-    ['link', 'image'], // Thêm link và ảnh
-    ['blockquote', 'code-block'], // Trích dẫn và khối mã
-    ['clean'], // Xóa định dạng
-  ],
-};
+
+
 export default function CreateOrder() {
   const [formData, setFormData] = useState({
     id_hop_dong: "",
@@ -50,14 +34,6 @@ export default function CreateOrder() {
     setFormData((prev) => ({
       ...prev,
       [name]: value,
-    }));
-  };
-
-  // Xử lý thay đổi nội dung của ReactQuill
-  const handleQuillChange = (content) => {
-    setFormData((prev) => ({
-      ...prev,
-      noi_dung: content,
     }));
   };
 
@@ -340,15 +316,15 @@ export default function CreateOrder() {
               >
                 Nội Dung
               </label>
-              <ReactQuill
+              <textarea
                 id="noi_dung"
                 name="noi_dung"
                 value={formData.noi_dung}
-                onChange={handleQuillChange}
+                onChange={handleChange}
                 placeholder="Nhập nội dung hóa đơn"
                 rows="4"
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
-              ></ReactQuill>
+              ></textarea>
             </div>
             <div className="flex justify-end">
               <button

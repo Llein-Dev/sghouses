@@ -179,7 +179,7 @@ export default function Buildings() {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>ID</TableHead>
+            <TableHead>STT</TableHead>
             <TableHead>Thông tin tòa nhà</TableHead>
             <TableHead>Số phòng</TableHead>
             <TableHead>Nổi bật</TableHead>
@@ -189,7 +189,7 @@ export default function Buildings() {
         <TableBody>
           {filteredBuilding.map((building, index) => (
             <TableRow key={index}>
-              <TableCell>{building.id}</TableCell>
+              <TableCell>{index + 1}</TableCell>
               <TableCell className="flex gap-5">  <img style={{ height: "150px", objectFit: "cover", borderRadius: "10px" }} src={`${process.env.NEXT_PUBLIC_PATH_FILE}${building.image}`}></img> <div><div className="p-1 text-xl font-bold  rounded text-black">{building.name}</div>{building.name_area}</div>
               </TableCell>
               <TableCell>{building.room}</TableCell> {/* số phòng */}

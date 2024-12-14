@@ -111,7 +111,7 @@ export default function RefeshBlog() {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>ID</TableHead>
+            <TableHead>STT</TableHead>
             <TableHead>Ảnh</TableHead>
             <TableHead>Tên bài viết</TableHead>
             <TableHead>Mục</TableHead>
@@ -129,7 +129,7 @@ export default function RefeshBlog() {
           ) : (
             blogDeleted.map((blogsDeleted, index) => (
               <TableRow key={index}>
-                <TableCell>{blogsDeleted.id}</TableCell>
+                <TableCell>{index + 1}</TableCell>
                 <TableCell>
                   <img
                     src={`${process.env.NEXT_PUBLIC_PATH_FILE}${blogsDeleted.image}`}

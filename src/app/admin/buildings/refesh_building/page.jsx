@@ -137,7 +137,7 @@ export default function RefeshBuilding() {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>ID Phòng</TableHead>
+            <TableHead>Số phòng</TableHead>
             <TableHead>Ảnh</TableHead>
             <TableHead>Tên tòa nhà</TableHead>
             <TableHead>Đường dẫn</TableHead>

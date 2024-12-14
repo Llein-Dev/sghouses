@@ -138,7 +138,7 @@ export default function RefeshContracts() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>ID Phòng</TableHead>
+              <TableHead>Số phòng</TableHead>
               <TableHead>ID người dùng</TableHead>
               <TableHead>Trạng thái</TableHead>
               <TableHead>Ngày bắt đầu</TableHead>

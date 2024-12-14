@@ -113,7 +113,6 @@ export default function Order() {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Token</TableHead>
             <TableHead>Hợp đồng</TableHead>
             <TableHead>Tổng tiền</TableHead>
             <TableHead>Trạng thái</TableHead>
@@ -125,7 +124,6 @@ export default function Order() {
           {currentItems.length > 0 ? (
             currentItems.map((order, index) => (
               <TableRow key={index}>
-                <TableCell>{order.token}</TableCell> {/* xóa hợp đồng đi*/}
                 <TableCell>{order.hop_dong_id}</TableCell>
                 <TableCell>{order.tong_tien}</TableCell>
                 <TableCell>{order.trang_thai}</TableCell>

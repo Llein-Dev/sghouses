@@ -110,7 +110,7 @@ export default function RefeshBuilding() {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>ID</TableHead>
+            <TableHead>STT</TableHead>
             <TableHead>Thông tin phòng</TableHead>
             <TableHead>Gác lửng</TableHead>
             <TableHead>Diện tích</TableHead>
@@ -121,7 +121,7 @@ export default function RefeshBuilding() {
           {deletedRoom.length > 0 ? (
             deletedRoom.map((rooms, index) => (
               <TableRow key={index}>
-                <TableCell>{rooms.id}</TableCell>
+                <TableCell>{index + 1}</TableCell>
                 <TableCell className="flex gap-5">
                   <img
                     style={{

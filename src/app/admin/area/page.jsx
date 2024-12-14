@@ -183,7 +183,7 @@ export default function BlogContent() {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>ID</TableHead>
+            <TableHead>STT</TableHead>
             <TableHead>Ảnh</TableHead>
             <TableHead>Tên</TableHead>
             <TableHead>Số tòa nhà</TableHead>
@@ -195,7 +195,7 @@ export default function BlogContent() {
         <TableBody>
           {filteredArea.map((areas, index) => (
             <TableRow key={index} >
-              <TableCell>{areas.id}</TableCell>
+              <TableCell>{index + 1}</TableCell>
               <TableCell> <img style={{height:"150px", width:'250px', objectFit:"cover", borderRadius:"10px"}} src={`${process.env.NEXT_PUBLIC_PATH_FILE}${areas.image}`}
                onError={(e) => {
                 e.target.src = "https://png.pngtree.com/png-vector/20190820/ourmid/pngtree-no-image-vector-illustration-isolated-png-image_1694547.jpg"; // URL ảnh mặc định

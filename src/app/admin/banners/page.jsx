@@ -185,7 +185,7 @@ export default function Banners() {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>ID</TableHead>
+            <TableHead>STT</TableHead>
             <TableHead>Ảnh</TableHead>
             <TableHead>Tiêu đề</TableHead>
             <TableHead>Nội dung</TableHead>
@@ -198,7 +198,7 @@ export default function Banners() {
         <TableBody>
           {filteredBanner.map((banner, index) => (
             <TableRow key={index} >
-              <TableCell>{banner.id}</TableCell>
+              <TableCell>{index + 1}</TableCell>
               <TableCell> <img style={{ height: "150px", width: '250px', objectFit: "cover", borderRadius: "10px" }} src={`${process.env.NEXT_PUBLIC_PATH_FILE}${banner.image}`}></img> </TableCell>
               <TableCell className={!banner.title ? 'text-gray-500' : ''}>
                 {banner.title ? banner.title : 'Tên trống'}

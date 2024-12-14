@@ -172,7 +172,7 @@ export default function CategoryBlog() {
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead>ID</TableHead>
+                        <TableHead>STT</TableHead>
                         <TableHead>Thông tin phòng</TableHead>
                         <TableHead>Trạng thái</TableHead>
                         <TableHead>Diện tích</TableHead>
@@ -183,7 +183,7 @@ export default function CategoryBlog() {
                 <TableBody>
                     {filteredRoom.map((rooms, index) => (
                         <TableRow key={index}>
-                            <TableCell>{rooms.id}</TableCell>
+                            <TableCell>{index + 1}</TableCell>
                             <TableCell className="flex gap-5">  <img className="object-cover h-[100px] rounded-lg aspect-video" src={`${process.env.NEXT_PUBLIC_PATH_FILE}${rooms.hinh_anh}`}
                              onError={(e) => {
                                 e.target.src = "https://png.pngtree.com/png-vector/20190820/ourmid/pngtree-no-image-vector-illustration-isolated-png-image_1694547.jpg"; // URL ảnh mặc định

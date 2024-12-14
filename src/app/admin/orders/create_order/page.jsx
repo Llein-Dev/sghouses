@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 
 
 export default function CreateOrder() {
+  const [optionHoaDon, setOptionHoaDon] = useState([]);
   const [formData, setFormData] = useState({
     id_hop_dong: "",
     tien_thue: "",
@@ -25,7 +26,82 @@ export default function CreateOrder() {
 
   const [loading, setLoading] = useState(false);
 
+  const fetchDataOptionHoaDon = async () => {
+    const adminToken = Cookies.get("token");
+    try {
+      const response = await fetch(`http://localhost:8000/api/hop-dong/all`, {
+        method: "GET",
+        headers: {
+          'Authorization': `Bearer ${adminToken}`,
+          'Content-Type': 'application/json',
+        },
+      });
 
+      if (response.ok) {
+        const result = await response.json();
+        setOptionHoaDon(result)
+        console.log(result)
+      } else if (response.status === 401) {
+        setError("Không có quyền truy cập. Vui lòng đăng nhập lại.");
+        router.push("/");
+      } else {
+        setError("Lỗi không xác định.");
+      }
+    } catch (err) {
+      setError("Không thể truy cập dữ liệu.");
+    }
+  };
+
+  useEffect(() => {
+    const adminToken = Cookies.get('token');
+    if (!adminToken) {
+      router.push('/');
+      return;
+    }
+    // fetch dữ liệu user
+    fetchDataOptionHoaDon();
+  }, []);
+
+  const handleSelectChange = async (e) => {
+    const selectedId = e.target.value;
+
+    // Cập nhật id_hop_dong vào formData
+    setFormData((prev) => ({
+      ...prev,
+      id_hop_dong: selectedId,
+    }));
+
+    if (selectedId) {
+      const adminToken = Cookies.get("token");
+      try {
+        const response = await fetch(`http://localhost:8000/api/hop-dong/${selectedId}`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${adminToken}`,
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (response.ok) {
+          const result = await response.json();
+
+          // Cập nhật formData với dữ liệu từ API
+          setFormData((prev) => ({
+            ...prev,
+            tien_thue: result.tien_thue || "",
+            tien_dien: result.tien_dien || "",
+            tien_nuoc: result.tien_nuoc || "",
+            tien_xe: result.tien_xe || "",
+            tien_dich_vu: result.tien_dich_vu || "",
+          }));
+        } else {
+          toast.error("Không thể lấy chi tiết hợp đồng.");
+        }
+      } catch (error) {
+        toast.error("Có lỗi khi kết nối đến API.");
+      }
+    }
+  };
 
 
   // Xử lý khi form thay đổi
@@ -123,18 +199,25 @@ export default function CreateOrder() {
                   htmlFor="id_hop_dong"
                   className="block text-gray-600 font-medium mb-2"
                 >
-                  Mã Hợp Đồng
+                  Chọn Hợp Đồng
                 </label>
-                <input
-                  type="text"
+                <select
                   id="id_hop_dong"
                   name="id_hop_dong"
                   value={formData.id_hop_dong}
-                  onChange={handleChange}
-                  placeholder="Nhập mã hợp đồng"
+                  onChange={handleSelectChange} // Thay đổi sự kiện ở đây
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
-                />
+                >
+                  <option value="">Chọn Hợp Đồng</option>
+                  {optionHoaDon.map((option) => (
+                    <option key={option.id} value={option.id}>
+                      {option.id} - {option.name_room}
+                    </option>
+                  ))}
+                </select>
+
               </div>
+
 
               {/* Tiền thuê */}
               <div>

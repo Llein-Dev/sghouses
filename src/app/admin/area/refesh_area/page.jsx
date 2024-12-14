@@ -107,7 +107,7 @@ export default function RefeshArea() {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>ID</TableHead>
+            <TableHead>STT</TableHead>
             <TableHead>Ảnh</TableHead>
             <TableHead>Tên</TableHead>
             <TableHead>Đường dẫn</TableHead>
@@ -118,7 +118,7 @@ export default function RefeshArea() {
           {areaDeleted.length > 0 ? (
             areaDeleted.map((areas, index) => (
               <TableRow key={index}>
-                <TableCell>{areas.id}</TableCell>
+                <TableCell>{index + 1}</TableCell>
                 <TableCell>
                   <img
                     style={{

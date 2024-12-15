@@ -91,16 +91,18 @@ export default function CategoryBlog() {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${adminToken}`,
-          "Content-Type": "application/json",
+          "Content-Type": "application/json", 
         },
       });
 
       console.log('Delete response status:', response.status);
 
       if (response.ok) {
+        fetchDataCatagoryBlog();
         toast.success('Xóa thành công')
         setCatagoryBlog((prevCategoriesBlog) => prevCategoriesBlog.filter(blogs => blogs.id !== id));
       } else {
+        fetchDataCatagoryBlog();
         const errorData = await response.json();
         setError(errorData.message || "Lỗi khi xóa người dùng");
       }
@@ -290,8 +292,7 @@ export default function CategoryBlog() {
               <TableHead>STT</TableHead>
               <TableHead>Tên Danh Mục Tin Tức</TableHead>
               <TableHead>Dường dẫn</TableHead>
-              <TableHead>Tình trạng</TableHead>
-              <TableHead>Khác</TableHead>
+              <TableHead>Ngày tạo</TableHead>
               <TableHead>Hành động</TableHead>
             </TableRow>
           </TableHeader>
@@ -306,8 +307,7 @@ export default function CategoryBlog() {
                     <TableCell>{index + 1}</TableCell>
                     <TableCell>{blogs.name}</TableCell>
                     <TableCell>{blogs.slug}</TableCell>
-                    <TableCell>{blogs.status}</TableCell>
-                    <TableCell>{blogs.Order}</TableCell>
+                    <TableCell>{new Date(blogs.created_at).toLocaleDateString()}</TableCell>
                     <TableCell>
                       <div className="flex space-x-2">
                         {/* Nút Gọi điện */}

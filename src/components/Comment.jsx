@@ -7,21 +7,26 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 
-export default function CommentComponent({ comments , onCommentAdd, user }) {
+export default function CommentComponent({ comments, onCommentAdd, user }) {
     const [newComment, setNewComment] = useState("");
 
     const handleCommentSubmit = () => {
         if (newComment.trim() !== "") {
-            // Call the provided function to add the new comment
             onCommentAdd(newComment);
             setNewComment(""); // Clear input after submission
         }
+    };
+    console.log(comments);
+    // Function to get the current date in a desired format
+    const getCurrentDate = () => {
+        const today = new Date();
+        return today.toLocaleDateString(); // You can format the date as needed
     };
 
     return (
         <Card>
             <CardHeader>
-                <CardTitle>Bình luận</CardTitle>    
+                <CardTitle>Bình luận</CardTitle>
             </CardHeader>
             <CardContent>
                 <div className="flex items-center space-x-2">
@@ -44,19 +49,19 @@ export default function CommentComponent({ comments , onCommentAdd, user }) {
                     {comments?.map((comment) => (
                         <div key={comment.id} className="flex items-start space-x-4">
                             <Avatar>
-                                <AvatarImage src={comment.avatar} alt={comment.name} />
-                                <AvatarFallback>{comment?.name}</AvatarFallback>
+                                <AvatarImage src={comment.avatar} alt={comment.author} />
+                                <AvatarFallback>{comment?.author}</AvatarFallback>
                             </Avatar>
                             <div className="flex-1 space-y-2">
-                                <p className="font-semibold">{comment.name}</p>
+                                <p className="font-semibold">{comment.author}</p>
                                 <p>{comment.content}</p>
                                 <div className="flex items-center space-x-4 text-sm text-gray-500">
                                     <button className="flex items-center space-x-1">
-                                
-                                        <span>{comment.date} </span>
+
+                                        <span>{comment.date ? comment.date : getCurrentDate()}</span>
                                     </button>
 
-                           
+
                                 </div>
                             </div>
                         </div>

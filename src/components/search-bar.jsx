@@ -48,13 +48,13 @@ export function SearchBarComponent() {
       price: `${priceRange[0]}to${priceRange[1]}`,
       size: `${sizeRange[0]}to${sizeRange[1]}`,
     };
-  
+
     localStorage.setItem('searchParams', JSON.stringify(params)); // Lưu vào localStorage
-  
+
     // Chuyển đến trang filter
     router.push('/filter-room');
   };
-  
+
   const handleSizeChange = (newRange) => {
     setSizeRange(newRange);
   };
@@ -80,14 +80,18 @@ export function SearchBarComponent() {
             className="w-full" />
         </div>
 
-    {/* Area Dropdown */}
-    <DropdownMenu>
+        {/* Area Dropdown */}
+        <DropdownMenu>
           <DropdownMenuTrigger asChild>
-          <Button variant="outline" className="h-12 w-full md:w-auto">
-              <MapIcon /> {area?.name || "Chọn khu vực"} <ChevronDown className="ml-2 h-4 w-4" />
+            <Button variant="outline" className="h-12 w-full md:w-auto">
+              <MapIcon /> {area ? area.name : "Chọn khu vực"} <ChevronDown className="ml-2 h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
+            {/* Assuming you have a way to clear the selection */}
+            <DropdownMenuItem onSelect={() => setArea(null)}>
+              <span className="text-gray-500">Hủy chọn khu vực</span>
+            </DropdownMenuItem>
             {locations.map((item) => (
               <DropdownMenuItem key={item.id} onSelect={() => setArea(item)}>
                 {item.name}
@@ -95,6 +99,7 @@ export function SearchBarComponent() {
             ))}
           </DropdownMenuContent>
         </DropdownMenu>
+
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

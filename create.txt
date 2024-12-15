@@ -25,7 +25,7 @@ export default function CreateBlog() {
   const handleRemoveUtility = async (id) => {
     const adminToken = Cookies.get("token");
     try {
-      const response = await fetch(`http://localhost:8000/api/utilities/delete/${id}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}utilities/delete/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${adminToken}`,
@@ -55,7 +55,7 @@ export default function CreateBlog() {
       return;
     }
     try {
-      const response = await fetch(`http://localhost:8000/api/utilities/add`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}utilities/add`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${adminToken}`,
@@ -141,7 +141,7 @@ export default function CreateBlog() {
         setError("Không có token hợp lệ");
         return;
       }
-      const response = await fetch(`http://localhost:8000/api/utilities/all`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}utilities/all`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${adminToken}`,
@@ -169,7 +169,7 @@ export default function CreateBlog() {
   // fetch API id Option
   const fetchDataOption = async () => {
     try {
-      const response = await fetch(`http://localhost:8000/api/khu_vuc/option`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}khu_vuc/option`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -218,7 +218,7 @@ export default function CreateBlog() {
     });
 
     try {
-      const response = await fetch("http://localhost:8000/api/toa-nha/add", {
+      const response = await fetch("${process.env.NEXT_PUBLIC_BASE_URL}toa-nha/add", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${adminToken}`,

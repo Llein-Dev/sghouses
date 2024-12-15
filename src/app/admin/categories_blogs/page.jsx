@@ -91,7 +91,7 @@ export default function CategoryBlog() {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${adminToken}`,
-          "Content-Type": "application/json",
+          "Content-Type": "application/json", 
         },
       });
 

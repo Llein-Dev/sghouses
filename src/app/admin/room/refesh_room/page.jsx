@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
-import { Search, RefreshCcw, ListX, List } from "lucide-react"
+import { Search, RefreshCcw, ListX, List, Badge } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { toast, ToastContainer } from 'react-toastify';
@@ -36,11 +36,8 @@ export default function RefeshBuilding() {
       if (response.ok) {
         const result = await response.json();
         setDeletedRoom(result.list_room || []);
-        toast.success('Khôi phục phòng thành công !')
-
-
       } else {
-        setDeletedRoom([])
+        toast.error(error.message)
       }
     } catch (error) {
       setError('Không thể truy cập dữ liệu');
@@ -72,9 +69,8 @@ export default function RefeshBuilding() {
       });
 
       if (response.ok) {
-        await response.json(); // Đợi dữ liệu trả về
-        toast.success("Khôi phục thành công !"); // Thông báo lỗi
         fetchDeletedRoom(); // Cập nhật danh sách người dùng đã xóa nếu không chuyển trang
+        toast.success("Khôi phục thành công"); // Thông báo lỗi
       } else {
         setError(errorData.message || "Lỗi khi khôi phục người dùng");
       }
@@ -112,8 +108,8 @@ export default function RefeshBuilding() {
           <TableRow>
             <TableHead>STT</TableHead>
             <TableHead>Thông tin phòng</TableHead>
-            <TableHead>Gác lửng</TableHead>
             <TableHead>Diện tích</TableHead>
+            <TableHead>Quận</TableHead>
             <TableHead>Hành động</TableHead>
           </TableRow>
         </TableHeader>
@@ -140,8 +136,8 @@ export default function RefeshBuilding() {
                     <div>{rooms.ten_khu_vuc}</div>
                   </div>
                 </TableCell>
-                <TableCell>{rooms.gac_lung}</TableCell>
-                <TableCell>{rooms.dien_tich}</TableCell>
+                <TableCell>{rooms.dien_tich} m²</TableCell>
+                <TableCell>{rooms.ten_khu_vuc}</TableCell>
                 <TableCell>
                   <div className="flex space-x-2">
                     <Button
@@ -165,8 +161,8 @@ export default function RefeshBuilding() {
         </TableBody>
 
       </Table>
-      
-      
+
+
     </div>
 
   );

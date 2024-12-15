@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import { useParams, useRouter } from "next/navigation";
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -206,13 +206,20 @@ export default function UpdateRoom() {
                 },
                 body: formData,
             });
-
+            const contentType = response.headers.get("Content-Type");
+            let errorMessage;
+        
             if (response.ok) {
                 setShowModal(true); // Hiện thông báo khi submit
             } else {
-                const data = await response.json();
-                setError(data.message || "Có lỗi xảy ra, vui lòng thử lại.");
-            }
+                if (contentType.includes("application/json")) {
+                  const data = await response.json();
+                  errorMessage = data.message || "Đã xảy ra lỗi, vui lòng thử lại!";
+                } else {
+                  errorMessage = await response.text(); // Nếu là chuỗi thuần
+                }
+                toast.error(`Lỗi: ${errorMessage}`); // Hiển thị toàn bộ chuỗi
+              }
         } catch (error) {
             setShowModalFalse(true); // Hiện thông báo khi submit
         }

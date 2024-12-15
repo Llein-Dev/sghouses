@@ -40,15 +40,9 @@ export default function CategoryBlog() {
   const [searchTerm, setSearchTerm] = useState(""); // Từ khóa tìm kiếm
 
 
-  useEffect(() => {
-    const adminToken = Cookies.get('token');
-    if (!adminToken) {
-      router.push('/');
-      return;
-    }
-    // fetch dữ liệu user
 
     const fetchDataCatagoryBlog = async () => {
+      const adminToken = Cookies.get("token");
       try {
         const response = await fetch('http://localhost:8000/api/cate_blog', {
           headers: {
@@ -80,7 +74,13 @@ export default function CategoryBlog() {
       }
     };
 
-
+    useEffect(() => {
+      const adminToken = Cookies.get('token');
+      if (!adminToken) {
+        router.push('/');
+        return;
+      }
+      // fetch dữ liệu user
     fetchDataCatagoryBlog();
   }, [router]);
 
@@ -99,7 +99,6 @@ export default function CategoryBlog() {
 
       if (response.ok) {
         toast.success('Xóa thành công')
-        // Cập nhật danh sách người dùng bằng cách loại bỏ người dùng đã xóa
         setCatagoryBlog((prevCategoriesBlog) => prevCategoriesBlog.filter(blogs => blogs.id !== id));
       } else {
         const errorData = await response.json();
@@ -142,6 +141,7 @@ export default function CategoryBlog() {
         setStatus("");
         router.refresh();  // Load lại trang sau khi cập nhật thành công
         toast.success('đã cập nhật thành công !')
+        
       } else {
         const errorData = await response.json();
         setError(errorData.message || "Lỗi khi cập nhật thông tin");
@@ -163,7 +163,6 @@ export default function CategoryBlog() {
 
     const formData = new FormData();
     formData.append("name", name);
-    formData.append("slug", slug);
     formData.append("status", status);
 
     try {
@@ -176,9 +175,10 @@ export default function CategoryBlog() {
       });
 
       if (response.ok) {
-        toast.success('Thêm danh mục tin tức thành công!', {
-      });
+        fetchDataCatagoryBlog()
+        toast.success('Thêm danh mục tin tức thành công!');
       } else {
+        fetchDataCatagoryBlog()
         const errorData = await response.json();
         toast.error(`Lỗi khi thêm danh mục: ${errorData.message || "Có lỗi xảy ra"}`);
       }
@@ -253,18 +253,6 @@ export default function CategoryBlog() {
                       id="name"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      className="col-span-3"
-                    />
-                  </div>
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="phone" className="text-right">
-                      Đường dẫn
-                    </Label>
-                    <Input
-                      id="phone"
-                      type="phone"
-                      value={slug}
-                      onChange={(e) => setSlug(e.target.value)}
                       className="col-span-3"
                     />
                   </div>
@@ -413,9 +401,7 @@ export default function CategoryBlog() {
           ))}
         </div>
       </div>
-      
-      
-      
+      <ToastContainer/>
     </>
   )
 }

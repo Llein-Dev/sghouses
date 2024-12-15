@@ -76,9 +76,7 @@ export default function BlogContent() {
         // Cập nhật danh sách người dùng bằng cách loại bỏ người dùng đã xóa
         setBlog((prevBlog) => prevBlog.filter(blogs => blogs.id !== id));
         toast.success("Xóa thành công!");
-
           fetchDataBlog(); // Cập nhật danh sách người dùng nếu không chuyển trang
-       
       } else {
         const errorData = await response.json();
         setError(errorData.message || "Lỗi khi xóa blog");

@@ -30,7 +30,6 @@ export default function CreateBlog() {
     const [image, setImage] = useState(null); // Giữ nguyên file ảnh thay vì mã hóa
     const [imagePreview, setImagePreview] = useState(null); // Dùng để lưu URL của ảnh chọn
     const [content, setContent] = useState("");
-    const [slug, setSlug] = useState("draft");
     const [description, setDescription] = useState("");
     const [cate_id, setCategory] = useState("");
     const [cataBlog, setCataBlog] = useState([]);
@@ -98,7 +97,6 @@ export default function CreateBlog() {
         formData.append("title", title);
         formData.append("content", content);
         formData.append("description", description);
-        formData.append("slug", slug);
         formData.append("cate_id", cate_id);
         if (image) {
             formData.append("image", image);
@@ -202,18 +200,6 @@ export default function CreateBlog() {
                             ></ReactQuill>
                         </div>
                         <div>
-                            <label className="block text-gray-600">Đường dẫn</label>
-                            <input
-                                type="text"
-                                value={slug}
-                                onChange={(e) => setSlug(e.target.value)}
-                                className="w-full p-2 border border-gray-300 rounded mt-1"
-                                placeholder="Nhập đường dẫn"
-
-                            />
-                        </div>
-
-                        <div>
                             <label className="block text-gray-600">Mô tả</label>
                             <ReactQuill
                                 value={description}
@@ -255,8 +241,7 @@ export default function CreateBlog() {
                     </form>
                 </div>
             </div>
-            
-            
+            <ToastContainer />
         </>
     );
 }

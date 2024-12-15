@@ -128,7 +128,7 @@ export function HeaderComponent() {
         </div>
 
         <nav className="hidden md:flex items-center space-x-8">
-          <DropdownMenu>
+          {/* <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" size="lg" className="relative p-3">
                 <Bell className="h-4 w-4" />
@@ -171,28 +171,53 @@ export function HeaderComponent() {
                 <DropdownMenuItem>Không có thông báo mới</DropdownMenuItem>
               )}
             </DropdownMenuContent>
-          </DropdownMenu>
+          </DropdownMenu> */}
           {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="relative p-0">
-                  <div className="flex items-center space-x-2 p-2">
-                    <div className="h-10 w-10">
-                      <img
-                        alt={user?.name || "User"}
-                        src={user?.avatar || "User"}
-                      />
+                  <div className="flex items-center shadow-lg border border-gray-100  overflow-hidden rounded-lg space-x-2 ">
+
+                    <div className="h-10 w-10 flex items-center justify-center ">
+                      {user?.avatar ? (
+                        <img
+                          alt={user?.name || "User"}
+                          src={`http://localhost:8000/storage/${user?.avatar}`}
+                          className="h-full w-full "
+                        />
+
+                      ) : (
+                        <span className="text-gray-500 text-sm">
+                          {user?.name?.[0]?.toUpperCase() || "U"}
+                        </span>
+                      )}
                     </div>
+                    <div className="flex flex-col p-2">
+                      <p className="text-sm font-medium leading-none">
+                        {user?.name || "User"}
+                      </p>
+               
+                    </div>
+
                   </div>
                 </Button>
               </DropdownMenuTrigger>
+
               <DropdownMenuContent className="w-full" align="end" forceMount>
-                <div className="flex items-center space-x-2 p-2">
-                  <div className="h-10 w-10">
-                    <img
-                      alt={user?.name || "User"}
-                      src={user?.avatar || "User"}
-                    />
+                <div className="flex items-center  space-x-2 p-2">
+                  <div className="h-10 w-10 flex items-center justify-center border border-gray-300 bg-gray-100">
+                    {user?.avatar ? (
+                      <img
+                        alt={user?.name || "User"}
+                        src={`http://localhost:8000/storage/${user?.avatar}`}
+                        className="h-full w-full "
+                      />
+
+                    ) : (
+                      <span className="text-gray-500 text-sm">
+                        {user?.name?.[0]?.toUpperCase() || "U"}
+                      </span>
+                    )}
                   </div>
                   <div className="flex flex-col space-y-1">
                     <p className="text-sm font-medium leading-none">
@@ -271,7 +296,7 @@ export function HeaderComponent() {
               <NavItems />
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button
+                  {/* <Button
                     variant="outline"
                     size="lg"
                     className="relative p-3 w-full justify-start"
@@ -286,7 +311,7 @@ export function HeaderComponent() {
                         {notificationCount}
                       </Badge>
                     )}
-                  </Button>
+                  </Button> */}
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
                   <DropdownMenuLabel>Thông báo</DropdownMenuLabel>

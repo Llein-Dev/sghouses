@@ -227,7 +227,9 @@ export default function CategoryBlog() {
                     ))}
                 </TableBody>
             </Table>
-            <ToastContainer />
+            
+            
+            
         </div>
     )
 }

@@ -478,7 +478,8 @@ export default function CreateBlog() {
           </form>
         </div>
       </div>
-      <ToastContainer />
+      
+      
     </>
   );
 }

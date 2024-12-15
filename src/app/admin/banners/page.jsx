@@ -245,7 +245,8 @@ export default function Banners() {
           ))}
         </TableBody>
       </Table>
-      <ToastContainer />
+      
+      
     </div>
   )
 }

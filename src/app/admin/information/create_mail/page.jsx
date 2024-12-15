@@ -150,7 +150,9 @@ export default function CreateMail() {
                     </form>
                 </div>
             </div>
-            <ToastContainer />
+            
+            
+            
         </>
     );
 }

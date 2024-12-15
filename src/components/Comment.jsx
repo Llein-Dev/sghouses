@@ -47,26 +47,24 @@ export default function CommentComponent({ comments, onCommentAdd, user }) {
                 <Separator className="my-4" />
                 <div className="space-y-4">
                     {comments?.map((comment) => (
-                        <div key={comment.id} className="flex items-start space-x-4">
+                        <div key={comment.id_user} className="flex items-start space-x-4">
                             <Avatar>
-                                <AvatarImage src={comment.avatar} alt={comment.author} />
-                                <AvatarFallback>{comment?.author}</AvatarFallback>
+                            <AvatarImage src={`${process.env.NEXT_PUBLIC_PATH_FILE}${comment?.avatar}`} alt={comment.name} />
+                                <AvatarFallback>{comment.name.charAt(0)}</AvatarFallback>
                             </Avatar>
                             <div className="flex-1 space-y-2">
-                                <p className="font-semibold">{comment.author}</p>
+                                <p className="font-semibold">{comment.name}</p>
                                 <p>{comment.content}</p>
                                 <div className="flex items-center space-x-4 text-sm text-gray-500">
                                     <button className="flex items-center space-x-1">
-
-                                        <span>{comment.date ? comment.date : getCurrentDate()}</span>
+                                        <span>{comment.date}</span>
                                     </button>
-
-
                                 </div>
                             </div>
                         </div>
                     ))}
                 </div>
+
             </CardContent>
         </Card>
     );

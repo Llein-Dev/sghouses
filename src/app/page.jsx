@@ -90,9 +90,7 @@ export default function Home() {
                   productsHouseFeatured={featuredHouse}
                 />
               </div>
-              <Button className="w-36" variant="blue">
-                Xem chi tiết <ArrowRight />
-              </Button>
+
             </>
           )}
         </div>
@@ -116,9 +114,7 @@ export default function Home() {
               <div className="grid grid-cols-2 md:grid-cols-4 w-full gap-6 mb-12">
                 <ProductCardColViewComponent productsViewHouse={ViewHouse} />
               </div>
-              <Button className="w-36" variant="blue">
-                Xem chi tiết <ArrowRight />
-              </Button>
+ 
             </>
           )}
         </div>
@@ -142,9 +138,7 @@ export default function Home() {
               <div className="grid grid-cols-2 md:grid-cols-4 w-full gap-6 mb-12">
                 <ProductCardColCheapComponent productsHouseCheap={CheapHouse} />
               </div>
-              <Button className="w-36" variant="blue">
-                Xem chi tiết <ArrowRight />
-              </Button>
+
             </>
           )}
         </div>
@@ -173,9 +167,7 @@ export default function Home() {
               <BlogCard key={index} {...productBlog} />
             ))}
           </div>
-          <Button className="w-36" variant="blue">
-            Xem chi tiết <ArrowRight />
-          </Button>
+
         </div>
       </div>
       <div className=" mx-auto">

@@ -13,7 +13,7 @@ import { changePassword, updateAvatar, updateProfile } from '@/utils/api/Auth/ap
 import { Spinner } from './ui/loading'
 import Breadcrumb from './breadcum'
 import zxcvbn from 'zxcvbn'
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 const genderOptions = [
     { value: 0, label: 'Nam' },

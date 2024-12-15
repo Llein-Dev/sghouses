@@ -677,7 +677,8 @@ export default function Contract() {
           ))}
         </TableBody>
       </Table>
-      <ToastContainer />
+      
+      
     </div >
   )
 }

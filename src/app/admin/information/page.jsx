@@ -208,7 +208,9 @@ export default function Infomation() {
                     ))}
                 </div>
             </div>
-            <ToastContainer />
+            
+            
+            
         </>
     )
 }

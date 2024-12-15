@@ -141,7 +141,7 @@ export default function CreateArea() {
                     </form>
                 </div>
             </div>
-            <ToastContainer />
+      
         </>
     );
 }

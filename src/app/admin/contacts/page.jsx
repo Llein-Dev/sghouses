@@ -62,7 +62,7 @@ export default function ContractContent() {
       );
 
       if (response.ok) {
-        toast.success("Xóa thành công!");
+        toast.success("Đợi xử lý thành công!");
         setContracts((prev) => prev.filter((contact) => contact.id !== id));
       } else {
         setError("Lỗi khi xóa liên hệ.");

@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
-import { ChevronDownIcon, ChevronUpIcon, Trash2 } from 'lucide-react'
+import { Check, ChevronDownIcon, ChevronUpIcon, Trash2 } from 'lucide-react'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
@@ -78,7 +78,7 @@ export default function ExpandableTable({ items, handleDeleteContactRoom }) {
                                                 variant="outline"
                                                 size="icon"
                                                 onClick={() => handleDeleteContactRoom(item.id)}>
-                                                <Trash2 className="h-4 w-4 text-red-500" />
+                                                <Check className="h-4 w-4 text-red-500" />
                                             </Button>
                                         </DialogTrigger>
                                     </Dialog>

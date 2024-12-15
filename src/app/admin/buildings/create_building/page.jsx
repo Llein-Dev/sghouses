@@ -393,7 +393,7 @@ export default function CreateBlog() {
                 onChange={setMoTa}
                 modules={modules} // Sử dụng cấu hình module với toolbar đầy đủ
                 className="w-full p-2 border border-gray-300 rounded mt-1"
-                placeholder="Nhập nội dung bài viết"
+                placeholder="Nhập nội dung bài viết"  
               />
             </div>
 

@@ -251,7 +251,7 @@ export default function UsersContent() {
               <TableCell>{user.name}</TableCell>
               <TableCell>{user.email}</TableCell>
               <TableCell>{user.phone}</TableCell>
-              <TableCell>{user.address || 'Chưa có địa chỉ'}</TableCell> {/* Display address, handle null */}
+              <TableCell>{user.address || 'Chưa có địa chỉ'}</TableCell> {/* Displa y address, handle null */}
               <TableCell>{new Date(user.born).toLocaleDateString()}</TableCell> {/* Display birth date */}
               <TableCell>{user.gender === 1 ? 'Nam' : 'Nữ'}</TableCell> {/* Display gender */}
               {/* <TableCell>{user.date_create}</TableCell> Display registration date */}

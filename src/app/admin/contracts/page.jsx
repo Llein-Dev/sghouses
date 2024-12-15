@@ -201,7 +201,7 @@ export default function Contract() {
 
     const adminToken = Cookies.get("token");
     if (!adminToken) {
-      toast.warning("Vui lòng đăng nhập trước khi tạo hợp đồng!");
+      toast.warning("vui lòng đăng nhập trước khi tạo blog !");
       router.push("/");
       return;
     }
@@ -232,9 +232,9 @@ export default function Contract() {
       if (response.ok) {
         const data = await response.json();
         console.log(data);
-        toast.success("Bạn vừa thêm hợp đồng thành công!");
+        toast.success("Thêm danh mục blog thành công!");
         setContracts(data);
-        if (window.confirm("Bạn vừa thêm hợp đồng thành công! Vui lòng đợi trong giây lát.")) {
+        if (window.confirm("Thêm danh mục blog thành công! vui lòng đợi trong giây lát.")) {
           window.location.reload();
         }
       } else {

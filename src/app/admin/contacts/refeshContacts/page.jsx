@@ -1,6 +1,6 @@
 "use client";
 import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css'; 
+import 'react-toastify/dist/ReactToastify.css';
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
@@ -15,6 +15,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Avatar, AvatarFallback, AvatarImage } from '@radix-ui/react-avatar';
 
 export default function KhoiPhucUsers() {
   const [deletedContacts, setDeletedContacts] = useState([]);
@@ -117,11 +118,10 @@ export default function KhoiPhucUsers() {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>STT</TableHead>
             <TableHead>Tên</TableHead>
-            <TableHead>Điện thoại</TableHead>
-            <TableHead>Số phòng</TableHead>
-            <TableHead>Nội dung</TableHead>
+            <TableHead>Phòng</TableHead>
+            <TableHead>Số điện thoại</TableHead>
+            <TableHead>Ngày tạo</TableHead>
             <TableHead>Hành động</TableHead>
           </TableRow>
         </TableHeader>
@@ -130,11 +130,18 @@ export default function KhoiPhucUsers() {
             currentItems.length > 0 ? (
               currentItems.map((contacts, index) => (
                 <TableRow key={index}>
-                  <TableCell>{contacts.id}</TableCell>
-                  <TableCell>{contacts.name}</TableCell>
+                  <TableCell className="font-medium">
+                    <div className="flex items-center space-x-2">
+                      <Avatar>
+                        <AvatarImage src={contacts.avatar_user} alt={contacts.name} />
+                        <AvatarFallback>{contacts.name.charAt(0)}</AvatarFallback>
+                      </Avatar>
+                      <span>{contacts.name}</span>
+                    </div>
+                  </TableCell>
+                  <TableCell>{contacts.name_room}</TableCell>
                   <TableCell>{contacts.phone}</TableCell>
-                  <TableCell>{contacts.id_room}</TableCell>
-                  <TableCell>{contacts.content}</TableCell>
+                  <TableCell>{new Date(contacts.created_at).toLocaleDateString()}</TableCell>
                   <TableCell>
                     <div className="flex space-x-2">
                       <Button variant="outline" size="icon" onClick={() => handleRefesh(contacts.id)}>

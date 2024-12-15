@@ -111,7 +111,7 @@ export default function UsersContent() {
   }, [searchTerm, users]);
 
 
-  
+
 
   // Delete user
   const handleDeleteUser = async (id) => {
@@ -238,18 +238,16 @@ export default function UsersContent() {
             <TableRow key={user.id}> {/* Use user.id for the key */}
               <TableCell>{index + 1}</TableCell> {/* STT */}
               <TableCell>
-                {user.avatar ? (
-                  <img
-                    src={`${process.env.NEXT_PUBLIC_PATH_FILE}${user.avatar}`}
-                    alt={`${user.name}'s avatar`}
-                    className="w-10 h-10 rounded-full"
-                  />
-                ) : (
-                  <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-500">
-                    <UserIcon className="h-6 w-6" /> {/* Biểu tượng người dùng */}
-                  </div>
-                )}
-              </TableCell> {/* Avatar display */}
+                <img
+                  src={`${process.env.NEXT_PUBLIC_PATH_FILE}${user.avatar || ''}`}
+                  alt={`${user.name}'s avatar`}
+                  className="w-10 h-10 rounded-full"
+                  onError={(e) => {
+                    e.target.src = "https://vnsteelthanglong.vn/core/img/default_image.png";
+                  }}
+                />
+              </TableCell>
+
               <TableCell>{user.name}</TableCell>
               <TableCell>{user.email}</TableCell>
               <TableCell>{user.phone}</TableCell>
@@ -302,7 +300,7 @@ export default function UsersContent() {
                         </div>
 
                         <div className="grid grid-cols-1 items-center gap-4">
-                        <Label htmlFor="name" className="text-start">Quyền</Label>
+                          <Label htmlFor="name" className="text-start">Quyền</Label>
                           <select
                             id="role"
                             value={role}

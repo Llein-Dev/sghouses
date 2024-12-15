@@ -268,7 +268,6 @@ export default function Home() {
             <TableHeader>
               <TableRow>
                 <TableHead>ID hợp đồng</TableHead>
-                <TableHead>ID người dùng</TableHead>
                 <TableHead>Ảnh</TableHead>
                 <TableHead>Tên người dùng</TableHead>
                 <TableHead>Email</TableHead>
@@ -279,7 +278,6 @@ export default function Home() {
               {hoadontrehen.map((deployment) => (
                 <TableRow key={deployment.index}>
                   <TableCell>{deployment.hop_dong_id}</TableCell>
-                  <TableCell>{deployment.id_user}</TableCell>
                   <TableCell>
                     <img style={{ height: "50px", width: "50px",objectFit: "cover",borderRadius: "50%",}}
                      src={`REACT_APP_IMAGE_ERROR/${deployment.avatar_user}`}

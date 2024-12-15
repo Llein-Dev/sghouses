@@ -21,7 +21,7 @@ import {
   Newspaper,
   Home,
   Receipt,
-  MessageCircle, 
+  MessageCircle,
   Mail
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -38,93 +38,8 @@ import { profileAPI } from "@/utils/api/Auth/api";
 import { useRouter } from "next/navigation";
 import { Spinner } from "@/components/ui/loading";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { navItems } from "@/utils/data";
 
-const navItems = [
-  {
-    href: "/admin",
-    label: "Bảng điều khiển", // Dashboard
-    icon: <LayoutDashboard className="p-1 bg-blue-900 rounded text-white" />,
-    key: "dashboard",
-  },
-  {
-    href: "/admin/users",
-    label: "Người dùng", // Users
-    icon: <Users className="p-1 bg-blue-900 rounded text-white" />,
-    key: "users",
-  },
-  {
-    href: "/admin/contacts",
-    label: "Liên hệ", // Contacts
-    icon: <PhoneCall className="p-1 bg-blue-900 rounded text-white" />,
-    key: "contacts",
-  },
-  {
-    href: "/admin/blog",
-    label: "Bài viết", // Blog
-    icon: <FileText className="p-1 bg-blue-900 rounded text-white" />,
-    key: "blog",
-  },
-  {
-    href: "/admin/categories_blogs",
-    label: "Danh mục bài viết", // Categories Blogs
-    icon: <Newspaper className="p-1 bg-blue-900 rounded text-white" />,
-    key: "categories_blogs",
-  },
-  {
-    href: "/admin/contracts",
-    label: "Hợp đồng", // Contracts
-    icon: <Minimize className="p-1 bg-blue-900 rounded text-white" />,
-    key: "contracts",
-  },
-  {
-    href: "/admin/buildings",
-    label: "Tòa nhà", // Buildings
-    icon: <Building className="p-1 bg-blue-900 rounded text-white" />,
-    key: "buildings",
-  },
-  {
-    href: "/admin/area",
-    label: "Khu vực", // Area
-    icon: <Map className="p-1 bg-blue-900 rounded text-white" />,
-    key: "area",
-  },
-  {
-    href: "/admin/room",
-    label: "Phòng", // Room
-    icon: <Home className="p-1 bg-blue-900 rounded text-white" />,
-    key: "room",
-  },
-  {
-    href: "/admin/orders",
-    label: "Hóa đơn", // Room
-    icon: <Receipt className="p-1 bg-blue-900 rounded text-white" />,
-    key: "orders",
-  },
-  {
-    href: "/admin/banners",
-    label: "Biểu ngữ", // Banners
-    icon: <Image className="p-1 bg-blue-900 rounded text-white" />,
-    key: "banners",
-  },
-  {
-    href: "/admin/comment",
-    label: "Bình luận", // Settings
-    icon: <MessageCircle  className="p-1 bg-blue-900 rounded text-white" />,
-    key: "comment",
-  },
-  {
-    href: "/admin/information",
-    label: "Nhận tin", // Settings
-    icon: <Mail  className="p-1 bg-blue-900 rounded text-white" />,
-    key: "information",
-  },
-  {
-    href: "/admin/settings",
-    label: "Cài đặt", // Settings
-    icon: <Settings className="p-1 bg-blue-900 rounded text-white" />,
-    key: "settings",
-  },
-];
 
 export default function RootLayout({ children }) {
   const [activeTab, setActiveTab] = useState("dashboard");
@@ -172,7 +87,7 @@ export default function RootLayout({ children }) {
     navItems.find((item) => item.key === activeTab)?.label || "Dashboard";
 
   return (
-    <div className="flex bg-gray-100 h-screen">
+    <div className="flex bg-gray-100 overflow-hidden h-screen">
       {isAdmin ? (
         <>
           <aside className="w-18 md:w-64 h-full shadow-md flex flex-col justify-between bg-white">
@@ -183,20 +98,15 @@ export default function RootLayout({ children }) {
                 className="w-full p-2 hidden md:block"
               />
 
-              <img
-                src="../favicon.ico"
-                alt="Favicon"
-                className="h-[72px] p-2 border-4 border-blue-900 sm:block md:hidden"
-              />
-              <nav className="space-y-2 text-sm font-semibold md:px-2 p-0">
+              <nav className="md:max-h-[calc(100vh-72px-70px)] max-h-[calc(100vh-72px)] overflow-y-auto space-y-2 text-sm font-semibold md:px-2 p-0">
                 {navItems.map(({ href, label, icon, key }) => (
                   <Link
                     key={key}
                     href={href}
                     onClick={() => setActiveTab(key)}
-                    className={`flex items-center space-x-0 lg:space-x-3  px-4 py-3 transition-colors duration-200 ${activeTab === key
-                      ? "bg-blue-900 text-white"
-                      : "bg-gray-100 text-gray-700 hover:bg-blue-100 hover:text-blue-900"
+                    className={`flex items-center space-x-0 lg:space-x-3 px-4 py-3 transition-colors duration-200 ${activeTab === key
+                        ? "bg-blue-900 text-white"
+                        : "bg-gray-100 text-gray-700 hover:bg-blue-100 hover:text-blue-900"
                       }`}
                   >
                     {icon}
@@ -219,6 +129,7 @@ export default function RootLayout({ children }) {
               </Link>
             </Button>
           </aside>
+
 
           <main className="flex-1 flex flex-col">
             <header className="bg-blue-900 shadow-sm text-white">

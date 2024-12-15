@@ -89,12 +89,12 @@ export default function Favourite() {
    
           <CardTitle className="text-blue-900 p-5 mb-4 ">Phòng yêu thích</CardTitle>
     
-      <div className="flex flex-col gap-4">
+      <div className="grid md:grid-cols-2 grid-cols-1 gap-4">
         {favorites.length > 0 ? (
           favorites.map((item, index) => (
             <Card className="overflow-hidden" key={item?.id}>
               <div className="flex flex-col sm:flex-row">
-                <div className="relative w-full sm:w-1/4 md:aspect-[4/3] aspect-video">
+                <div className="relative w-full sm:w-2/4 md:aspect-[4/3] aspect-video">
                   <img
                     src={`${process.env.NEXT_PUBLIC_PATH_FILE}${
                       item?.hinh_anh.split(";")[0]

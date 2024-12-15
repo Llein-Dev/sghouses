@@ -103,6 +103,7 @@ export default function Home() {
         if (response.status === 200) {
           const result = await response.json();
           setData(result);
+          console.log(result)
         } else if (response.status === 403) {
           setError('Không có quyền truy cập');
         } else {

@@ -137,26 +137,26 @@ export default function Comment() {
     return (
         <>
             <div className="space-y-4">
-                    {/* Cột chứa thanh tìm kiếm */}
-                    <div className="flex items-center justify-between w-full">
-                        {/* Cột 1 */}
-                        <div className="w-1/2 flex items-center space-x-4">
-                            <Search className="h-5 w-5 text-gray-500" />
-                            <Input
-                                placeholder="Tìm kiếm..."
-                                className="max-w-sm"
-                            // value={searchTerm}
-                            // onChange={(e) => setSearchTerm(e.target.value)}
-                            />
-                        </div>
-                        {/* Cột 2 */}
-                        <div className="w-1/2 flex justify-end">
-                            <Button onClick={handleRefesh} variant="blue">
-                                <FileText className="mr-2 h-4 w-4" />
-                                Khôi phục
-                            </Button>
-                        </div>
+                {/* Cột chứa thanh tìm kiếm */}
+                <div className="flex items-center justify-between w-full">
+                    {/* Cột 1 */}
+                    <div className="w-1/2 flex items-center space-x-4">
+                        <Search className="h-5 w-5 text-gray-500" />
+                        <Input
+                            placeholder="Tìm kiếm..."
+                            className="max-w-sm"
+                        // value={searchTerm}
+                        // onChange={(e) => setSearchTerm(e.target.value)}
+                        />
                     </div>
+                    {/* Cột 2 */}
+                    <div className="w-1/2 flex justify-end">
+                        <Button onClick={handleRefesh} variant="blue">
+                            <FileText className="mr-2 h-4 w-4" />
+                            Khôi phục
+                        </Button>
+                    </div>
+                </div>
 
 
 
@@ -182,7 +182,10 @@ export default function Comment() {
                                 .map((comments, index) => (
                                     <TableRow key={index}>
                                         <TableCell>{comments.id}</TableCell>
-                                        <TableCell>{comments.avatar_user}</TableCell>
+                                        <TableCell>  <img  className="w-10 h-10 rounded-full" src={`${process.env.NEXT_PUBLIC_PATH_FILE}${comments.avatar_user}`}
+                                            onError={(e) => {
+                                                e.target.src = "https://png.pngtree.com/png-vector/20190820/ourmid/pngtree-no-image-vector-illustration-isolated-png-image_1694547.jpg"; // URL ảnh mặc định
+                                            }}></img> </TableCell>
                                         <TableCell>{comments.name_user}</TableCell>
                                         <TableCell>{comments.name_building}</TableCell>
                                         <TableCell>{comments.message}</TableCell>
@@ -214,8 +217,8 @@ export default function Comment() {
                     ))}
                 </div>
             </div>
-            
-            
+
+
         </>
     )
 }

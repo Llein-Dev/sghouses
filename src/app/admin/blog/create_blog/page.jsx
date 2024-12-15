@@ -116,7 +116,7 @@ export default function CreateBlog() {
             const contentType = response.headers.get("Content-Type");
             let errorMessage;
             if (response.ok) {
-                toast.success("Blog đã được tạo thành công!");
+                toast.success("Bài viết đã được tạo thành công!");
             } else {
                 if (contentType.includes("application/json")) {
                     const data = await response.json();

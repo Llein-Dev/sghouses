@@ -108,7 +108,7 @@ export default function ContractContent() {
         </div>
         <Button onClick={handleRefresh} variant="blue">
           <FileText className="m-0 md:mr-2 h-4 w-4" />
-          <span className="hidden md:block">       Khôi phục liên hệ</span>
+          <span className="hidden md:block"> Danh sách xử lý</span>
         </Button>
       </div>
 

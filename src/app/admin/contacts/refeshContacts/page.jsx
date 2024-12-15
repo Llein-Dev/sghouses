@@ -130,18 +130,21 @@ export default function KhoiPhucUsers() {
             currentItems.length > 0 ? (
               currentItems.map((contacts, index) => (
                 <TableRow key={index}>
-                  <TableCell className="font-medium">
-                    <div className="flex items-center space-x-2">
-                      <Avatar>
-                        <AvatarImage src={contacts.avatar_user} alt={contacts.name} />
-                        <AvatarFallback>{contacts.name.charAt(0)}</AvatarFallback>
-                      </Avatar>
-                      <span>{contacts.name}</span>
-                    </div>
+                  <TableCell className="flex items-center gap-4">
+                    <img
+                      src={`${process.env.NEXT_PUBLIC_PATH_FILE}${contacts.avatar || ''}`}
+                      alt={`${contacts.name}'s avatar`}
+                      className="w-10 h-10 rounded-full"
+                      onError={(e) => {
+                        e.target.src = "https://vnsteelthanglong.vn/core/img/default_image.png";
+                      }}
+                    />
+                    <span className="self-center">{contacts.name}</span> {/* Căn giữa theo trục dọc */}
                   </TableCell>
+
                   <TableCell>{contacts.name_room}</TableCell>
                   <TableCell>{contacts.phone}</TableCell>
-                  <TableCell>{new Date(contacts.created_at).toLocaleDateString()}</TableCell>
+                  <TableCell>{new Date(contacts.updated_at).toLocaleDateString()}</TableCell>
                   <TableCell>
                     <div className="flex space-x-2">
                       <Button variant="outline" size="icon" onClick={() => handleRefesh(contacts.id)}>

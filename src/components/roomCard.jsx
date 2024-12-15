@@ -77,6 +77,7 @@ export default function RoomComponents({ room }) {
   };
 
   const token = Cookies.get("token"); // Get the token from cookies
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(formData);
@@ -99,16 +100,16 @@ export default function RoomComponents({ room }) {
       console.log("API response status:", response.status);
 
       if (response.status === 200 || response.status === 201) {
-        toast.success("Cập nhật hồ sơ thành công!" + response.data.message);
+        toast.success(response.data.message);
         setIsDialogOpen(false); // Close the dialog on success
       } else {
-        console.error("Unexpected API response details:", response.data);
+        console.error(response.data);
         throw new Error("Failed to submit rental request");
       }
     } catch (error) {
       console.error("Catch block error:", error);
       if (error.response) {
-        toast.warning('Bạn có thể đã gửi liên hệ rồi!')
+        toast.warning('Bạn đã gửi liên hệ rồi!')
         setIsDialogOpen(false); // Close the dialog on success
         console.error("Error response data:", error.response.data); // Log the detailed error response
       }

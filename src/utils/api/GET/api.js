@@ -116,7 +116,7 @@ export const useFetchViewHouse = () => {
 };
 
 
-export const    useFetchBlogHouse = () => {
+export const useFetchBlogHouse = () => {
     const [BlogHouse, setBlogHouse] = useState([]);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -178,24 +178,24 @@ const useBuildingDetails = (slug) => {
 export default useBuildingDetails;
 
 
-export const useFetchDetailBlog = (slug) =>{
-const [detailBlog, setDetailBlog] = useState([]);
-const [err , setErr] = useState(null)
-    useEffect(() =>{
-        const fetchDetailBlog = async() =>{
-        try {
-          const response = await fetch(`http://localhost:8000/api/blog/?slug=${slug}`) 
-          if(!response.ok){
-            throw new Error('lỗi khi kết nối với api Detail Blog')
-          } 
-          const data = await response.json();
-          setDetailBlog(data);
-        } catch (err) {
-           setErr(err.message || 'lỗi không thể phát hiện hàm fetchDetailBlog') 
+export const useFetchDetailBlog = (slug) => {
+    const [detailBlog, setDetailBlog] = useState([]);
+    const [err, setErr] = useState(null)
+    useEffect(() => {
+        const fetchDetailBlog = async () => {
+            try {
+                const response = await fetch(`http://localhost:8000/api/blog/?slug=${slug}`)
+                if (!response.ok) {
+                    throw new Error('lỗi khi kết nối với api Detail Blog')
+                }
+                const data = await response.json();
+                setDetailBlog(data);
+            } catch (err) {
+                setErr(err.message || 'lỗi không thể phát hiện hàm fetchDetailBlog')
+            }
         }
-        }
-            fetchDetailBlog();
+        fetchDetailBlog();
     }, [slug]);
 
-return {detailBlog,err}
+    return { detailBlog, err }
 }

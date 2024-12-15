@@ -9,7 +9,7 @@ import CommentComponent from "@/components/Comment";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import Breadcrumb from "@/components/breadcum";
-import useBuildingDetails from "@/utils/api/GET/api"; // Import custom hook
+import useBuildingDetails, { useFetchViewHouse } from "@/utils/api/GET/api"; // Import custom hook
 import { Spinner } from "@/components/ui/loading";
 import { useEffect, useState } from "react"; // Don't forget to import useState
 import { useDispatch, useSelector } from "react-redux";
@@ -17,6 +17,7 @@ import { setProfile } from "@/redux/authSlice";
 import Cookies from "js-cookie";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { ProductCardColViewComponent } from "@/components/product-card-view";
 export default function BuildingDetailComponent() {
     const { slug } = useParams(); // Lấy slug từ URL
     const { building, loading, error } = useBuildingDetails(slug);
@@ -40,13 +41,19 @@ export default function BuildingDetailComponent() {
 
         // Optimistic update: Add the comment to UI immediately
         const newCommentObj = {
-            id: comments.length + 1,
-            author: user ? user.name : "User",
+            id_user: user ? user.id : null, // Assuming 'user.id' contains the ID of the user
+            name: user ? user.name : "User",
+            avatar: user ? user.avatar : null, // If you want to keep it null if avatar is not available
             content: newComment,
-            likes: 0,
-            replies: 0,
-            avatar: user ? `${process.env.NEXT_PUBLIC_PATH_FILE}${user?.avatar}` : "",
+            date: new Date().toLocaleString("vi-VN", {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+            }), // Format the date according to your requirement
         };
+
         setComments([...comments, newCommentObj]);
 
         // Send comment to backend
@@ -72,6 +79,13 @@ export default function BuildingDetailComponent() {
 
         }
     };
+    const {
+        ViewHouse,
+        loading: ViewLoading,
+        error: ViewError,
+    } = useFetchViewHouse();
+
+
 
     return (
         <>
@@ -164,20 +178,35 @@ export default function BuildingDetailComponent() {
                     </CardContent>
                 </Card>
 
-                <CommentComponent comments={comments} onCommentAdd={addComment} user={user} /> {/* Pass comments and addComment function here */}
+                <CommentComponent comments={building?.list_cmt || comments} onCommentAdd={addComment} user={user} /> {/* Pass comments and addComment function here */}
 
-                <div className="px-4 space-y-8 py-12 flex flex-col justify-center items-center container mx-auto">
-                    <h2 className="text-center w-full font-bold text-2xl text-[#00008B]">
-                        Phòng trọ <span className="text-[#FF5C00]">nổi bật</span>
-                    </h2>
-                    <Button className="w-36" variant="blue">
-                        Xem chi tiết <ArrowRight />
-                    </Button>
-                </div>
+
+
             </div>
 
-            
-         
+            <div className="px-4 my-32 space-y-8 flex flex-col justify-center items-center container mx-auto">
+                <h2 className="text-start w-full font-bold text-2xl text-[#00008B]">
+                    Tòa nhà <span className="text-[#FF5C00]">lượt xem nhiều nhất</span>
+                </h2>
+                {ViewLoading && (
+                    <p className="text-center">
+                        {" "}
+                        <Spinner />{" "}
+                    </p>
+                )}{" "}
+                {/* Hiển thị loading */}
+                {ViewError && <ErrorComponent message={ViewError} />}{" "}
+                {/* Hiển thị lỗi */}
+                {!ViewError && ( // Ẩn phần dữ liệu và nút nếu có lỗi
+                    <>
+                        <div className="grid grid-cols-2 md:grid-cols-4 w-full gap-6 mb-12">
+                            <ProductCardColViewComponent productsViewHouse={ViewHouse} />
+                        </div>
+
+                    </>
+                )}
+            </div>
+
         </>
     );
 }

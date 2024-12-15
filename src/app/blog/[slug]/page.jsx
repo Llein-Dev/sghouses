@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import Breadcrumb from '@/components/breadcum'
 import { useParams } from 'next/navigation'
-import { useFetchBlogHouse, useFetchDetailBlog } from '@/utils/api/GET/api'
+import { useFetchBlogHouse, useFetchDetailBlog, useFetchViewHouse } from '@/utils/api/GET/api'
 import { useEffect, useState } from 'react'
 import Cookies from 'js-cookie'
 import axios from 'axios'
@@ -15,6 +15,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { setProfile } from '@/redux/authSlice'
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { ProductCardColViewComponent } from '@/components/product-card-view'
+import ErrorComponent from '@/components/ui/error'
 export default function ArticleDetail() {
     const { slug } = useParams();
     const { detailBlog } = useFetchDetailBlog(slug);
@@ -34,6 +36,8 @@ export default function ArticleDetail() {
         }
     }, [user, dispatch]);
     const { BlogHouse } = useFetchBlogHouse();
+    console.log(BlogHouse);
+
     const addComment = async (newComment) => {
         if (!user) {
             toast.warning("bạn chưa đăng nhập!");
@@ -102,8 +106,6 @@ export default function ArticleDetail() {
             );
         }
     };
-
-
 
     return (
         <>
@@ -176,6 +178,8 @@ export default function ArticleDetail() {
 
                         </div>
                         {/* Related Articles */}
+            
+
                         <div className="lg:col-span-1 bg-gray-100">
                             <div className="space-y-4">
                                 {BlogHouse.map((i) => (

@@ -1,4 +1,24 @@
-import { Search, Home, FileText, Phone } from 'lucide-react'
+import {
+    Search, Phone,
+    LayoutDashboard,
+    Users,
+    PhoneCall,
+    FileText,
+    Bed,
+    Building,
+    Settings,
+    Bell,
+    ChevronDown,
+    Image,
+    DoorOpen,
+    Map,
+    Minimize,
+    Newspaper,
+    Home,
+    Receipt,
+    MessageCircle,
+    Mail
+} from "lucide-react";
 export const banners = [
     "/pexels-photo-106399.jpeg?height=400&width=800&text=Slide+1",
     "/background-phong-khach-dep-3.jpg?height=400&width=800&text=Slide+2",
@@ -184,6 +204,92 @@ export const locations = [
     "Quận Phú Nhuận"
 ];
 
+export const navItems = [
+    {
+        href: "/admin",
+        label: "Bảng điều khiển", // Dashboard
+        icon: <LayoutDashboard className="p-1 bg-blue-900 rounded text-white" />,
+        key: "dashboard",
+    },
+    {
+        href: "/admin/users",
+        label: "Người dùng", // Users
+        icon: <Users className="p-1 bg-blue-900 rounded text-white" />,
+        key: "users",
+    },
+    {
+        href: "/admin/contacts",
+        label: "Liên hệ", // Contacts
+        icon: <PhoneCall className="p-1 bg-blue-900 rounded text-white" />,
+        key: "contacts",
+    },
+    {
+        href: "/admin/blog",
+        label: "Bài viết", // Blog
+        icon: <FileText className="p-1 bg-blue-900 rounded text-white" />,
+        key: "blog",
+    },
+    {
+        href: "/admin/categories_blogs",
+        label: "Danh mục bài viết", // Categories Blogs
+        icon: <Newspaper className="p-1 bg-blue-900 rounded text-white" />,
+        key: "categories_blogs",
+    },
+    {
+        href: "/admin/contracts",
+        label: "Hợp đồng", // Contracts
+        icon: <Minimize className="p-1 bg-blue-900 rounded text-white" />,
+        key: "contracts",
+    },
+    {
+        href: "/admin/buildings",
+        label: "Tòa nhà", // Buildings
+        icon: <Building className="p-1 bg-blue-900 rounded text-white" />,
+        key: "buildings",
+    },
+    {
+        href: "/admin/area",
+        label: "Khu vực", // Area
+        icon: <Map className="p-1 bg-blue-900 rounded text-white" />,
+        key: "area",
+    },
+    {
+        href: "/admin/room",
+        label: "Phòng", // Room
+        icon: <Home className="p-1 bg-blue-900 rounded text-white" />,
+        key: "room",
+    },
+    {
+        href: "/admin/orders",
+        label: "Hóa đơn", // Room
+        icon: <Receipt className="p-1 bg-blue-900 rounded text-white" />,
+        key: "orders",
+    },
+    {
+        href: "/admin/banners",
+        label: "Biểu ngữ", // Banners
+        icon: <Image className="p-1 bg-blue-900 rounded text-white" />,
+        key: "banners",
+    },
+    {
+        href: "/admin/comment",
+        label: "Bình luận", // Settings
+        icon: <MessageCircle className="p-1 bg-blue-900 rounded text-white" />,
+        key: "comment",
+    },
+    {
+        href: "/admin/information",
+        label: "Nhận tin", // Settings
+        icon: <Mail className="p-1 bg-blue-900 rounded text-white" />,
+        key: "information",
+    },
+    {
+        href: "/admin/settings",
+        label: "Cài đặt", // Settings
+        icon: <Settings className="p-1 bg-blue-900 rounded text-white" />,
+        key: "settings",
+    },
+];
 
 export const faqData = [
     {

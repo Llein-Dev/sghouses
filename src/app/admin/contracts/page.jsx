@@ -197,7 +197,7 @@ export default function Contract() {
 
     const adminToken = Cookies.get("token");
     if (!adminToken) {
-      toast.warning("vui lòng đăng nhập trước khi tạo blog !");
+      toast.warning("vui lòng đăng nhập trước khi tạo hợp đồng !");
       router.push("/");
       return;
     }
@@ -222,11 +222,8 @@ export default function Contract() {
       if (response.ok) {
         const data = await response.json();
         console.log(data);
-        toast.success("Thêm danh mục blog thành công!");
+        toast.success("Thêm hợp đồng thành công!");
         setContracts(data);
-        if (window.confirm("Thêm danh mục blog thành công! vui lòng đợi trong giây lát.")) {
-          window.location.reload();
-        }
       } else {
        ; const errorData = await response.json()
         toast.error(`Lỗi khi thêm danh mục: ${errorData.message || "Có lỗi xảy ra"}`);

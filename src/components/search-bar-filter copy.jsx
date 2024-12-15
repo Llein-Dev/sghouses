@@ -59,13 +59,43 @@ export function SearchFilterComponent({ onResultsUpdate, setLoading }) {
 
   // Function to fetch room data
   const fetchRooms = async (keyword, area, priceRange, sizeRange) => {
+    console.log(keyword, area, priceRange, sizeRange);
+
+    // Extract the area slug if area is an object
     const areaParam = typeof area === "object" && area !== null ? area.slug : area || "";
+
+    // Handle priceRange
+    let priceParam;
+    if (typeof priceRange === "string") {
+      priceParam = priceRange; // Use the string directly
+    } else if (Array.isArray(priceRange) && priceRange.length === 2) {
+      const minPrice = priceRange[0] || 0;
+      const maxPrice = priceRange[1] || 20000000;
+      priceParam = `${minPrice}to${maxPrice}`; // Construct from array
+    } else {
+      priceParam = `0to20000000`; // Default if neither
+    }
+
+    // Handle sizeRange
+    let sizeParam;
+    if (typeof sizeRange === "string") {
+      sizeParam = sizeRange; // Use the string directly
+    } else if (Array.isArray(sizeRange) && sizeRange.length === 2) {
+      const minSize = sizeRange[0] || 0;
+      const maxSize = sizeRange[1] || 100;
+      sizeParam = `${minSize}to${maxSize}`; // Construct from array
+    } else {
+      sizeParam = `0to100`; // Default if neither
+    }
+
+    // Create query parameters
     const queryParams = new URLSearchParams({
       keyword: keyword || "",
       area: areaParam || "",
-      price: `${priceRange.min || 0}to${priceRange.max || 20000000}`,
-      size: `${sizeRange.min || 0}to${sizeRange.max || 100}`,
+      price: priceParam,
+      size: sizeParam,
     }).toString();
+
 
     try {
       const response = await fetch(`http://localhost:8000/api/filter-room?${queryParams}`, {
@@ -93,35 +123,26 @@ export function SearchFilterComponent({ onResultsUpdate, setLoading }) {
     setLoading(true);
     setError("");
 
-    // Fetch search params from localStorage
+    // Fetch search params từ localStorage
     const searchParams = JSON.parse(localStorage.getItem("searchParams")) || {};
 
-    // Update state based on localStorage or initial props
+    // Lấy dữ liệu từ localStorage hoặc state ban đầu
     const { keyword: savedKeyword, area: savedArea, price: savedPrice, size: savedSize } = searchParams;
-  
+    console.log(searchParams);
+
     setKeyword(savedKeyword || keyword);
     setArea(savedArea || area);
 
-    if (savedPrice) {
-      const [minPrice, maxPrice] = savedPrice.split("to").map(Number);
-      setPriceRange({ min: minPrice || 0, max: maxPrice || 20000000 });
-    }
-
-    if (savedSize) {
-      const [minSize, maxSize] = savedSize.split("to").map(Number);
-      setSizeRange({ min: minSize || 0, max: maxSize || 100 });
-    }
-
-    // Call the fetchRooms function with parameters from localStorage or component state
     await fetchRooms(
       savedKeyword || keyword,
       savedArea || area,
-      priceRange,
-      sizeRange
-      
+      savedPrice || `${priceRange[0]}to${priceRange[1]}`,
+      savedSize || `${sizeRange[0]}to${sizeRange[1]}`
     );
+
     localStorage.removeItem("searchParams");
   };
+
 
   useEffect(() => {
     handleSearch();

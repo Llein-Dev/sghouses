@@ -180,6 +180,7 @@ export default function Contract() {
       console.log('Delete response status:', response.status);
 
       if (response.ok) {
+        toast.success('xóa hợp đồng thành công !')
         // Cập nhật danh sách người dùng bằng cách loại bỏ người dùng đã xóa
         setContracts((prevContracts) => prevContracts.filter(contracts => contracts.id !== id));
       } else {

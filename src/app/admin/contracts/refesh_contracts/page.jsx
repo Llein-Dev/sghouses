@@ -14,9 +14,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function RefeshContracts() {
-  const [deletedContracts, setDeletedCataBlog] = useState([]);
+  const [deletedContracts, setDeletedContracts] = useState([]);
   const [error, setError] = useState(null);
   const router = useRouter();
 
@@ -54,11 +56,7 @@ export default function RefeshContracts() {
 
       if (response.ok) {
         const result = await response.json();
-        setDeletedCataBlog(result || []);
-        console.log(result);
-        console.log(deletedContracts); // Kiểm tra dữ liệu
-
-
+        setDeletedContracts(result || []);
       } else {
         setError('Không có quyền truy cập');
       }
@@ -95,15 +93,10 @@ export default function RefeshContracts() {
       });
 
       if (response.ok) {
-        await response.json(); // Đợi dữ liệu trả về
-        const shouldGoToRecovery = window.confirm(
-          "Đã khôi phục thành công, bạn có muốn quay về trang users không?"
-        );
-        if (shouldGoToRecovery) {
-          router.push("/admin/contracts"); // Chuyển đến trang users
-        } else {
-          fetchDeletedContracts(); // Cập nhật danh sách người dùng đã xóa nếu không chuyển trang
-        }
+        const data = await response.json(); // Log dữ liệu phản hồi
+        console.log("Phản hồi API restore:", data);
+        toast.success('khôi phục hợp đồng thành công !');
+        setDeletedContracts((prevContracts) => prevContracts.filter(contracts => contracts.id !== id));
       } else {
         const errorData = await response.json();
         setError(errorData.message || "Lỗi khi khôi phục người dùng");
@@ -143,6 +136,7 @@ export default function RefeshContracts() {
               <TableHead>Trạng thái</TableHead>
               <TableHead>Ngày bắt đầu</TableHead>
               <TableHead>Ngày kết thúc</TableHead>
+              <TableHead>Hành động</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -176,6 +170,6 @@ export default function RefeshContracts() {
 
         </Table>
       </div>
-</>
-      );
+    </>
+  );
 }

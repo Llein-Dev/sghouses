@@ -193,7 +193,7 @@ export function SearchFilterComponent({ onResultsUpdate, setLoading }) {
             <RangeBox
               min={0}
               max={20000000}
-              step={10}
+              step={100000}
               label="Mức giá"
               onRangeChange={handleRangeValue}
             />

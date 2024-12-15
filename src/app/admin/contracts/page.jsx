@@ -191,49 +191,63 @@ export default function Contract() {
       console.error("Error:", error);
     }
   };
-
+  const [fileScan, setFileScan] = useState(null); // State to hold the file
+  const handleFileChange = (e) => {
+    const file = e.target.files[0]; // Get the selected file
+    setFileScan(file); // Update the state with the selected file
+  };
 
   const handleAddContracts = async (e) => {
     e.preventDefault();
 
     const adminToken = Cookies.get("token");
     if (!adminToken) {
-      toast.warning("vui lòng đăng nhập trước khi tạo hợp đồng !");
+      toast.warning("vui lòng đăng nhập trước khi tạo blog !");
       router.push("/");
       return;
     }
 
-    const data = {
-      id_room,
-      id_user,
-      status,
-      date_start,
-      date_end,
-    };
+    // Create a FormData object
+    const formData = new FormData();
+    formData.append("id_room", id_room);
+    formData.append("id_user", id_user);
+    formData.append("status", status);
+    formData.append("date_start", date_start);
+    formData.append("date_end", date_end);
+
+    // Append the file if it exists
+    if (fileScan) {
+      formData.append("file_hop_dong", fileScan);
+    }
+
     try {
       const response = await fetch("http://localhost:8000/api/hop-dong/add", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
           "Authorization": `Bearer ${adminToken}`,
+          // Note: Do NOT set "Content-Type" when sending FormData
         },
-        body: JSON.stringify(data),
+        body: formData, // Use formData instead of JSON
       });
 
       if (response.ok) {
         const data = await response.json();
         console.log(data);
-        toast.success("Thêm hợp đồng thành công!");
+        toast.success("Thêm danh mục blog thành công!");
         setContracts(data);
+        if (window.confirm("Thêm danh mục blog thành công! vui lòng đợi trong giây lát.")) {
+          window.location.reload();
+        }
       } else {
-       ; const errorData = await response.json()
-        toast.error(`Lỗi khi thêm danh mục: ${errorData.message || "Có lỗi xảy ra"}`);
+        const errorData = await response.json();
+        toast.error(`Lỗi khi thêm hợp đồng: ${errorData.message || "Có lỗi xảy ra"}`);
       }
     } catch (error) {
       console.error("Error:", error);
       toast.error("Có lỗi xảy ra khi kết nối API.");
     }
   };
+
 
 
   const handleEditContracts = async (e) => {
@@ -459,6 +473,18 @@ export default function Contract() {
                           className="col-span-3 bg-gray-200"
                         />
                       </div>
+                      {/* Hiển thị ngày kết thúc */}
+                      <div className="flex flex-col items-start gap-4">
+                        <Label htmlFor="file-scan" className="font-semibold">
+                          Nhập File Scan
+                        </Label>
+                        <Input
+                          id="file-scan"
+                          type="file"
+                          onChange={handleFileChange} // Handle file input change
+                          className="col-span-3"
+                        />
+                      </div>
 
                     </div>
 
@@ -675,8 +701,8 @@ export default function Contract() {
           ))}
         </TableBody>
       </Table>
-      
-      
+
+
     </div >
   )
 }

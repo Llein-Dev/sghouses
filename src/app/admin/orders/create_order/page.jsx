@@ -188,8 +188,6 @@ export default function CreateOrder() {
           noi_dung: "",
           so_ki_dien: "",
           so_khoi_nuoc: "",
-          so_luong_xe: "",
-          so_luong_nguoi: "",
         });
       } else {
         const result = await response.json();
@@ -252,8 +250,6 @@ export default function CreateOrder() {
                       Số KWh Điện
                     </Label>
                     <input
-                     min={0}
-                     step={-1}
                       type="number"
                       id="so_ki_dien"
                       name="so_ki_dien"
@@ -284,42 +280,7 @@ export default function CreateOrder() {
                   </div>
 
                   {/* Số lượng xe */}
-                  <div>
-                    <Label
-                      htmlFor="so_luong_xe"
-                      className="block text-gray-500 font-semibold text-sm mb-2"
-                    >
-                      Số Lượng Xe
-                    </Label>
-                    <input
-                      type="number"
-                      id="so_luong_xe"
-                      name="so_luong_xe"
-                      value={formData.so_luong_xe}
-                      onChange={handleChange}
-                      placeholder="Nhập số lượng xe"
-                      className="w-full px-4 py-2 border text-sm border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
-                    />
-                  </div>
-
-                  {/* Số lượng người */}
-                  <div>
-                    <Label
-                      htmlFor="so_luong_nguoi"
-                      className="block text-gray-500 font-semibold text-sm mb-2"
-                    >
-                      Số Lượng Người
-                    </Label>
-                    <input
-                      type="number"
-                      id="so_luong_nguoi"
-                      name="so_luong_nguoi"
-                      value={formData.so_luong_nguoi}
-                      onChange={handleChange}
-                      placeholder="Nhập số lượng người"
-                      className="w-full px-4 py-2 border text-sm border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
-                    />
-                  </div>
+             
                 </div>
 
                 {/* Nội dung */}

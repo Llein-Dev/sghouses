@@ -19,9 +19,8 @@ export default function GoogleLoginHandler() {
     }
 
     try {
-      // Gửi token Google đến API registerWithGoogle trước
-      const registerResponse = await fetch(
-        "http://localhost:8000/api/google/registerWithGoogle",
+      const loginResponse = await fetch(
+        "http://localhost:8000/api/google/loginWithGoogle",
         {
           method: "POST",
           headers: {
@@ -29,37 +28,16 @@ export default function GoogleLoginHandler() {
             Accept: "application/json",
           },
           body: JSON.stringify({ token: response.credential }),
-        }
+        },
       );
 
-      // Nếu register thành công
-      if (registerResponse.ok) {
-        const data = await registerResponse.json();
-        console.log("Register thành công:", data);
+      if (loginResponse.ok) {
+        const data = await loginResponse.json();
+        console.log("Login thành công:", data);
         handleLoginSuccess(data);
       } else {
-        console.warn("Register thất bại, thử loginWithGoogle...");
-        // Nếu register thất bại, fallback sang API loginWithGoogle
-        const loginResponse = await fetch(
-          "http://localhost:8000/api/google/loginWithGoogle",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Accept: "application/json",
-            },
-            body: JSON.stringify({ token: response.credential }),
-          }
-        );
-
-        if (loginResponse.ok) {
-          const data = await loginResponse.json();
-          console.log("Login thành công:", data);
-          handleLoginSuccess(data);
-        } else {
-          const errorData = await loginResponse.json();
-          setError(errorData.message || "Đăng nhập Google thất bại");
-        }
+        const errorData = await loginResponse.json();
+        setError(errorData.message || "Đăng nhập Google thất bại");
       }
     } catch (error) {
       console.error("Error with Google login:", error);

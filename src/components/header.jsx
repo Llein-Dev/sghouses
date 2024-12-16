@@ -177,28 +177,29 @@ export function HeaderComponent() {
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="relative p-0">
                   <div className="flex items-center shadow-lg border border-gray-100  overflow-hidden rounded-lg space-x-2 ">
-
-                    <div className="h-10 w-10 flex items-center justify-center ">
+                    <div className="h-10 w-10 flex items-center justify-center">
                       {user?.avatar ? (
                         <img
                           alt={user?.name || "User"}
-                          src={`http://localhost:8000/storage/${user?.avatar}`}
-                          className="h-full w-full "
+                          src={
+                            user.avatar.startsWith("http")
+                              ? user.avatar
+                              : `http://localhost:8000/storage/${user.avatar}`
+                          }
+                          className="h-full w-full"
                         />
-
                       ) : (
                         <span className="text-gray-500 text-sm">
                           {user?.name?.[0]?.toUpperCase() || "U"}
                         </span>
                       )}
                     </div>
+
                     <div className="flex flex-col p-2">
                       <p className="text-sm font-medium leading-none">
                         {user?.name || "User"}
                       </p>
-               
                     </div>
-
                   </div>
                 </Button>
               </DropdownMenuTrigger>
@@ -209,10 +210,13 @@ export function HeaderComponent() {
                     {user?.avatar ? (
                       <img
                         alt={user?.name || "User"}
-                        src={`http://localhost:8000/storage/${user?.avatar}`}
-                        className="h-full w-full "
+                        src={
+                          user.avatar.startsWith("http")
+                            ? user.avatar
+                            : `http://localhost:8000/storage/${user.avatar}`
+                        }
+                        className="h-full w-full"
                       />
-
                     ) : (
                       <span className="text-gray-500 text-sm">
                         {user?.name?.[0]?.toUpperCase() || "U"}

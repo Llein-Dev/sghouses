@@ -2,7 +2,7 @@
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useEffect, useState } from "react"
-import { Search, Trash2, BookCopy, Eye,  Plus, RefreshCcwDot,Pen } from "lucide-react"
+import { Search, Trash2, BookCopy, Eye,  Plus, RefreshCcwDot,Pen, EyeOff } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
@@ -184,7 +184,7 @@ export default function BlogContent() {
             <TableHead>Tên</TableHead>
             <TableHead>Số tòa nhà</TableHead>
             <TableHead>Số phòng</TableHead>
-            <TableHead>Trạng thái</TableHead>
+            <TableHead>Nổi bật</TableHead>
             <TableHead>Hành động</TableHead>
           </TableRow>
         </TableHeader>
@@ -218,7 +218,7 @@ export default function BlogContent() {
               <TableCell>
                 <div className="flex space-x-2">
                   <Button variant="outline" size="icon" onClick={() => handleDeleteArea(areas.id)} >
-                    <Trash2 className="h-4 w-4" />
+                    <EyeOff className="h-4 w-4" />
                   </Button>
                   <Button variant="outline" size="icon" onClick={() => handleUpdateArea(areas.id)}  >
                     <Pen className="h-4 w-4"

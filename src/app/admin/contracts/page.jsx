@@ -518,7 +518,8 @@ export default function Contract() {
             <TableHead>Mã hợp đồng</TableHead>
             <TableHead>Tên phòng - Tòa nhà</TableHead>
             <TableHead>Tên Người Dùng</TableHead>
-            <TableHead>Ngày lập</TableHead>
+            <TableHead>Ngày tạo</TableHead>
+            <TableHead>Ngày kết thúc</TableHead>
             <TableHead>Tình trạng </TableHead>
             <TableHead>Chức Năng</TableHead>
           </TableRow>
@@ -532,6 +533,9 @@ export default function Contract() {
               <TableCell>{contract.name_user}</TableCell> {/* Tên Người Dùng */}
               <TableCell>
                 {contract.date_start}
+              </TableCell>
+              <TableCell>
+                {contract.date_end}
               </TableCell>
               <TableCell>
                 <Badge

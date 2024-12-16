@@ -69,7 +69,7 @@ export function RoomCardRowComponent({ product }) {
         }
       );
       if (response.status === 200 || response.status === 201) {
-        toast.success("Cập nhật hồ sơ thành công!" + response.data.message);
+        toast.success(response.data.message);
         setIsDialogOpen(false);
       } else {
         throw new Error("Failed to submit rental request");

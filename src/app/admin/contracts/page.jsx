@@ -178,15 +178,21 @@ export default function Contract() {
       });
 
       console.log('Delete response status:', response.status);
-
+      const contentType = response.headers.get("Content-Type");
+      let errorMessage;
       if (response.ok) {
         toast.success('xóa hợp đồng thành công !')
         // Cập nhật danh sách người dùng bằng cách loại bỏ người dùng đã xóa
         setContracts((prevContracts) => prevContracts.filter(contracts => contracts.id !== id));
       } else {
-        const errorData = await response.json();
-        setError(errorData.message || "Lỗi khi xóa người dùng");
-      }
+        if (contentType.includes("application/json")) {
+            const data = await response.json();
+            errorMessage = data.message || "Đã xảy ra lỗi, vui lòng thử lại!";
+        } else {
+            errorMessage = await response.text(); // Nếu là chuỗi thuần
+        }
+        toast.error(`Lỗi: ${errorMessage}`); // Hiển thị toàn bộ chuỗi
+    }
     } catch (error) {
       console.error("Error:", error);
     }
@@ -517,8 +523,9 @@ export default function Contract() {
             <TableHead>STT</TableHead>
             <TableHead>Mã hợp đồng</TableHead>
             <TableHead>Tên phòng - Tòa nhà</TableHead>
-            <TableHead>Tên Người Dùng</TableHead>
-            <TableHead>Ngày lập</TableHead>
+            <TableHead> Người Dùng</TableHead>
+            <TableHead>Ngày tạo</TableHead>
+            <TableHead>Ngày kết thúc</TableHead>
             <TableHead>Tình trạng </TableHead>
             <TableHead>Chức Năng</TableHead>
           </TableRow>
@@ -529,9 +536,21 @@ export default function Contract() {
               <TableCell>{index + 1}</TableCell> {/* STT */}
               <TableCell>{contract.id}</TableCell> {/* Mã hợp đồng */}
               <TableCell>{`${contract.name_room} - ${contract.name_building}`}</TableCell> {/* Tên phòng - Tòa nhà */}
-              <TableCell>{contract.name_user}</TableCell> {/* Tên Người Dùng */}
+              <TableCell>
+              <img
+                  src={`${process.env.NEXT_PUBLIC_PATH_FILE}${contract.avatar || ''}`}
+                  alt={`${contract.name}'s avatar`}
+                  className="w-10 h-10 rounded-full ml-4"
+                  onError={(e) => {
+                    e.target.src = "https://vnsteelthanglong.vn/core/img/default_image.png";
+                  }}
+                />
+                 {contract.name_user}</TableCell> {/* Tên Người Dùng */}
               <TableCell>
                 {contract.date_start}
+              </TableCell>
+              <TableCell>
+                {contract.date_end}
               </TableCell>
               <TableCell>
                 <Badge
@@ -701,8 +720,7 @@ export default function Contract() {
           ))}
         </TableBody>
       </Table>
-
-
+<ToastContainer/>
     </div >
   )
 }

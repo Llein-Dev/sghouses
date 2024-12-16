@@ -27,7 +27,6 @@ export default function CreateOrder() {
     id_user: "",
     name_user: "",
     avatar_user: "",
-    file_hop_dong: null,
     date_start: "",
     date_end: "",
     status: "",
@@ -120,7 +119,7 @@ export default function CreateOrder() {
           toast.error("Không thể lấy chi tiết hợp đồng.");
         }
       } catch (error) {
-        toast.error("Có lỗi khi kết nối đến API.");
+        setError("Có lỗi khi kết nối đến API.");
       }
     }
   };
@@ -213,7 +212,7 @@ export default function CreateOrder() {
       <div className="grid text-sm grid-cols-1 md:grid-cols-5 gap-8">
         <div className="h-full col-span-2 bg-gradient-to-br from-white-50 to-blue-100 flex items-center justify-center">
           <Card className=" w-full h-full">
-            <CardHeader>    <CardTitle className="text-lg  font-bold text-gray-700 text-center ">
+            <CardHeader>    <CardTitle type='submit'  className="text-lg  font-bold text-gray-700 text-center ">
               Tạo Hóa Đơn
             </CardTitle></CardHeader>
             <CardContent>
@@ -253,6 +252,8 @@ export default function CreateOrder() {
                       Số KWh Điện
                     </Label>
                     <input
+                     min={0}
+                     step={-1}
                       type="number"
                       id="so_ki_dien"
                       name="so_ki_dien"
@@ -583,7 +584,7 @@ export default function CreateOrder() {
           </Button>
         </div>
       </div>
-
+<ToastContainer/>
     </>
   );
 }

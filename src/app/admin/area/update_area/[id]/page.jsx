@@ -80,7 +80,8 @@ export default function UpdateBlog() {
                 },
                 body: formData,
             });
-
+            const contentType = response.headers.get("Content-Type");
+            let errorMessage;
             if (response.ok) {
                 toast.success('Khu vực đã cập nhật thành công!', {
                     onClose: () => {
@@ -88,8 +89,13 @@ export default function UpdateBlog() {
                     },
                 });
             } else {
-                const data = await response.json();
-                toast.warning(data.message || "Có lỗi xảy ra, vui lòng thử lại.");
+                if (contentType.includes("application/json")) {
+                    const data = await response.json();
+                    errorMessage = data.message || "Đã xảy ra lỗi, vui lòng thử lại!";
+                } else {
+                    errorMessage = await response.text(); // Nếu là chuỗi thuần
+                }
+                toast.error(`Lỗi: ${errorMessage}`); // Hiển thị toàn bộ chuỗi
             }
         } catch (error) {
             setError("Không thể kết nối đến server, vui lòng thử lại sau.");
@@ -113,7 +119,6 @@ export default function UpdateBlog() {
                             onChange={(e) => setTitle(e.target.value)}
                             className="w-full p-2 border border-gray-300 rounded mt-1"
                             placeholder="Nhập tiêu đề"
-                            required
                         />
                     </div>
 

@@ -67,10 +67,8 @@ export default function RefeshArea() {
       });
 
       if (response.ok) {
-        await response.json(); // Đợi dữ liệu trả về
         toast.success('Khôi phục khu vực thành công !')
         fetchDataAreaDeleted(); // Cập nhật danh sách người dùng đã xóa nếu không chuyển trang
-
       } else {
         const errorData = await response.json();
         setError(errorData.message || "Lỗi khi khôi phục người dùng");
@@ -97,7 +95,7 @@ export default function RefeshArea() {
         <div className="flex justify-end space-x-2">
           <Button variant="blue" onClick={handleRefesh}>
             <FileText className="mr-2 h-4 w-4" />
-             Danh sách khôi phục
+             Danh sách khu vực
           </Button>
         </div>
       </div>
@@ -154,11 +152,8 @@ export default function RefeshArea() {
             </TableRow>
           )}
         </TableBody>
-
       </Table>
-      
-      
-      
+      <ToastContainer/>
     </div>
   );
 }

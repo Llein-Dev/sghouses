@@ -59,7 +59,7 @@ export default function KhoiPhucUsers() {
     const adminToken = Cookies.get("token");
     try {
       const response = await fetch(`http://localhost:8000/api/contact_room/restore/${id}`, {
-        method: "POST",
+        method: "PATCH",
         headers: {
           Authorization: `Bearer ${adminToken}`,
           "Content-Type": "application/json",

@@ -227,8 +227,7 @@ export default function Buildings() {
           ))}
         </TableBody>
       </Table>
-      
-      
+      <ToastContainer/>
     </div>
   )
 }

@@ -97,7 +97,7 @@ export default function BlogContent() {
       } else {
         const errorData = await response.json();
         setError(errorData.message || "Lỗi lấy thông tin phản hồi");
-      }
+      }   
     } catch (error) {
       console.error("Error:", error);
       setError("Có lỗi xảy ra khi sao chép người dùng");

@@ -64,7 +64,7 @@ export default function CreateArea() {
             console.log(data);
 
             if (response.ok) {
-                setSuccessMessage("Khu vực đã được tạo thành công!");
+                toast.success('tạo khu vực thành công !')
             } else {
                 setErrorMessage(data.message || "Đã có lỗi xảy ra, vui lòng thử lại.");
             }
@@ -141,7 +141,7 @@ export default function CreateArea() {
                     </form>
                 </div>
             </div>
-      
+            <ToastContainer/>
         </>
     );
 }

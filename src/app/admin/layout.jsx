@@ -193,7 +193,6 @@ export default function RootLayout({ children }) {
             {/* Scrollable content area */}
             <div className="flex-1 overflow-y-auto p-4">{children}</div>
           </main>
-          <ToastContainer />
         </>
       ) : (
         <div className="h-screen w-full flex justify-center items-center">

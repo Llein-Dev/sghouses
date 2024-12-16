@@ -136,9 +136,10 @@ export default function CreateOrder() {
     }));
   };
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("Submitting form", formData); // Kiểm tra dữ liệu formData
+
     setLoading(true);
 
     // Kiểm tra nếu có trường nào chưa nhập
@@ -157,6 +158,7 @@ export default function CreateOrder() {
 
     // Kiểm tra token trong handleSubmit
     const adminToken = Cookies.get("token");
+    console.log("Admin token:", adminToken); // Kiểm tra giá trị của token
     if (!adminToken) {
       toast.error("Bạn chưa đăng nhập!");
       setLoading(false);
@@ -172,6 +174,8 @@ export default function CreateOrder() {
         },
         body: JSON.stringify(formData), // Đảm bảo gửi dưới dạng JSON
       });
+
+      console.log("Response status:", response.status); // Kiểm tra mã trạng thái của phản hồi
 
       if (response.ok) {
         toast.success("Hóa đơn được tạo thành công!");
@@ -190,28 +194,31 @@ export default function CreateOrder() {
         });
       } else {
         const result = await response.json();
+        console.log("Error response:", result); // Kiểm tra thông tin lỗi từ phản hồi
         toast.error(result.message || "Đã xảy ra lỗi khi tạo hóa đơn.");
       }
     } catch (error) {
+      console.error("Fetch error:", error); // Ghi lại lỗi nếu có
       toast.error("Không thể kết nối đến máy chủ.");
     } finally {
       setLoading(false);
     }
   };
+
   const handleRefesh = () => {
     router.push('/admin/orders');
   }
   return (
     <>
-      <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
+      <div className="grid text-sm grid-cols-1 md:grid-cols-5 gap-8">
         <div className="h-full col-span-2 bg-gradient-to-br from-white-50 to-blue-100 flex items-center justify-center">
           <Card className=" w-full h-full">
-            <CardHeader>    <CardTitle className="text-3xl font-bold text-gray-700 text-center mb-8">
+            <CardHeader>    <CardTitle className="text-lg  font-bold text-gray-700 text-center ">
               Tạo Hóa Đơn
             </CardTitle></CardHeader>
             <CardContent>
-              <form className="space-y-6" onSubmit={handleSubmit}>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <form className="space-y-2" onSubmit={handleSubmit}>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                   {/* ID hợp đồng */}
                   <div className="col-span-1 md:col-span-2">
                     <Label
@@ -347,7 +354,7 @@ export default function CreateOrder() {
                 <img
                   src={`${process.env.NEXT_PUBLIC_PATH_FILE}${formData.image_room}`}
 
-                  className="w-full aspect-w-18 aspect-h-9" // Corrected class name
+                  className="w-full aspect-[18/9]" // Corrected class name
                   alt={formData.name_room} // Add a descriptive alt text for accessibility
                 />
               </form>
@@ -359,7 +366,7 @@ export default function CreateOrder() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Thông tin hợp đồng <Badge>{formData.status}</Badge></CardTitle>
+              <CardTitle className="text-lg">Thông tin hợp đồng <Badge>{formData.status}</Badge></CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
@@ -438,8 +445,10 @@ export default function CreateOrder() {
             </CardContent>
           </Card>
           <Card className="">
-            <CardHeader><CardTitle>Bảng giá</CardTitle></CardHeader>
-            <CardContent className="space-y-4">
+            <CardHeader><CardTitle className="text-lg">Bảng giá</CardTitle></CardHeader>
+
+            <CardContent className="grid grid-cols-2 gap-2">
+              {/* Tiền Thuê */}
               <div>
                 <Label
                   htmlFor="tien_thue"
@@ -448,12 +457,18 @@ export default function CreateOrder() {
                   Tiền Thuê
                 </Label>
                 <input
-                  disabled
-                  type="number"
+                  type="text" // Changed to text to allow formatted input
                   id="tien_thue"
                   name="tien_thue"
-                  value={formData.tien_thue}
-                  onChange={handleChange}
+                  value={formatNumber(formData.tien_thue)} // Format number for display
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    // Update state with parsed number
+                    setFormData((prev) => ({
+                      ...prev,
+                      tien_thue: parseNumber(value),
+                    }));
+                  }}
                   placeholder="Nhập tiền thuê"
                   className="w-full px-4 py-2 border text-sm border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
                 />
@@ -468,12 +483,17 @@ export default function CreateOrder() {
                   Tiền Điện
                 </Label>
                 <input
-                  disabled
-                  type="number"
+                  type="text"
                   id="tien_dien"
                   name="tien_dien"
-                  value={formData.tien_dien}
-                  onChange={handleChange}
+                  value={formatNumber(formData.tien_dien)}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setFormData((prev) => ({
+                      ...prev,
+                      tien_dien: parseNumber(value),
+                    }));
+                  }}
                   placeholder="Nhập tiền điện"
                   className="w-full px-4 py-2 border text-sm border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
                 />
@@ -488,12 +508,17 @@ export default function CreateOrder() {
                   Tiền Nước
                 </Label>
                 <input
-                  disabled
-                  type="number"
+                  type="text"
                   id="tien_nuoc"
                   name="tien_nuoc"
-                  value={formData.tien_nuoc}
-                  onChange={handleChange}
+                  value={formatNumber(formData.tien_nuoc)}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setFormData((prev) => ({
+                      ...prev,
+                      tien_nuoc: parseNumber(value),
+                    }));
+                  }}
                   placeholder="Nhập tiền nước"
                   className="w-full px-4 py-2 border text-sm border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
                 />
@@ -508,12 +533,17 @@ export default function CreateOrder() {
                   Tiền Xe
                 </Label>
                 <input
-                  disabled
-                  type="number"
+                  type="text"
                   id="tien_xe"
                   name="tien_xe"
-                  value={formData.tien_xe}
-                  onChange={handleChange}
+                  value={formatNumber(formData.tien_xe)}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setFormData((prev) => ({
+                      ...prev,
+                      tien_xe: parseNumber(value),
+                    }));
+                  }}
                   placeholder="Nhập tiền xe"
                   className="w-full px-4 py-2 border text-sm border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
                 />
@@ -528,17 +558,21 @@ export default function CreateOrder() {
                   Tiền Dịch Vụ
                 </Label>
                 <input
-                  disabled
-                  type="number"
+                  type="text"
                   id="tien_dich_vu"
                   name="tien_dich_vu"
-                  value={formData.tien_dich_vu}
-                  onChange={handleChange}
+                  value={formatNumber(formData.tien_dich_vu)}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setFormData((prev) => ({
+                      ...prev,
+                      tien_dich_vu: parseNumber(value),
+                    }));
+                  }}
                   placeholder="Nhập tiền dịch vụ"
                   className="w-full px-4 py-2 border text-sm border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
                 />
               </div>
-
             </CardContent>
           </Card>
         </div>
@@ -553,3 +587,12 @@ export default function CreateOrder() {
     </>
   );
 }
+const formatNumber = (num) => {
+  if (!num) return '';
+  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+};
+
+const parseNumber = (str) => {
+  // Remove dots and convert to number
+  return Number(str.replace(/\./g, ""));
+};

@@ -186,13 +186,13 @@ export default function Contract() {
         setContracts((prevContracts) => prevContracts.filter(contracts => contracts.id !== id));
       } else {
         if (contentType.includes("application/json")) {
-            const data = await response.json();
-            errorMessage = data.message || "Đã xảy ra lỗi, vui lòng thử lại!";
+          const data = await response.json();
+          errorMessage = data.message || "Đã xảy ra lỗi, vui lòng thử lại!";
         } else {
-            errorMessage = await response.text(); // Nếu là chuỗi thuần
+          errorMessage = await response.text(); // Nếu là chuỗi thuần
         }
         toast.error(`Lỗi: ${errorMessage}`); // Hiển thị toàn bộ chuỗi
-    }
+      }
     } catch (error) {
       console.error("Error:", error);
     }
@@ -350,14 +350,14 @@ export default function Contract() {
                   Thêm hợp đồng vào với đủ các thông tin để quản lý cụ thể!
                 </DialogDescription>
               </DialogHeader>
-              <div className="grid grid-cols-1 h-[70vh] overflow-y-auto md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 h-[70vh] overflow-y-auto md:grid-cols-3 gap-2">
                 <Card>
                   <CardHeader>
-                    <CardTitle>Thông tin</CardTitle>
+                    <CardTitle className="text-lg">Thông tin</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4">
-                      <div className="flex flex-col items-start gap-4">
+                      <div className="flex flex-col items-start gap-2">
                         <Label htmlFor="roomName" className="text-right">
                           Chọn phòng
                         </Label>
@@ -368,8 +368,8 @@ export default function Contract() {
                             handleRoomChange(e);
                             setIdRoom(e.target.value);
                           }}
-                          className="border rounded px-3 py-2 w-full"
-                           // Add  for validation
+                          className="border rounded text-sm px-3 py-2 w-full"
+                        // Add  for validation
                         >
                           <option value="">Chọn Phòng</option>
                           {rooms?.map((room) => (
@@ -386,7 +386,7 @@ export default function Contract() {
                         </select>
 
                       </div>
-                      <div className="flex flex-col items-start gap-4">
+                      <div className="flex flex-col items-start gap-2">
                         <Label htmlFor="userName" className="text-right">
                           Tên người dùng
                         </Label>
@@ -397,8 +397,8 @@ export default function Contract() {
                             handleUserChange(e);
                             setIdUser(e.target.value);
                           }}
-                          className="border rounded px-3 py-2 w-full"
-                           // Add  for validation
+                          className="border rounded text-sm px-3 py-2 w-full"
+                        // Add  for validation
                         >
                           <option value="">Chọn khách hàng</option>
                           {users?.map((user) => (
@@ -408,7 +408,7 @@ export default function Contract() {
                           ))}
                         </select>
                       </div>
-                      {/* <div className="flex flex-col items-start gap-4">
+                      {/* <div className="flex flex-col items-start gap-2">
                   <Label htmlFor="born" className="text-right">
                     Trạng thái
                   </Label>
@@ -420,7 +420,7 @@ export default function Contract() {
                     className="col-span-3"
                   />
                 </div> */}
-                      <div className="flex flex-col items-start gap-4">
+                      <div className="flex flex-col items-start gap-2">
                         <Label htmlFor="date-start" className="">
                           Ngày bắt đầu
                         </Label>
@@ -433,7 +433,7 @@ export default function Contract() {
                         />
                       </div>
                       {/* Hạn hợp đồng */}
-                      <div className="flex flex-col items-start gap-4">
+                      <div className="flex flex-col items-start gap-2">
                         <Label htmlFor="date-end" className="">
                           Hạn hợp đồng
                         </Label>
@@ -441,7 +441,7 @@ export default function Contract() {
                           id="date-end-select"
                           value={date_end_option}
                           onChange={handleDateEndOptionChange}
-                          className="border rounded px-3 py-2 w-full"
+                          className="border rounded text-sm px-3 py-2 w-full"
                         >
                           <option value="default" disabled>
                             Chọn hạn hợp đồng
@@ -467,7 +467,7 @@ export default function Contract() {
                       </div>
 
                       {/* Hiển thị ngày kết thúc */}
-                      <div className="flex flex-col items-start gap-4">
+                      <div className="flex flex-col items-start gap-2">
                         <Label htmlFor="date-display" className="">
                           Ngày kết thúc
                         </Label>
@@ -480,7 +480,7 @@ export default function Contract() {
                         />
                       </div>
                       {/* Hiển thị ngày kết thúc */}
-                      <div className="flex flex-col items-start gap-4">
+                      <div className="flex flex-col items-start gap-2">
                         <Label htmlFor="file-scan" className="font-semibold">
                           Nhập File Scan
                         </Label>
@@ -517,17 +517,17 @@ export default function Contract() {
           </Button>
         </div >
       </div >
-      <Table>
+      <Table className="text-sm">
         <TableHeader>
           <TableRow>
-            <TableHead>STT</TableHead>
-            <TableHead>Mã hợp đồng</TableHead>
-            <TableHead>Tên phòng - Tòa nhà</TableHead>
-            <TableHead> Người Dùng</TableHead>
-            <TableHead>Ngày tạo</TableHead>
-            <TableHead>Ngày kết thúc</TableHead>
-            <TableHead>Tình trạng </TableHead>
-            <TableHead>Chức Năng</TableHead>
+            <TableHead >STT</TableHead>
+            <TableHead >Mã hợp đồng</TableHead>
+            <TableHead >Tên phòng - Tòa nhà</TableHead>
+            <TableHead > Người Dùng</TableHead>
+            <TableHead >Ngày tạo</TableHead>
+            <TableHead >Ngày kết thúc</TableHead>
+            <TableHead >Tình trạng </TableHead>
+            <TableHead >Chức Năng</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -537,7 +537,7 @@ export default function Contract() {
               <TableCell>{contract.id}</TableCell> {/* Mã hợp đồng */}
               <TableCell>{`${contract.name_room} - ${contract.name_building}`}</TableCell> {/* Tên phòng - Tòa nhà */}
               <TableCell>
-              <img
+                <img
                   src={`${process.env.NEXT_PUBLIC_PATH_FILE}${contract.avatar || ''}`}
                   alt={`${contract.name}'s avatar`}
                   className="w-10 h-10 rounded-full ml-4"
@@ -545,7 +545,7 @@ export default function Contract() {
                     e.target.src = "https://vnsteelthanglong.vn/core/img/default_image.png";
                   }}
                 />
-                 {contract.name_user}</TableCell> {/* Tên Người Dùng */}
+                {contract.name_user}</TableCell> {/* Tên Người Dùng */}
               <TableCell>
                 {contract.date_start}
               </TableCell>
@@ -579,12 +579,12 @@ export default function Contract() {
 
                     <DialogContent className="sm:max-w-[80vw]">
                       <DialogHeader>
-                        <DialogTitle>Sửa Thông Tin Hợp Đồng</DialogTitle>
+                        <DialogTitle>Thông Tin Hợp Đồng</DialogTitle>
                         <DialogDescription>Chỉnh sửa thông tin hợp đồng thuê phòng.</DialogDescription>
                       </DialogHeader>
 
                       <form onSubmit={handleEditContracts}>
-                        <div className="grid grid-cols-1 h-[70vh] overflow-y-auto md:grid-cols-3 gap-4">
+                        <div className="grid grid-cols-1 h-[70vh] overflow-y-auto md:grid-cols-3 gap-2">
                           <Card>
                             <CardHeader>
                               <CardTitle>Thông tin</CardTitle>
@@ -592,7 +592,7 @@ export default function Contract() {
                             <CardContent>
                               <div className="space-y-4">
                                 {/* Room */}
-                                <div className="flex flex-col items-start gap-4">
+                                <div className="flex flex-col items-start gap-2">
                                   <Label htmlFor="roomName">Tên Phòng</Label>
                                   <select
                                     id="roomName"
@@ -605,8 +605,8 @@ export default function Contract() {
                                       })
                                     }
                                     }
-                                    className="border rounded px-3 py-2 w-full"
-                                    
+                                    className="border rounded text-sm px-3 py-2 w-full"
+
                                   >
                                     <option value="">Chọn Phòng</option>
                                     {rooms?.map((room) => (
@@ -618,7 +618,7 @@ export default function Contract() {
                                 </div>
 
                                 {/* User */}
-                                <div className="flex flex-col items-start gap-4">
+                                <div className="flex flex-col items-start gap-2">
                                   <Label htmlFor="userName">Tên khách hàng</Label>
                                   <select
                                     id="userName"
@@ -631,8 +631,8 @@ export default function Contract() {
                                       })
                                     }
                                     }
-                                    className="border rounded px-3 py-2 w-full"
-                                    
+                                    className="border rounded text-sm px-3 py-2 w-full"
+
                                   >
                                     <option value="">Chọn khách hàng</option>
                                     {users?.map((user) => (
@@ -644,7 +644,7 @@ export default function Contract() {
                                 </div>
 
                                 {/* Status */}
-                                <div className="flex flex-col items-start gap-4">
+                                <div className="flex flex-col items-start gap-2">
                                   <Label htmlFor="status">Trạng thái</Label>
                                   <Input
                                     id="status"
@@ -653,12 +653,12 @@ export default function Contract() {
                                     onChange={(e) =>
                                       setSelectedContract({ ...selectedContract, status: e.target.value })
                                     }
-                                    
+
                                   />
                                 </div>
 
                                 {/* Date Start */}
-                                <div className="flex flex-col items-start gap-4">
+                                <div className="flex flex-col items-start gap-2">
                                   <Label htmlFor="date_start">Ngày bắt đầu</Label>
                                   <Input
                                     id="date_start"
@@ -667,12 +667,12 @@ export default function Contract() {
                                     onChange={(e) =>
                                       setSelectedContract({ ...selectedContract, date_start: e.target.value })
                                     }
-                                    
+
                                   />
                                 </div>
 
                                 {/* Date End */}
-                                <div className="flex flex-col items-start gap-4">
+                                <div className="flex flex-col items-start gap-2">
                                   <Label htmlFor="date_end">Ngày kết thúc</Label>
                                   <Input
                                     id="date_end"
@@ -681,14 +681,14 @@ export default function Contract() {
                                     onChange={(e) =>
                                       setSelectedContract({ ...selectedContract, date_end: e.target.value })
                                     }
-                                    
+
                                   />
                                 </div>
                               </div>
                             </CardContent>
                           </Card>
                           <div className="space-y-4 col-span-2">
-                            <EnhancedPreviewCards selectedRoom={selectedRoom} selectedUser={selectedUser} />
+                            <EnhancedPreviewCards selectedRoom={selectedRoom} selectedContract={selectedContract} selectedUser={selectedUser} />
 
                           </div>
                         </div>
@@ -720,7 +720,7 @@ export default function Contract() {
           ))}
         </TableBody>
       </Table>
-<ToastContainer/>
+      <ToastContainer />
     </div >
   )
 }

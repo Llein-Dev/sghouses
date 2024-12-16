@@ -44,52 +44,6 @@ export default function UsersContent() {
   const [currentPage, setCurrentPage] = useState(1); // Trang hiện tại
   const [usersPerPage] = useState(5); // Số lượng người dùng hiển thị mỗi trang
 
-  const [isPopupOpen, setIsPopupOpen] = useState(false); // Quản lý trạng thái hiển thị popup
-  const [deleteReason, setDeleteReason] = useState(''); // Lưu nội dung nhập vào
-  // Xử lý khi nhấn nút xác nhận xóa
-;
-
-  const handleDelete = async (id) => {
-    console.log('Lý do xóa:', deleteReason);
-    setIsPopupOpen(false); // Đóng popup sau khi xóa
-    setDeleteReason(''); // Xóa nội dung sau khi hoàn thành
-
-    const adminToken = Cookies.get("token");
-    if (!adminToken) {
-        toast.error("vui lòng đăng nhập trước khi tạo khu vực !"); // Thông báo lỗi    
-        router.push("/");
-        return;
-    }
-
-  
-    const formData = new FormData();
-    formData.append("deleteReason", deleteReason);
- 
-    try {
-        const adminToken = Cookies.get("token");
-        const response = await fetch(`http://localhost:8000/api/user/ban/${id}`, {
-            method: "POST",
-            headers: {
-                "Authorization": `Bearer ${adminToken}`,
-            },
-            body: formData, // Gửi FormData thay vì JSON
-        });
-
-        const data = await response.json();
-        console.log(data);
-
-        if (response.ok) {
-            toast.success("Biểu ngữ đã được tạo thành công!");
-        } else {
-            toast.warning(data.message);
-        }
-    } catch (error) {
-        toast.error(data.message || "Không thể kết nối đến server, vui lòng thử lại sau.");
-    } finally {
-      toast.error(data.message || "Không thể kết nối đến server, vui lòng thử lại sau.");
-    }
-};
-
 
   // hàm tiềm kiếm dựa trên dữ liệu được fetch
   const handleSearchChange = (event) => {
@@ -158,40 +112,40 @@ export default function UsersContent() {
 
 
 
-  // // Delete user
-  // const handleDeleteUser = async (id) => {
-  //   const adminToken = Cookies.get("token");
-  //   // Tìm user theo ID
-  //   const userToDelete = filteredUsers.find((user) => user.id === id);
-  //   // Kiểm tra nếu role là 
-  //   if (userToDelete?.role === 0) {
-  //     toast.error("Không thể xóa admin!"); // Thông báo lỗi    
-  //   }
-  //   try {
-  //     const response = await fetch(`http://localhost:8000/api/user/delete/${id}`, {
-  //       method: "DELETE",
-  //       headers: {
-  //         Authorization: `Bearer ${adminToken}`,
-  //         "Content-Type": "application/json",
-  //       },
-  //     });
+  // Delete user
+  const handleBanUser = async (id) => {
+    const adminToken = Cookies.get("token");
+    // Tìm user theo ID
+    const userToDelete = filteredUsers.find((user) => user.id === id);
+    // Kiểm tra nếu role là 
+    if (userToDelete?.role === 0) {
+      toast.error("Không thể xóa admin!"); // Thông báo lỗi    
+    }
+    try {
+      const response = await fetch(`http://localhost:8000/api/user/ban/${id}`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${adminToken}`,
+          "Content-Type": "application/json",
+        },
+      });
 
-  //     console.log('Delete response status:', response.status);
+      console.log('Delete response status:', response.status);
 
-  //     if (response.ok) {
-  //       toast.success("Cấm người dùng thành công !"); // Thông báo lỗi        // Cập nhật danh sách người dùng bằng cách loại bỏ người dùng đã xóa
-  //       setUsers((prevUsers) => prevUsers.filter(user => user.id !== id));
-  //       fetchData(); // Cập nhật danh sách người dùng nếu không chuyển trang
+      if (response.ok) {
+        toast.success("Cấm người dùng thành công !"); // Thông báo lỗi        // Cập nhật danh sách người dùng bằng cách loại bỏ người dùng đã xóa
+        setUsers((prevUsers) => prevUsers.filter(user => user.id !== id));
+        fetchData(); // Cập nhật danh sách người dùng nếu không chuyển trang
 
-  //     } else {
-  //       const errorData = await response.json();
-  //       setError(errorData.message || "Lỗi khi xóa người dùng");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error:", error);
-  //     setError("Có lỗi xảy ra khi xóa người dùng");
-  //   }
-  // };
+      } else {
+        const errorData = await response.json();
+        setError(errorData.message || "Lỗi khi xóa người dùng");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      setError("Có lỗi xảy ra khi xóa người dùng");
+    }
+  };
 
   // Edit user
   const handleEditUser = async () => {
@@ -360,55 +314,21 @@ export default function UsersContent() {
                       <DialogFooter>
                         <Button type="submit" onClick={handleEditUser}>Xác nhận!</Button>
                       </DialogFooter>
+                      
                     </DialogContent>
-                  </Dialog>
-
-                  {/* Delete Button */}
-                  {/* Nút xóa */}
-                  <Button
+                    <Button
                     variant="danger"
                     size="icon"
-                    onClick={() => { setIsPopupOpen(true) }} // Mở popup khi nhấn
+                    onClick={() => handleBanUser(user.id) } // Mở popup khi nhấn
                     className="flex items-center justify-center p-2 bg-red-500 text-white rounded-md hover:bg-red-600"
                   >
                     <Ban className="h-4 w-4" />
                   </Button>
+                  </Dialog>
 
-                  {/* Popup */}
-                  {isPopupOpen && (
-                    <div className="fixed inset-0 z-50 flex items-center justify-center ">
-                      <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
-                        {/* Tiêu đề */}
-                        <h2 className="text-lg font-semibold text-gray-800 mb-4">
-                          Nhập lý do cấm
-                        </h2>
-
-                        {/* Nội dung */}
-                        <textarea
-                          className="w-full h-24 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
-                          placeholder="Nhập lý do cấm tại đây..."
-                          value={deleteReason}
-                          onChange={(e) => setDeleteReason(e.target.value)}
-                        ></textarea>
-
-                        {/* Nút hành động */}
-                        <div className="flex justify-end mt-4 space-x-2">
-                          <button
-                            onClick={() => setIsPopupOpen(false)} // Đóng popup khi hủy
-                            className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400"
-                          >
-                            Hủy
-                          </button>
-                          <button
-                            onClick={handleDelete} // Gọi hàm xử lý khi xác nhận cấm
-                            className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
-                          >
-                            Xác nhận cấm
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  )}
+                  {/* Delete Button */}
+                  {/* Nút xóa */}
+                
                 </div>
               </TableCell>
             </TableRow>
@@ -428,7 +348,6 @@ export default function UsersContent() {
         ))}
       </div>
 <ToastContainer/>
-      {/* onClick={() => handleDeleteUser(user.id)} */}
     </div>
   )
 }

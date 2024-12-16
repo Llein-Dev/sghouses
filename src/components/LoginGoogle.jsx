@@ -5,18 +5,23 @@ import Cookies from "js-cookie";
 import { setProfile } from "@/redux/authSlice";
 import { profileAPI } from "@/utils/api/Auth/api";
 import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"; // Import CSS cho toast
+import { Spinner } from "./ui/loading";
 
 export default function GoogleLoginHandler() {
   const router = useRouter();
   const [error, setError] = useState(null);
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false)
 
-  // Hàm xử lý đăng nhập Google
   const handleGoogleLogin = async (response) => {
     if (!response.credential) {
-      setError("Đăng nhập Google thất bại: Không có thông tin đăng nhập.");
+      toast.error("Đăng nhập Google thất bại: Không có thông tin đăng nhập.");
       return;
     }
+
+    setLoading(true); // Hiển thị loading khi bắt đầu xử lý
 
     try {
       const loginResponse = await fetch(
@@ -31,38 +36,43 @@ export default function GoogleLoginHandler() {
         },
       );
 
+      const data = await loginResponse.json();
+
       if (loginResponse.ok) {
-        const data = await loginResponse.json();
-        console.log("Login thành công:", data);
-        handleLoginSuccess(data);
+        if (data.isNewUser) {
+          toast.success("Tài khoản đã được tạo thành công!");
+        } else {
+          toast.success("Đăng nhập thành công!");
+        }
+        await handleLoginSuccess(data);
       } else {
-        const errorData = await loginResponse.json();
-        setError(errorData.message || "Đăng nhập Google thất bại");
+        toast.error(data.message || "Đăng nhập Google thất bại.");
       }
     } catch (error) {
+      toast.error("Đăng nhập Google thất bại do lỗi mạng hoặc máy chủ.");
       console.error("Error with Google login:", error);
-      setError("Đăng nhập Google thất bại do lỗi mạng hoặc máy chủ.");
+    } finally {
+      setLoading(false); // Tắt loading khi xử lý xong
     }
   };
 
-  // Xử lý logic khi đăng nhập thành công
   const handleLoginSuccess = async (data) => {
     try {
       Cookies.set("token", data.data.token, { expires: 7, path: "" });
       const profile = await profileAPI();
       if (profile && profile.length > 0) {
         const userdata = profile[0];
-        dispatch(setProfile(userdata)); // Update Redux state with user data
+        dispatch(setProfile(userdata)); // Cập nhật Redux với thông tin người dùng
       }
-      router.push("/");
+      router.push("/"); // Chuyển hướng người dùng về trang chủ
     } catch (error) {
+      toast.error("Cập nhật thông tin người dùng thất bại.");
       console.error("Error updating profile:", error);
-      setError("Cập nhật thông tin người dùng thất bại.");
     }
   };
-  const [width, setWidth] = useState(window.innerWidth); // Track window width
 
-  // Update the width whenever the window is resized
+  const [width, setWidth] = useState(window.innerWidth);
+
   useEffect(() => {
     const handleResize = () => {
       setWidth(window.innerWidth);
@@ -75,19 +85,22 @@ export default function GoogleLoginHandler() {
     };
   }, []);
 
-  // Set the width based on the window size
-  const buttonWidth = width <= 640 ? 300 : 400; // 300px for mobile, 400px for PC
+  const buttonWidth = width <= 640 ? 300 : 400;
 
   return (
-    <div className="">
-      <GoogleLogin
-        onSuccess={handleGoogleLogin} // Handle successful login
-        onError={() => setError("Đăng nhập Google thất bại")} // Set error message on failure
-        theme="dark" // Optional: Choose theme (dark, light)
-        size="large" // Optional: Size of the button (small, medium, large)
-        width={buttonWidth}
-      />
-      {error && <p style={{ color: "red" }}>{error}</p>}
+    <div>
+      {loading ? (
+        <Spinner /> // Hiển thị spinner khi đang loading
+      ) : (
+        <GoogleLogin
+          onSuccess={handleGoogleLogin}
+          onError={() => toast.error("Đăng nhập Google thất bại.")}
+          theme="dark"
+          size="large"
+          width={buttonWidth}
+        />
+      )}
     </div>
+
   );
 }

@@ -277,7 +277,7 @@ export default function CreateBlog() {
               value={id_area}
               onChange={(e) => setKhuVuc(e.target.value)}
               className="w-full p-2 border border-gray-300 rounded mt-1"
-              required
+              
             >
               {
                 option.map((options) => (

@@ -244,7 +244,7 @@ export default function EditProfile2Component({ user }) {
                                 onChange={(e) => setCurrentPassword(e.target.value)}
                                 name="currentPassword"
                                 type={showPassword.currentPassword ? 'text' : 'password'}
-                                required
+                                
                             />
                             <button
                                 type="button"
@@ -270,7 +270,7 @@ export default function EditProfile2Component({ user }) {
                                 onChange={handlePasswordChange}
                                 name="newPassword"
                                 type={showPassword.newPassword ? 'text' : 'password'}
-                                required
+                                
                             />
                             <button
                                 type="button"
@@ -325,7 +325,7 @@ export default function EditProfile2Component({ user }) {
                                 onChange={(e) => setConfirmPassword(e.target.value)}
                                 name="confirmPassword"
                                 type={showPassword.confirmPassword ? 'text' : 'password'}
-                                required
+                                
                             />
                             <button
                                 type="button"

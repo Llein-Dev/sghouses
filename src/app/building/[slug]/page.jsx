@@ -95,7 +95,7 @@ export default function BuildingDetailComponent() {
                     <CardHeader>
                         <CardTitle>
                             <h1 className="text-3xl font-bold mb-2">{building?.ten}</h1>
-                            <Badge variant="secondary">Cuộc sống sang trọng</Badge>
+                            <Badge variant="secondary">{building?.vi_tri}</Badge>
                         </CardTitle>
                     </CardHeader>
                     <CardContent>

@@ -146,7 +146,7 @@ export default function UpdateBlog() {
                                 onChange={(e) => setTitle(e.target.value)}
                                 className="w-full p-2 border border-gray-300 rounded mt-1"
                                 placeholder="Nhập tiêu đề"
-                                required
+                                
                             />
                         </div>
 

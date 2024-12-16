@@ -254,7 +254,7 @@ export default function UpdateRoom() {
                             value={id_building}
                             onChange={(e) => setIDToaNha(e.target.value)}
                             className="w-full p-2 border border-gray-300 rounded mt-1"
-                            required
+                            
                         >
                             {
                                 optionToaNha.map((option) => (
@@ -273,7 +273,7 @@ export default function UpdateRoom() {
                             onChange={(e) => setName(e.target.value)}
                             className="w-full p-2 border border-gray-300 rounded mt-1"
                             placeholder="Nhập tiêu đề"
-                            required
+                            
                         />
                     </div>
                     <div className="grid grid-cols-3 gap-4">
@@ -320,7 +320,7 @@ export default function UpdateRoom() {
                                     onChange={(e) => setDienTich(e.target.value)}
                                     className="flex-grow p-1 outline-none"
                                     placeholder="Nhập diện tích"
-                                    required
+                                    
                                 />
                                 <span className="ml-2 text-gray-500">m²</span>
                             </div>

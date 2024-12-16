@@ -130,7 +130,7 @@ export default function BlogContent() {
     router.push(`/admin/update_blog/${id}`)
   }
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 ">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
         {/* Cột input */}
         <div className="flex items-center space-x-2">
@@ -146,7 +146,7 @@ export default function BlogContent() {
           />
         </div>
         {/* Cột buttons */}
-        <div className="flex justify-end space-x-2">
+        <div className="flex justify-end space-x-2 ">
           <Button onClick={handleCreatPage} className="bg-green-700 text-white hover:bg-green-600">
             <Plus className="mr-2 h-4 w-4" />
             Tạo tin tức

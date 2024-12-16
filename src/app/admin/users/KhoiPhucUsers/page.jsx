@@ -15,7 +15,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { toast, ToastContainer } from "react-toastify";
-
+import 'react-toastify/dist/ReactToastify.css';
 export default function KhoiPhucUsers() {
   const [deletedUsers, setDeletedUsers] = useState([]);
   const [error, setError] = useState(null);
@@ -229,7 +229,7 @@ export default function KhoiPhucUsers() {
 
       </div>
       
-      
+      <ToastContainer/>
       
     </>
   );

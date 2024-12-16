@@ -207,7 +207,7 @@ export default function UsersContent() {
        {isLoading ? (
       <div className="flex items-center justify-center">
         <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-gray-500"></div>
-        <span className="ml-2">Đang xử lý...</span>
+        <span className="ml-2">Đang gửi gmail vui lòng đợi trong giây lát !</span>
       </div>
     ) : (
       <div>
@@ -330,7 +330,7 @@ export default function UsersContent() {
                     <Button
                     variant="danger"
                     size="icon"
-                    onClick={() => handleBanUser(user.id) } // Mở popup khi nhấn
+                    onClick={() => handleBanUser(user.id) }
                     className="flex items-center justify-center p-2 bg-red-500 text-white rounded-md hover:bg-red-600"
                   >
                     <Ban className="h-4 w-4" />

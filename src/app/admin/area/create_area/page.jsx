@@ -59,14 +59,18 @@ export default function CreateArea() {
                 },
                 body: formData, // Gửi FormData thay vì JSON
             });
-
-            const data = await response.json();
-            console.log(data);
-
+            const contentType = response.headers.get("Content-Type");
+            let errorMessage;
             if (response.ok) {
                 toast.success('tạo khu vực thành công !')
-            } else {
-                setErrorMessage(data.message || "Đã có lỗi xảy ra, vui lòng thử lại.");
+            }else {
+                if (contentType.includes("application/json")) {
+                    const data = await response.json();
+                    errorMessage = data.message || "Đã xảy ra lỗi, vui lòng thử lại!";
+                } else {
+                    errorMessage = await response.text(); // Nếu là chuỗi thuần
+                }
+                toast.error(`Lỗi: ${errorMessage}`); // Hiển thị toàn bộ chuỗi
             }
         } catch (error) {
             setErrorMessage("Không thể kết nối đến server, vui lòng thử lại sau.");

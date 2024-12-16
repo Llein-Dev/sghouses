@@ -20,8 +20,6 @@ import {
 } from "@/components/ui/dialog"
 import { useRouter } from "next/navigation"
 import Cookies from "js-cookie"
-
-
 export default function CategoryBlog() {
     const [room, setRoom] = useState([])
     const router = useRouter()
@@ -33,10 +31,8 @@ export default function CategoryBlog() {
             router.push('/');
             return;
         }
-        // fetch dữ liệu user
         fetchDataRoom();
     }, [router]);
-
     const fetchDataRoom = async () => {
         const adminToken = Cookies.get("token");
 
@@ -76,13 +72,20 @@ export default function CategoryBlog() {
 
             console.log('Delete response status:', response.status);
 
+            const contentType = response.headers.get("Content-Type");
+            let errorMessage;
             if (response.ok) {
                 toast.success("xóa thành công !"); // Thông báo lỗi
                 // Cập nhật danh sách người dùng bằng cách loại bỏ người dùng đã xóa
                 setRoom((prevRoom) => prevRoom.filter(rooms => rooms.id !== id));
-            } else {
-                const errorData = await response.json();
-                setError(errorData.message || "Lỗi khi xóa người dùng");
+            }else {
+                if (contentType.includes("application/json")) {
+                    const data = await response.json();
+                    errorMessage = data.message || "Đã xảy ra lỗi, vui lòng thử lại!";
+                } else {
+                    errorMessage = await response.text(); // Nếu là chuỗi thuần
+                }
+                toast.error(`Lỗi: ${errorMessage}`); // Hiển thị toàn bộ chuỗi
             }
         } catch (error) {
             console.error("Error:", error);
@@ -227,9 +230,7 @@ export default function CategoryBlog() {
                     ))}
                 </TableBody>
             </Table>
-            
-            
-            
+            <ToastContainer/>
         </div>
     )
 }

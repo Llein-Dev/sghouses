@@ -43,17 +43,52 @@ export default function UsersContent() {
   const [filteredUsers, setFilteredUsers] = useState([]); // Danh sách user sau khi lọc
   const [currentPage, setCurrentPage] = useState(1); // Trang hiện tại
   const [usersPerPage] = useState(5); // Số lượng người dùng hiển thị mỗi trang
-  
+
   const [isPopupOpen, setIsPopupOpen] = useState(false); // Quản lý trạng thái hiển thị popup
   const [deleteReason, setDeleteReason] = useState(''); // Lưu nội dung nhập vào
   // Xử lý khi nhấn nút xác nhận xóa
-  const handleDelete = () => {
+;
+
+  const handleDelete = async (id) => {
     console.log('Lý do xóa:', deleteReason);
     setIsPopupOpen(false); // Đóng popup sau khi xóa
     setDeleteReason(''); // Xóa nội dung sau khi hoàn thành
-    // Thực hiện logic xóa (API call, v.v.)
-  };
 
+    const adminToken = Cookies.get("token");
+    if (!adminToken) {
+        toast.error("vui lòng đăng nhập trước khi tạo khu vực !"); // Thông báo lỗi    
+        router.push("/");
+        return;
+    }
+
+  
+    const formData = new FormData();
+    formData.append("deleteReason", deleteReason);
+ 
+    try {
+        const adminToken = Cookies.get("token");
+        const response = await fetch(`http://localhost:8000/api/user/ban/${id}`, {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${adminToken}`,
+            },
+            body: formData, // Gửi FormData thay vì JSON
+        });
+
+        const data = await response.json();
+        console.log(data);
+
+        if (response.ok) {
+            toast.success("Biểu ngữ đã được tạo thành công!");
+        } else {
+            toast.warning(data.message);
+        }
+    } catch (error) {
+        toast.error(data.message || "Không thể kết nối đến server, vui lòng thử lại sau.");
+    } finally {
+      toast.error(data.message || "Không thể kết nối đến server, vui lòng thử lại sau.");
+    }
+};
 
 
   // hàm tiềm kiếm dựa trên dữ liệu được fetch
@@ -333,7 +368,7 @@ export default function UsersContent() {
                   <Button
                     variant="danger"
                     size="icon"
-                    onClick={() => setIsPopupOpen(true)} // Mở popup khi nhấn
+                    onClick={() => { setIsPopupOpen(true) }} // Mở popup khi nhấn
                     className="flex items-center justify-center p-2 bg-red-500 text-white rounded-md hover:bg-red-600"
                   >
                     <Ban className="h-4 w-4" />
@@ -341,17 +376,17 @@ export default function UsersContent() {
 
                   {/* Popup */}
                   {isPopupOpen && (
-                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                    <div className="fixed inset-0 z-50 flex items-center justify-center ">
                       <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
                         {/* Tiêu đề */}
                         <h2 className="text-lg font-semibold text-gray-800 mb-4">
-                          Nhập lý do xóa
+                          Nhập lý do cấm
                         </h2>
 
                         {/* Nội dung */}
                         <textarea
                           className="w-full h-24 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
-                          placeholder="Nhập lý do xóa tại đây..."
+                          placeholder="Nhập lý do cấm tại đây..."
                           value={deleteReason}
                           onChange={(e) => setDeleteReason(e.target.value)}
                         ></textarea>
@@ -365,10 +400,10 @@ export default function UsersContent() {
                             Hủy
                           </button>
                           <button
-                            onClick={handleDelete} // Gọi hàm xử lý khi xác nhận xóa
+                            onClick={handleDelete} // Gọi hàm xử lý khi xác nhận cấm
                             className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
                           >
-                            Xác nhận xóa
+                            Xác nhận cấm
                           </button>
                         </div>
                       </div>

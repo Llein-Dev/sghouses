@@ -67,8 +67,6 @@ export default function BlogContent() {
       });
       console.log('Delete response status:', response.status);
       if (response.ok) {
-        // Cập nhật danh sách người dùng bằng cách loại bỏ người dùng đã xóa
-        setArea((prevArea) => prevArea.filter(areas => areas.id !== id));
         toast.success('Xóa khu vực thành công !')
         fetchDataArea(); // Cập nhật danh sách người dùng nếu không chuyển trang
         
@@ -93,9 +91,7 @@ export default function BlogContent() {
         },
       });
       if (response.ok) {
-        const newArea = await response.json();
-        setArea((prevArea) => [...prevArea, newArea]); // Cập nhật danh sách user
-        // Hiện thông báo và tải lại danh sách users
+        toast.success('Nhân bản khu vực thành công !')
         fetchDataArea(); // Gọi lại fetchData để tải lại danh sách user mới
 
       } else {
@@ -238,7 +234,7 @@ export default function BlogContent() {
           ))}
         </TableBody>
       </Table>
-  
+  <ToastContainer/>
     </div>
   )
 }

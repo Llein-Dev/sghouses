@@ -325,9 +325,9 @@ export default function CategoryBlog() {
                           </DialogTrigger>
                           <DialogContent className="sm:max-w-[425px]">
                             <DialogHeader>
-                              <DialogTitle>Chỉnh sửa danh mục blog</DialogTitle>
+                              <DialogTitle>Chỉnh sửa danh mục tin tức</DialogTitle>
                               <DialogDescription>
-                                chỉnh sửa với danh mục blog !
+                                chỉnh sửa với danh mục tin tức !
                               </DialogDescription>
                             </DialogHeader>
                             <div className="grid gap-4 py-4">

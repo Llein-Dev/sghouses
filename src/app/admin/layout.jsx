@@ -22,7 +22,9 @@ import {
   Home,
   Receipt,
   MessageCircle,
-  Mail
+  Mail,
+  UsersRoundIcon,
+  LogOut
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -46,7 +48,7 @@ export default function RootLayout({ children }) {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   const token = Cookies.get("token");
-
+  const [user, setUser] = useState()
   useEffect(() => {
     const fetchUserProfile = async () => {
       if (token) {
@@ -55,7 +57,7 @@ export default function RootLayout({ children }) {
           if (profile && profile.length > 0) {
             const user = profile[0];
             console.log(profile[0]);
-
+            setUser(user);
             setIsAdmin(user.role === 0); // Assuming role 0 is admin
           }
         } catch (error) {
@@ -79,18 +81,26 @@ export default function RootLayout({ children }) {
       router.push("/"); // Redirect to homepage if not an admin
     }
   }, [loading, isAdmin, router]);
+
   const [openGroups, setOpenGroups] = useState([]); // State to manage open groups
   const [activeTab, setActiveTab] = useState(null); // State for the active tab
+
   const activeTabLabel =
     groupedNavItems.find((item) =>
       item.items.some((subItem) => subItem.key === activeTab)
     )?.label || "Dashboard";
+
   const toggleGroup = (label) => {
     setOpenGroups((prev) =>
       prev.includes(label) ? prev.filter((g) => g !== label) : [...prev, label]
     );
   };
 
+  const handleLogout = () => {
+    Cookies.remove("token");
+    dispatch(logout());
+    handleLoginToggle();
+  };
   if (loading) return <div>Loading...</div>; // Optionally show a loading state
   return (
     <div className="flex bg-gray-100 overflow-hidden h-screen">
@@ -164,27 +174,100 @@ export default function RootLayout({ children }) {
               <div className="p-4 flex justify-between items-center">
                 <h2 className="font-semibold text-xl">{activeTabLabel}</h2>
                 <div className="flex items-center">
-
                   <DropdownMenu>
-                    <DropdownMenuTrigger className="flex rounded-lg items-center p-1 bg-white text-blue-950 ml-2">
-                      <Avatar>
-                        <AvatarImage src="/placeholder.svg?height=40&width=40" alt="Tác giả" />
-                        <AvatarFallback>QT</AvatarFallback>
-                      </Avatar>
-                      <Button
-                        variant="secondary"
-                        className=""
-                      >
-                        Quản trị
-                        <ChevronDown className="ml-2 h-4 w-4" />
+                    <DropdownMenuTrigger className=" border-none " asChild>
+                      <Button variant="ghost" className="relative p-0 hover:p-0">
+                        <div className="flex items-center shadow-lg  border-none  hover:bg-gray-100 bg-white overflow-hidden rounded-lg space-x-2 ">
+                          <div className="h-10 w-10 flex items-center justify-center">
+                            {user?.avatar ? (
+                              <img
+                                alt={user?.name || "User"}
+                                src={
+                                  user.avatar.startsWith("http")
+                                    ? user.avatar
+                                    : `http://localhost:8000/storage/${user.avatar}`
+                                }
+                                className="h-full w-full"
+                              />
+                            ) : (
+                              <span className="text-gray-500 text-sm">
+                                {user?.name?.[0]?.toUpperCase() || "U"}
+                              </span>
+                            )}
+                          </div>
+
+                          <div className="flex flex-col text-black p-2">
+                            <p className="text-sm font-medium leading-none">
+                              {user?.name || "User"}
+                            </p>
+                            <p className="text-xs text-red-500 mt-2 text-start leading-none">
+                              {user?.role === 0 ? "Admin" : "Người dùng"}
+
+                            </p>
+                          </div>
+                        </div>
                       </Button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent>
-                      <DropdownMenuLabel>Tài khoản</DropdownMenuLabel>
+
+                    <DropdownMenuContent className="w-full" align="end" forceMount>
+                      <div className="flex items-center  space-x-2 p-2">
+                        <div className="h-10 w-10 flex items-center justify-center border border-gray-300 bg-gray-100">
+                          {user?.avatar ? (
+                            <img
+                              alt={user?.name || "User"}
+                              src={
+                                user.avatar.startsWith("http")
+                                  ? user.avatar
+                                  : `http://localhost:8000/storage/${user.avatar}`
+                              }
+                              className="h-full w-full"
+                            />
+                          ) : (
+                            <span className="text-gray-500 text-sm">
+                              {user?.name?.[0]?.toUpperCase() || "U"}
+                            </span>
+                          )}
+                        </div>
+                        <div className="flex flex-col px-2">
+                          <p className="text-sm font-medium leading-none">
+                            {user?.name || "User"}
+                          </p>
+                          <p className="text-xs leading-none text-muted-foreground">
+                            {user?.email || "Email"}
+                          </p>
+                        </div>
+                      </div>
                       <DropdownMenuSeparator />
-                      <DropdownMenuItem>Trang cá nhân</DropdownMenuItem>
-                      <DropdownMenuItem>Cài đặt</DropdownMenuItem>
-                      <DropdownMenuItem>Đăng xuất</DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem>
+                        <Link className="w-full" href="/profile">
+                          Hồ sơ
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem>
+                        <Link className="w-full" href="/profile/favourite">
+                          Yêu thích
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem>
+                        <Link className="w-full" href="/profile/history">
+                          Thuê trọ
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem>
+                        <Link className="w-full" href="/profile/edit">
+                          Cài đặt
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+
+                      <DropdownMenuItem
+                        className="border-t pt-4"
+                        onClick={handleLogout}
+                      >
+                        <LogOut className="mr-2 h-4 w-4" />
+                        <span>Đăng xuất</span>
+                      </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </div>
@@ -202,4 +285,3 @@ export default function RootLayout({ children }) {
     </div>
   );
 }
-  

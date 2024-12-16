@@ -103,7 +103,7 @@ export function PasswordResetComponent() {
                   placeholder="Nhập email của bạn"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  required />
+                   />
                 <Button size="sm" type="submit" variant="blue" className="w-full mt-4">
                   Gửi OTP
                 </Button>
@@ -115,7 +115,7 @@ export function PasswordResetComponent() {
                   placeholder="Nhập mã OTP"
                   value={otp}
                   onChange={(e) => setOtp(e.target.value)}
-                  required />
+                   />
                 <div className="flex justify-between mt-4">
                   <Button variant="link" onClick={() => setStep(1)}>
                     Quay lại

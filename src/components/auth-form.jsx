@@ -19,7 +19,7 @@ export function AuthForm({
       <div className="hidden md:flex flex-1 items-center justify-center bg-gray-200">
         <img
           src="/dark-blue-house-exterior-2.png"
-          alt="Auth illustration"
+          alt="Minh họa xác thực"
           className="object-cover w-full h-full"
         />
       </div>
@@ -27,22 +27,21 @@ export function AuthForm({
         <div className="w-full max-w-md border-none">
           <CardHeader>
             <CardTitle className="text-2xl font-bold">
-              {isLogin ? "Login" : "Sign Up"}
+              {isLogin ? "Đăng Nhập" : "Đăng Ký"}
             </CardTitle>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="">
               {!isLogin && (
                 <div className="space-y-2 mt-4">
-                  <Label htmlFor="name">Full Name</Label>
+                  <Label htmlFor="name">Họ và tên</Label>
                   <Input
                     id="name"
                     type="text"
-                    placeholder="Enter your full name"
+                    placeholder="Nhập họ và tên của bạn"
                     value={formData.name}
                     className="w-full md:w-[398px]"
                     onChange={handleChange}
-                    required
                   />
                 </div>
               )}
@@ -51,43 +50,42 @@ export function AuthForm({
                 <Input
                   id="email"
                   type="email"
-                  placeholder="Enter your email"
+                  placeholder="Nhập email của bạn"
                   value={formData.email}
                   className="w-full md:w-[398px]"
                   onChange={handleChange}
-                  required
                 />
               </div>
               <div className="space-y-2 mt-4">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password">Mật khẩu</Label>
                 <Input
                   id="password"
                   type="password"
                   className="w-full md:w-[398px]"
-                  placeholder="Enter your password"
+                  placeholder="Nhập mật khẩu của bạn"
                   value={formData.password}
                   onChange={handleChange}
-                  required
                 />
               </div>
               {error && <p className="text-red-500 text-sm">{error}</p>}
-              <p className="mt-6 mb-2 opacity-50 text-xs text-center">By signing up, you agree to our Terms & Privacy Policy .</p>
-            
+              <p className="mt-6 mb-2 opacity-50 text-xs text-center">
+                Bằng cách đăng ký, bạn đồng ý với Điều khoản & Chính sách bảo mật của chúng tôi.
+              </p>
               <Button
                 type="submit"
                 variant="blue"
-                className="w-full md:w-[398px]" // Corrected the max-width syntax
+                className="w-full md:w-[398px]"
                 disabled={loading}
               >
                 {loading
                   ? isLogin
-                    ? "Logging in..."
-                    : "Signing up..."
+                    ? "Đang đăng nhập..."
+                    : "Đang đăng ký..."
                   : isLogin
-                  ? "Login"
-                  : "Sign Up"}
+                    ? "Đăng Nhập"
+                    : "Đăng Ký"}
               </Button>
-              <p className="text-center my-2">or</p>
+              <p className="text-center my-2">hoặc</p>
               <GoogleLoginHandler />
               <Button
                 variant="link"

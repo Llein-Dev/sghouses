@@ -11,20 +11,21 @@ import dynamic from "next/dynamic";
 // Import React Quill với tính năng hỗ trợ đầy đủ công cụ
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 import "react-quill/dist/quill.snow.css"; // Import CSS mặc định của Quill
+import { Card } from "@/components/ui/card";
 
 // Cấu hình toolbar cho Quill với đầy đủ công cụ
 const modules = {
-    toolbar: [
-        [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }], // Các cấp độ tiêu đề và font
-        [{ 'list': 'ordered' }, { 'list': 'bullet' }], // Danh sách có thứ tự và không có thứ tự
-        ['bold', 'italic', 'underline', 'strike'], // In đậm, in nghiêng, gạch dưới, gạch ngang
-        [{ 'align': [] }], // Căn chỉnh
-        [{ 'color': [] }, { 'background': [] }], // Chọn màu chữ và nền
-        [{ 'script': 'sub' }, { 'script': 'super' }], // Chỉ số trên, chỉ số dưới
-        ['link', 'image'], // Thêm link và ảnh
-        ['blockquote', 'code-block'], // Trích dẫn và khối mã
-        ['clean'], // Xóa định dạng
-    ],
+  toolbar: [
+    [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }], // Các cấp độ tiêu đề và font
+    [{ 'list': 'ordered' }, { 'list': 'bullet' }], // Danh sách có thứ tự và không có thứ tự
+    ['bold', 'italic', 'underline', 'strike'], // In đậm, in nghiêng, gạch dưới, gạch ngang
+    [{ 'align': [] }], // Căn chỉnh
+    [{ 'color': [] }, { 'background': [] }], // Chọn màu chữ và nền
+    [{ 'script': 'sub' }, { 'script': 'super' }], // Chỉ số trên, chỉ số dưới
+    ['link', 'image'], // Thêm link và ảnh
+    ['blockquote', 'code-block'], // Trích dẫn và khối mã
+    ['clean'], // Xóa định dạng
+  ],
 };
 export default function CreateBlog() {
   const [name, setTen] = useState("");
@@ -156,10 +157,10 @@ export default function CreateBlog() {
         body: formData,
       });
 
-     
-    // Kiểm tra phản hồi từ backend
-    const contentType = response.headers.get("Content-Type");
-    let errorMessage;
+
+      // Kiểm tra phản hồi từ backend
+      const contentType = response.headers.get("Content-Type");
+      let errorMessage;
 
 
       if (response.ok) {
@@ -169,7 +170,7 @@ export default function CreateBlog() {
         setTienIch([]); // Reset tiện ích về mảng rỗng
         setMoTa("");
         setKhuVuc("");
-      }else {
+      } else {
         if (contentType.includes("application/json")) {
           const data = await response.json();
           errorMessage = data.message || "Đã xảy ra lỗi, vui lòng thử lại!";
@@ -219,15 +220,15 @@ export default function CreateBlog() {
 
   return (
     <>
-      <div className="flex justify-end p-6">
+      <div className="flex justify-end mb-2">
         <Button onClick={handleCreatPage} className="bg-blue-900 text-white hover:bg-blue-600">
           <FileText className="mr-2 h-4 w-4" />
           Danh sách tòa nhà
         </Button>
       </div>
-      <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
-        <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-screen-lg">
-          <h2 className="text-2xl font-semibold text-gray-700 mb-4">
+      <div className="text-sm flex items-center w-full justify-center bg-gray-100 ">
+        <div className="bg-white rounded-lg shadow-lg p-4 w-full">
+          <h2 className="text-xl font-semibold text-gray-700 mb-2">
             Tạo Tòa Nhà Mới
           </h2>
 
@@ -244,35 +245,180 @@ export default function CreateBlog() {
           )}
 
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label className="block text-gray-600">Khu vực</label>
-              <select
-                value={id_area}
-                onChange={(e) => setKhuVuc(e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded mt-1"
-              >
-                {
-                  option.map((options) => (
-                    <option value={options.id}>{options.name}</option>
-                  )
-                  )
-                }
+            <div className="md:grid-cols-3 grid-cols- grid gap-4">
+              <div>
+                <label className="block text-gray-600">Khu vực</label>
+                <select
+                  value={id_area}
+                  onChange={(e) => setKhuVuc(e.target.value)}
+                  className="w-full p-2 border border-gray-300 rounded mt-1"
+                >
+                  {
+                    option.map((options) => (
+                      <option value={options.id}>{options.name}</option>
+                    )
+                    )
+                  }
 
-              </select>
+                </select>
+              </div>
+              <div className="col-span-2">
+                <label className="block text-gray-600">Tên tòa nhà</label>
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(e) => setTen(e.target.value)}
+                  className="w-full p-2 border border-gray-300 rounded mt-1"
+                  placeholder="Nhập tên tòa nhà"
+                />
+              </div>
             </div>
 
-            <div>
-              <label className="block text-gray-600">Tên tòa nhà</label>
-              <input
-                type="text"
-                value={name}
-                onChange={(e) => setTen(e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded mt-1"
-                placeholder="Nhập tên tòa nhà"
-              />
-            </div>
 
-            {/* chọn ảnh */}
+
+            <div className="grid grid-cols-2 gap-4">
+              <Card className="p-2">
+                <div>
+                  <label className="block text-gray-600">Vị trí tiện ích</label>
+                  <div className="relative mt-2">
+                    {/* Hiển thị các vị trí đã chọn */}
+                    <div className="bg-gray-100 p-2 flex flex-wrap gap-2 rounded">
+                      {locations.map((loc, index) => (
+                        <div
+                          key={index}
+                          className="bg-blue-900 text-white px-3 py-1 rounded-full flex items-center gap-2"
+                        >
+                          {loc}
+                          <button
+                            type="button"
+                            className="text-white hover:text-gray-300"
+                            onClick={() => setViTriList(locations.filter((item) => item !== loc))}
+                          >
+                            ✕
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Input thêm vị trí */}
+                    <div className="flex items-center gap-2 mt-2">
+                      <input
+                        type="text"
+                        value={locationQuery}
+                        onChange={(e) => setLocationQuery(e.target.value.trimStart())}
+                        placeholder="Thêm hoặc tìm vị trí"
+                        className="w-full p-2 border border-gray-300 rounded"
+                        onFocus={() => setLocationMenuOpen(true)}
+                        onBlur={() => setTimeout(() => setLocationMenuOpen(false), 200)}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (locationQuery && !locations.includes(locationQuery)) {
+                            setViTriList((prev) => [...prev, locationQuery]);
+                            setLocationQuery("");
+                          }
+                        }}
+                        className="bg-blue-900 text-white px-3 py-2 rounded"
+                      >
+                        Thêm
+                      </button>
+                    </div>
+
+                    {/* Gợi ý vị trí */}
+                    {locationMenuOpen && filteredLocations.length > 0 && (
+                      <div className="absolute top-full left-0 w-full bg-white shadow rounded mt-1 max-h-48 overflow-y-auto z-10">
+                        {filteredLocations.map((location) => (
+                          <div
+                            key={location}
+                            className="p-2 cursor-pointer hover:bg-blue-50 hover:text-blue-600"
+                            onMouseDown={(e) => e.preventDefault()}
+                            onClick={() => {
+                              setViTriList((prev) => [...prev, location]);
+                              setLocationQuery("");
+                            }}
+                          >
+                            {location}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </Card>
+              <Card className="p-2">            <div>
+                <label className="block text-gray-600">Tiện ích nội thất</label>
+                <div className="relative mt-2">
+                  {/* Hiển thị danh sách tiện ích đã chọn */}
+                  <div className="bg-gray-100 p-2 flex flex-wrap gap-2 rounded">
+                    {utilities.map((utility, index) => (
+                      <div
+                        key={index}
+                        className="bg-blue-900 text-white px-3 py-1 rounded-full flex items-center gap-2"
+                      >
+                        {utility}
+                        <button
+                          type="button"
+                          className="text-white hover:text-gray-300"
+                          onClick={() => handleRemoveUtility(utility)}
+                        >
+                          ✕
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Input thêm tiện ích */}
+                  <div className="flex items-center gap-2 mt-2">
+                    <input
+                      type="text"
+                      value={query}
+                      onChange={(e) => setQuery(e.target.value.trimStart())}
+                      placeholder="Thêm hoặc tìm tiện ích"
+                      className="w-full p-2 border border-gray-300 rounded"
+                      onFocus={() => setMenuOpen(true)}
+                      onBlur={() => setTimeout(() => setMenuOpen(false), 200)}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (!isDisable) {
+                          setTienIch((prev) => [...prev, query]);
+                          setQuery("");
+                        }
+                      }}
+                      className="bg-blue-900 text-white px-3 py-2 rounded"
+                      disabled={isDisable}
+                    >
+                      Thêm
+                    </button>
+                  </div>
+
+                  {/* Gợi ý tiện ích */}
+                  {menuOpen && filteredTags.length > 0 && (
+                    <div className="absolute top-full left-0 w-full bg-white shadow rounded mt-1 max-h-48 overflow-y-auto z-10">
+                      {filteredTags.map((tag) => (
+                        <div
+                          key={tag}
+                          className="p-2 cursor-pointer hover:bg-blue-50 hover:text-blue-600"
+                          onMouseDown={(e) => e.preventDefault()}
+                          onClick={() => {
+                            setTienIch((prev) => [...prev, tag]);
+                            setQuery("");
+                          }}
+                        >
+                          {tag}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+              </Card>
+              {/* chọn ảnh */}
+
+            </div>
+            {/* Tiện ích */}
             <div>
               <label className="block text-gray-600">Ảnh</label>
               <input
@@ -287,7 +433,7 @@ export default function CreateBlog() {
             <div>
               <h4 className="text-gray-600 mt-4">Ảnh đã chọn:</h4>
               {images.length > 0 ? (
-                <div className="grid grid-cols-4 gap-4">
+                <div className="grid grid-cols-6 gap-4">
                   {images.map((image) => (
                     <div
                       key={image.id} // Sử dụng `image.id` thay vì `index`
@@ -316,75 +462,6 @@ export default function CreateBlog() {
               )}
             </div>
 
-            {/* Tiện ích */}
-            <div>
-              <label className="block text-gray-600">Tiện ích nội thất</label>
-              <div className="relative mt-2">
-                {/* Hiển thị danh sách tiện ích đã chọn */}
-                <div className="bg-gray-100 p-2 flex flex-wrap gap-2 rounded">
-                  {utilities.map((utility, index) => (
-                    <div
-                      key={index}
-                      className="bg-blue-900 text-white px-3 py-1 rounded-full flex items-center gap-2"
-                    >
-                      {utility}
-                      <button
-                        type="button"
-                        className="text-white hover:text-gray-300"
-                        onClick={() => handleRemoveUtility(utility)}
-                      >
-                        ✕
-                      </button>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Input thêm tiện ích */}
-                <div className="flex items-center gap-2 mt-2">
-                  <input
-                    type="text"
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value.trimStart())}
-                    placeholder="Thêm hoặc tìm tiện ích"
-                    className="w-full p-2 border border-gray-300 rounded"
-                    onFocus={() => setMenuOpen(true)}
-                    onBlur={() => setTimeout(() => setMenuOpen(false), 200)}
-                  />
-                  <button
-                    type="button"
-                    onClick={() => {
-                      if (!isDisable) {
-                        setTienIch((prev) => [...prev, query]);
-                        setQuery("");
-                      }
-                    }}
-                    className="bg-blue-900 text-white px-3 py-2 rounded"
-                    disabled={isDisable}
-                  >
-                    Thêm
-                  </button>
-                </div>
-
-                {/* Gợi ý tiện ích */}
-                {menuOpen && filteredTags.length > 0 && (
-                  <div className="absolute top-full left-0 w-full bg-white shadow rounded mt-1 max-h-48 overflow-y-auto z-10">
-                    {filteredTags.map((tag) => (
-                      <div
-                        key={tag}
-                        className="p-2 cursor-pointer hover:bg-blue-50 hover:text-blue-600"
-                        onMouseDown={(e) => e.preventDefault()}
-                        onClick={() => {
-                          setTienIch((prev) => [...prev, tag]);
-                          setQuery("");
-                        }}
-                      >
-                        {tag}
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </div>
 
             <div>
               <label className="block text-gray-600">Nội dung</label>
@@ -393,79 +470,13 @@ export default function CreateBlog() {
                 onChange={setMoTa}
                 modules={modules} // Sử dụng cấu hình module với toolbar đầy đủ
                 className="w-full p-2 border border-gray-300 rounded mt-1"
-                placeholder="Nhập nội dung bài viết"  
+                placeholder="Nhập nội dung bài viết"
               />
             </div>
 
 
 
-            <div>
-              <label className="block text-gray-600">Vị trí tiện ích</label>
-              <div className="relative mt-2">
-                {/* Hiển thị các vị trí đã chọn */}
-                <div className="bg-gray-100 p-2 flex flex-wrap gap-2 rounded">
-                  {locations.map((loc, index) => (
-                    <div
-                      key={index}
-                      className="bg-blue-900 text-white px-3 py-1 rounded-full flex items-center gap-2"
-                    >
-                      {loc}
-                      <button
-                        type="button"
-                        className="text-white hover:text-gray-300"
-                        onClick={() => setViTriList(locations.filter((item) => item !== loc))}
-                      >
-                        ✕
-                      </button>
-                    </div>
-                  ))}
-                </div>
 
-                {/* Input thêm vị trí */}
-                <div className="flex items-center gap-2 mt-2">
-                  <input
-                    type="text"
-                    value={locationQuery}
-                    onChange={(e) => setLocationQuery(e.target.value.trimStart())}
-                    placeholder="Thêm hoặc tìm vị trí"
-                    className="w-full p-2 border border-gray-300 rounded"
-                    onFocus={() => setLocationMenuOpen(true)}
-                    onBlur={() => setTimeout(() => setLocationMenuOpen(false), 200)}
-                  />
-                  <button
-                    type="button"
-                    onClick={() => {
-                      if (locationQuery && !locations.includes(locationQuery)) {
-                        setViTriList((prev) => [...prev, locationQuery]);
-                        setLocationQuery("");
-                      }
-                    }}
-                    className="bg-blue-900 text-white px-3 py-2 rounded"
-                  >
-                    Thêm
-                  </button>
-                </div>
-
-                {/* Gợi ý vị trí */}
-                {locationMenuOpen && filteredLocations.length > 0 && (
-                  <div className="absolute top-full left-0 w-full bg-white shadow rounded mt-1 max-h-48 overflow-y-auto z-10">
-                    {filteredLocations.map((location) => (
-                      <div
-                        key={location}
-                        className="p-2 cursor-pointer hover:bg-blue-50 hover:text-blue-600"
-                        onMouseDown={(e) => e.preventDefault()}
-                        onClick={() => {
-                          setViTriList((prev) => [...prev, location]);
-                          setLocationQuery("");
-                        }}
-                      >
-                        {location}
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </div>
 
             <button
               type="submit"
@@ -478,8 +489,8 @@ export default function CreateBlog() {
           </form>
         </div>
       </div>
-      
-      
+
+
     </>
   );
 }

@@ -369,7 +369,7 @@ export default function Contract() {
                             setIdRoom(e.target.value);
                           }}
                           className="border rounded px-3 py-2 w-full"
-                          required // Add required for validation
+                           // Add  for validation
                         >
                           <option value="">Chọn Phòng</option>
                           {rooms?.map((room) => (
@@ -398,7 +398,7 @@ export default function Contract() {
                             setIdUser(e.target.value);
                           }}
                           className="border rounded px-3 py-2 w-full"
-                          required // Add required for validation
+                           // Add  for validation
                         >
                           <option value="">Chọn khách hàng</option>
                           {users?.map((user) => (
@@ -606,7 +606,7 @@ export default function Contract() {
                                     }
                                     }
                                     className="border rounded px-3 py-2 w-full"
-                                    required
+                                    
                                   >
                                     <option value="">Chọn Phòng</option>
                                     {rooms?.map((room) => (
@@ -632,7 +632,7 @@ export default function Contract() {
                                     }
                                     }
                                     className="border rounded px-3 py-2 w-full"
-                                    required
+                                    
                                   >
                                     <option value="">Chọn khách hàng</option>
                                     {users?.map((user) => (
@@ -653,7 +653,7 @@ export default function Contract() {
                                     onChange={(e) =>
                                       setSelectedContract({ ...selectedContract, status: e.target.value })
                                     }
-                                    required
+                                    
                                   />
                                 </div>
 
@@ -667,7 +667,7 @@ export default function Contract() {
                                     onChange={(e) =>
                                       setSelectedContract({ ...selectedContract, date_start: e.target.value })
                                     }
-                                    required
+                                    
                                   />
                                 </div>
 
@@ -681,7 +681,7 @@ export default function Contract() {
                                     onChange={(e) =>
                                       setSelectedContract({ ...selectedContract, date_end: e.target.value })
                                     }
-                                    required
+                                    
                                   />
                                 </div>
                               </div>

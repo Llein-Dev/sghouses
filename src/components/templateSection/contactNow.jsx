@@ -58,7 +58,7 @@ export default function ContactNow() {
                                 type="email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
-                                required
+                                
                             />
                             <Button variant="orange" type="submit">Đăng ký</Button>
                         </form>

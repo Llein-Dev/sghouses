@@ -246,7 +246,7 @@ export function RoomCardRowComponent({ product }) {
                       onChange={handleInputChange}
                       placeholder="Nhập họ tên của bạn"
                       className="col-span-3"
-                      required
+                      
                     />
                   </div>
                   <div className="grid grid-cols-1 items-center gap-4">
@@ -258,7 +258,7 @@ export function RoomCardRowComponent({ product }) {
                       onChange={handleInputChange}
                       placeholder="Nhập số điện thoại"
                       className="col-span-3"
-                      required
+                      
                     />
                   </div>
                   <div className="grid grid-cols-1 items-center gap-4">
@@ -270,7 +270,7 @@ export function RoomCardRowComponent({ product }) {
                       onChange={handleInputChange}
                       placeholder="Nhập nội dung yêu cầu của bạn"
                       className="w-full"
-                      required
+                      
                     />
                   </div>
                   <input

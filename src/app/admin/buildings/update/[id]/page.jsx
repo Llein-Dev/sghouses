@@ -7,6 +7,7 @@ import dynamic from "next/dynamic";
 // Import React Quill với tính năng hỗ trợ đầy đủ công cụ
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 import "react-quill/dist/quill.snow.css"; // Import CSS mặc định của Quill
+import { Card } from "@/components/ui/card";
 
 // Cấu hình toolbar cho Quill với đầy đủ công cụ
 const modules = {
@@ -224,117 +225,123 @@ export default function UpdateBuilding() {
         router.push('/admin/buildings')
     }
 
-    return (    
-        <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
-            <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-screen-lg">
-                <h2 className="text-2xl font-semibold text-gray-700 mb-4">Chỉnh sửa tòa nhà</h2>
-
+    return (
+        <div className="text-sm flex items-center w-full justify-center bg-gray-100 ">
+            <div className="bg-white rounded-lg shadow-lg p-4 w-full">
+                <h2 className="text-xl font-semibold text-gray-700 mb-2">Chỉnh sửa tòa nhà</h2>
                 {error && <p className="text-red-500 mb-4">{error}</p>}
+                <form onSubmit={handleSubmit} className="space-y-2">
 
-                <form onSubmit={handleSubmit} className="space-y-4">
+                    <div className="md:grid-cols-3 grid-cols- grid gap-4">
+                        <div>
+                            <label className="block text-gray-600">Chọn khu vực</label>
+                            <select
+                                value={id_area}
+                                onChange={(e) => setIdArea(e.target.value)}
+                                className="w-full p-2 border border-gray-300 rounded mt-1"
 
-                    <div>
-                        <label className="block text-gray-600">Chọn khu vực</label>
-                        <select
-                            value={id_area}
-                            onChange={(e) => setIdArea(e.target.value)}
-                            className="w-full p-2 border border-gray-300 rounded mt-1"
-                            required
-                        >
-                            {
-                                option.map((options) => (
-                                    <option value={options.id}>{options.name}</option>
-                                )
-                                )
-                            }
-                        </select>
-
-                    </div>
-                    <div>
-                        <label className="block text-gray-600">Tên tòa nhà</label>
-                        <input
-                            type="text"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            className="w-full p-2 border border-gray-300 rounded mt-1"
-                            placeholder="Nhập tiêu đề"
-                            required
-                        />
-                    </div>
-                    <label className="block text-gray-600"> Tiện ích chung</label>
-                    <div className="bg-gray-100 p-2 flex flex-wrap gap-2 rounded">
-                        {utilities.split(";").map((utility, index) => (
-                            <div
-                                key={index}
-                                className="bg-blue-900 text-white px-3 py-1 rounded-full flex items-center gap-2"
                             >
-                                {utility.trim()}
+                                {
+                                    option.map((options) => (
+                                        <option value={options.id}>{options.name}</option>
+                                    )
+                                    )
+                                }
+                            </select>
+
+                        </div>
+                        <div className="col-span-2">
+                            <label className="block text-gray-600">Tên tòa nhà</label>
+                            <input
+                                type="text"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                                className="w-full p-2 border border-gray-300 rounded mt-1"
+                                placeholder="Nhập tiêu đề"
+
+                            />
+                        </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                        <Card className="p-2">
+                            <label className="block text-gray-600"> Tiện ích chung</label>
+                            <div className="bg-gray-100 p-2 flex flex-wrap gap-2 rounded">
+                                {utilities.split(";").map((utility, index) => (
+                                    <div
+                                        key={index}
+                                        className="bg-blue-900 gap-2 text-white px-3 py-1 rounded-full flex items-center "
+                                    >
+                                        {utility.trim()}
+                                        <button
+                                            type="button"
+                                            className="text-white hover:text-gray-300"
+                                            onClick={() => handleRemoveUtility(utility)}
+                                        >
+                                            ✕
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
+                            <div className="flex items-center mt-2">
+                                <input
+                                    type="text"
+                                    value={query}
+                                    onChange={(e) => setQuery(e.target.value)} // Cập nhật query khi người dùng nhập
+                                    placeholder="Thêm hoặc tìm tiện ích"
+                                    className="w-full p-2 border border-gray-300 rounded"
+                                // onFocus={() => setMenuOpen(true)}
+                                // onBlur={() => setTimeout(() => setMenuOpen(false), 200)}
+                                />
                                 <button
                                     type="button"
-                                    className="text-white hover:text-gray-300"
-                                    onClick={() => handleRemoveUtility(utility)}
+                                    onClick={handleAddUtility} // Thêm tiện ích khi nhấn nút
+                                    className="bg-blue-900 text-white px-3 py-2 rounded"
+                                    disabled={query.trim() === ""}
                                 >
-                                    ✕
+                                    Thêm
                                 </button>
                             </div>
-                        ))}
-                    </div>
-                    <div className="flex items-center gap-2 mt-2">
-                        <input
-                            type="text"
-                            value={query}
-                            onChange={(e) => setQuery(e.target.value)} // Cập nhật query khi người dùng nhập
-                            placeholder="Thêm hoặc tìm tiện ích"
-                            className="w-full p-2 border border-gray-300 rounded"
-                        // onFocus={() => setMenuOpen(true)}
-                        // onBlur={() => setTimeout(() => setMenuOpen(false), 200)}
-                        />
-                        <button
-                            type="button"
-                            onClick={handleAddUtility} // Thêm tiện ích khi nhấn nút
-                            className="bg-blue-900 text-white px-3 py-2 rounded"
-                            disabled={query.trim() === ""}
-                        >
-                            Thêm
-                        </button>
-                    </div>
+                        </Card>
 
-                    <label className="block text-gray-600"> Vị trí tiện ích</label>
-                    <div className="bg-gray-100 p-2 flex flex-wrap gap-2 rounded">
-                        {location.split(";").map((loc, index) => (
-                            <div
-                                key={index}
-                                className="bg-blue-900 text-white px-3 py-1 rounded-full flex items-center gap-2"
-                            >
-                                {loc}
+                        <Card className="p-2">
+                            <label className="block text-gray-600"> Vị trí tiện ích</label>
+                            <div className="bg-gray-100 p-2 flex flex-wrap gap-2 rounded">
+                                {location.split(";").map((loc, index) => (
+                                    <div
+                                        key={index}
+                                        className="bg-blue-900 gap-2 text-white px-3 py-1 rounded-full flex items-center"
+                                    >
+                                        {loc}
+                                        <button
+                                            type="button"
+                                            className="text-white hover:text-gray-300"
+                                            onClick={() => handleRemoveLocation(loc)}
+                                        >
+                                            ✕
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
+                            <div className="flex items-center mt-2">
+                                <input
+                                    type="text"
+                                    value={locations}
+                                    onChange={(e) => setLocations(e.target.value)} // Cập nhật query khi người dùng nhập
+                                    placeholder="Thêm hoặc tìm tiện ích"
+                                    className="w-full p-2 border border-gray-300 rounded"
+                                // onFocus={() => setMenuOpen(true)}
+                                // onBlur={() => setTimeout(() => setMenuOpen(false), 200)}
+                                />
                                 <button
                                     type="button"
-                                    className="text-white hover:text-gray-300"
-                                    onClick={() => handleRemoveLocation(loc)}
+                                    onClick={handleAddLocation} // Thêm tiện ích khi nhấn nút
+                                    className="bg-blue-900 text-white px-3 py-2 rounded"
+                                    disabled={locations.trim() === ""}
                                 >
-                                    ✕
+                                    Thêm
                                 </button>
                             </div>
-                        ))}
-                    </div>
-                    <div className="flex items-center gap-2 mt-2">
-                        <input
-                            type="text"
-                            value={locations}
-                            onChange={(e) => setLocations(e.target.value)} // Cập nhật query khi người dùng nhập
-                            placeholder="Thêm hoặc tìm tiện ích"
-                            className="w-full p-2 border border-gray-300 rounded"
-                        // onFocus={() => setMenuOpen(true)}
-                        // onBlur={() => setTimeout(() => setMenuOpen(false), 200)}
-                        />
-                        <button
-                            type="button"
-                            onClick={handleAddLocation} // Thêm tiện ích khi nhấn nút
-                            className="bg-blue-900 text-white px-3 py-2 rounded"
-                            disabled={locations.trim() === ""}
-                        >
-                            Thêm
-                        </button>
+                        </Card>
                     </div>
 
 
@@ -342,7 +349,7 @@ export default function UpdateBuilding() {
                     {/* Ảnh hiện tại */}
                     <div>
                         <h4 className="text-gray-600 mt-4">Ảnh Cũ:</h4>
-                        <div className="grid grid-cols-4 gap-4">
+                        <div className="grid grid-cols-6 gap-4">
                             {imageOld.map((image, index) => (
                                 <div key={index} className="relative group">
                                     <img
@@ -365,7 +372,7 @@ export default function UpdateBuilding() {
                     {/* Ảnh mới */}
                     <div>
                         <h4 className="text-gray-600 mt-4">Ảnh mới:</h4>
-                        <div className="grid grid-cols-4 gap-4">
+                        <div className="grid grid-cols-6 gap-4">
                             {images.map((image) => (
                                 <div key={image.id} className="relative group">
                                     <img

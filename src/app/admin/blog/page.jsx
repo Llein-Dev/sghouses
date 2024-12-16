@@ -274,7 +274,7 @@ export default function BlogContent() {
         </TableBody>
       </Table>
       
-      
+      <ToastContainer/>
       
     </div>
   )

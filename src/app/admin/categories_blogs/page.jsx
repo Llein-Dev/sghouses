@@ -333,7 +333,7 @@ export default function CategoryBlog() {
                             <div className="grid gap-4 py-4">
                               <div className="grid grid-cols-4 items-center gap-4">
                                 <Label htmlFor="name" className="text-right">
-                                  Name
+                                  Tên
                                 </Label>
                                 <Input
                                   id="name"
@@ -344,7 +344,7 @@ export default function CategoryBlog() {
                               </div>
                               <div className="grid grid-cols-4 items-center gap-4">
                                 <Label htmlFor="phone" className="text-right">
-                                  Phone
+                                  Đường dẫn
                                 </Label>
                                 <Input
                                   id="phone"
@@ -356,7 +356,7 @@ export default function CategoryBlog() {
                               </div>
                               <div className="grid grid-cols-4 items-center gap-4">
                                 <Label htmlFor="born" className="text-right">
-                                  Born
+                                  Trạng thái
                                 </Label>
                                 <Input
                                   id="born"

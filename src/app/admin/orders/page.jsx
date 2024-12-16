@@ -80,7 +80,7 @@ export default function Order() {
   }, [filteredOrder.length, totalPages]);
 
 
-  
+
   const handleAdd = () => {
     router.push('/admin/orders/create_order')
   }
@@ -117,6 +117,7 @@ export default function Order() {
             <TableHead>Tổng tiền</TableHead>
             <TableHead>Trạng thái</TableHead>
             <TableHead>Hình thức</TableHead>
+            <TableHead>Tháng</TableHead>
             <TableHead>Tiền thuê</TableHead>
           </TableRow>
         </TableHeader>
@@ -125,10 +126,12 @@ export default function Order() {
             currentItems.map((order, index) => (
               <TableRow key={index}>
                 <TableCell>{order.hop_dong_id}</TableCell>
-                <TableCell>{order.tong_tien}</TableCell>
+                <TableCell>{formatNumber(order.tong_tien)} <span className="text-green-500">vnđ</span></TableCell>
                 <TableCell>{order.trang_thai}</TableCell>
                 <TableCell>{order.hinh_thuc}</TableCell>
-                <TableCell>{order.tien_thue}</TableCell>
+                <TableCell>{formatDate(order.ngay_tao)}</TableCell>
+
+                <TableCell>{formatNumber(order.tien_thue)} <span className="text-green-500">vnđ</span></TableCell>
               </TableRow>
             ))
           ) : (
@@ -147,22 +150,36 @@ export default function Order() {
           <Button
             key={index}
             onClick={() => paginate(index + 1)}
-            className={`px-4 py-2 ${
-              currentPage === index + 1
-                ? "bg-blue-900 text-white"
-                : "bg-gray-200 text-gray-700"
-            }`}
+            className={`px-4 py-2 ${currentPage === index + 1
+              ? "bg-blue-900 text-white"
+              : "bg-gray-200 text-gray-700"
+              }`}
           >
             {index + 1}
           </Button>
         ))}
       </div>
 
-      
-      
-      
+
+
+
       {/* Hiển thị lỗi nếu có */}
       {error && <p className="text-red-500">{error}</p>}
     </div>
   );
 }
+const formatNumber = (num) => {
+  if (!num) return '';
+  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+}; const formatDate = (dateString) => {
+  // Create a Date object from the input string
+  const parts = dateString.split(' ');
+
+  const month = parts[2]; // "11"
+  const year = parts[4]; // "2024"
+
+  // Return the formatted string
+  return `tháng ${month}/${year}`;
+};
+
+// Inside your component's render method

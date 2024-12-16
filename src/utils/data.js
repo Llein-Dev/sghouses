@@ -204,6 +204,47 @@ export const locations = [
     "Quận Phú Nhuận"
 ];
 
+export const groupedNavItems = [
+
+    {
+        label: "Nội dung",
+        icon: <FileText className="p-1 bg-blue-900 rounded text-white" />,
+        items: [
+            { href: "/admin/blog", label: "Bài viết", key: "blog" },
+            { href: "/admin/categories_blogs", label: "Danh mục bài viết", key: "categories_blogs" },
+            { href: "/admin/banners", label: "Biểu ngữ", key: "banners" },
+            { href: "/admin/comment", label: "Bình luận", key: "comment" },
+        ]
+    },
+    {
+        label: "Quản lý cơ sở",
+        icon: <Building className="p-1 bg-blue-900 rounded text-white" />,
+        items: [
+            { href: "/admin/area", label: "Khu vực", key: "area" },
+            { href: "/admin/buildings", label: "Tòa nhà", key: "buildings" },
+            { href: "/admin/room", label: "Phòng", key: "room" },
+        ]
+    },
+    {
+        label: "Tài chính",
+        icon: <Receipt className="p-1 bg-blue-900 rounded text-white" />,
+        items: [
+            { href: "/admin/users", label: "Người dùng", key: "users" },
+            { href: "/admin/contacts", label: "Liên hệ", key: "contacts" },
+            { href: "/admin/contracts", label: "Hợp đồng", key: "contracts" },
+            { href: "/admin/orders", label: "Hóa đơn", key: "orders" },
+        ]
+    },
+    {
+        label: "Hệ thống",
+        icon: <Settings className="p-1 bg-blue-900 rounded text-white" />,
+        items: [
+            { href: "/admin/information", label: "Nhận tin", key: "information" },
+            { href: "/admin/settings", label: "Cài đặt", key: "settings" },
+        ]
+    },
+];
+
 export const navItems = [
     {
         href: "/admin",

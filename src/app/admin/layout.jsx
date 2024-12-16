@@ -38,11 +38,10 @@ import { profileAPI } from "@/utils/api/Auth/api";
 import { useRouter } from "next/navigation";
 import { Spinner } from "@/components/ui/loading";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { navItems } from "@/utils/data";
+import { groupedNavItems, navItems } from "@/utils/data";
 
 
 export default function RootLayout({ children }) {
-  const [activeTab, setActiveTab] = useState("dashboard");
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
@@ -80,12 +79,19 @@ export default function RootLayout({ children }) {
       router.push("/"); // Redirect to homepage if not an admin
     }
   }, [loading, isAdmin, router]);
+  const [openGroups, setOpenGroups] = useState([]); // State to manage open groups
+  const [activeTab, setActiveTab] = useState(null); // State for the active tab
+  const activeTabLabel =
+    groupedNavItems.find((item) =>
+      item.items.some((subItem) => subItem.key === activeTab)
+    )?.label || "Dashboard";
+  const toggleGroup = (label) => {
+    setOpenGroups((prev) =>
+      prev.includes(label) ? prev.filter((g) => g !== label) : [...prev, label]
+    );
+  };
 
   if (loading) return <div>Loading...</div>; // Optionally show a loading state
-
-  const activeTabLabel =
-    navItems.find((item) => item.key === activeTab)?.label || "Dashboard";
-
   return (
     <div className="flex bg-gray-100 overflow-hidden h-screen">
       {isAdmin ? (
@@ -93,25 +99,48 @@ export default function RootLayout({ children }) {
           <aside className="w-18 md:w-64 h-full shadow-md flex flex-col justify-between bg-white">
             <div>
               <img
-                src="/Logo.svg" // Path relative to the 'public' folder
+                src="/Logo.svg"
                 alt="Logo"
                 className="w-full p-2 hidden md:block"
               />
+              <nav className="md:max-h-[calc(100vh-72px-70px)] max-h-[calc(100vh-72px)] overflow-y-auto space-y-2 text-xs font-semibold md:px-2 p-0">
+                {/* Separate Dashboard Link */}
+                <Link
+                  href="/admin"
+                  onClick={() => setActiveTab("dashboard")}
+                  className={`flex items-center space-x-0 lg:space-x-3 px-4 py-2 transition-colors duration-200 ${activeTab === "dashboard"
+                    ? "bg-blue-900 text-white"
+                    : "bg-gray-100 text-gray-700 hover:bg-blue-100 hover:text-blue-900"
+                    }`}
+                >
+                  <LayoutDashboard className="p-1 bg-blue-900 rounded text-white" />
+                  <span className="hidden md:block">Bảng điều khiển</span>
+                </Link>
 
-              <nav className="md:max-h-[calc(100vh-72px-70px)] max-h-[calc(100vh-72px)] overflow-y-auto space-y-2 text-sm font-semibold md:px-2 p-0">
-                {navItems.map(({ href, label, icon, key }) => (
-                  <Link
-                    key={key}
-                    href={href}
-                    onClick={() => setActiveTab(key)}
-                    className={`flex items-center space-x-0 lg:space-x-3 px-4 py-3 transition-colors duration-200 ${activeTab === key
-                        ? "bg-blue-900 text-white"
-                        : "bg-gray-100 text-gray-700 hover:bg-blue-100 hover:text-blue-900"
-                      }`}
-                  >
-                    {icon}
-                    <span className="hidden md:block">{label}</span>
-                  </Link>
+                {/* Grouped Navigation Items */}
+                {groupedNavItems.map(({ label, icon, items }) => (
+                  <div key={label}>
+                    <div
+                      onClick={() => toggleGroup(label)} // Toggle group on click
+                      className="flex items-center w-full space-x-0 lg:space-x-3 px-4 py-2 cursor-pointer transition-colors duration-200 bg-gray-100 text-gray-700"
+                    >
+                      {icon}
+                      <span className="hidden md:block flex-grow text-left">{label}</span>
+                    </div>
+                    {openGroups.includes(label) && items.map(({ href, label: itemLabel, key }) => (
+                      <Link
+                        key={key}
+                        href={href}
+                        onClick={() => setActiveTab(key)}
+                        className={`flex items-center space-x-0 lg:space-x-3 px-4 py-3 transition-colors duration-200 ${activeTab === key
+                          ? "bg-blue-900 text-white"
+                          : "bg-gray-50 text-gray-700 hover:bg-blue-100 hover:text-blue-900"
+                          }`}
+                      >
+                        <span className="hidden md:block pl-6">{itemLabel}</span>
+                      </Link>
+                    ))}
+                  </div>
                 ))}
               </nav>
             </div>
@@ -129,7 +158,6 @@ export default function RootLayout({ children }) {
               </Link>
             </Button>
           </aside>
-
 
           <main className="flex-1 flex flex-col">
             <header className="bg-blue-900 shadow-sm text-white">

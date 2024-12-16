@@ -82,13 +82,19 @@ export default function CreateBanner() {
                 body: formData, // Gửi FormData thay vì JSON
             });
 
-            const data = await response.json();
-            console.log(data);
-
+        
+            const contentType = response.headers.get("Content-Type");
+            let errorMessage;
             if (response.ok) {
                 toast.success("Biểu ngữ đã được tạo thành công!");
-            } else {
-                toast.warning(data.message);
+            }  else {
+                if (contentType.includes("application/json")) {
+                    const data = await response.json();
+                    errorMessage = data.message || "Đã xảy ra lỗi, vui lòng thử lại!";
+                } else {
+                    errorMessage = await response.text(); // Nếu là chuỗi thuần
+                }
+                toast.error(`Lỗi: ${errorMessage}`); // Hiển thị toàn bộ chuỗi
             }
         } catch (error) {
             toast.error(data.message || "Không thể kết nối đến server, vui lòng thử lại sau.");
@@ -186,7 +192,8 @@ export default function CreateBanner() {
                     </form>
                 </div>
             </div>
-            
+
+            <ToastContainer/>
             
         </>
     );

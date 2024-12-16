@@ -49,7 +49,7 @@ export default function UsersContent() {
   // Xử lý khi nhấn nút xác nhận xóa
 ;
 
-  const handleDelete = async (id) => {
+  const handleDelete = async () => {
     console.log('Lý do xóa:', deleteReason);
     setIsPopupOpen(false); // Đóng popup sau khi xóa
     setDeleteReason(''); // Xóa nội dung sau khi hoàn thành
@@ -368,7 +368,7 @@ export default function UsersContent() {
                   <Button
                     variant="danger"
                     size="icon"
-                    onClick={() => { setIsPopupOpen(true) }} // Mở popup khi nhấn
+                    onClick={() => setIsPopupOpen(true)} // Mở popup khi nhấn
                     className="flex items-center justify-center p-2 bg-red-500 text-white rounded-md hover:bg-red-600"
                   >
                     <Ban className="h-4 w-4" />
@@ -400,7 +400,7 @@ export default function UsersContent() {
                             Hủy
                           </button>
                           <button
-                            onClick={handleDelete} // Gọi hàm xử lý khi xác nhận cấm
+                            onClick={() => handleDelete(user.id)} // Gọi hàm xử lý khi xác nhận cấm
                             className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
                           >
                             Xác nhận cấm

@@ -43,6 +43,7 @@ export default function UsersContent() {
   const [filteredUsers, setFilteredUsers] = useState([]); // Danh sách user sau khi lọc
   const [currentPage, setCurrentPage] = useState(1); // Trang hiện tại
   const [usersPerPage] = useState(5); // Số lượng người dùng hiển thị mỗi trang
+  const [isLoading, setIsLoading] = useState(false); // Trạng thái loading
 
 
   // hàm tiềm kiếm dựa trên dữ liệu được fetch
@@ -114,6 +115,7 @@ export default function UsersContent() {
 
   // Delete user
   const handleBanUser = async (id) => {
+    setIsLoading(true); // Bắt đầu loading
     const adminToken = Cookies.get("token");
     // Tìm user theo ID
     const userToDelete = filteredUsers.find((user) => user.id === id);
@@ -144,6 +146,8 @@ export default function UsersContent() {
     } catch (error) {
       console.error("Error:", error);
       setError("Có lỗi xảy ra khi xóa người dùng");
+    }finally {
+      setIsLoading(false); // Kết thúc loading
     }
   };
 
@@ -200,6 +204,13 @@ export default function UsersContent() {
 
   return (
     <div className="space-y-4">
+       {isLoading ? (
+      <div className="flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-gray-500"></div>
+        <span className="ml-2">Đang gửi gmail vui lòng đợi trong giây lát !</span>
+      </div>
+    ) : (
+      <div>
       <div className="flex justify-between items-center">
         <div className="flex items-center space-x-2">
           <Search className="h-5 w-5 text-gray-500" />
@@ -319,7 +330,7 @@ export default function UsersContent() {
                     <Button
                     variant="danger"
                     size="icon"
-                    onClick={() => handleBanUser(user.id) } // Mở popup khi nhấn
+                    onClick={() => handleBanUser(user.id) }
                     className="flex items-center justify-center p-2 bg-red-500 text-white rounded-md hover:bg-red-600"
                   >
                     <Ban className="h-4 w-4" />
@@ -347,6 +358,9 @@ export default function UsersContent() {
           </Button>
         ))}
       </div>
+      </div>
+    )}
+
 <ToastContainer/>
     </div>
   )

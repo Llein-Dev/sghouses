@@ -517,7 +517,7 @@ export default function Contract() {
             <TableHead>STT</TableHead>
             <TableHead>Mã hợp đồng</TableHead>
             <TableHead>Tên phòng - Tòa nhà</TableHead>
-            <TableHead>Tên Người Dùng</TableHead>
+            <TableHead> Người Dùng</TableHead>
             <TableHead>Ngày tạo</TableHead>
             <TableHead>Ngày kết thúc</TableHead>
             <TableHead>Tình trạng </TableHead>
@@ -530,7 +530,16 @@ export default function Contract() {
               <TableCell>{index + 1}</TableCell> {/* STT */}
               <TableCell>{contract.id}</TableCell> {/* Mã hợp đồng */}
               <TableCell>{`${contract.name_room} - ${contract.name_building}`}</TableCell> {/* Tên phòng - Tòa nhà */}
-              <TableCell>{contract.name_user}</TableCell> {/* Tên Người Dùng */}
+              <TableCell>
+              <img
+                  src={`${process.env.NEXT_PUBLIC_PATH_FILE}${contract.avatar || ''}`}
+                  alt={`${contract.name}'s avatar`}
+                  className="w-10 h-10 rounded-full ml-4"
+                  onError={(e) => {
+                    e.target.src = "https://vnsteelthanglong.vn/core/img/default_image.png";
+                  }}
+                />
+                 {contract.name_user}</TableCell> {/* Tên Người Dùng */}
               <TableCell>
                 {contract.date_start}
               </TableCell>

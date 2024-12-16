@@ -95,7 +95,7 @@ export default function RefeshArea() {
         <div className="flex justify-end space-x-2">
           <Button variant="blue" onClick={handleRefesh}>
             <FileText className="mr-2 h-4 w-4" />
-             Danh sách khôi phục
+             Danh sách khu vực
           </Button>
         </div>
       </div>

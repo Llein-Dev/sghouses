@@ -198,7 +198,7 @@ export default function Home() {
   return (
     <>
       <div className="grid  grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-4 w-full">
-        <Card className=" col-span-3 grid grid-cols-4 bg-white">
+        <Card className=" col-span-4 grid grid-cols-4 bg-white">
           {districtsData?.map((districtData, index) => {
             const { name, buildings } = districtData.District;
             const totalBuilding = buildings.length;
@@ -251,6 +251,36 @@ export default function Home() {
               </div>
             );
           })}
+        </Card>
+
+      </div>
+
+      {/* Charts */}
+      <div className="mt-4 grid grid-cols-1 gap-2 md:grid-cols-2 ">
+        <Card >
+          <CardHeader >
+            <CardTitle >Doanh thu trong năm {year}</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ChartContainer
+              config={{
+                deployments: {
+                  label: "Deployments",
+                  color: "hsl(var(--chart-1))",
+                },
+              }}
+              className="h-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={deployment}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" />
+                  <YAxis />
+                  <ChartTooltip content={<ChartTooltipContent />} />
+                  <Bar dataKey="doanh thu" fill="var(--color-deployments)" />
+                </BarChart>
+              </ResponsiveContainer>
+            </ChartContainer>
+          </CardContent>
         </Card>
         <div className='gap-2 grid'>
           <Card>
@@ -330,60 +360,6 @@ export default function Home() {
             </CardContent>
           </Card>
         </div>
-      </div>
-
-      {/* Charts */}
-      <div className="mt-4 grid grid-cols-1 gap-2 md:grid-cols-2 ">
-        <Card >
-          <CardHeader >
-            <CardTitle >Doanh thu trong năm {year}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ChartContainer
-              config={{
-                deployments: {
-                  label: "Deployments",
-                  color: "hsl(var(--chart-1))",
-                },
-              }}
-              className="h-full">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={deployment}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" />
-                  <YAxis />
-                  <ChartTooltip content={<ChartTooltipContent />} />
-                  <Bar dataKey="doanh thu" fill="var(--color-deployments)" />
-                </BarChart>
-              </ResponsiveContainer>
-            </ChartContainer>
-          </CardContent>
-        </Card>
-        <Card >
-          <CardHeader >
-            <CardTitle >Hóa đơn trong năm {year}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ChartContainer
-              config={{
-                deployments: {
-                  label: "Deployments",
-                  color: "hsl(var(--chart-1))",
-                },
-              }}
-              className="h-full">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={deploymentData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" />
-                  <YAxis />
-                  <ChartTooltip content={<ChartTooltipContent />} />
-                  <Bar dataKey="doanh thu" fill="var(--color-deployments)" />
-                </BarChart>
-              </ResponsiveContainer>
-            </ChartContainer>
-          </CardContent>
-        </Card>
 
 
       </div>

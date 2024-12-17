@@ -134,6 +134,8 @@ export default function CategoryBlog() {
         },
         body: JSON.stringify(updatedUser),
       });
+      const contentType = response.headers.get("Content-Type");
+      let errorMessage;
       if (response.ok) {
         toast.success("Cập nhật thành công!");
         setCatagoryBlog(categoryBlog.map(blogs => (blogs.id === selectedCateBlog.id ? updatedUser : blogs)));
@@ -144,10 +146,15 @@ export default function CategoryBlog() {
         router.refresh();  // Load lại trang sau khi cập nhật thành công
         toast.success('đã cập nhật thành công !')
         
-      } else {
-        const errorData = await response.json();
-        setError(errorData.message || "Lỗi khi cập nhật thông tin");
-      }
+      }  else {
+        if (contentType.includes("application/json")) {
+            const data = await response.json();
+            errorMessage = data.message || "Đã xảy ra lỗi, vui lòng thử lại!";
+        } else {
+            errorMessage = await response.text(); // Nếu là chuỗi thuần
+        }
+        toast.error(`Lỗi: ${errorMessage}`); // Hiển thị toàn bộ chuỗi
+    } 
     } catch (error) {
       console.error("Error:", error);
     }

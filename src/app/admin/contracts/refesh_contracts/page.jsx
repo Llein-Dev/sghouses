@@ -14,7 +14,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { toast } from "react-toastify";
+import { toast,ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function RefeshContracts() {
@@ -169,6 +169,7 @@ export default function RefeshContracts() {
           </TableBody>
 
         </Table>
+        <ToastContainer/>
       </div>
     </>
   );

@@ -27,7 +27,6 @@ export default function CreateOrder() {
     id_user: "",
     name_user: "",
     avatar_user: "",
-    file_hop_dong: null,
     date_start: "",
     date_end: "",
     status: "",
@@ -120,7 +119,7 @@ export default function CreateOrder() {
           toast.error("Không thể lấy chi tiết hợp đồng.");
         }
       } catch (error) {
-        toast.error("Có lỗi khi kết nối đến API.");
+        setError("Có lỗi khi kết nối đến API.");
       }
     }
   };
@@ -189,8 +188,6 @@ export default function CreateOrder() {
           noi_dung: "",
           so_ki_dien: "",
           so_khoi_nuoc: "",
-          so_luong_xe: "",
-          so_luong_nguoi: "",
         });
       } else {
         const result = await response.json();
@@ -213,7 +210,7 @@ export default function CreateOrder() {
       <div className="grid text-sm grid-cols-1 md:grid-cols-5 gap-8">
         <div className="h-full col-span-2 bg-gradient-to-br from-white-50 to-blue-100 flex items-center justify-center">
           <Card className=" w-full h-full">
-            <CardHeader>    <CardTitle className="text-lg  font-bold text-gray-700 text-center ">
+            <CardHeader>    <CardTitle type='submit'  className="text-lg  font-bold text-gray-700 text-center ">
               Tạo Hóa Đơn
             </CardTitle></CardHeader>
             <CardContent>
@@ -283,42 +280,7 @@ export default function CreateOrder() {
                   </div>
 
                   {/* Số lượng xe */}
-                  <div>
-                    <Label
-                      htmlFor="so_luong_xe"
-                      className="block text-gray-500 font-semibold text-sm mb-2"
-                    >
-                      Số Lượng Xe
-                    </Label>
-                    <input
-                      type="number"
-                      id="so_luong_xe"
-                      name="so_luong_xe"
-                      value={formData.so_luong_xe}
-                      onChange={handleChange}
-                      placeholder="Nhập số lượng xe"
-                      className="w-full px-4 py-2 border text-sm border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
-                    />
-                  </div>
-
-                  {/* Số lượng người */}
-                  <div>
-                    <Label
-                      htmlFor="so_luong_nguoi"
-                      className="block text-gray-500 font-semibold text-sm mb-2"
-                    >
-                      Số Lượng Người
-                    </Label>
-                    <input
-                      type="number"
-                      id="so_luong_nguoi"
-                      name="so_luong_nguoi"
-                      value={formData.so_luong_nguoi}
-                      onChange={handleChange}
-                      placeholder="Nhập số lượng người"
-                      className="w-full px-4 py-2 border text-sm border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
-                    />
-                  </div>
+             
                 </div>
 
                 {/* Nội dung */}
@@ -583,7 +545,7 @@ export default function CreateOrder() {
           </Button>
         </div>
       </div>
-
+<ToastContainer/>
     </>
   );
 }

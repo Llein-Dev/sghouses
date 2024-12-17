@@ -111,8 +111,8 @@ export default function CreateBlog() {
                 body: formData,
             });
 
-            const contentType = response.headers.get("Content-Type");
-            let errorMessage;
+                const contentType = response.headers.get("Content-Type");
+                let errorMessage;
             if (response.ok) {
                 toast.success("Bài viết đã được tạo thành công!");
             } else {

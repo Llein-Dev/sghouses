@@ -197,10 +197,8 @@ export default function RootLayout({ children }) {
                           </div>
 
                           <div className="flex flex-col text-black p-2">
-                            <p className="text-sm font-medium leading-none">
-                              {user?.name || "User"}
-                            </p>
-                            <p className="text-xs text-red-500 mt-2 text-start leading-none">
+                
+                            <p className="text-sm text-red-500  text-start leading-none">
                               {user?.role === 0 ? "Admin" : "Người dùng"}
 
                             </p>

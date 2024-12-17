@@ -41,7 +41,7 @@ export function ProductCardRowComponent({
                         <div className="flex items-center ">
                             <p className="mr-2 text-primary">Giá từ</p>
                             <p className="text-lg font-bold text-red-500">
-                                {formatCurrency(product?.gia_thue)}
+                                {(product?.gia_thue)}
                             </p>
                         </div>
                         <div className="flex flex-wrap gap-2">

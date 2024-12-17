@@ -32,7 +32,7 @@ export function ProductCardColComponent({ productsHouseFeatured }) {
             <div className="flex items-center">
               <p className="mr-2 text-primary mb-2">Giá từ</p>
               <p className="text-lg text-red-500 text-primary mb-2">
-                {formatCurrency(houseFeatured.gia_thue)}
+                {(houseFeatured.gia_thue)}
               </p>
             </div>
             <div className="flex flex-wrap gap-2 mb-2">

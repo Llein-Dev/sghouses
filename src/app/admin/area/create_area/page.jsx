@@ -52,7 +52,7 @@ export default function CreateArea() {
 
         try {
             const adminToken = Cookies.get("token");
-            const response = await fetch("https://hieu.name.vn/datn/public/api/khu-vuc/add", {
+            const response = await fetch("http://localhost:8000/api/khu-vuc/add", {
                 method: "POST",
                 headers: {
                     "Authorization": `Bearer ${adminToken}`,

@@ -38,7 +38,7 @@ export default function CreateOrder() {
   const fetchDataOptionHoaDon = async () => {
     const adminToken = Cookies.get("token");
     try {
-      const response = await fetch(`https://hieu.name.vn/datn/public/api/hop-dong/all`, {
+      const response = await fetch(`http://localhost:8000/api/hop-dong/all`, {
         method: "GET",
         headers: {
           'Authorization': `Bearer ${adminToken}`,
@@ -84,7 +84,7 @@ export default function CreateOrder() {
     if (selectedId) {
       const adminToken = Cookies.get("token");
       try {
-        const response = await fetch(`https://hieu.name.vn/datn/public/api/hop-dong/${selectedId}`, {
+        const response = await fetch(`http://localhost:8000/api/hop-dong/${selectedId}`, {
           method: "GET",
           headers: {
             Authorization: `Bearer ${adminToken}`,
@@ -165,7 +165,7 @@ export default function CreateOrder() {
     }
 
     try {
-      const response = await fetch("https://hieu.name.vn/datn/public/api/hoa-don/add", {
+      const response = await fetch("http://localhost:8000/api/hoa-don/add", {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',

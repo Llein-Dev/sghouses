@@ -25,7 +25,7 @@ export default function GoogleLoginHandler() {
 
     try {
       const loginResponse = await fetch(
-        "https://hieu.name.vn/datn/public/api/google/loginWithGoogle",
+        "http://localhost:8000/api/google/loginWithGoogle",
         {
           method: "POST",
           headers: {

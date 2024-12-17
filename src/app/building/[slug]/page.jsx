@@ -57,7 +57,7 @@ export default function BuildingDetailComponent() {
         setComments([...comments, newCommentObj]);
 
         // Send comment to backend
-        const response = await fetch(`https://hieu.name.vn/datn/public/api/building_cmt/add`, {
+        const response = await fetch(`http://localhost:8000/api/building_cmt/add`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

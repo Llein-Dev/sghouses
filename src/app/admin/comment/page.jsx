@@ -49,7 +49,7 @@ export default function Comment() {
 
         const fetchDataComment = async () => {
             try {
-                const response = await fetch('https://hieu.name.vn/datn/public/api/comment_building', {
+                const response = await fetch('http://localhost:8000/api/comment_building', {
                     headers: {
                         'Authorization': `Bearer ${adminToken}`,
                         'Content-Type': 'application/json',
@@ -85,7 +85,7 @@ export default function Comment() {
     const handleDeleteComment = async (id) => {
         const adminToken = Cookies.get("token");
         try {
-            const response = await fetch(`https://hieu.name.vn/datn/public/api/comment_building/delete/${id}`, {
+            const response = await fetch(`http://localhost:8000/api/comment_building/delete/${id}`, {
                 method: "DELETE",
                 headers: {
                     Authorization: `Bearer ${adminToken}`,

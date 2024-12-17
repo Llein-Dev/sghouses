@@ -149,7 +149,7 @@ export default function CreateBlog() {
     });
 
     try {
-      const response = await fetch("https://hieu.name.vn/datn/public/api/toa-nha/add", {
+      const response = await fetch("http://localhost:8000/api/toa-nha/add", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${adminToken}`,
@@ -189,7 +189,7 @@ export default function CreateBlog() {
 
   const fetchDataOption = async () => {
     try {
-      const response = await fetch(`https://hieu.name.vn/datn/public/api/khu_vuc/option`, {
+      const response = await fetch(`http://localhost:8000/api/khu_vuc/option`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

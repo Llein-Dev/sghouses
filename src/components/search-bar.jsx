@@ -25,7 +25,7 @@ export function SearchBarComponent() {
   useEffect(() => {
     const fetchLocations = async () => {
       try {
-        const response = await fetch('https://hieu.name.vn/datn/public/api/khu_vuc/option');
+        const response = await fetch('http://localhost:8000/api/khu_vuc/option');
         if (!response.ok) {
           throw new Error("Không thể lấy dữ liệu từ API");
         }

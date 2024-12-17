@@ -28,7 +28,7 @@ export default function KhoiPhucUsers() {
   const fetchDeletedContacts = async () => {
     try {
       const adminToken = Cookies.get("token");
-      const response = await fetch('https://hieu.name.vn/datn/public/api/contact_room/list_delete', {
+      const response = await fetch('http://localhost:8000/api/contact_room/list_delete', {
         headers: {
           'Authorization': `Bearer ${adminToken}`,
           'Content-Type': 'application/json',
@@ -58,7 +58,7 @@ export default function KhoiPhucUsers() {
   const handleRefesh = async (id) => {
     const adminToken = Cookies.get("token");
     try {
-      const response = await fetch(`https://hieu.name.vn/datn/public/api/contact_room/restore/${id}`, {
+      const response = await fetch(`http://localhost:8000/api/contact_room/restore/${id}`, {
         method: "PATCH",
         headers: {
           Authorization: `Bearer ${adminToken}`,

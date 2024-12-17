@@ -33,7 +33,7 @@ export default function Order() {
 
     const fetchDataContracts = async () => {
       try {
-        const response = await fetch("https://hieu.name.vn/datn/public/api/hoa-don", {
+        const response = await fetch("http://localhost:8000/api/hoa-don", {
           headers: {
             Authorization: `Bearer ${adminToken}`,
             "Content-Type": "application/json",

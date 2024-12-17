@@ -25,7 +25,7 @@ export default function UpdateBlog() {
 
     const fetchBlogDetails = async (token) => {
         try {
-            const response = await fetch(`https://hieu.name.vn/datn/public/api/khu-vuc/${id}`, {
+            const response = await fetch(`http://localhost:8000/api/khu-vuc/${id}`, {
                 method: "GET",
                 headers: {
                     "Authorization": `Bearer ${token}`,
@@ -73,7 +73,7 @@ export default function UpdateBlog() {
         }
 
         try {
-            const response = await fetch(`https://hieu.name.vn/datn/public/api/khu-vuc/edit/${id}`, {
+            const response = await fetch(`http://localhost:8000/api/khu-vuc/edit/${id}`, {
                 method: "POST",
                 headers: {
                     "Authorization": `Bearer ${adminToken}`,

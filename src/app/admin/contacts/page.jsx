@@ -26,7 +26,7 @@ export default function ContractContent() {
 
     const fetchDataContracts = async () => {
       try {
-        const response = await fetch("https://hieu.name.vn/datn/public/api/contact_room", {
+        const response = await fetch("http://localhost:8000/api/contact_room", {
           headers: {
             Authorization: `Bearer ${adminToken}`,
             "Content-Type": "application/json",
@@ -51,7 +51,7 @@ export default function ContractContent() {
     const adminToken = Cookies.get("token");
     try {
       const response = await fetch(
-        `https://hieu.name.vn/datn/public/api/contact_room/delete/${id}`,
+        `http://localhost:8000/api/contact_room/delete/${id}`,
         {
           method: "DELETE",
           headers: {

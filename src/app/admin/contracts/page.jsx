@@ -88,7 +88,7 @@ export default function Contract() {
     const fetchRoomsAndUsers = async () => {
       try {
         // Fetch rooms
-        const roomsResponse = await fetch('https://hieu.name.vn/datn/public/api/phong', {
+        const roomsResponse = await fetch('http://localhost:8000/api/phong', {
           headers: {
             Authorization: `Bearer ${adminToken}`,
             'Content-Type': 'application/json',
@@ -98,7 +98,7 @@ export default function Contract() {
         setRooms(roomsData.list_room);
 
         // Fetch users
-        const usersResponse = await fetch('https://hieu.name.vn/datn/public/api/user', {
+        const usersResponse = await fetch('http://localhost:8000/api/user', {
           headers: {
             Authorization: `Bearer ${adminToken}`,
             'Content-Type': 'application/json',
@@ -116,11 +116,11 @@ export default function Contract() {
     const fetchData = async () => {
       try {
 
-        const roomRes = await fetch(`https://hieu.name.vn/datn/public/api/rooms/${selectedContracts.id}`)
+        const roomRes = await fetch(`http://localhost:8000/api/rooms/${selectedContracts.id}`)
         const roomData = await roomRes.json()
         setRooms(roomData)
 
-        const userRes = await fetch(`https://hieu.name.vn/datn/public/api/users/${selectedContracts.id_user}`)
+        const userRes = await fetch(`http://localhost:8000/api/users/${selectedContracts.id_user}`)
         const userData = await userRes.json()
         setUserss(userData)
       } catch (error) {
@@ -141,7 +141,7 @@ export default function Contract() {
 
   const fetchDataContracts = async () => {
     try {
-      const response = await fetch('https://hieu.name.vn/datn/public/api/hop-dong/all', {
+      const response = await fetch('http://localhost:8000/api/hop-dong/all', {
         headers: {
           'Authorization': `Bearer ${adminToken}`,
           'Content-Type': 'application/json',
@@ -169,7 +169,7 @@ export default function Contract() {
   const handleDeleteContracts = async (id) => {
     const adminToken = Cookies.get("token");
     try {
-      const response = await fetch(`https://hieu.name.vn/datn/public/api/hop-dong/delete/${id}`, {
+      const response = await fetch(`http://localhost:8000/api/hop-dong/delete/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${adminToken}`,
@@ -227,7 +227,7 @@ export default function Contract() {
     }
 
     try {
-      const response = await fetch("https://hieu.name.vn/datn/public/api/hop-dong/add", {
+      const response = await fetch("http://localhost:8000/api/hop-dong/add", {
         method: "POST",
         headers: {
           "Authorization": `Bearer ${adminToken}`,
@@ -259,7 +259,7 @@ export default function Contract() {
   const handleEditContracts = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`https://hieu.name.vn/datn/public/api/hop-dong/edit/${selectedContract.id}`, {
+      const response = await fetch(`http://localhost:8000/api/hop-dong/edit/${selectedContract.id}`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${adminToken}`,

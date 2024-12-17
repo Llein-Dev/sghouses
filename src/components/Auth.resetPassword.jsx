@@ -21,7 +21,7 @@ export function PasswordResetComponent() {
     setSuccess('')
 
     try {
-      const response = await fetch('https://hieu.name.vn/datn/public/api/forgot/check', {
+      const response = await fetch('http://localhost:8000/api/forgot/check', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email })
@@ -45,7 +45,7 @@ export function PasswordResetComponent() {
     setSuccess('')
 
     try {
-      const response = await fetch('https://hieu.name.vn/datn/public/api/forgot/reset', {
+      const response = await fetch('http://localhost:8000/api/forgot/reset', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, otp })

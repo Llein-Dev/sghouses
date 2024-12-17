@@ -38,7 +38,7 @@ export default function BlogContent() {
   // Định nghĩa hàm fetchData
   const fetchDataBlog = async () => {
     try {
-      const response = await fetch('https://hieu.name.vn/datn/public/api/blog/all');
+      const response = await fetch('http://localhost:8000/api/blog/all');
       if (response.ok) {
         const result = await response.json();
         setBlog(result);
@@ -64,7 +64,7 @@ export default function BlogContent() {
   const handleDeleteBlog = async (id) => {
     const adminToken = Cookies.get("token");
     try {
-      const response = await fetch(`https://hieu.name.vn/datn/public/api/blog/delete/${id}`, {
+      const response = await fetch(`http://localhost:8000/api/blog/delete/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${adminToken}`,
@@ -91,7 +91,7 @@ export default function BlogContent() {
   const handleCoppyBlog = async (id) => {
     const adminToken = Cookies.get("token");
     try {
-      const response = await fetch(`https://hieu.name.vn/datn/public/api/blog/duplicate/${id}`, {
+      const response = await fetch(`http://localhost:8000/api/blog/duplicate/${id}`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${adminToken}`,

@@ -16,7 +16,7 @@ export default function RoomManagementPage() {
     useEffect(() => {
         const fetchcontacts = async () => {
             try {
-                const response = await axios.get('https://hieu.name.vn/datn/public/api/contact_room/list', {
+                const response = await axios.get('http://localhost:8000/api/contact_room/list', {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token}`, // Add token to headers
@@ -42,7 +42,7 @@ export default function RoomManagementPage() {
     useEffect(() => {
         const fetchcontacts = async () => {
             try {
-                const response = await axios.get('https://hieu.name.vn/datn/public/api/hop-dong/show', {
+                const response = await axios.get('http://localhost:8000/api/hop-dong/show', {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token}`, // Add token to headers

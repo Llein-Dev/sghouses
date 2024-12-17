@@ -41,7 +41,7 @@ export default function CreateBlog() {
     const fetchOptionBlog = async () => { // fetch danh mục trong bài viết
         const adminToken = Cookies.get('token');
         try {
-            const response = await fetch(`https://hieu.name.vn/datn/public/api/cate_blog`, {
+            const response = await fetch(`http://localhost:8000/api/cate_blog`, {
                 method: "GET",
                 headers: {
                     "Authorization": `Bearer ${adminToken}`,
@@ -103,7 +103,7 @@ export default function CreateBlog() {
         }
 
         try {
-            const response = await fetch("https://hieu.name.vn/datn/public/api/blog/add", {
+            const response = await fetch("http://localhost:8000/api/blog/add", {
                 method: "POST",
                 headers: {
                     "Authorization": `Bearer ${adminToken}`,

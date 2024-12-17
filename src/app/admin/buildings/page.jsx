@@ -38,7 +38,7 @@ export default function Buildings() {
 
     const fetchDataBuilding = async () => {
       try {
-        const response = await fetch('https://hieu.name.vn/datn/public/api/toa-nha/', {
+        const response = await fetch('http://localhost:8000/api/toa-nha/', {
           headers: {
             'Authorization': `Bearer ${adminToken}`,
             'Content-Type': 'application/json',
@@ -75,7 +75,7 @@ export default function Buildings() {
   const handleDeleteBuilding = async (id) => {
     const adminToken = Cookies.get("token");
     try {
-      const response = await fetch(`https://hieu.name.vn/datn/public/api/toa-nha/delete/${id}`, {
+      const response = await fetch(`http://localhost:8000/api/toa-nha/delete/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${adminToken}`,
@@ -101,7 +101,7 @@ export default function Buildings() {
   const handleToggle = async (id, isHot) => {
     const adminToken = Cookies.get("token");
     try {
-      const response = await fetch(`https://hieu.name.vn/datn/public/api/toa-nha/editHot/${id}`, {
+      const response = await fetch(`http://localhost:8000/api/toa-nha/editHot/${id}`, {
         method: 'PATCH',
         headers: {
           Authorization: `Bearer ${adminToken}`,

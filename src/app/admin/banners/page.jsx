@@ -29,7 +29,7 @@ export default function Banners() {
 
     try {
       const adminToken = Cookies.get("token");
-      const response = await fetch('https://hieu.name.vn/datn/public/api/banner', {
+      const response = await fetch('http://localhost:8000/api/banner', {
         headers: {
           'Authorization': `Bearer ${adminToken}`,
           'Content-Type': 'application/json',
@@ -61,7 +61,7 @@ export default function Banners() {
    const handleDeleteBanners = async (id) => {
       const adminToken = Cookies.get("token");
       try {
-        const response = await fetch(`https://hieu.name.vn/datn/public/api/banner/delete/${id}`, {
+        const response = await fetch(`http://localhost:8000/api/banner/delete/${id}`, {
           method: "DELETE",
           headers: {
             Authorization: `Bearer ${adminToken}`,
@@ -88,7 +88,7 @@ export default function Banners() {
    const handleCoppyBanner = async (id) => {
     const adminToken = Cookies.get("token");
     try {
-      const response = await fetch(`https://hieu.name.vn/datn/public/api/banner/duplicate/${id}`, {
+      const response = await fetch(`http://localhost:8000/api/banner/duplicate/${id}`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${adminToken}`,
@@ -113,7 +113,7 @@ export default function Banners() {
   const handleToggle = async (id, isHot) => {
     const adminToken = Cookies.get("token");
     try {
-      const response = await fetch(`https://hieu.name.vn/datn/public/api/banner/editStatus/${id}`, {
+      const response = await fetch(`http://localhost:8000/api/banner/editStatus/${id}`, {
         method: 'PATCH',
         headers: {
           Authorization: `Bearer ${adminToken}`,

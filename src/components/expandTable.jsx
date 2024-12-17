@@ -24,7 +24,7 @@ export default function ExpandableTable({ items, handleDeleteContactRoom }) {
         setExpandedRoomId(item.id); // Set the new expanded room ID
 
         try {
-            const response = await fetch(`https://hieu.name.vn/datn/public/api/phong/${item.id_room}`, {
+            const response = await fetch(`http://localhost:8000/api/phong/${item.id_room}`, {
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${token}`

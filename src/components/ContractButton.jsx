@@ -7,7 +7,7 @@ import Cookies from 'js-cookie'
 
 export default function PaymentButton({ token }) {
     const [isLoading, setIsLoading] = useState(false)
-    const apiUrl = "https://hieu.name.vn/datn/public/api"
+    const apiUrl = "http://localhost:8000/api"
     const userToken = Cookies.get("token") // Lấy token từ cookies
 
     const handlePayment = async () => {

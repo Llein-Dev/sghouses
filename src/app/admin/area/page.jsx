@@ -27,7 +27,7 @@ export default function BlogContent() {
     
     try {
         const adminToken = Cookies.get("token");
-        const response = await fetch('https://hieu.name.vn/datn/public/api/khu-vuc/', {
+        const response = await fetch('http://localhost:8000/api/khu-vuc/', {
             headers: {
               'Authorization': `Bearer ${adminToken}`,
               'Content-Type': 'application/json',
@@ -58,7 +58,7 @@ export default function BlogContent() {
  const handleDeleteArea = async (id) => {
     const adminToken = Cookies.get("token");
     try {
-      const response = await fetch(`https://hieu.name.vn/datn/public/api/khu-vuc/delete/${id}`, {
+      const response = await fetch(`http://localhost:8000/api/khu-vuc/delete/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${adminToken}`,
@@ -83,7 +83,7 @@ export default function BlogContent() {
    const handleCoppyArea = async (id) => {
     const adminToken = Cookies.get("token");
     try {
-      const response = await fetch(`https://hieu.name.vn/datn/public/api/khu-vuc/duplicate/${id}`, {
+      const response = await fetch(`http://localhost:8000/api/khu-vuc/duplicate/${id}`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${adminToken}`,
@@ -106,7 +106,7 @@ export default function BlogContent() {
   const handleToggle = async (id, isHot) => {
     const adminToken = Cookies.get("token");
     try {
-      const response = await fetch(`https://hieu.name.vn/datn/public/api/khu-vuc/editHot/${id}`, {
+      const response = await fetch(`http://localhost:8000/api/khu-vuc/editHot/${id}`, {
         method: 'PATCH',
         headers: {
           Authorization: `Bearer ${adminToken}`,

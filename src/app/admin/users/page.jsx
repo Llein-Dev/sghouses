@@ -66,7 +66,7 @@ export default function UsersContent() {
   const fetchData = async () => {
     try {
       const adminToken = Cookies.get("token");
-      const response = await fetch('https://hieu.name.vn/datn/public/api/user', {
+      const response = await fetch('http://localhost:8000/api/user', {
         headers: {
           'Authorization': `Bearer ${adminToken}`,
           'Content-Type': 'application/json',
@@ -124,7 +124,7 @@ export default function UsersContent() {
       toast.error("Không thể xóa admin!"); // Thông báo lỗi    
     }
     try {
-      const response = await fetch(`https://hieu.name.vn/datn/public/api/user/ban/${id}`, {
+      const response = await fetch(`http://localhost:8000/api/user/ban/${id}`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${adminToken}`,
@@ -163,7 +163,7 @@ export default function UsersContent() {
     };
 
     try {
-      const response = await fetch(`https://hieu.name.vn/datn/public/api/user/edit/${selectedUser.id}`, {
+      const response = await fetch(`http://localhost:8000/api/user/edit/${selectedUser.id}`, {
         method: "PUT", // Sử dụng PUT để cập nhật thông tin người dùng
         headers: {
           Authorization: `Bearer ${adminToken}`,

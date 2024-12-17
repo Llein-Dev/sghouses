@@ -34,7 +34,7 @@ export default function Infomation() {
 
         const fetchDataInfo = async () => {
             try {
-                const response = await fetch('https://hieu.name.vn/datn/public/api/dang-ky-nhan-tin', {
+                const response = await fetch('http://localhost:8000/api/dang-ky-nhan-tin', {
                     headers: {
                         'Authorization': `Bearer ${adminToken}`,
                         'Content-Type': 'application/json',
@@ -70,7 +70,7 @@ export default function Infomation() {
     const handleDeleteInfo = async (id) => {
         const adminToken = Cookies.get("token");
         try {
-            const response = await fetch(`https://hieu.name.vn/datn/public/api/dang-ky-nhan-tin/delete/${id}`, {
+            const response = await fetch(`http://localhost:8000/api/dang-ky-nhan-tin/delete/${id}`, {
                 method: "DELETE",
                 headers: {
                     Authorization: `Bearer ${adminToken}`,

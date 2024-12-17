@@ -85,7 +85,7 @@ export default function UpdateRoom() {
 
     const fetchDataOption = async () => {
         try {
-            const response = await fetch(`https://hieu.name.vn/datn/public/api/toa-nha/option`, {
+            const response = await fetch(`http://localhost:8000/api/toa-nha/option`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -110,7 +110,7 @@ export default function UpdateRoom() {
     // Hàm lấy dữ liệu chi tiết tòa nhà từ API
     const fetchRoomDetail = async (token) => {
         try {
-            const response = await fetch(`https://hieu.name.vn/datn/public/api/phong/${id}`, {
+            const response = await fetch(`http://localhost:8000/api/phong/${id}`, {
                 method: "GET",
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -199,7 +199,7 @@ export default function UpdateRoom() {
         images.forEach((image) => formData.append("image[]", image.file));
 
         try {
-            const response = await fetch(`https://hieu.name.vn/datn/public/api/phong/edit/${id}`, {
+            const response = await fetch(`http://localhost:8000/api/phong/edit/${id}`, {
                 method: "POST",
                 headers: {
                     Authorization: `Bearer ${adminToken}`,

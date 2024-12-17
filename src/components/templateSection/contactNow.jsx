@@ -15,7 +15,7 @@ export default function ContactNow() {
         formData.append("email", email);
 
         try {
-            const response = await fetch("https://hieu.name.vn/datn/public/api/dang-ky-nhan-tin", {
+            const response = await fetch("http://localhost:8000/api/dang-ky-nhan-tin", {
                 method: "POST",
                 body: formData,
             });

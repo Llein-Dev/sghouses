@@ -41,7 +41,7 @@ export function SearchFilterComponent({ onResultsUpdate, setLoading }) {
     const fetchLocations = async () => {
       try {
         const response = await fetch(
-          "http://localhost:8000/api/khu_vuc/option"
+          "https://hieu.name.vn/datn/public/api/khu_vuc/option"
         );
         if (!response.ok) {
           throw new Error("Cannot fetch data from API");
@@ -98,7 +98,7 @@ export function SearchFilterComponent({ onResultsUpdate, setLoading }) {
 
 
     try {
-      const response = await fetch(`http://localhost:8000/api/filter-room?${queryParams}`, {
+      const response = await fetch(`https://hieu.name.vn/datn/public/api/filter-room?${queryParams}`, {
         method: "GET",
         headers: { "Content-Type": "application/json" },
       });

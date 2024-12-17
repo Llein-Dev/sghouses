@@ -47,7 +47,7 @@ export default function KhoiPhucUsers() {
   const fetchDeletedUsers = async () => {
     try {
       const adminToken = Cookies.get("token");
-      const response = await fetch('http://localhost:8000/api/user/list_delete', {
+      const response = await fetch('https://hieu.name.vn/datn/public/api/user/list_delete', {
         headers: {
           'Authorization': `Bearer ${adminToken}`,
           'Content-Type': 'application/json',
@@ -98,7 +98,7 @@ export default function KhoiPhucUsers() {
   const handleRefesh = async (id) => {
     const adminToken = Cookies.get("token");
     try {
-      const response = await fetch(`http://localhost:8000/api/user/restore/${id}`, {
+      const response = await fetch(`https://hieu.name.vn/datn/public/api/user/restore/${id}`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${adminToken}`,

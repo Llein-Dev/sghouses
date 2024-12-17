@@ -89,7 +89,7 @@ export default function RoomComponents({ room }) {
 
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/contact_room/add",
+        "https://hieu.name.vn/datn/public/api/contact_room/add",
         dataToSubmit,
         {
           headers: {

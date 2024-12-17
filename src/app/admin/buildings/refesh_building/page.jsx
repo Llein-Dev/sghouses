@@ -47,7 +47,7 @@ export default function RefeshBuilding() {
   const fetchDeletedBuilding = async () => {
     try {
       const adminToken = Cookies.get("token");
-      const response = await fetch('http://localhost:8000/api/toa-nha/list_delete', {
+      const response = await fetch('https://hieu.name.vn/datn/public/api/toa-nha/list_delete', {
         headers: {
           'Authorization': `Bearer ${adminToken}`,
           'Content-Type': 'application/json',
@@ -89,7 +89,7 @@ export default function RefeshBuilding() {
   const handleRefesh = async (id) => {
     const adminToken = Cookies.get("token");
     try {
-      const response = await fetch(`http://localhost:8000/api/toa-nha/restore/${id}`, {
+      const response = await fetch(`https://hieu.name.vn/datn/public/api/toa-nha/restore/${id}`, {
         method: "PATCH",
         headers: {
           Authorization: `Bearer ${adminToken}`,

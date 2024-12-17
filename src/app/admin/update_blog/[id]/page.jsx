@@ -49,7 +49,7 @@ export default function UpdateBlog() {
 
     const fetchDataBlog = async (token) => {
         try {
-            const response = await fetch(`http://localhost:8000/api/blog/${id}`, {
+            const response = await fetch(`https://hieu.name.vn/datn/public/api/blog/${id}`, {
                 method: 'GET',
                 headers: {
                     "Authorization": `Bearer ${token}`,
@@ -100,7 +100,7 @@ export default function UpdateBlog() {
         };
 
         try {
-            const response = await fetch(`http://localhost:8000/api/blog/edit/${id}`, {
+            const response = await fetch(`https://hieu.name.vn/datn/public/api/blog/edit/${id}`, {
                 method: "PUT",
                 headers: {
                     "Authorization": `Bearer ${adminToken}`,

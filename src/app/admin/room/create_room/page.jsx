@@ -31,7 +31,7 @@ export default function CreateRoom() {
 
   const fetchDataOption = async () => {
     try {
-      const response = await fetch(`http://localhost:8000/api/toa-nha/option`, {
+      const response = await fetch(`https://hieu.name.vn/datn/public/api/toa-nha/option`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -181,7 +181,7 @@ export default function CreateRoom() {
     });
 
     try {
-      const response = await fetch("http://localhost:8000/api/phong/add", {
+      const response = await fetch("https://hieu.name.vn/datn/public/api/phong/add", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${adminToken}`,

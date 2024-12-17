@@ -11,7 +11,7 @@ export default function DetailRoom() {
   const fetchRoomDetails = async () => {
     try {
       const adminToken = Cookies.get("token");
-      const response = await fetch(`http://localhost:8000/api/phong/${id}`, {
+      const response = await fetch(`https://hieu.name.vn/datn/public/api/phong/${id}`, {
         headers: {
           'Authorization': `Bearer ${adminToken}`,
           'Content-Type': 'application/json',

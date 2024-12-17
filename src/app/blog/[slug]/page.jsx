@@ -61,7 +61,7 @@ export default function ArticleDetail() {
 
         try {
             // Gửi bình luận tới API
-            const response = await fetch(`http://localhost:8000/api/blog/comment`, {
+            const response = await fetch(`https://hieu.name.vn/datn/public/api/blog/comment`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

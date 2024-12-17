@@ -46,7 +46,7 @@ export default function RefeshCataBlog() {
     const fetchDeletedComment = async () => {
         try {
             const adminToken = Cookies.get("token");
-            const response = await fetch('http://localhost:8000/api/comment_building/list_delete', {
+            const response = await fetch('https://hieu.name.vn/datn/public/api/comment_building/list_delete', {
                 headers: {
                     'Authorization': `Bearer ${adminToken}`,
                     'Content-Type': 'application/json',
@@ -89,7 +89,7 @@ export default function RefeshCataBlog() {
     const handleRefesh = async (id) => {
         const adminToken = Cookies.get("token");
         try {
-            const response = await fetch(`http://localhost:8000/api/comment_building/restore/${id}`, {
+            const response = await fetch(`https://hieu.name.vn/datn/public/api/comment_building/restore/${id}`, {
                 method: "PATCH",
                 headers: {
                     Authorization: `Bearer ${adminToken}`,

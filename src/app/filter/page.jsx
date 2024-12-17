@@ -16,7 +16,7 @@ export default function FilterPage() {
     const fetchFilteredProducts = async () => {
         setLoading(true);
         try {
-            const response = await fetch(`http://localhost:8000/api/filter-room?${searchParams.toString()}`);
+            const response = await fetch(`https://hieu.name.vn/datn/public/api/filter-room?${searchParams.toString()}`);
 
             if (!response.ok) {
                 if (response.status === 404) {

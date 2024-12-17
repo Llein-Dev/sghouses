@@ -58,7 +58,7 @@ export default function UpdateBuilding() {
     // fetch API Option
     const fetchDataOption = async () => {
         try {
-            const response = await fetch(`http://localhost:8000/api/khu_vuc/option`, {
+            const response = await fetch(`https://hieu.name.vn/datn/public/api/khu_vuc/option`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -84,7 +84,7 @@ export default function UpdateBuilding() {
     // Hàm lấy dữ liệu chi tiết tòa nhà từ API
     const fetchBuildingData = async (token) => {
         try {
-            const response = await fetch(`http://localhost:8000/api/toa-nha/${id}`, {
+            const response = await fetch(`https://hieu.name.vn/datn/public/api/toa-nha/${id}`, {
                 method: "GET",
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -164,7 +164,7 @@ export default function UpdateBuilding() {
         images.forEach((image) => formData.append("image[]", image.file));
 
         try {
-            const response = await fetch(`http://localhost:8000/api/toa-nha/edit/${id}`, {
+            const response = await fetch(`https://hieu.name.vn/datn/public/api/toa-nha/edit/${id}`, {
                 method: "POST",
                 headers: {
                     Authorization: `Bearer ${adminToken}`,

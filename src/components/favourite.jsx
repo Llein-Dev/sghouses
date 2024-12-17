@@ -11,7 +11,7 @@ const FavoriteButton = ({ idRoom, active, setActive }) => {
       try {
         const token = Cookies.get("token"); // Lấy token từ cookies
         const response = await fetch(
-          `http://localhost:8000/api/yeu-thich/get`,
+          `https://hieu.name.vn/datn/public/api/yeu-thich/get`,
           {
             headers: {
               Authorization: `Bearer ${token}`, // Đưa token vào header Authorization
@@ -31,7 +31,7 @@ const FavoriteButton = ({ idRoom, active, setActive }) => {
   const handleFavorite = async (idRoom) => {
     try {
       const token = Cookies.get("token"); // Lấy token từ cookies
-      const response = await fetch(`http://localhost:8000/api/yeu-thich/add`, {
+      const response = await fetch(`https://hieu.name.vn/datn/public/api/yeu-thich/add`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

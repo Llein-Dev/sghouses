@@ -37,7 +37,7 @@ export default function CategoryBlog() {
         const adminToken = Cookies.get("token");
 
         try {
-            const response = await fetch('http://localhost:8000/api/phong', {
+            const response = await fetch('https://hieu.name.vn/datn/public/api/phong', {
                 headers: {
                     'Authorization': `Bearer ${adminToken}`,
                     'Content-Type': 'application/json',
@@ -62,7 +62,7 @@ export default function CategoryBlog() {
     const handleDeleteRoom = async (id) => {
         const adminToken = Cookies.get("token");
         try {
-            const response = await fetch(`http://localhost:8000/api/phong/delete/${id}`, {
+            const response = await fetch(`https://hieu.name.vn/datn/public/api/phong/delete/${id}`, {
                 method: "DELETE",
                 headers: {
                     Authorization: `Bearer ${adminToken}`,
@@ -96,7 +96,7 @@ export default function CategoryBlog() {
     const handleCoppyRoom = async (id) => {
         const adminToken = Cookies.get("token");
         try {
-            const response = await fetch(`http://localhost:8000/api/phong/duplicate/${id}`, {
+            const response = await fetch(`https://hieu.name.vn/datn/public/api/phong/duplicate/${id}`, {
                 method: "GET",
                 headers: {
                     Authorization: `Bearer ${adminToken}`,

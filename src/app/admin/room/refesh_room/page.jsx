@@ -26,7 +26,7 @@ export default function RefeshBuilding() {
   const fetchDeletedRoom = async () => {
     try {
       const adminToken = Cookies.get("token");
-      const response = await fetch('http://localhost:8000/api/phong/list_delete', {
+      const response = await fetch('https://hieu.name.vn/datn/public/api/phong/list_delete', {
         headers: {
           'Authorization': `Bearer ${adminToken}`,
           'Content-Type': 'application/json',
@@ -60,7 +60,7 @@ export default function RefeshBuilding() {
   const handleRefesh = async (id) => {
     const adminToken = Cookies.get("token");
     try {
-      const response = await fetch(`http://localhost:8000/api/phong/restore/${id}`, {
+      const response = await fetch(`https://hieu.name.vn/datn/public/api/phong/restore/${id}`, {
         method: "PATCH",
         headers: {
           Authorization: `Bearer ${adminToken}`,

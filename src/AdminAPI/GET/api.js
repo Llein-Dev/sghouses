@@ -8,7 +8,7 @@ export const useFetchAdminTotal = () =>{
     useEffect(()=>{
         const fetchAdminTotal = async() =>{
             try {
-            const response = await fetch('http://localhost:8000/api/dashboard/total');
+            const response = await fetch('https://hieu.name.vn/datn/public/api/dashboard/total');
             if(!response.ok){
                 throw new Error('không lấy được api ADmin user')
             }
@@ -35,7 +35,7 @@ export const useFetchAdminTotal = () =>{
 // // Hàm lấy danh sách người dùng
 // export const fetchUsers = async () => {
 //   const adminToken = Cookies.get("token");
-//   const response = await fetch('http://localhost:8000/api/user', {
+//   const response = await fetch('https://hieu.name.vn/datn/public/api/user', {
 //     headers: {
 //       'Authorization': `Bearer ${adminToken}`,
 //       'Content-Type': 'application/json',
@@ -53,7 +53,7 @@ export const useFetchAdminTotal = () =>{
 // // Hàm sao chép người dùng
 // export const copyUser = async (id) => {
 //   const adminToken = Cookies.get("token");
-//   const response = await fetch(`http://localhost:8000/api/user/duplicate/${id}`, {
+//   const response = await fetch(`https://hieu.name.vn/datn/public/api/user/duplicate/${id}`, {
 //     method: "GET",
 //     headers: {
 //       Authorization: `Bearer ${adminToken}`,
@@ -72,7 +72,7 @@ export const useFetchAdminTotal = () =>{
 // // Hàm xóa người dùng
 // export const deleteUser = async (id) => {
 //   const adminToken = Cookies.get("token");
-//   const response = await fetch(`http://localhost:8000/api/user/delete/${id}`, {
+//   const response = await fetch(`https://hieu.name.vn/datn/public/api/user/delete/${id}`, {
 //     method: "DELETE",
 //     headers: {
 //       Authorization: `Bearer ${adminToken}`,
@@ -89,7 +89,7 @@ export const useFetchAdminTotal = () =>{
 // // Hàm chỉnh sửa người dùng
 // export const editUser = async (id, updatedUser) => {
 //   const adminToken = Cookies.get("token");
-//   const response = await fetch(`http://localhost:8000/api/user/edit/${id}`, {
+//   const response = await fetch(`https://hieu.name.vn/datn/public/api/user/edit/${id}`, {
 //     method: "PUT",
 //     headers: {
 //       Authorization: `Bearer ${adminToken}`,

@@ -74,7 +74,7 @@ export default function CreateBanner() {
 
         try {
             const adminToken = Cookies.get("token");
-            const response = await fetch("http://localhost:8000/api/banner/add", {
+            const response = await fetch("https://hieu.name.vn/datn/public/api/banner/add", {
                 method: "POST",
                 headers: {
                     "Authorization": `Bearer ${adminToken}`,

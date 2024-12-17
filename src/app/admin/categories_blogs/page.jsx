@@ -44,7 +44,7 @@ export default function CategoryBlog() {
     const fetchDataCatagoryBlog = async () => {
       const adminToken = Cookies.get("token");
       try {
-        const response = await fetch('http://localhost:8000/api/cate_blog', {
+        const response = await fetch('https://hieu.name.vn/datn/public/api/cate_blog', {
           headers: {
             'Authorization': `Bearer ${adminToken}`,
             'Content-Type': 'application/json',
@@ -87,7 +87,7 @@ export default function CategoryBlog() {
   const handleDeleteCategoryBlog = async (id) => {
     const adminToken = Cookies.get("token");
     try {
-      const response = await fetch(`http://localhost:8000/api/cate_blog/delete/${id}`, {
+      const response = await fetch(`https://hieu.name.vn/datn/public/api/cate_blog/delete/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${adminToken}`,
@@ -126,7 +126,7 @@ export default function CategoryBlog() {
     };
 
     try {
-      const response = await fetch(`http://localhost:8000/api/cate_blog/edit/${selectedCateBlog.id}`, {
+      const response = await fetch(`https://hieu.name.vn/datn/public/api/cate_blog/edit/${selectedCateBlog.id}`, {
         method: "PUT", // Sử dụng PUT để cập nhật thông tin người dùng
         headers: {
           Authorization: `Bearer ${adminToken}`,
@@ -168,7 +168,7 @@ export default function CategoryBlog() {
     formData.append("status", status);
 
     try {
-      const response = await fetch("http://localhost:8000/api/cate_blog/add", {
+      const response = await fetch("https://hieu.name.vn/datn/public/api/cate_blog/add", {
         method: "POST",
         headers: {
           "Authorization": `Bearer ${adminToken}`,

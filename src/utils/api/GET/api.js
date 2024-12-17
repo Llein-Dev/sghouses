@@ -10,7 +10,7 @@ export const useFetchCategories = () => {
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const response = await fetch('http://localhost:8000/api/khu_vuc/listHot');
+                const response = await fetch('https://hieu.name.vn/datn/public/api/khu_vuc/listHot');
                 if (!response.ok) {
                     throw new Error('Failed to fetch categories');
                 }
@@ -38,7 +38,7 @@ export const useFetchFeaturedHouse = () => {
     useEffect(() => {
         const fetchFeaturedHouse = async () => {
             try {
-                const response = await fetch('http://localhost:8000/api/toa-nha/listHot');
+                const response = await fetch('https://hieu.name.vn/datn/public/api/toa-nha/listHot');
                 if (!response.ok) {
                     throw new Error('Lỗi khi fetch dữ liệu tòa nhà nổi bật');
                 }
@@ -68,7 +68,7 @@ export const useFetchCheapHouse = () => {
     useEffect(() => {
         const fetchCheapHouse = async () => {
             try {
-                const response = await fetch('http://localhost:8000/api/toa-nha/listCheap');
+                const response = await fetch('https://hieu.name.vn/datn/public/api/toa-nha/listCheap');
                 if (!response.ok) {
                     throw new Error('Lỗi khi fetch dữ liệu tòa nhà giá rẻ');
                 }
@@ -96,7 +96,7 @@ export const useFetchViewHouse = () => {
     useEffect(() => {
         const fetchViewHouse = async () => {
             try {
-                const response = await fetch('http://localhost:8000/api/toa-nha/listView');
+                const response = await fetch('https://hieu.name.vn/datn/public/api/toa-nha/listView');
                 if (!response.ok) {
                     throw new Error('Lỗi khi fetch dữ liệu tòa nhà giá rẻ');
                 }
@@ -124,7 +124,7 @@ export const useFetchBlogHouse = () => {
     useEffect(() => {
         const fetchBlogHouse = async () => {
             try {
-                const response = await fetch("http://localhost:8000/api/blog/all");
+                const response = await fetch("https://hieu.name.vn/datn/public/api/blog/all");
                 if (!response.ok) {
                     throw new Error("Lỗi khi fetch dữ liệu blog.");
                 }
@@ -153,7 +153,7 @@ const useBuildingDetails = (slug) => {
     useEffect(() => {
         const fetchBuildingDetails = async () => {
             try {
-                const response = await fetch(`http://localhost:8000/api/chi-tiet/?slug=${slug}`);
+                const response = await fetch(`https://hieu.name.vn/datn/public/api/chi-tiet/?slug=${slug}`);
                 if (!response.ok) {
                     throw new Error("Failed to fetch building details");
                 }
@@ -184,7 +184,7 @@ export const useFetchDetailBlog = (slug) => {
     useEffect(() => {
         const fetchDetailBlog = async () => {
             try {
-                const response = await fetch(`http://localhost:8000/api/blog/?slug=${slug}`)
+                const response = await fetch(`https://hieu.name.vn/datn/public/api/blog/?slug=${slug}`)
                 if (!response.ok) {
                     throw new Error('lỗi khi kết nối với api Detail Blog')
                 }

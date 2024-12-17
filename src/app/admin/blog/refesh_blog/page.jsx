@@ -29,7 +29,7 @@ export default function RefeshBlog() {
         return;
       }
 
-      const response = await fetch("http://localhost:8000/api/blog/list_delete", {
+      const response = await fetch("https://hieu.name.vn/datn/public/api/blog/list_delete", {
         headers: {
           Authorization: `Bearer ${adminToken}`,
           "Content-Type": "application/json",
@@ -60,7 +60,7 @@ export default function RefeshBlog() {
   const handleRefeshBlog = async (id) => {
     const adminToken = Cookies.get("token");
     try {
-      const response = await fetch(`http://localhost:8000/api/blog/restore/${id}`, {
+      const response = await fetch(`https://hieu.name.vn/datn/public/api/blog/restore/${id}`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${adminToken}`,

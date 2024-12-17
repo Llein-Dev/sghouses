@@ -24,7 +24,7 @@ export default function RefeshBanner() {
     const handleToggle = async (id, isHot) => {
         const adminToken = Cookies.get("token");
         try {
-          const response = await fetch(`http://localhost:8000/api/banner/editStatus/${id}`, {
+          const response = await fetch(`https://hieu.name.vn/datn/public/api/banner/editStatus/${id}`, {
             method: 'PATCH',
             headers: {
               Authorization: `Bearer ${adminToken}`,
@@ -58,7 +58,7 @@ export default function RefeshBanner() {
                 return;
             }
 
-            const response = await fetch("http://localhost:8000/api/banner/list_delete", {
+            const response = await fetch("https://hieu.name.vn/datn/public/api/banner/list_delete", {
                 headers: {
                     Authorization: `Bearer ${adminToken}`,
                     "Content-Type": "application/json",
@@ -88,7 +88,7 @@ export default function RefeshBanner() {
     const handleRefeshBanner = async (id) => {
         const adminToken = Cookies.get("token");
         try {
-            const response = await fetch(`http://localhost:8000/api/banner/restore/${id}`, {
+            const response = await fetch(`https://hieu.name.vn/datn/public/api/banner/restore/${id}`, {
                 method: "PATCH",
                 headers: {
                     Authorization: `Bearer ${adminToken}`,

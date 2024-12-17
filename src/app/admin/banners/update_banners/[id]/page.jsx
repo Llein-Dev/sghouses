@@ -29,7 +29,7 @@ export default function UpdateBanner() {
 
     const fetchBlogDetails = async (token) => {
         try {
-            const response = await fetch(`http://localhost:8000/api/banner/${id}`, {
+            const response = await fetch(`https://hieu.name.vn/datn/public/api/banner/${id}`, {
                 method: "GET",
                 headers: {
                     "Authorization": `Bearer ${token}`,
@@ -81,7 +81,7 @@ export default function UpdateBanner() {
         }
 
         try {
-            const response = await fetch(`http://localhost:8000/api/banner/update/${id}`, {
+            const response = await fetch(`https://hieu.name.vn/datn/public/api/banner/update/${id}`, {
                 method: "POST",
                 headers: {
                     "Authorization": `Bearer ${adminToken}`,

@@ -24,7 +24,7 @@ export function RoomManagement({ contactsData, contractsData }) {
         const updatedContacts = await Promise.all(
           contacts.map(async (contact) => {
             try {
-              const response = await axios.get(`http://localhost:8000/api/phong/${contact.id}`, {
+              const response = await axios.get(`https://hieu.name.vn/datn/public/api/phong/${contact.id}`, {
                 headers: {
                   "Content-Type": "application/json",
                   "Authorization": `Bearer ${token}` // Thêm token vào headers

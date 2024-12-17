@@ -28,7 +28,7 @@ export default function RefeshArea() {
         return;
       }
 
-      const response = await fetch("http://localhost:8000/api/khu-vuc/list_delete", {
+      const response = await fetch("https://hieu.name.vn/datn/public/api/khu-vuc/list_delete", {
         headers: {
           Authorization: `Bearer ${adminToken}`,
           "Content-Type": "application/json",
@@ -58,7 +58,7 @@ export default function RefeshArea() {
   const handleRefeshArea = async (id) => {
     const adminToken = Cookies.get("token");
     try {
-      const response = await fetch(`http://localhost:8000/api/khu-vuc/restore/${id}`, {
+      const response = await fetch(`https://hieu.name.vn/datn/public/api/khu-vuc/restore/${id}`, {
         method: "PATCH",
         headers: {
           Authorization: `Bearer ${adminToken}`,

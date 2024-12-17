@@ -25,7 +25,14 @@ export default function BuildingDetailComponent() {
     const dispatch = useDispatch(); // Initialize dispatch
     const user = useSelector((state) => state.auth.user); // Access user from Redux store
     const token = Cookies.get('token');
+    const [allComments, setAllComments] = useState([]);
 
+    // Khi building?.list_cmt thay đổi, khởi tạo lại comments
+    useEffect(() => {
+        if (building?.list_cmt) {
+            setAllComments(building.list_cmt); // Gán dữ liệu comments từ API
+        }
+    }, [building?.list_cmt]);
     useEffect(() => {
         if (user) {
             dispatch(setProfile(user)); // Dispatch action to set user
@@ -34,49 +41,46 @@ export default function BuildingDetailComponent() {
 
     const addComment = async (newComment) => {
         if (!user) {
-            toast.warning("bạn chưa đăng nhập !");
-
+            toast.warning("bạn chưa đăng nhập!");
             return;
         }
-
-        // Optimistic update: Add the comment to UI immediately
+    
         const newCommentObj = {
-            id_user: user ? user.id : null, // Assuming 'user.id' contains the ID of the user
-            name: user ? user.name : "User",
-            avatar: user ? user.avatar : null, // If you want to keep it null if avatar is not available
+            id_user: user.id,
+            name: user.name,
+            avatar: user.avatar || null,
             content: newComment,
             date: new Date().toLocaleString("vi-VN", {
-                day: 'numeric',
-                month: 'long',
-                year: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-            }), // Format the date according to your requirement
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+            }),
         };
-
-        setComments([...comments, newCommentObj]);
-
-        // Send comment to backend
+    
+        // Cập nhật UI: thêm comment vào state `allComments`
+        setAllComments((prevComments) => [...prevComments, newCommentObj]);
+    
+        // Gửi comment lên backend
         const response = await fetch(`http://localhost:8000/api/building_cmt/add`, {
-            method: 'POST',
+            method: "POST",
             headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify({
-                slug: slug,    // Directly passing the values
-                message: newComment
-            })
+                slug: slug,
+                message: newComment,
+            }),
         });
-
-
+    
         const data = await response.json();
-        toast.success("Gửi bình luận thành công!");
-        if (data.message !== "Bạn chưa đăng nhập") {
-            console.log("Comment added successfully:", data);
-        } else {
+    
+        if (data.message === "Bạn chưa đăng nhập") {
             toast.warning("Có lỗi xảy ra vui lòng thử lại sau!");
-
+        } else {
+            toast.success("Gửi bình luận thành công!");
         }
     };
     const {
@@ -95,7 +99,7 @@ export default function BuildingDetailComponent() {
                     <CardHeader>
                         <CardTitle>
                             <h1 className="text-3xl font-bold mb-2">{building?.ten}</h1>
-                            <Badge variant="secondary">{building?.vi_tri}</Badge>
+                            <Badge variant="secondary">{building?.ten_khu_vuc}</Badge>
                         </CardTitle>
                     </CardHeader>
                     <CardContent>
@@ -178,7 +182,7 @@ export default function BuildingDetailComponent() {
                     </CardContent>
                 </Card>
 
-                <CommentComponent comments={building?.list_cmt || comments} onCommentAdd={addComment} user={user} /> {/* Pass comments and addComment function here */}
+                <CommentComponent comments={allComments} onCommentAdd={addComment} user={user} /> {/* Pass comments and addComment function here */}
 
 
 

@@ -184,7 +184,7 @@ export function HeaderComponent() {
                           src={
                             user.avatar.startsWith("http")
                               ? user.avatar
-                              : `http://localhost:8000/storage/${user.avatar}`
+                              : `https://hieu.name.vn/datn/public/storage/${user.avatar}`
                           }
                           className="h-full w-full"
                         />
@@ -213,7 +213,7 @@ export function HeaderComponent() {
                         src={
                           user.avatar.startsWith("http")
                             ? user.avatar
-                            : `http://localhost:8000/storage/${user.avatar}`
+                            : `https://hieu.name.vn/datn/public/storage/${user.avatar}`
                         }
                         className="h-full w-full"
                       />

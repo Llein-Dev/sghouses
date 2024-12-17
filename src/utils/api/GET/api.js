@@ -37,7 +37,7 @@ export const useFetchFeaturedHouse = () => {
 
     useEffect(() => {
         const fetchFeaturedHouse = async () => {
-            try {
+            try {=
                 const response = await fetch('https://hieu.name.vn/datn/public/api/toa-nha/listHot');
                 if (!response.ok) {
                     throw new Error('Lỗi khi fetch dữ liệu tòa nhà nổi bật');

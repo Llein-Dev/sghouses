@@ -29,12 +29,11 @@ const usageData = [
 
 
 export default function Home() {
-  const [deploymentData, setDoanhThu] = useState([])
+  const [deployment, setDoanhThu] = useState([])
   const [hoadontrehen, setHoaDonTreHen] = useState([])
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
   const router = useRouter();
-  const [year, setYear] = useState(null); // State để lưu năm
   const [districtsData, setdistrictsData] = useState(null); // State để lưu năm
   const [contactData, setContactData] = useState(null);
   const [contractData, setContractData] = useState(null);
@@ -104,6 +103,36 @@ export default function Home() {
       setError('Không thể truy cập dữ liệu');
     }
   }
+
+  const [deploymentData, setDeploymentData] = useState([]);
+  const year = 2024; // Set the year as a constant or from state
+
+  // Function to fetch revenue data from the API
+  const fetchRevenueData = async () => {
+    try {
+      const adminToken = Cookies.get('token');
+      const response = await fetch(`http://localhost:8000/api/dashboard/hoa_don/${year}`, {
+        headers: {
+          'Authorization': `Bearer ${adminToken}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        // Process the result data to match the format needed for the chart
+        const formattedData = result.data.map(item => ({
+          name: `Tháng ${item.month}`, // Format month
+          doanh_thu: item.tong_hoa_don // Match the key used in the BarChart
+        }));
+        setDeploymentData(formattedData);
+      } else {
+        console.error('Error fetching data:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Fetch error:', error);
+    }
+  };
   // Gọi fetchData trong useEffect khi trang load lần đầu
   useEffect(() => {
     const adminToken = Cookies.get('token');
@@ -116,6 +145,7 @@ export default function Home() {
     fetchTreHam();
     fetchContactData();
     fetchContractData();
+    fetchRevenueData();
     // Call the prop to expose fetchData
   }, [router]);
   const adminToken = Cookies.get("token");
@@ -306,7 +336,32 @@ export default function Home() {
       <div className="mt-4 grid grid-cols-1 gap-2 md:grid-cols-2 ">
         <Card >
           <CardHeader >
-            <CardTitle >Doanh thu {year}</CardTitle>
+            <CardTitle >Doanh thu trong năm {year}</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ChartContainer
+              config={{
+                deployments: {
+                  label: "Deployments",
+                  color: "hsl(var(--chart-1))",
+                },
+              }}
+              className="h-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={deployment}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" />
+                  <YAxis />
+                  <ChartTooltip content={<ChartTooltipContent />} />
+                  <Bar dataKey="doanh thu" fill="var(--color-deployments)" />
+                </BarChart>
+              </ResponsiveContainer>
+            </ChartContainer>
+          </CardContent>
+        </Card>
+        <Card >
+          <CardHeader >
+            <CardTitle >Hóa đơn trong năm {year}</CardTitle>
           </CardHeader>
           <CardContent>
             <ChartContainer
@@ -329,31 +384,8 @@ export default function Home() {
             </ChartContainer>
           </CardContent>
         </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle>Thống kê -- tính sau</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ChartContainer
-              config={{
-                usage: {
-                  label: "Usage",
-                  color: "hsl(var(--chart-2))",
-                },
-              }}
-              className="h-full">
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={usageData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" />
-                  <YAxis />
-                  <ChartTooltip content={<ChartTooltipContent />} />
-                  <Line type="monotone" dataKey="usage" stroke="var(--color-usage)" />
-                </LineChart>
-              </ResponsiveContainer>
-            </ChartContainer>
-          </CardContent>
-        </Card>
+
+
       </div>
 
       <Card className="mt-4">

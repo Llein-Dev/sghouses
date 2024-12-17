@@ -60,13 +60,20 @@ export default function ContractContent() {
           },
         }
       );
-
+      const contentType = response.headers.get("Content-Type");
+      let errorMessage;
       if (response.ok) {
         toast.success("Đợi xử lý thành công!");
         setContracts((prev) => prev.filter((contact) => contact.id !== id));
       } else {
-        setError("Lỗi khi xóa liên hệ.");
-      }
+        if (contentType.includes("application/json")) {
+            const data = await response.json();
+            errorMessage = data.message || "Đã xảy ra lỗi, vui lòng thử lại!";
+        } else {
+            errorMessage = await response.text(); // Nếu là chuỗi thuần
+        }
+        toast.error(`Lỗi: ${errorMessage}`); // Hiển thị toàn bộ chuỗi
+    }
     } catch (error) {
       setError("Không thể kết nối đến server.");
     }

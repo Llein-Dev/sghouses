@@ -32,12 +32,12 @@ export function ProductCardColCheapComponent({ productsHouseCheap }) {
             <div className="flex items-center">
               <p className="mr-2 text-primary mb-2">Giá từ</p>
               <p className="text-lg text-red-500 text-primary mb-2">
-                {formatCurrency(houseCheap.gia_thue)}
+                {(houseCheap.gia_thue)}
               </p>
             </div>
             <div className="flex flex-wrap gap-2 mb-2">
               <Badge variant="secondary">{houseCheap.name_area}</Badge>
-              <Badge variant="secondary">Lượt xem: {houseCheap.luot_xem}</Badge>
+
             </div>
           </CardContent>
           <CardFooter className="p-4 pt-0">
